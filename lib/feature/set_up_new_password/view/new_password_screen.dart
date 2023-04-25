@@ -8,57 +8,25 @@ import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/elements/common_view_screen.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
-import 'package:scimetic/feature/login/controller/login_controller.dart';
+import 'package:scimetic/feature/set_up_new_password/controller/new_password_controller.dart';
 
-class LoginScreen extends StatelessWidget {
-   LoginScreen({Key? key}) : super(key: key);
+class NewPasswordScreen extends StatelessWidget {
+   NewPasswordScreen({Key? key}) : super(key: key);
 
-   final controller = Get.put(LoginController());
+   final controller = Get.put(NewPasswordController());
 
   @override
   Widget build(BuildContext context) {
     return CommonViewScreen(
-        title: AppStrings.logIn,
-        subTitle: AppStrings.eYCTCYAccount,
+        title: AppStrings.sUNPassword,
+        subTitle: AppStrings.sUNPassword,
         middleWidget: SizedBox(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                AppStrings.eOrUsername,
+                AppStrings.eNPassword,
                 style: TextStyleDecoration.headline1,
-              ),
-              SizedBox(height: 5.h,),
-              SizedBox(
-                height: 45.h,
-                child: CustomTextField(
-                  controller: controller.emailController,
-                  hintText: AppStrings.eYROUsername,
-                  onchange: (val) {},
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppStrings.password,
-                    style: TextStyleDecoration.headline1,
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: (){
-                      Get.toNamed(AppPages.RESETPASSWORD);
-                    },
-                    child: Text(
-                      AppStrings.fPassword,
-                      style: TextStyleDecoration.headline2,
-                    ),
-                  )
-                ],
               ),
               SizedBox(height: 5.h,),
               SizedBox(
@@ -66,24 +34,62 @@ class LoginScreen extends StatelessWidget {
                 child: Obx(() => CustomTextField(
                   controller: controller.passwordController,
                   hintText: AppStrings.eYPassword,
-                  isObscure: !controller.isObscure.value,
+                  isObscure: !controller.isPassword.value,
                   suffixWidget: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: (){
-                      if ( controller.isObscure.value == false ) {
-                        controller.isObscure.value = true;
+                      if ( controller.isPassword.value == false ) {
+                        controller.isPassword.value = true;
                       } else {
-                        controller.isObscure.value = false;
+                        controller.isPassword.value = false;
                       }
                     },
                     child: Padding(
                       padding:  EdgeInsets.all(14.w),
                       child: Image.asset(
-                        controller.isObscure.value == false
+                        controller.isPassword.value == false
                             ? AppImages.unVisible : AppImages.visible,
                         color: Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
                         fit: BoxFit.fill,
-                        height: controller.isObscure.value == false ? 22.h : 15.h,
+                        height: controller.isPassword.value == false ? 22.h : 15.h,
+                        width: 22.w,
+                      ),
+                    ),
+                  ),
+                  onchange: (val) {},
+                )),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Text(
+                AppStrings.rNPassword,
+                style: TextStyleDecoration.headline1,
+              ),
+              SizedBox(height: 5.h,),
+              SizedBox(
+                height: 45.h,
+                child: Obx(() => CustomTextField(
+                  controller: controller.repeatPasswordController,
+                  hintText: AppStrings.eYPassword,
+                  isObscure: !controller.isRepeatPassword.value,
+                  suffixWidget: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      if ( controller.isRepeatPassword.value == false ) {
+                        controller.isRepeatPassword.value = true;
+                      } else {
+                        controller.isRepeatPassword.value = false;
+                      }
+                    },
+                    child: Padding(
+                      padding:  EdgeInsets.all(14.w),
+                      child: Image.asset(
+                        controller.isRepeatPassword.value == false
+                            ? AppImages.unVisible : AppImages.visible,
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
+                        fit: BoxFit.fill,
+                        height: controller.isRepeatPassword.value == false ? 22.h : 15.h,
                         width: 22.w,
                       ),
                     ),
@@ -99,27 +105,27 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                AppStrings.nOScimetic,
+                AppStrings.hAQuestion,
                 style: TextStyleDecoration.subTitle,
               ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
-                  Get.offAllNamed(AppPages.REGISTERNEWACCOUNT);
                 },
                 child: Text(
-                  AppStrings.cAnAccount,
+                  AppStrings.cSupport,
                   style: TextStyleDecoration.headline2,
                 ),
               )
             ],
           ),
         ),
-        buttonText: AppStrings.signIn,
+        buttonText: AppStrings.setUP,
         buttonTap: (){
+          Get.offAllNamed(AppPages.LOGIN);
         },
-      isSubtitle: true,
-      isEmail: false,
+        isSubtitle: false,
+        isEmail: false
     );
   }
 }

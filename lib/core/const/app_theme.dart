@@ -9,16 +9,16 @@ class CustomAppTheme {
     scaffoldBackgroundColor: AppColors.lightAppbar,
     brightness: Brightness.light,
     textTheme: TextStyleDecoration.getLightTheme,
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.lightAppbar,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.lightAppbar,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark
+        statusBarColor: Colors.black,
+         statusBarBrightness: Brightness.light,
+         statusBarIconBrightness: Brightness.light
       )
     ),
   );
@@ -27,16 +27,16 @@ class CustomAppTheme {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkAppbar,
     textTheme: TextStyleDecoration.getDarkTheme,
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.darkAppbar,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarColor: AppColors.darkAppbar,
-        statusBarBrightness: Brightness.light
+         statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.white,
+         statusBarBrightness: Brightness.dark,
       )
     )
   );

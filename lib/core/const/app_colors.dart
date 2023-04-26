@@ -14,5 +14,11 @@ class AppColors {
   static const Color lightBorder = Color(0xFFE0E0E0);
   static const Color lightIcon = Color(0xFFBDBDBD);
   static const Color red = Color(0xFFEB5757);
+  static const Color darkIcon = Color(0xFF4A4F7A);
+  static const Color lightGray = Color(0xFF4F4F4F);
+  static const Color darkBlue = Color(0xFF202442);
+  static const Color white1 = Color(0xFFC5D0D9);
+  static const Color lightGray1 = Color(0xFF728CA1);
+  static const Color lightGray2 = Color(0xFFF2F2F2);
 
 }

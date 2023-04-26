@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/authenticate_your_account/binding/authenticate_account_binding.dart';
 import 'package:scimetic/feature/authenticate_your_account/view/authenticate_account_screen.dart';
+import 'package:scimetic/feature/home/binding/home_binding.dart';
+import 'package:scimetic/feature/home/view/home_screen.dart';
 import 'package:scimetic/feature/login/binding/login_binding.dart';
 import 'package:scimetic/feature/login/view/login_screen.dart';
 import 'package:scimetic/feature/register_new_account/binding/register_new_account_binding.dart';
@@ -45,6 +47,11 @@ class AppRoutes {
         name: AppPages.NEWPASSWORD,
         page: ()=> NewPasswordScreen(),
       binding: NewPasswordBinding()
+    ),
+    GetPage(
+        name: AppPages.HOME,
+        page: ()=> HomeScreen(),
+      binding: HomeBinding()
     )
   ];
 

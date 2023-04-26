@@ -18,7 +18,8 @@ class CommonViewScreen extends StatelessWidget {
     required this.buttonText,
     required this.buttonTap,
     required this.isSubtitle,
-    required this.isEmail
+    required this.isEmail,
+    this.email
   }) : super(key: key);
 
   final String title;
@@ -29,6 +30,7 @@ class CommonViewScreen extends StatelessWidget {
   final VoidCallback buttonTap;
   final bool isSubtitle;
   final bool isEmail;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class CommonViewScreen extends StatelessWidget {
                   style: TextStyleDecoration.subTitle,
                 ) : const SizedBox.shrink(),
                 isEmail == true ? Text(
-                    'sh**********ab@gmail.com',
+                    email ?? "sh**********ab@gmail.com",
                   style: TextStyleDecoration.headline2,
                 ) : const SizedBox.shrink(),
                 SizedBox(height: 30.h,),

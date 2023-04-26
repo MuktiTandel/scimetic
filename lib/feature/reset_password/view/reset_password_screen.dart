@@ -89,7 +89,8 @@ class ResetPasswordScreen extends StatelessWidget {
         ),
         buttonText: AppStrings.continue_,
         buttonTap: (){
-          Get.toNamed(AppPages.AUTHENTICATEACOOUNT);
+          Get.toNamed(AppPages.AUTHENTICATEACOOUNT,
+              arguments: {"email" : controller.emailController.value.text});
         },
       isSubtitle: true,
       isEmail: false,

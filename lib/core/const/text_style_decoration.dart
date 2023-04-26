@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 
 class TextStyleDecoration {
   // App Default font...
@@ -10,37 +9,36 @@ class TextStyleDecoration {
 
   // Get Text theme...
   static TextTheme get getLightTheme => TextTheme(
-        labelSmall: _overLine, // 10.0
-        bodySmall: _caption, // 12.0
-        bodyLarge: _body1, // 14.0
-        bodyMedium: _body2, // 16.0
-        displayLarge: headline1, // 18.0
-        displayMedium: headline2, // 21.0
-        displaySmall: headline3, // 22.0
-        headlineMedium: _headline4, // 24.0
-        headlineSmall: _headline5, // 26.0
-        titleLarge: headline6, // 28.0
-        titleMedium: subTitle, // 14.0 this is also used when no style is given to textField..
-        titleSmall: _subHeadline, // 16.0
-        labelLarge: _button, // 16.0
+        labelSmall: _overLine,
+        bodySmall: _caption,
+        bodyLarge: body1,
+        bodyMedium: _body2,
+        displayLarge: headline1,
+        displayMedium: headline2,
+        displaySmall: headline3,
+        headlineMedium: headline4,
+        headlineSmall: headline5,
+        titleLarge: headline6,
+        titleMedium: subTitle,
+        titleSmall: subHeadline,
+        labelLarge: _button,
       );
 
   // Get Text theme...
   static TextTheme get getDarkTheme => TextTheme(
-        labelSmall: _overLine, // 10.0
-        bodySmall: _caption, // 12.0
-        bodyLarge: _body1, // 14.0
-        bodyMedium: _body2, // 16.0
-        displayLarge: headline1, // 18.0
-        displayMedium: headline2, // 21.0
-        displaySmall: headline3, // 22.0
-        headlineMedium: _headline4, // 24.0
-        headlineSmall: _headline5, // 26.0
-        titleLarge: headline6, // 28.0
-        titleMedium:
-            subTitle, // 14.0 this is also used when no style is given to textfield..
-        titleSmall: _subHeadline, // 16.0
-        labelLarge: _button, // 16.0
+        labelSmall: _overLine,
+        bodySmall: _caption,
+        bodyLarge: body1,
+        bodyMedium: _body2,
+        displayLarge: headline1,
+        displayMedium: headline2,
+        displaySmall: headline3,
+        headlineMedium: headline4,
+        headlineSmall: headline5,
+        titleLarge: headline6,
+        titleMedium: subTitle,
+        titleSmall: subHeadline,
+        labelLarge: _button,
       );
 
   static TextStyle get textFieldPlaceholder => TextStyle(
@@ -78,11 +76,11 @@ class TextStyleDecoration {
     
   );
 
-  static TextStyle get _body1 => TextStyle(
+  static TextStyle get body1 => TextStyle(
     fontFamily: fontFamily,
-    color: Colors.black,
-    fontSize: 14.0,
-   
+    color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400
   );
 
   static TextStyle get _body2 => TextStyle(
@@ -113,18 +111,18 @@ class TextStyleDecoration {
     fontWeight: FontWeight.w500,
   );
 
-  static TextStyle get _headline4 => TextStyle(
+  static TextStyle get headline4 => TextStyle(
     fontFamily: fontFamily,
-    color: Colors.black,
-    fontSize: 24.0,
-    fontWeight: FontWeight.w400,
+    color: AppColors.buttonColor,
+    fontSize: 15.sp,
+    fontWeight: FontWeight.bold,
   );
 
-  static TextStyle get _headline5 => TextStyle(
+  static TextStyle get headline5 => TextStyle(
     fontFamily: fontFamily,
-    color: Colors.black,
-    fontSize: 26.0,
-    fontWeight: FontWeight.w400,
+    color: AppColors.buttonColor,
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w600,
   );
 
   static TextStyle get headline6 => TextStyle(
@@ -141,11 +139,11 @@ class TextStyleDecoration {
     fontWeight: FontWeight.w500,
   );
 
-  static TextStyle get _subHeadline => TextStyle(
+  static TextStyle get subHeadline => TextStyle(
     fontFamily: fontFamily,
-    color: Colors.black,
-    fontSize: 16.0,
-    fontWeight: FontWeight.w400,
+    color: Get.isDarkMode ? AppColors.darkIcon : Colors.black,
+    fontSize: 11.5.sp,
+    fontWeight: FontWeight.w500,
   );
 
   static TextStyle get _button => TextStyle(

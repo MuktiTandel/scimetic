@@ -49,6 +49,9 @@ dependencies:
   # for store data
   get_storage: ^2.1.1
 
+  # for chat view
+  syncfusion_flutter_charts: ^21.1.41
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

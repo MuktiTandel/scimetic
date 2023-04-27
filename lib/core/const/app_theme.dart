@@ -15,11 +15,6 @@ class CustomAppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.lightAppbar,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-         statusBarBrightness: Brightness.light,
-         statusBarIconBrightness: Brightness.light
-      )
     ),
   );
 
@@ -33,11 +28,6 @@ class CustomAppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.darkAppbar,
-      systemOverlayStyle: SystemUiOverlayStyle(
-         statusBarIconBrightness: Brightness.dark,
-        statusBarColor: Colors.white,
-         statusBarBrightness: Brightness.dark,
-      )
     )
   );
 }

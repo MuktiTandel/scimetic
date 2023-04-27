@@ -5,147 +5,46 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
-import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/const/theme_service.dart';
-import 'package:scimetic/core/elements/custom_button.dart';
+import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/routes/app_pages.dart';
+import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
+import 'package:scimetic/feature/overview/view/overview_screen.dart';
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
 
    final controller = Get.put(HomeController());
 
+   final dashboardController = Get.put(DashboardController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: controller.scaffoldKey,
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      appBar: AppBar(
-        leading: Padding(
-          padding:  EdgeInsets.all(15.w),
-          child: GestureDetector(
-            onTap: (){
+      appBar: PreferredSize(
+        preferredSize: Size(Get.width, 40.h),
+        child: Obx(() => CommonAppbar(
+            drawerTap: (){
               controller.openDrawer();
             },
-            child: Image.asset(
-                AppImages.drawer,
-              height: 10.h,
-              width: 10.w,
-              color: Get.isDarkMode ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
-        title: Text(
-          AppStrings.tOverview,
-          style: TextStyleDecoration.headline6,
-        ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-            onTap: (){},
-            child: Center(
-              child: SizedBox(
-                height: 26.5.h,
-                width: 30.w,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Image.asset(
-                      AppImages.notification,
-                      color: Get.isDarkMode ? Colors.white : Colors.black,
-                      height: 20.h,
-                      width: 20.w,
-                    ),
-                    Positioned(
-                      bottom: 13.5,
-                      left: 14,
-                      child: Container(
-                        height: 16.h,
-                        width: 16.w,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  AppImages.rectangle,),
-                          )
-                        ),
-                        child: Center(
-                          child: CustomText(
-                              text: "23",
-                            fontSize: 5.5.sp,
-                            textAlign: TextAlign.center,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ),
-          SizedBox(
-           width: 10.w,
-          ),
-          GestureDetector(
-            onTap: (){},
-            child: CircleAvatar(
-              maxRadius: 12.h,
-              child: Image.asset(
-                  AppImages.profile,
-              ),
-            ),
-          ),
-          SizedBox(width: 15.w,)
-        ],
+            title: dashboardController.isOverView.value == false
+                ?  AppStrings.tOverview
+                : AppStrings.overview,
+            notificationTap: (){
+              Get.toNamed(AppPages.NOTIFICATION);
+            },
+            profileTap: (){}
+        )),
       ),
-      body: ScrollConfiguration(
-        behavior: AppBehavior(),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(height: 15.h,),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                return listWidget();
-              }),
-              SizedBox(height: 10.h,),
-              Padding(
-                padding:  EdgeInsets.only(right: 18.w),
-                child: CustomButton(
-                  height: 35.h,
-                    width: 85.w,
-                    onTap: (){},
-                    buttonText: AppStrings.add,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                            AppImages.add,
-                          height: 15.h,
-                          width: 15.w,
-                        ),
-                        SizedBox(width: 10.w,),
-                        const Text(
-                          AppStrings.add
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h,)
-            ],
-          ),
-        ),
-      ),
+      body: Obx(() => dashboardController.isOverView.value == false ? IndexedStack(
+        index: controller.moduleIndex.value,
+        children: controller.moduleList,
+      ) :  OverviewScreen()),
       drawer: Drawer(
         width: 230.w,
         shape: const RoundedRectangleBorder(
@@ -359,41 +258,38 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(width: 15.w,),
                                   Image.asset(
-                                    Get.isDarkMode ? AppImages.sun : AppImages.theme,
+                                    AppImages.sun,
                                     height: 20.h,
                                     width: 20.w,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
                                   ),
                                   SizedBox(
-                                    width: 20.w,
+                                    width: Get.isDarkMode ? 10.w : 5.w,
                                   ),
-                                  CustomText(
-                                    text: Get.isDarkMode ? AppStrings.lightMode : AppStrings.darkMode,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                  ),
-                                  Expanded(child: SizedBox(width: 10.w,)),
                                   GestureDetector(
                                     onTap: (){
                                       ThemeService().switchTheme();
                                     },
                                     child: SizedBox(
+                                      height: 28.h,
+                                      width: 36.w,
                                       child: SvgPicture.asset(
                                         Get.isDarkMode
-                                            ? AppImages.darkUnselectSwitch
+                                            ? AppImages.lightSelectSwitch
                                             : AppImages.lightUnselectSwitch,
-                                        height: 25.h,
-                                        width: 25.w,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fill,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 10.w,)
-                                 /* Obx(() => Switch(value: controller.isLight.value,
-                                      onChanged: (value){
-                                        controller.toggle();
-                                      }))*/
+                                  SizedBox(
+                                    width: Get.isDarkMode ? 5.w : 10.w,
+                                  ),
+                                  Image.asset(
+                                    AppImages.theme,
+                                    height: 20.h,
+                                    width: 20.w,
+                                    color: Get.isDarkMode ? AppColors.buttonColor :  AppColors.lightBorder,
+                                  ),
                                 ],
                               ),
                             ),
@@ -409,142 +305,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget listWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.all(15.w),
-          color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppStrings.gWellington,
-                    style: TextStyleDecoration.headline5,
-                  ),
-                  PopupMenuButton<int>(
-                    offset: Offset(0, 16.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Image.asset(
-                      AppImages.menu,
-                      height: 14.h,
-                      width: 8.w,
-                      color: Get.isDarkMode ? AppColors.darkIcon : AppColors.lightText,
-                    ),
-                    onSelected: (item) {},
-                    itemBuilder: (context) => [
-                      PopupMenuItem<int>(
-                        padding: EdgeInsets.zero,
-                          value: 0,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:  EdgeInsets.all(8.w),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                        AppImages.edit,
-                                      height: 30.h,
-                                      width: 30.w,
-                                    ),
-                                    SizedBox(width: 10.w,),
-                                    CustomText(
-                                        text: AppStrings.edit,
-                                      fontSize: 17.sp,
-                                      color: AppColors.lightGray1,
-                                      fontWeight: FontWeight.w500,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Divider(
-                                color: AppColors.lightGray2,
-                                thickness: 1.w,
-                              )
-                            ],
-                          )
-                      ),
-                      PopupMenuItem<int>(
-                          value: 1,
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                AppImages.trash,
-                                height: 30.h,
-                                width: 30.w,
-                              ),
-                              SizedBox(width: 10.w,),
-                              CustomText(
-                                text: AppStrings.delete,
-                                fontSize: 17.sp,
-                                color: AppColors.red,
-                                fontWeight: FontWeight.w500,
-                              )
-                            ],
-                          )
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 5.h,),
-              Text(
-                AppStrings.tODesc,
-                style: TextStyleDecoration.body1,
-              ),
-              SizedBox(height: 10.h,),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      featureWidget(title: AppStrings.temperature, value: "25° С"),
-                      SizedBox(height: 15.h,),
-                      featureWidget(title: AppStrings.cO2, value: "600 ppm"),
-                    ],
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      featureWidget(title: AppStrings.humidity, value: "75 %"),
-                      SizedBox(height: 15.h,),
-                      featureWidget(title: AppStrings.vpd, value: "0.95 kPa"),
-                    ],
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 15.h,)
-      ],
-    );
-  }
-
-  Widget featureWidget({required String title, required String value}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyleDecoration.subHeadline,
-        ),
-        Text(
-          value,
-          style: TextStyleDecoration.headline4,
-        )
-      ],
     );
   }
 

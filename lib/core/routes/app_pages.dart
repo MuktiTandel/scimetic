@@ -7,5 +7,6 @@ class AppPages {
   static const AUTHENTICATEACOOUNT = '/authenticateAccount';
   static const NEWPASSWORD = '/newPassword';
   static const HOME = '/home';
+  static const NOTIFICATION = '/notification';
 
 }

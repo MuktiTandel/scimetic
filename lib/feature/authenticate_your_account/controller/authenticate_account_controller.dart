@@ -16,19 +16,30 @@ class AuthenticateAccountController extends GetxController {
 
   getEmail() {
 
-    String first = email.split("@").first;
-    String last = email.split("@").last;
+    if ( email.isNotEmpty ) {
 
-    String firstLatter = first.substring(0, 2);
-    String lastLatter = first.substring(first.length - 2, first.length);
+      String first = email
+          .split("@")
+          .first;
+      String last = email
+          .split("@")
+          .last;
 
-    String middleLatter = first.substring(2, first.length - 2);
+      String firstLatter = first.substring(0, 2);
+      String lastLatter = first.substring(first.length - 2, first.length);
 
-    String middle = middleLatter.replaceRange(0, middleLatter.length, "*" * middleLatter.length);
+      String middleLatter = first.substring(2, first.length - 2);
 
-    String email_ = "$firstLatter$middle$lastLatter@$last";
+      String middle = middleLatter.replaceRange(
+          0, middleLatter.length, "*" * middleLatter.length);
 
-    return email_;
+      String email_ = "$firstLatter$middle$lastLatter@$last";
+
+      return email_;
+
+    } else {
+      return "sh**********ab@gmail.com";
+    }
 
   }
 }

@@ -43,5 +43,17 @@ class AppImages {
   static const String greenRectangle = 'assets/images/green_rectangle.png';
   static const String edit = 'assets/images/edit.png';
   static const String trash = 'assets/images/trash.png';
+  static const String backArrow = 'assets/images/back_arrow.png';
+  static const String andrewJohnson = 'assets/images/andrew_johnson.png';
+  static const String ellipse = 'assets/images/ellipse.svg';
+  static const String alisaSimmons = 'assets/images/alisa_simmons.png';
+  static const String darkEllipse = 'assets/images/dark_ellipse.svg';
+  static const String group1 = 'assets/images/group1.png';
+  static const String group2 = 'assets/images/group2.png';
+  static const String group3 = 'assets/images/group3.png';
+  static const String group4 = 'assets/images/group4.png';
+  static const String group5 = 'assets/images/group5.png';
+  static const String groupEllipse = 'assets/images/group_ellipse.png';
+  static const String menu_ = 'assets/images/menu_.png';
 
 }

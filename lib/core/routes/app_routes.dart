@@ -6,6 +6,8 @@ import 'package:scimetic/feature/home/binding/home_binding.dart';
 import 'package:scimetic/feature/home/view/home_screen.dart';
 import 'package:scimetic/feature/login/binding/login_binding.dart';
 import 'package:scimetic/feature/login/view/login_screen.dart';
+import 'package:scimetic/feature/notification/binding/notification_binding.dart';
+import 'package:scimetic/feature/notification/view/notification_screen.dart';
 import 'package:scimetic/feature/register_new_account/binding/register_new_account_binding.dart';
 import 'package:scimetic/feature/register_new_account/view/register_new_account_screen.dart';
 import 'package:scimetic/feature/reset_password/binding/reset_password_binding.dart';
@@ -52,6 +54,11 @@ class AppRoutes {
         name: AppPages.HOME,
         page: ()=> HomeScreen(),
       binding: HomeBinding()
+    ),
+    GetPage(
+        name: AppPages.NOTIFICATION,
+        page: ()=> NotificationScreen(),
+      binding: NotificationBinding()
     )
   ];
 

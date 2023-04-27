@@ -64,6 +64,16 @@ class AppStrings {
   static const String notifications = "Notifications";
   static const String edit = "Edit";
   static const String delete = "Delete";
+  static const String notification = "Notification";
+  static const String andrewJohnson = "Andrew Johnson";
+  static const String sentYouA = "Sent you a ";
+  static const String message = "message";
+  static const String messages = " messages";
+  static const String new_ = "New";
+  static const String h = "h";
+  static const String hours = "24h";
+  static const String workGroupChat = "Work group chat";
+  static const String alisaSimmons = "Alisa Simmons";
   static const String resendNewCodeDesc = "It may take a minute to receive "
       "a code. ";
   static const String aYourAccountDesc = "Please confirm your account by"

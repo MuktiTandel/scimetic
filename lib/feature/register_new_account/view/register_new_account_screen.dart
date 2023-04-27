@@ -141,6 +141,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
       ),
       buttonText: AppStrings.register,
       buttonTap: (){
+        Get.offAllNamed(AppPages.HOME);
       },
       isSubtitle: true,
       isEmail: false,

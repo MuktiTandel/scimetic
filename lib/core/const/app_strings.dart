@@ -74,6 +74,10 @@ class AppStrings {
   static const String hours = "24h";
   static const String workGroupChat = "Work group chat";
   static const String alisaSimmons = "Alisa Simmons";
+  static const String lightning = "Lightning";
+  static const String molM2day = "mol/m2day";
+  static const String electricalLoad = "Electrical load";
+  static const String ppm = "ppm";
   static const String resendNewCodeDesc = "It may take a minute to receive "
       "a code. ";
   static const String aYourAccountDesc = "Please confirm your account by"

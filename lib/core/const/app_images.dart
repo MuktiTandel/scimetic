@@ -55,5 +55,7 @@ class AppImages {
   static const String group5 = 'assets/images/group5.png';
   static const String groupEllipse = 'assets/images/group_ellipse.png';
   static const String menu_ = 'assets/images/menu_.png';
+  static const String fillSettings = 'assets/images/fill_settings.png';
+  static const String horizontalMenu = 'assets/images/horizontal_menu.png';
 
 }

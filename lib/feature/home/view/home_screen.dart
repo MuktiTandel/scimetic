@@ -108,6 +108,9 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = false;
                                   }
+                                  dashboardController.isOverView.value = false;
+                                  controller.changeModuleIndex(0);
+                                  Get.back();
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,
@@ -269,6 +272,7 @@ class HomeScreen extends StatelessWidget {
                                   GestureDetector(
                                     onTap: (){
                                       ThemeService().switchTheme();
+                                      Get.back();
                                     },
                                     child: SizedBox(
                                       height: 28.h,

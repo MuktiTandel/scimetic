@@ -57,5 +57,6 @@ class AppImages {
   static const String menu_ = 'assets/images/menu_.png';
   static const String fillSettings = 'assets/images/fill_settings.png';
   static const String horizontalMenu = 'assets/images/horizontal_menu.png';
+  static const String rightArrow = 'assets/images/right_arrow.png';
 
 }

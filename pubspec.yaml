@@ -52,6 +52,9 @@ dependencies:
   # for chat view
   syncfusion_flutter_charts: ^21.1.41
 
+  # for progress indicator
+  syncfusion_flutter_gauges: ^21.1.41
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -10,13 +10,15 @@ class HourGraph extends StatelessWidget {
     required this.minY,
     required this.maxY,
     required this.graphColor,
-    required this.dataList
+    required this.dataList,
+    required this.format
   }) : super(key: key);
 
   final double minY;
   final double maxY;
   final Color graphColor;
-  final List<ChartData> dataList;
+  final List<HourData> dataList;
+  final String format;
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,16 @@ class HourGraph extends StatelessWidget {
             majorTickLines: const MajorTickLines(
                 width: 0
             ),
-            majorGridLines: const MajorGridLines(
-                width: 1,
-                dashArray: [10,10]
+            majorGridLines:  MajorGridLines(
+                width: 1.w,
+                dashArray: const [7,7],
+              color: Get.isDarkMode ? Colors.white38 : AppColors.subTitleColor.withOpacity(0.3)
             ),
             axisLine: const AxisLine(
                 color: Colors.transparent,
                 width: 0
             ),
+            labelFormat: '{value}$format',
             labelPosition: ChartDataLabelPosition.inside,
             labelAlignment: LabelAlignment.end,
              plotOffset: 20,
@@ -46,17 +50,11 @@ class HourGraph extends StatelessWidget {
             maximum: maxY,
             maximumLabels: 1,
           labelStyle: TextStyle(
-              color: AppColors.subTitleColor,
+              color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
               fontSize: 10.h,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500,
+            fontFamily: "Poppins",
           ),
-          // axisLabelFormatter: ( AxisLabelRenderDetails axisLabelRenderDetails){
-          //     return ChartAxisLabel("21°C", TextStyle(
-          //         color: AppColors.subTitleColor,
-          //         fontSize: 10.h,
-          //       fontWeight: FontWeight.w500
-          //     ),);
-          // }
         ),
         primaryXAxis: NumericAxis(
           majorGridLines: const MajorGridLines(
@@ -70,28 +68,30 @@ class HourGraph extends StatelessWidget {
           maximum: 25,
           interval: 2,
           labelStyle: TextStyle(
-              color: AppColors.subTitleColor,
+              color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
               fontSize: 10.h,
-            fontWeight: FontWeight.w500
+            fontWeight: FontWeight.w500,
+            fontFamily: "Poppins"
           ),
           title: AxisTitle(
             text: "07.03.2021",
             textStyle:  TextStyle(
-                color: AppColors.subTitleColor,
-                fontSize: 10.h
+                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                fontSize: 10.h,
+              fontFamily: "Poppins"
             ),
         )
         ),
         series: <ChartSeries>[
-          SplineAreaSeries<ChartData, double>(
+          SplineAreaSeries<HourData, double>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [graphColor, graphColor.withOpacity(0)]
               ),
               dataSource: dataList,
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data,_) => data.y
+              xValueMapper: (HourData data, _) => data.x,
+              yValueMapper: (HourData data,_) => data.y
           )
         ],
       ),
@@ -99,8 +99,8 @@ class HourGraph extends StatelessWidget {
   }
 }
 
-class ChartData {
-  ChartData(this.x, this.y);
+class HourData {
+  HourData(this.x, this.y);
   final double x;
   final double y;
 }

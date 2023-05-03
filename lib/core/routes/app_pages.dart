@@ -8,5 +8,6 @@ class AppPages {
   static const NEWPASSWORD = '/newPassword';
   static const HOME = '/home';
   static const NOTIFICATION = '/notification';
+  static const GRAPH = '/Graph';
 
 }

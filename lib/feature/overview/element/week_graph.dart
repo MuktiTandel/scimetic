@@ -28,7 +28,7 @@ class WeekGraph extends StatelessWidget {
       height: 150.h,
       width: Get.width,
       child: SfCartesianChart(
-         margin: const EdgeInsets.all(0),
+         margin: EdgeInsets.only(right: 10.w),
         plotAreaBorderColor: Colors.transparent,
         primaryYAxis: NumericAxis(
           majorTickLines: const MajorTickLines(
@@ -58,8 +58,8 @@ class WeekGraph extends StatelessWidget {
           ),
         ),
         primaryXAxis: CategoryAxis(
-           visibleMaximum: 5.18.w,
-           visibleMinimum: 0,
+           // visibleMaximum: 5.18.w,
+           // visibleMinimum: 0,
           labelPlacement: LabelPlacement.onTicks,
             majorGridLines: const MajorGridLines(
               width: 0,
@@ -85,7 +85,6 @@ class WeekGraph extends StatelessWidget {
         ),
         series: <ChartSeries>[
           SplineAreaSeries<WeekData, String>(
-            splineType: SplineType.cardinal,
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -96,7 +95,6 @@ class WeekGraph extends StatelessWidget {
               yValueMapper: (WeekData data,_) => data.y1
           ),
           SplineAreaSeries<WeekData, String>(
-              splineType: SplineType.cardinal,
                gradient: LinearGradient(
                    begin: Alignment.topCenter,
                    end: Alignment.bottomCenter,

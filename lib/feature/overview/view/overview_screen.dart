@@ -5,12 +5,15 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
-import 'package:scimetic/core/elements/month_graph.dart';
+import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
+import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
+import 'package:scimetic/feature/overview/element/month_graph.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
-import 'package:scimetic/core/elements/hour_graph.dart';
-import 'package:scimetic/core/elements/week_graph.dart';
+import 'package:scimetic/feature/overview/element/hour_graph.dart';
+import 'package:scimetic/feature/overview/element/select_widge.dart';
+import 'package:scimetic/feature/overview/element/week_graph.dart';
+import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class OverviewScreen extends StatelessWidget {
    OverviewScreen({Key? key}) : super(key: key);
@@ -74,7 +77,10 @@ class OverviewScreen extends StatelessWidget {
                       dataList: controller.temperatureMonthDataList,
                       format: "°C"
                   ),
-                color: AppColors.orange
+                color: AppColors.orange,
+                onTap: (){
+                    controller.isTemperature.value = true;
+                }
               )),
               SizedBox(height: 10.h,),
               Obx(() => commonWidget(
@@ -127,7 +133,10 @@ class OverviewScreen extends StatelessWidget {
                       controller.isElectricMonth.value = true;
                     }
                   },
-                  color: AppColors.lightBlue
+                  color: AppColors.lightBlue,
+                onTap: (){
+                    controller.isElectricalLoad.value = true;
+                }
               )
               ),
               SizedBox(height: 10.h,),
@@ -168,7 +177,7 @@ class OverviewScreen extends StatelessWidget {
                     }
                   },
                   weekSelect: (){
-                    if ( controller.isElectricWeek.value == false ) {
+                    if ( controller.isCo2Week.value == false ) {
                       controller.isCo2Hour.value = false;
                       controller.isCo2Week.value = true;
                       controller.isCo2Month.value = false;
@@ -181,7 +190,11 @@ class OverviewScreen extends StatelessWidget {
                       controller.isCo2Month.value = true;
                     }
                   },
-                  color: AppColors.lightGreen1)
+                  color: AppColors.lightGreen1,
+                onTap: (){
+                    controller.isCo2.value = true;
+                }
+              )
               ),
               SizedBox(height: 10.h,),
               Obx(() => commonWidget(
@@ -234,7 +247,10 @@ class OverviewScreen extends StatelessWidget {
                       controller.isLightMonth.value = true;
                     }
                   },
-                color: AppColors.pink
+                color: AppColors.pink,
+                onTap: (){
+                    controller.isLightning.value = true;
+                }
                   ),
               ),
               SizedBox(height: 10.h,),
@@ -282,13 +298,16 @@ class OverviewScreen extends StatelessWidget {
                     }
                   },
                   monthSelect: (){
-                    if ( controller.isLightMonth.value == false ) {
+                    if ( controller.isVdpMonth.value == false ) {
                       controller.isVdpHour.value = false;
                       controller.isVdpWeek.value = false;
                       controller.isVdpMonth.value = true;
                     }
                   },
-                  color: AppColors.lightBlue2
+                  color: AppColors.lightBlue2,
+                onTap: (){
+                    controller.isVdp.value = true;
+                }
               )
               ),
               SizedBox(height: 10.h,),
@@ -311,8 +330,8 @@ class OverviewScreen extends StatelessWidget {
                           Expanded(child: SizedBox(width: 10.w,)),
                           Image.asset(
                             AppImages.horizontalMenu,
-                            height: 15.h,
-                            width: 15.w,
+                            height: 20.h,
+                            width: 20.w,
                             color: Get.isDarkMode
                                 ? AppColors.darkText : AppColors.lightText,
                           )
@@ -416,8 +435,8 @@ class OverviewScreen extends StatelessWidget {
                           Expanded(child: SizedBox(width: 10.w,)),
                           Image.asset(
                             AppImages.horizontalMenu,
-                            height: 15.h,
-                            width: 15.w,
+                            height: 20.h,
+                            width: 20.w,
                             color: Get.isDarkMode
                                 ? AppColors.darkText : AppColors.lightText,
                           )
@@ -552,303 +571,10 @@ class OverviewScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10.h,),
-              Container(
-                width: Get.width,
-                color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.all(15.w),
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text: AppStrings.growsheet,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Get.isDarkMode ? Colors.white : Colors.black,
-                          ),
-                          Expanded(child: SizedBox(width: 10.w,)),
-                          Image.asset(
-                            AppImages.horizontalMenu,
-                            height: 15.h,
-                            width: 15.w,
-                            color: Get.isDarkMode
-                                ? AppColors.darkText : AppColors.lightText,
-                          )
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      thickness: 1.2.w,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText.withOpacity(0.5) : AppColors.lightAppbar,
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.all(15.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: AppStrings.theTypeOfPlant,
-                            fontSize: 20.sp,
-                            color: AppColors.buttonColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          SizedBox(height: 5.h,),
-                          CustomText(
-                            text: AppStrings.theGenealogy,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Get.isDarkMode ? Colors.white : Colors.black,
-                          ),
-                          SizedBox(height: 10.h,),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Get.isDarkMode
-                                    ? AppColors.darkBlue : AppColors.lightAppbar,
-                                borderRadius: BorderRadius.circular(5)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(8.w),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        text: AppStrings.stage,
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkIcon
-                                            : AppColors.lightGray1,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      Expanded(child: SizedBox(width: 10.w,)),
-                                      PopupMenuButton<int>(
-                                        offset: Offset(0, 23.h),
-                                        padding: EdgeInsets.zero,
-                                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                                        constraints: BoxConstraints(
-                                            maxWidth: 115.w,
-                                            maxHeight: 75.h
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            CustomText(
-                                              text: AppStrings.flowering,
-                                              fontSize: 15.sp,
-                                              color: AppColors.red,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            SizedBox(width: 1.w,),
-                                            Image.asset(
-                                              AppImages.downArrow,
-                                              color: AppColors.red,
-                                              height: 25.h,
-                                              width: 25.w,
-                                            ),
-                                          ],
-                                        ),
-                                        onSelected: (item) {},
-                                        itemBuilder: (context) => [
-                                          PopupMenuItem<int>(
-                                              padding: EdgeInsets.zero,
-                                              value: 0,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:  EdgeInsets.only(left: 10.w,right: 20.w),
-                                                    child: CustomText(
-                                                      text: AppStrings.flowering,
-                                                      fontSize: 15.sp,
-                                                      color: AppColors.buttonColor,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  Divider(
-                                                    color: Get.isDarkMode
-                                                        ? AppColors.darkBlue1
-                                                        : AppColors.lightGray2,
-                                                    thickness: 1.w,
-                                                  )
-                                                ],
-                                              )
-                                          ),
-                                          PopupMenuItem<int>(
-                                              value: 1,
-                                              padding: EdgeInsets.zero,
-                                              height: 20.h,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                                                child: Row(
-                                                  children: [
-                                                    CustomText(
-                                                      text: AppStrings.seedling,
-                                                      fontSize: 15.sp,
-                                                      color: Get.isDarkMode
-                                                          ? AppColors.darkText : AppColors.lightGray1,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                    Expanded(child: SizedBox(width: 20.w,)),
-                                                    Image.asset(
-                                                        AppImages.rightArrow,
-                                                      height: 10.h,
-                                                      width: 10.w,
-                                                      color: Get.isDarkMode
-                                                          ? AppColors.darkText : AppColors.lightGray1,
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h,),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        text: AppStrings.planted,
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkIcon
-                                            : AppColors.lightGray1,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      Expanded(child: SizedBox(width: 10.w,)),
-                                      CustomText(
-                                        text: "01.03.2020",
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? Colors.white : Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h,),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        text: AppStrings.estimatedHarvestTime,
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkIcon
-                                            : AppColors.lightGray1,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      Expanded(child: SizedBox(width: 10.w,)),
-                                      CustomText(
-                                        text: "30.03.2021",
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? Colors.white : Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h,),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        text: AppStrings.barcode,
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkIcon
-                                            : AppColors.lightGray1,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      Expanded(child: SizedBox(width: 10.w,)),
-                                      CustomText(
-                                        text: "1234567891012",
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? Colors.white : Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SfRadialGauge(
-                            axes: [
-                              RadialAxis(
-                                minimum: 0,
-                                maximum: 100,
-                                showLabels: false,
-                                showTicks: false,
-                                startAngle: 0,
-                                endAngle: 360,
-                                radiusFactor: 0.7,
-                                canScaleToFit: true,
-                                axisLineStyle:  AxisLineStyle(
-                                  thickness: 0.25,
-                                  color: Get.isDarkMode ? AppColors.darkBlue : AppColors.lightAppbar,
-                                  thicknessUnit: GaugeSizeUnit.factor,
-                                  cornerStyle: CornerStyle.startCurve,
-                                ),
-                                pointers: const <GaugePointer>[
-                                  RangePointer(
-                                      value: 85,
-                                      width: 0.25,
-                                      sizeUnit: GaugeSizeUnit.factor,
-                                      color: AppColors.pink,
-                                      cornerStyle: CornerStyle.bothCurve,
-                                  ),
-                                  RangePointer(
-                                      value: 65,
-                                      width: 0.25,
-                                      sizeUnit: GaugeSizeUnit.factor,
-                                      color: AppColors.lightGreen3,
-                                      cornerStyle: CornerStyle.bothCurve),
-                                  RangePointer(
-                                      value: 45,
-                                      width: 0.25,
-                                      color: AppColors.purple,
-                                      sizeUnit: GaugeSizeUnit.factor,
-                                      cornerStyle: CornerStyle.bothCurve),
-                                ],
-                                annotations: [
-                                  GaugeAnnotation(
-                                      widget: Center(
-                                        child: Padding(
-                                          padding:  EdgeInsets.only(left: 30.w),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              CustomText(
-                                                  text: "75%",
-                                                fontSize: 35.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: Get.isDarkMode
-                                                    ? Colors.white : Colors.black,
-                                              ),
-                                              CustomText(
-                                                  text: AppStrings.progress,
-                                                color: Get.isDarkMode
-                                                    ? AppColors.darkText : AppColors.lightGray1,
-                                                fontSize: 20.sp,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
+              growSheetWidget(),
+              SizedBox(height: 10.h,),
+              deviceOverviewWidget(),
+              SizedBox(height: 20.h,)
             ],
           ),
         )
@@ -867,138 +593,110 @@ class OverviewScreen extends StatelessWidget {
     required VoidCallback hourSelect,
     required VoidCallback weekSelect,
     required VoidCallback monthSelect,
-    required Color color
+    required Color color,
+    required VoidCallback onTap
   }) {
-    return Container(
-      color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(15.w),
-            child: Row(
-              children: [
-                CustomText(
-                  text: title,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
-                Expanded(child: SizedBox(width: 10.w,)),
-                Image.asset(
-                  image,
-                  height: 15.h,
-                  width: 15.w,
-                  color: Get.isDarkMode
-                      ? AppColors.darkText : AppColors.lightText,
-                )
-              ],
+    return GestureDetector(
+      onTap: (){
+        onTap();
+        Get.toNamed(AppPages.GRAPH);
+      },
+      child: Container(
+        color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(15.w),
+              child: Row(
+                children: [
+                  CustomText(
+                    text: title,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  Expanded(child: SizedBox(width: 10.w,)),
+                  Image.asset(
+                    image,
+                    height: 20.h,
+                    width: 20.w,
+                    color: Get.isDarkMode
+                        ? AppColors.darkText : AppColors.lightText,
+                  )
+                ],
+              ),
             ),
-          ),
-          Divider(
-            thickness: 1.2.w,
-            color: Get.isDarkMode ? AppColors.darkText.withOpacity(0.5) : AppColors.lightAppbar,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: Column(
-              children: [
-                SizedBox(
-                  height : 40.h,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+            Divider(
+              thickness: 1.2.w,
+              color: Get.isDarkMode ? AppColors.darkText.withOpacity(0.5) : AppColors.lightAppbar,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height : 40.h,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CustomText(
+                          text: value,
+                          fontSize: 35.sp,
+                          fontWeight: FontWeight.w600,
+                          color: color,
+                        ),
+                        SizedBox(width: 4.w,),
+                        CustomText(
+                          text: value1,
+                          fontSize: 15.sp,
+                          color: color,
+                          fontWeight: FontWeight.w400,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10.h,),
+                  Row(
                     children: [
-                      CustomText(
-                        text: value,
-                        fontSize: 35.sp,
-                        fontWeight: FontWeight.w600,
-                        color: color,
+                      selectWidget(
+                          title: AppStrings.hours,
+                          width: 34.w,
+                          isSelected: isHour,
+                          onTap: (){
+                            hourSelect();
+                          }
                       ),
-                      SizedBox(width: 4.w,),
-                      CustomText(
-                        text: value1,
-                        fontSize: 15.sp,
-                        color: color,
-                        fontWeight: FontWeight.w400,
+                      SizedBox(width: 10.w,),
+                      selectWidget(
+                          title: AppStrings.week,
+                          width: 46.w,
+                          isSelected: isWeek,
+                          onTap: (){
+                           weekSelect();
+                          }
+                      ),
+                      SizedBox(width: 10.w,),
+                      selectWidget(
+                          title: AppStrings.month,
+                          width: 50.w,
+                          isSelected: isMonth,
+                          onTap: (){
+                            monthSelect();
+                          }
                       )
                     ],
-                  ),
-                ),
-                SizedBox(height: 10.h,),
-                Row(
-                  children: [
-                    selectWidget(
-                        title: AppStrings.hours,
-                        width: 34.w,
-                        isSelected: isHour,
-                        onTap: (){
-                          hourSelect();
-                        }
-                    ),
-                    SizedBox(width: 10.w,),
-                    selectWidget(
-                        title: AppStrings.week,
-                        width: 46.w,
-                        isSelected: isWeek,
-                        onTap: (){
-                         weekSelect();
-                        }
-                    ),
-                    SizedBox(width: 10.w,),
-                    selectWidget(
-                        title: AppStrings.month,
-                        width: 50.w,
-                        isSelected: isMonth,
-                        onTap: (){
-                          monthSelect();
-                        }
-                    )
-                  ],
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 10.h,),
-          graph,
-          SizedBox(height: 2.h,),
-        ],
+            SizedBox(height: 10.h,),
+            graph,
+            SizedBox(height: 2.h,),
+          ],
+        ),
       ),
     );
   }
 
-  Widget selectWidget( {
-    required String title,
-    required double width,
-    required bool isSelected,
-    required VoidCallback onTap
-  }) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: (){
-        onTap();
-      },
-      child: Column(
-        children: [
-          CustomText(
-            text: title,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: isSelected == false
-                ? Get.isDarkMode ? AppColors.darkText : AppColors.lightGray1
-                : Get.isDarkMode ? Colors.white : Colors.black,
-          ),
-          Container(
-            height: 1.5.h,
-            width: width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              color: isSelected == false
-                  ? Get.isDarkMode ? AppColors.darkText : AppColors.lightGray1
-                  : Get.isDarkMode ? Colors.white : Colors.black,
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }
 

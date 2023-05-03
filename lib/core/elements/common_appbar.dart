@@ -12,13 +12,15 @@ class CommonAppbar extends StatelessWidget {
     required this.drawerTap,
     required this.title,
     required this.notificationTap,
-    required this.profileTap
+    required this.profileTap,
+    required this.leadingIcon
   }) : super(key: key);
 
   final VoidCallback drawerTap;
   final String title;
   final VoidCallback notificationTap;
   final VoidCallback profileTap;
+  final String leadingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CommonAppbar extends StatelessWidget {
             drawerTap();
           },
           child: Image.asset(
-            AppImages.drawer,
+            leadingIcon,
             height: 10.h,
             width: 10.w,
             color: Get.isDarkMode ? Colors.white : Colors.black,

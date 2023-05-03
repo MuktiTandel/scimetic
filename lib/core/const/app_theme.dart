@@ -9,6 +9,7 @@ class CustomAppTheme {
     scaffoldBackgroundColor: AppColors.lightAppbar,
     brightness: Brightness.light,
     textTheme: TextStyleDecoration.getLightTheme,
+    cardColor: Colors.white,
     buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),
@@ -22,6 +23,7 @@ class CustomAppTheme {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkAppbar,
     textTheme: TextStyleDecoration.getDarkTheme,
+    cardColor: AppColors.darkTheme,
     buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),

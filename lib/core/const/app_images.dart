@@ -58,5 +58,8 @@ class AppImages {
   static const String fillSettings = 'assets/images/fill_settings.png';
   static const String horizontalMenu = 'assets/images/horizontal_menu.png';
   static const String rightArrow = 'assets/images/right_arrow.png';
+  static const String warning = 'assets/images/warning.png';
+  static const String greenEllipse = 'assets/images/green_ellipse.png';
+  static const String redEllipse = 'assets/images/red_ellipse.png';
 
 }

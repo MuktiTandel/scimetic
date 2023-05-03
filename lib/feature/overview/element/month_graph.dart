@@ -26,7 +26,7 @@ class MonthGraph extends StatelessWidget {
       height: 150.h,
       width: Get.width,
       child: SfCartesianChart(
-        margin:const EdgeInsets.all(0),
+        margin: EdgeInsets.only(right: 8.w),
         plotAreaBorderColor: Colors.transparent,
         primaryYAxis: NumericAxis(
           majorTickLines: const MajorTickLines(
@@ -57,8 +57,8 @@ class MonthGraph extends StatelessWidget {
           ),
         ),
         primaryXAxis: NumericAxis(
-          visibleMinimum: 1,
-           visibleMaximum: 26.6.w,
+          // visibleMinimum: 1,
+          //  visibleMaximum: 26.6.w,
           minimum: 1,
             maximum: 31,
             interval: 2,

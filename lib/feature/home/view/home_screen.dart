@@ -38,7 +38,8 @@ class HomeScreen extends StatelessWidget {
             notificationTap: (){
               Get.toNamed(AppPages.NOTIFICATION);
             },
-            profileTap: (){}
+            profileTap: (){},
+          leadingIcon: AppImages.drawer,
         )),
       ),
       body: Obx(() => dashboardController.isOverView.value == false ? IndexedStack(

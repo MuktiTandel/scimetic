@@ -1,10 +1,16 @@
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
-import 'package:scimetic/core/elements/hour_graph.dart';
-import 'package:scimetic/core/elements/month_graph.dart';
-import 'package:scimetic/core/elements/week_graph.dart';
+import 'package:scimetic/feature/overview/element/hour_graph.dart';
+import 'package:scimetic/feature/overview/element/month_graph.dart';
+import 'package:scimetic/feature/overview/element/week_graph.dart';
 
 class OverviewController extends GetxController {
+
+  RxBool isTemperature = false.obs;
+  RxBool isElectricalLoad = false.obs;
+  RxBool isCo2 = false.obs;
+  RxBool isLightning = false.obs;
+  RxBool isVdp = false.obs;
 
   RxBool isTemHour = true.obs;
   RxBool isTemWeek = false.obs;

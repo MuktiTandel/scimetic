@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
@@ -11,7 +10,6 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
-import 'package:scimetic/feature/home/controller/home_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
    DashboardScreen({Key? key}) : super(key: key);
@@ -36,7 +34,8 @@ class DashboardScreen extends StatelessWidget {
                   return listWidget(
                     onTap: (){
                       controller.isOverView.value = true;
-                    }
+                    },
+                    context: context
                   );
                 }),
             SizedBox(height: 10.h,),
@@ -72,7 +71,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget listWidget({ required VoidCallback onTap}) {
+  Widget listWidget({ required VoidCallback onTap, required BuildContext context}) {
     return GestureDetector(
       onTap: (){
         onTap();
@@ -82,7 +81,7 @@ class DashboardScreen extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(15.w),
-            color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+            color: context.theme.cardColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -125,12 +124,15 @@ class DashboardScreen extends StatelessWidget {
                                         AppImages.edit,
                                         height: 25.h,
                                         width: 25.w,
+                                        color: Get.isDarkMode
+                                            ? AppColors.darkText : AppColors.lightGray1,
                                       ),
                                       SizedBox(width: 10.w,),
                                       CustomText(
                                         text: AppStrings.edit,
                                         fontSize: 15.sp,
-                                        color: AppColors.lightGray1,
+                                        color: Get.isDarkMode
+                                            ? AppColors.darkText : AppColors.lightGray1,
                                         fontWeight: FontWeight.w500,
                                       )
                                     ],

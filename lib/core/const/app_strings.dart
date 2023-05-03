@@ -102,6 +102,14 @@ class AppStrings {
   static const String estimatedHarvestTime = "Estimated harvest time";
   static const String barcode = "Barcode";
   static const String progress = "progress";
+  static const String deviceOverview = "Device overview";
+  static const String switches = "Switches";
+  static const String check = "Check";
+  static const String online = " Online";
+  static const String offline = " Offline";
+  static const String sensor = "Sensor";
+  static const String valves = "Valves";
+  static const String addNewDevice = "Add New Device";
   static const String resendNewCodeDesc = "It may take a minute to receive "
       "a code. ";
   static const String aYourAccountDesc = "Please confirm your account by"

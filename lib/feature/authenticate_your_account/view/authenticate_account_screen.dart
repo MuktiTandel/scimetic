@@ -19,23 +19,25 @@ class AuthenticateAccountScreen extends StatelessWidget {
     return CommonViewScreen(
         title: AppStrings.aYourAccount,
         subTitle: AppStrings.aYourAccountDesc,
-        middleWidget: OtpTextField(
-          focusedBorderColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
-          enabledBorderColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
-          filled: true,
-          fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
-          fieldWidth: 48.w,
-          borderRadius: BorderRadius.circular(10),
-          borderWidth: 1.w,
-          cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
-          textStyle: TextStyle(
-            color: Get.isDarkMode ? Colors.white : Colors.black,
-            fontFamily: "Poppins",
-            fontSize: 15.sp
-          ),
-          onSubmit: (val) {
+        middleWidget: Center(
+          child: OtpTextField(
+            focusedBorderColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+            enabledBorderColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+            filled: true,
+            fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
+            fieldWidth: 47.9.w,
+            borderRadius: BorderRadius.circular(10),
+            borderWidth: 1.w,
+            cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+            textStyle: TextStyle(
+              color: Get.isDarkMode ? Colors.white : Colors.black,
+              fontFamily: "Poppins",
+              fontSize: 15.sp
+            ),
+            onSubmit: (val) {
 
-          },
+            },
+          ),
         ),
         bottomWidget: SizedBox(
           child: Column(

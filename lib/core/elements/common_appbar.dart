@@ -13,7 +13,7 @@ class CommonAppbar extends StatelessWidget {
     required this.title,
     required this.notificationTap,
     required this.profileTap,
-    required this.leadingIcon
+    required this.leadingIcon,
   }) : super(key: key);
 
   final VoidCallback drawerTap;
@@ -28,15 +28,15 @@ class CommonAppbar extends StatelessWidget {
       systemOverlayStyle: Get.isDarkMode
           ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       leading: Padding(
-        padding:  EdgeInsets.all(15.w),
+        padding:  EdgeInsets.all(14.w),
         child: GestureDetector(
           onTap: (){
             drawerTap();
           },
           child: Image.asset(
             leadingIcon,
-            height: 10.h,
-            width: 10.w,
+            height: 15.h,
+            width: 15.w,
             color: Get.isDarkMode ? Colors.white : Colors.black,
           ),
         ),

@@ -61,5 +61,15 @@ class AppImages {
   static const String warning = 'assets/images/warning.png';
   static const String greenEllipse = 'assets/images/green_ellipse.png';
   static const String redEllipse = 'assets/images/red_ellipse.png';
+  static const String close = 'assets/images/close.png';
+  static const String done = 'assets/images/done.png';
+  static const String location = 'assets/images/location.png';
+  static const String map = 'assets/images/map.png';
+  static const String search = 'assets/images/search.png';
+  static const String export = 'assets/images/export.png';
+  static const String down = 'assets/images/down.png';
+  static const String lightSelectToggle = 'assets/images/light_select_toggle.png';
+  static const String fillSun = 'assets/images/fill_sun.png';
+  static const String fillMoon = 'assets/images/fill_moon.png';
 
 }

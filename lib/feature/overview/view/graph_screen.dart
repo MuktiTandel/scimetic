@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_appbar.dart';
@@ -11,7 +10,6 @@ import 'package:scimetic/feature/overview/controller/graph_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
 import 'package:scimetic/feature/overview/element/grpah_widget.dart';
-import 'package:scimetic/feature/overview/element/month_graph2.dart';
 
 class GraphScreen extends StatelessWidget {
    GraphScreen({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class GraphScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
       appBar: PreferredSize(
-        preferredSize: Size(Get.width, 40.h),
+        preferredSize: Size(Get.width, 45.h),
         child: CommonAppbar(
           drawerTap: (){
             Get.back();

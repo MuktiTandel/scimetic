@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       key: controller.scaffoldKey,
       backgroundColor: context.theme.scaffoldBackgroundColor,
       appBar: PreferredSize(
-        preferredSize: Size(Get.width, 40.h),
+        preferredSize: Size(Get.width, 45.h),
         child: Obx(() => CommonAppbar(
             drawerTap: (){
               controller.openDrawer();
@@ -129,6 +129,8 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = false;
                                   }
+                                  controller.changeModuleIndex(1);
+                                  Get.back();
                                 },
                                 image: AppImages.growSheets,
                                 title: AppStrings.growSheets,

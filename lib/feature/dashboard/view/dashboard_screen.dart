@@ -6,8 +6,10 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
+import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 
@@ -44,7 +46,167 @@ class DashboardScreen extends StatelessWidget {
               child: CustomButton(
                 height: 30.h,
                 width: 85.w,
-                onTap: (){},
+                onTap: (){
+                  Get.dialog(
+                      CommonDialogWidget(
+                        title: AppStrings.newGrowspace,
+                          widget: Padding(
+                            padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 6.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            CustomText(
+                              text: AppStrings.growsheetName,
+                              fontWeight: FontWeight.w500,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText : AppColors.lightText,
+                            ),
+                            SizedBox(height: 6.h,),
+                            SizedBox(
+                              height: 38.h,
+                              child: CustomTextField(
+                                controller: controller.growspaceNameController,
+                                isFilled: false,
+                                hintText: AppStrings.placeholder,
+                                borderRadius: 8,
+                                focusBorderColor: AppColors.buttonColor,
+                                contentPadding: EdgeInsets.only(left: 10.w),
+                                onchange: (value){},
+                              ),
+                            ),
+                            SizedBox(height: 15.h,),
+                            CustomText(
+                              text: AppStrings.location,
+                              fontWeight: FontWeight.w500,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText : AppColors.lightText,
+                            ),
+                            SizedBox(height: 6.h,),
+                            SizedBox(
+                              height: 38.h,
+                              child: CustomTextField(
+                                controller: controller.locationController,
+                                isFilled: false,
+                                hintText: "00.000000 , 00.000000",
+                                borderRadius: 8,
+                                contentPadding: EdgeInsets.only(left: 10.w),
+                                prefixWidget: Padding(
+                                  padding: EdgeInsets.only( top: 10.h, bottom: 10.h),
+                                  child: Image.asset(
+                                    AppImages.location,
+                                    height: 10.h,
+                                    width: 10.w,
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkText : AppColors.lightText,
+                                  ),
+                                ),
+                                suffixWidget: Padding(
+                                  padding: EdgeInsets.all(5.w),
+                                  child: Image.asset(
+                                    AppImages.map,
+                                    height: 15.h,
+                                    width: 15.w,
+                                  ),
+                                ),
+                                focusBorderColor: AppColors.buttonColor,
+                                onchange: (value){},
+                              ),
+                            ),
+                            SizedBox(height: 15.h,),
+                            CustomText(
+                              text: AppStrings.serialNumber,
+                              fontWeight: FontWeight.w500,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText : AppColors.lightText,
+                            ),
+                            SizedBox(height: 6.h,),
+                            SizedBox(
+                              height: 38.h,
+                              child: CustomTextField(
+                                controller: controller.serialNumberController,
+                                isFilled: false,
+                                hintText: AppStrings.serialNumber,
+                                borderRadius: 8,
+                                focusBorderColor: AppColors.buttonColor,
+                                contentPadding: EdgeInsets.only(left: 10.w),
+                                suffixWidget: Padding(
+                                  padding: EdgeInsets.all(10.w),
+                                  child: Image.asset(
+                                    AppImages.done,
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkText : AppColors.lightText,
+                                  ),
+                                ),
+                                onchange: (value){},
+                              ),
+                            ),
+                            SizedBox(height: 15.w,),
+                            CustomText(
+                              text: AppStrings.serialNumber,
+                              fontWeight: FontWeight.w500,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText : AppColors.lightText,
+                            ),
+                            SizedBox(height: 6.h,),
+                            Obx(() => SizedBox(
+                                height: 100.h,
+                                child: TextFormField(
+                                  controller: controller.descriptionController,
+                                  maxLength: 80,
+                                  maxLines: 50,
+                                  cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                  style:  TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 15.sp,
+                                      color: Get.isDarkMode ? Colors.white : Colors.black
+                                  ),
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: const BorderSide(
+                                          color: AppColors.buttonColor
+                                      ),
+                                    ),
+                                    hintText: AppStrings.placeholder,
+                                    contentPadding: EdgeInsets.all(10.w),
+                                    hintStyle:  TextStyle(
+                                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                        fontSize: 14.sp,
+                                        fontFamily: "Poppins"
+                                    ),
+                                    counterText: "${controller.descriptionLength.value}/80",
+                                    counterStyle: TextStyle(
+                                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Poppins"
+                                    ),
+                                  ),
+                                  onChanged: (value){
+                                    controller.descriptionLength.value = value.length;
+                                  },
+                                )
+                            )),
+                            SizedBox(height: 20.h,),
+                            CustomButton(
+                              onTap: (){
+                                Get.back();
+                              },
+                              buttonText: AppStrings.save,
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                        ],
+                      ),
+                          ))
+                  );
+                },
                 buttonText: AppStrings.add,
                 child: Center(
                   child: Row(

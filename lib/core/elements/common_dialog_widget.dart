@@ -20,14 +20,20 @@ class CommonDialogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Material(
-          color: Get.isDarkMode
-              ? AppColors.darkAppbar : Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          child: SingleChildScrollView(
+    return AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      buttonPadding: EdgeInsets.zero,
+      insetPadding: EdgeInsets.only(left: 15.w, right: 15.w, top: 15.h, bottom: 20.h),
+      backgroundColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10)
+      ),
+      content: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: SingleChildScrollView(
+          child: SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,

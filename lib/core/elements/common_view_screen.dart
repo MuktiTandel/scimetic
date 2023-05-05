@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +43,7 @@ class CommonViewScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.all(13.w),
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            // physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 60.h,),

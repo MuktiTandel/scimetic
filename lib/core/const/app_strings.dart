@@ -145,6 +145,7 @@ class AppStrings {
   static const String chooseSchedule = "Choose schedule";
   static const String fertigationFormula1 = "Fertigation formula #1";
   static const String chooseFormula = "Choose formula";
+  static const String shortTaskDescription = "Short task description...";
   static const String fertigationFormula2 = "Fertigation formula #2";
   static const String oGKushSeedlingSheet = "OG Kush Seedling sheet";
   static const String resendNewCodeDesc = "It may take a minute to receive "

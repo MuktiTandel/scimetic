@@ -71,5 +71,14 @@ class AppImages {
   static const String lightSelectToggle = 'assets/images/light_select_toggle.png';
   static const String fillSun = 'assets/images/fill_sun.png';
   static const String fillMoon = 'assets/images/fill_moon.png';
+  static const String group6 = 'assets/images/group6.png';
+  static const String group7 = 'assets/images/group7.png';
+  static const String group8 = 'assets/images/group8.png';
+  static const String group9 = 'assets/images/group9.png';
+  static const String group10 = 'assets/images/group10.png';
+  static const String group11 = 'assets/images/group11.png';
+  static const String group12 = 'assets/images/group12.png';
+  static const String group13 = 'assets/images/group13.png';
+  static const String group14 = 'assets/images/group14.png';
 
 }

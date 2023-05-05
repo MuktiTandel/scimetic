@@ -6,6 +6,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
+import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
@@ -53,7 +54,12 @@ class GrowSheetsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 10.h,),
                     CustomDropDown(
-                        hintText: AppStrings.placeholder
+                        hintText: AppStrings.placeholder,
+                      itemList: controller.placeHolderList,
+                      value: controller.placeHolderValue.value,
+                      onChange: (value) {
+                          controller.placeHolderValue.value = value;
+                      },
                     )
                   ],
                 ),
@@ -94,7 +100,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseStrain),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseStrain,
+                                      itemList: controller.strainNameList,
+                                      value: controller.strainValue.value,
+                                      onChange: (value) {
+                                        controller.strainValue.value = value;
+                                      },
+                                    ),
                                     SizedBox(height: 10.h,),
                                     CustomText(
                                       text: AppStrings.seedBank1,
@@ -104,7 +117,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseSeedBank),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseSeedBank,
+                                      itemList: controller.seedBankList,
+                                      value: controller.seedBankValue.value,
+                                      onChange: (value) {
+                                        controller.seedBankValue.value = value;
+                                      },
+                                    ),
                                     SizedBox(height: 10.h,),
                                     CustomText(
                                       text: AppStrings.tag,
@@ -114,7 +134,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseTag),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseTag,
+                                      itemList: controller.tagList,
+                                      value: controller.tagValue.value,
+                                      onChange: (value) {
+                                        controller.tagValue.value = value;
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),
@@ -274,7 +301,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseSchedule),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseSchedule,
+                                      itemList: controller.irrigationList,
+                                      value: controller.irrigationValue.value,
+                                      onChange: (value) {
+                                        controller.irrigationValue.value = value;
+                                      },
+                                    ),
                                     SizedBox(height: 10.h,),
                                     CustomText(
                                       text: AppStrings.fertigationFormula1,
@@ -284,7 +318,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseFormula),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseFormula,
+                                      itemList: controller.fertigationList1,
+                                      value: controller.fertigationValue1.value,
+                                      onChange: (value) {
+                                        controller.fertigationValue1.value = value;
+                                      },
+                                    ),
                                     SizedBox(height: 10.h,),
                                     CustomText(
                                       text: AppStrings.fertigationFormula2,
@@ -294,7 +335,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ? AppColors.darkText : AppColors.lightText,
                                     ),
                                     SizedBox(height: 5.h,),
-                                    CustomDropDown(hintText: AppStrings.chooseFormula),
+                                    CustomDropDown(
+                                        hintText: AppStrings.chooseFormula,
+                                      itemList: controller.fertigationList2,
+                                      value: controller.fertigationValue2.value,
+                                      onChange: (value) {
+                                        controller.fertigationValue2.value = value;
+                                      },
+                                    ),
                                     SizedBox(height: 10.h,),
                                     CustomText(
                                       text: AppStrings.description,
@@ -306,7 +354,7 @@ class GrowSheetsScreen extends StatelessWidget {
                                     SizedBox(height: 5.h,),
                                     Container(
                                       height: 100.h,
-                                       padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                                       padding: EdgeInsets.only(left: 10.w, right: 10.w,bottom: 10.h),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
@@ -314,27 +362,60 @@ class GrowSheetsScreen extends StatelessWidget {
                                               ? AppColors.darkText : AppColors.lightBorder,
                                         )
                                       ),
-                                      child: Column(
-                                        children: [
-                                          TextFormField(
-                                            controller: controller.descriptionController,
-                                            style:  TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 15.sp,
-                                              color: Get.isDarkMode ? Colors.white : Colors.black,
-                                            ),
-                                            decoration: InputDecoration(
-                                              hintText: AppStrings.placeholder,
-                                              border: InputBorder.none,
-                                              hintStyle: TextStyle(
-                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                  fontSize: 14.sp,
-                                                  fontFamily: "Poppins"
-                                              )
-                                            ),
+                                      child: TextFormField(
+                                        controller: controller.descriptionController,
+                                        maxLength: 80,
+                                        maxLines: 10,
+                                        cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                        style:  TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontSize: 15.sp,
+                                          color: Get.isDarkMode ? Colors.white : Colors.black,
+                                        ),
+                                        buildCounter: (BuildContext context, { int? currentLength, int? maxLength, bool? isFocused }){
+                                          return Obx(() => CustomText(
+                                            text: "${controller.descriptionLength}/80",
+                                            fontSize: 13.sp,
+                                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                          ));
+                                        },
+                                        decoration: InputDecoration(
+                                          hintText: AppStrings.placeholder,
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(
+                                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                              fontSize: 14.sp,
+                                              fontFamily: "Poppins"
                                           )
-                                        ],
+                                        ),
+                                        onChanged: (value) {
+                                          controller.descriptionLength.value = value.length;
+                                        },
                                       ),
+                                    ),
+                                    SizedBox(height: 10.h,),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: OutLineButton(
+                                            onTap: (){
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w,),
+                                        Expanded(
+                                          child: CustomButton(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              buttonText: AppStrings.save,
+                                            width: 100.w,
+                                            height: 40.h,
+                                            fontSize: 15.sp,
+                                          ),
+                                        )
+                                      ],
                                     )
                                   ],
                                 ),

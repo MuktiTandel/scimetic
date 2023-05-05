@@ -55,6 +55,9 @@ dependencies:
   # for progress indicator
   syncfusion_flutter_gauges: ^21.1.41
 
+  # for show drop down
+  dropdown_button2: ^1.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

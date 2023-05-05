@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
@@ -33,9 +35,23 @@ class HomeController extends GetxController {
     moduleIndex.value = index;
   }
 
+  appbarTitle() {
+    if (moduleIndex.value == 0 ) {
+      return AppStrings.tOverview;
+    } else if ( moduleIndex.value == 1 ) {
+      return AppStrings.growSheets;
+    } else if ( moduleIndex.value == 2 ) {
+      return AppStrings.chat;
+    } else if ( moduleIndex.value == 3 ) {
+      return AppStrings.toDo;
+    }
+  }
+
+
   List<Widget> moduleList = [
      DashboardScreen(),
-      GrowSheetsScreen()
+     GrowSheetsScreen(),
+    ChatScreen()
   ];
 
 }

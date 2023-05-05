@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
               controller.openDrawer();
             },
             title: dashboardController.isOverView.value == false
-                ?  AppStrings.tOverview
+                ?  controller.appbarTitle()
                 : AppStrings.overview,
             notificationTap: (){
               Get.toNamed(AppPages.NOTIFICATION);
@@ -129,6 +129,7 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = false;
                                   }
+                                  dashboardController.isOverView.value = false;
                                   controller.changeModuleIndex(1);
                                   Get.back();
                                 },
@@ -148,6 +149,9 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = false;
                                   }
+                                  dashboardController.isOverView.value = false;
+                                  controller.changeModuleIndex(2);
+                                  Get.back();
                                 },
                                 image: AppImages.chat,
                                 title: AppStrings.chat,

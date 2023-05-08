@@ -9,17 +9,13 @@ class CustomAppTheme {
     scaffoldBackgroundColor: AppColors.lightAppbar,
     brightness: Brightness.light,
     textTheme: TextStyleDecoration.getLightTheme,
-    buttonTheme: ButtonThemeData(
+    cardColor: Colors.white,
+    buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.lightAppbar,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.lightAppbar,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark
-      )
     ),
   );
 
@@ -27,17 +23,13 @@ class CustomAppTheme {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkAppbar,
     textTheme: TextStyleDecoration.getDarkTheme,
-    buttonTheme: ButtonThemeData(
+    cardColor: AppColors.darkTheme,
+    buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.buttonColor
     ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: AppColors.darkAppbar,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarColor: AppColors.darkAppbar,
-        statusBarBrightness: Brightness.light
-      )
     )
   );
 }

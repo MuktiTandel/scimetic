@@ -13,7 +13,8 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor,
     this.width,
     this.fontSize,
-    this.fontWeight
+    this.fontWeight,
+    this.child
   }) : super(key: key);
 
   final VoidCallback onTap;
@@ -24,6 +25,7 @@ class CustomButton extends StatelessWidget {
   final Color? backgroundColor;
   final double? fontSize;
   final FontWeight? fontWeight;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +40,16 @@ class CustomButton extends StatelessWidget {
               elevation: 0,
               backgroundColor: backgroundColor ?? AppColors.buttonColor
             ),
-            child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius ?? 10)
-              ),
-              child: SizedBox(
-                height: height ?? 50,
-                width: Get.width,
-                child: Center(
-                  child: Text(
-                    buttonText,
-                    style: TextStyle(
-                        fontWeight: fontWeight ?? FontWeight.w500,
-                        fontSize: fontSize ?? 13.sp,
-                      fontFamily: "Poppins"
-                    ),
+            child: child ?? SizedBox(
+              height: height ?? 50,
+              width: Get.width,
+              child: Center(
+                child: Text(
+                  buttonText,
+                  style: TextStyle(
+                      fontWeight: fontWeight ?? FontWeight.w500,
+                      fontSize: fontSize ?? 13.sp,
+                    fontFamily: "Poppins"
                   ),
                 ),
               ),

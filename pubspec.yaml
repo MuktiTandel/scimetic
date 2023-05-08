@@ -49,6 +49,15 @@ dependencies:
   # for store data
   get_storage: ^2.1.1
 
+  # for chat view
+  syncfusion_flutter_charts: ^21.1.41
+
+  # for progress indicator
+  syncfusion_flutter_gauges: ^21.1.41
+
+  # for show drop down
+  dropdown_button2: ^1.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

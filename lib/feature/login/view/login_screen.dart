@@ -117,6 +117,7 @@ class LoginScreen extends StatelessWidget {
         ),
         buttonText: AppStrings.signIn,
         buttonTap: (){
+          Get.offAllNamed(AppPages.HOME);
         },
       isSubtitle: true,
       isEmail: false,

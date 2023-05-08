@@ -27,7 +27,8 @@ class CustomTextField extends StatelessWidget {
     this.textAlign,
     this.textAlignVertical,
     this.textInputType,
-    this.onTap
+    this.isFilled,
+    this.contentPadding
   }) :_onchange = onchange,
         super(key: key);
 
@@ -51,7 +52,8 @@ class CustomTextField extends StatelessWidget {
   final TextAlign? textAlign;
   final TextAlignVertical? textAlignVertical;
   final TextInputType? textInputType;
-  final VoidCallback? onTap;
+  final bool? isFilled;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -61,26 +63,29 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
       minLines: 1,
       autofocus: autoFocus ?? false,
+      textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
       maxLines: maxLine ?? 1,
       keyboardType: textInputType ?? TextInputType.text,
       style:  TextStyle(
         fontFamily: "Poppins",
         fontSize: 15.sp,
-        color: Get.isDarkMode ? Colors.white : Colors.black
+        color: Get.isDarkMode ? Colors.white : Colors.black,
       ),
-      onTap: onTap,
       decoration: InputDecoration(
+        contentPadding: contentPadding ?? EdgeInsets.all(15.w),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 10),
             borderSide: BorderSide(
               color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
             ),
           ),
-          filled: true,
+          filled: isFilled ?? true,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 10),
             borderSide: BorderSide(
-                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder
+                color: Get.isDarkMode
+                    ? focusBorderColor ??  AppColors.darkText
+                    : focusBorderColor ?? AppColors.lightBorder
             ),
           ),
           fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
@@ -96,7 +101,8 @@ class CustomTextField extends StatelessWidget {
           ) : null,
           hintStyle:  TextStyle(
             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-            fontSize: 12.sp
+            fontSize: 14.sp,
+            fontFamily: "Poppins"
           )
       ),
       validator: validator,

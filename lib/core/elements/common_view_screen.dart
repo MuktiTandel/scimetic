@@ -18,7 +18,8 @@ class CommonViewScreen extends StatelessWidget {
     required this.buttonText,
     required this.buttonTap,
     required this.isSubtitle,
-    required this.isEmail
+    required this.isEmail,
+    this.email
   }) : super(key: key);
 
   final String title;
@@ -29,21 +30,20 @@ class CommonViewScreen extends StatelessWidget {
   final VoidCallback buttonTap;
   final bool isSubtitle;
   final bool isEmail;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Get.isDarkMode
-            ? Brightness.light : Brightness.dark,
-      ),
+      value:Get.isDarkMode
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
         body: Padding(
           padding: EdgeInsets.all(13.w),
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            // physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 60.h,),
@@ -66,7 +66,7 @@ class CommonViewScreen extends StatelessWidget {
                   style: TextStyleDecoration.subTitle,
                 ) : const SizedBox.shrink(),
                 isEmail == true ? Text(
-                    'sh**********ab@gmail.com',
+                    email ?? "sh**********ab@gmail.com",
                   style: TextStyleDecoration.headline2,
                 ) : const SizedBox.shrink(),
                 SizedBox(height: 30.h,),

@@ -9,5 +9,6 @@ class AppPages {
   static const HOME = '/home';
   static const NOTIFICATION = '/notification';
   static const GRAPH = '/Graph';
+  static const OPENCHAT = '/openchat';
 
 }

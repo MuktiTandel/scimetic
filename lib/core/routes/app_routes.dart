@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/authenticate_your_account/binding/authenticate_account_binding.dart';
 import 'package:scimetic/feature/authenticate_your_account/view/authenticate_account_screen.dart';
+import 'package:scimetic/feature/open_chat/binding/open_chat_binding.dart';
+import 'package:scimetic/feature/open_chat/view/open_chat_screen.dart';
 import 'package:scimetic/feature/home/binding/home_binding.dart';
 import 'package:scimetic/feature/home/view/home_screen.dart';
 import 'package:scimetic/feature/login/binding/login_binding.dart';
@@ -64,6 +66,11 @@ class AppRoutes {
     GetPage(
         name: AppPages.GRAPH,
         page: ()=> GraphScreen()
+    ),
+    GetPage(
+        name: AppPages.OPENCHAT,
+        page: ()=> OpenChatScreen(),
+      binding: OpenChatBinding()
     )
   ];
 

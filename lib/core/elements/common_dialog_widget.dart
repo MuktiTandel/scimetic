@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
 class CommonDialogWidget extends StatelessWidget {

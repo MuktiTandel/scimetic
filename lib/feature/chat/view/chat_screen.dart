@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/chat/controller/chat_controller.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -52,62 +53,67 @@ class ChatScreen extends StatelessWidget {
   }) {
     return Column(
       children: [
-        Container(
-          color: Get.isDarkMode ? AppColors.darkBlue : Colors.white,
-          padding: EdgeInsets.all(10.w),
-          child: Row(
-            children: [
-              type.contains("chat")
-                  ? chatImage(profile: profile)
-                  : groupImage(
-                  profile: profile,
-                  image1: image1,
-                  image2: image2,
-                  totalMember: totalMember
-              ),
-              SizedBox(width: 12.w,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: name,
-                    fontSize: 14.sp,
-                    color: Get.isDarkMode ? Colors.white : Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  CustomText(
-                    text: desc,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13.sp,
-                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightGray,
-                  )
-                ],
-              ),
-              Expanded(child: SizedBox(width: 10.w,)),
-              Container(
-                height: messages.toString().length < 2 ? 18.h : 17.h,
-                width: messages.toString().length < 2 ? 20.w : 25.w,
-                decoration:  BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                            messages.toString().length < 2
-                                ? AppImages.redRectangle
-                                : AppImages.rectangle,
-                        ),
-                      fit: BoxFit.fill
+        GestureDetector(
+          onTap: (){
+            Get.toNamed(AppPages.OPENCHAT);
+          },
+          child: Container(
+            color: Get.isDarkMode ? AppColors.darkBlue : Colors.white,
+            padding: EdgeInsets.all(10.w),
+            child: Row(
+              children: [
+                type.contains("chat")
+                    ? chatImage(profile: profile)
+                    : groupImage(
+                    profile: profile,
+                    image1: image1,
+                    image2: image2,
+                    totalMember: totalMember
+                ),
+                SizedBox(width: 12.w,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: name,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    CustomText(
+                      text: desc,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13.sp,
+                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightGray,
                     )
+                  ],
                 ),
-                child: Center(
-                  child:
-                  CustomText(
-                    text: messages.toString(),
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                Expanded(child: SizedBox(width: 10.w,)),
+                Container(
+                  height: messages.toString().length < 2 ? 18.h : 17.h,
+                  width: messages.toString().length < 2 ? 20.w : 25.w,
+                  decoration:  BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                              messages.toString().length < 2
+                                  ? AppImages.redRectangle
+                                  : AppImages.rectangle,
+                          ),
+                        fit: BoxFit.fill
+                      )
                   ),
-                ),
-              )
-            ],
+                  child: Center(
+                    child:
+                    CustomText(
+                      text: messages.toString(),
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         SizedBox(height: 10.h,)

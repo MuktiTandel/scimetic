@@ -148,6 +148,37 @@ class AppStrings {
   static const String shortTaskDescription = "Short task description...";
   static const String fertigationFormula2 = "Fertigation formula #2";
   static const String oGKushSeedlingSheet = "OG Kush Seedling sheet";
+  static const String typeMessageHere = "Type message here...";
+  static const String today = "Today";
+  static const String messageReaded = "Message readed";
+  static const String messageDelivered = "Message delivered";
+  static const String messageSent = "Message sent";
+  static const String aSecondAgo = "A second ago";
+  static const String isTyping = " is typing...";
+  static const String inProgress = "In progress";
+  static const String completed = "Completed";
+  static const String taskName = "Task Name";
+  static const String dueDate = "Due date";
+  static const String chooseDate = "Choose date";
+  static const String addTag = "Add tag";
+  static const String assignedTo = "Assigned to";
+  static const String assignToUser = "Assign to user";
+  static const String cancel = "Cancel";
+  static const String discuss = "Discuss";
+  static const String moveToInProgress = "Move to In progress";
+  static const String moveToCompleted = "Move to Completed";
+  static const String archive = "Archive";
+  static const String addTask = "Add Task";
+  static const String addNewTask = "Add New Task";
+  static const String selectDate = "Select Date";
+  static const String tagName = "Tag name";
+  static const String selectAssignName = "Select Assign Name";
+  static const String taskDesc = "Short task description. Lorem ipsum dolor "
+      "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+      "ut labore et dolore magna aliqua.";
+  static const String messageDesc = "Short task description. Lorem ipsum "
+      "dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "
+      "incididunt ut labore et dolore magna aliqua.";
   static const String resendNewCodeDesc = "It may take a minute to receive "
       "a code. ";
   static const String aYourAccountDesc = "Please confirm your account by"

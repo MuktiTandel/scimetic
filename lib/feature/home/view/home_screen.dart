@@ -188,6 +188,9 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = true;
                                     controller.isCalender.value = false;
                                   }
+                                  dashboardController.isOverView.value = false;
+                                  controller.changeModuleIndex(3);
+                                  Get.back();
                                 },
                                 image: AppImages.toDo,
                                 title: AppStrings.toDo,

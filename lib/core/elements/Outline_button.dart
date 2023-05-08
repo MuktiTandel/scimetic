@@ -7,10 +7,14 @@ import 'package:scimetic/core/const/app_strings.dart';
 class OutLineButton extends StatelessWidget {
   const OutLineButton({
     Key? key,
-    required this.onTap
+    required this.onTap,
+    this.color,
+    this.buttonText
   }) : super(key: key);
 
   final VoidCallback onTap;
+  final String? buttonText;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +29,17 @@ class OutLineButton extends StatelessWidget {
             backgroundColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: AppColors.buttonColor,width: 2.w)
+                side: BorderSide(color: color ?? AppColors.buttonColor,width: 2.w)
             )
         ),
         child:Center(
           child: Text(
-            AppStrings.export,
+            buttonText ?? AppStrings.export,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 15.sp,
                 fontFamily: "Poppins",
-              color: AppColors.buttonColor
+              color: color ?? AppColors.buttonColor
             ),
           ),
         ),

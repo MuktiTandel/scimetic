@@ -5,6 +5,7 @@ import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
+import 'package:scimetic/feature/to_do/view/todo_screen.dart';
 
 class HomeController extends GetxController {
 
@@ -51,7 +52,8 @@ class HomeController extends GetxController {
   List<Widget> moduleList = [
      DashboardScreen(),
      GrowSheetsScreen(),
-    ChatScreen()
+    ChatScreen(),
+    TodoScreen()
   ];
 
 }

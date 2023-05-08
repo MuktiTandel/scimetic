@@ -80,5 +80,18 @@ class AppImages {
   static const String group12 = 'assets/images/group12.png';
   static const String group13 = 'assets/images/group13.png';
   static const String group14 = 'assets/images/group14.png';
+  static const String search1 = 'assets/images/search1.png';
+  static const String smile = 'assets/images/smile.png';
+  static const String image = 'assets/images/image.png';
+  static const String file = 'assets/images/file.png';
+  static const String sendFill = 'assets/images/send_fill.png';
+  static const String doneAll = 'assets/images/done_all.png';
+  static const String label = 'assets/images/label.png';
+  static const String message = 'assets/images/message.png';
+  static const String progressClock = 'assets/images/progress_clock.png';
+  static const String progressCheck = 'assets/images/progress_check.png';
+  static const String checkCalender = 'assets/images/check_calender.png';
+  static const String roundedDone = 'assets/images/rounded_done.png';
+  static const String archive = 'assets/images/archive.png';
 
 }

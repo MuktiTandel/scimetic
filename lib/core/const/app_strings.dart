@@ -108,6 +108,7 @@ class AppStrings {
   static const String online = " Online";
   static const String offline = " Offline";
   static const String sensor = "Sensor";
+  static const String sensors = "Sensors";
   static const String valves = "Valves";
   static const String addNewDevice = "Add New Device";
   static const String newGrowspace = "New Growspace";
@@ -173,6 +174,10 @@ class AppStrings {
   static const String selectDate = "Select Date";
   static const String tagName = "Tag name";
   static const String selectAssignName = "Select Assign Name";
+  static const String setDueDate = "Set due date";
+  static const String deviceSettings = "Device settings";
+  static const String refresh = "Refresh";
+  static const String devices = "devices";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

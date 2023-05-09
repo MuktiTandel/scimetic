@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class TodoController extends GetxController {
 
@@ -10,8 +11,10 @@ class TodoController extends GetxController {
 
   final TextEditingController taskNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController dateTimeController = TextEditingController();
+  TextEditingController dateTimeController = TextEditingController();
   final TextEditingController tagController = TextEditingController();
+
+  DateRangePickerController date = DateRangePickerController();
 
   RxInt descriptionLength = 0.obs;
 

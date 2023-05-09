@@ -93,5 +93,6 @@ class AppImages {
   static const String checkCalender = 'assets/images/check_calender.png';
   static const String roundedDone = 'assets/images/rounded_done.png';
   static const String archive = 'assets/images/archive.png';
+  static const String sync = 'assets/images/sync.png';
 
 }

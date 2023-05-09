@@ -394,7 +394,11 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
-              onTap: (){}
+              onTap: (){
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(4);
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(

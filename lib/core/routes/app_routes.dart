@@ -71,7 +71,7 @@ class AppRoutes {
         name: AppPages.OPENCHAT,
         page: ()=> OpenChatScreen(),
       binding: OpenChatBinding()
-    )
+    ),
   ];
 
 }

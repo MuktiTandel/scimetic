@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/feature/calendar/view/calendar_screen.dart';
 import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
-import 'package:scimetic/feature/overview/view/overview_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
 
 class HomeController extends GetxController {
@@ -47,6 +47,8 @@ class HomeController extends GetxController {
     } else if ( moduleIndex.value == 3 ) {
       return AppStrings.toDo;
     } else if ( moduleIndex.value == 4 ) {
+      return AppStrings.calendar;
+    } else if (moduleIndex.value == 5 ) {
       return AppStrings.deviceSettings;
     }
   }
@@ -57,6 +59,7 @@ class HomeController extends GetxController {
      GrowSheetsScreen(),
     ChatScreen(),
     TodoScreen(),
+    CalendarScreen(),
     DeviceSettingsScreen()
   ];
 

@@ -401,7 +401,13 @@ class OpenChatScreen extends StatelessWidget {
                 child: EmojiPicker(
                   textEditingController: controller.messageController,
                   config: Config(
-                    bgColor: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar
+                    bgColor: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar,
+                    iconColorSelected: Get.isDarkMode
+                        ? AppColors.darkText : AppColors.lightText,
+                    indicatorColor: Get.isDarkMode
+                        ? AppColors.darkText : AppColors.lightText,
+                    iconColor: Get.isDarkMode
+                        ? AppColors.darkIcon : AppColors.lightIcon
                   ),
                 ),
               ),

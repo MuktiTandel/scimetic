@@ -67,6 +67,9 @@ dependencies:
   # for date picker
   syncfusion_flutter_datepicker: ^21.2.4
 
+  # for calendar
+  syncfusion_flutter_calendar: ^21.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

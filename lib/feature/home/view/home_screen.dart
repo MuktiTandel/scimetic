@@ -212,6 +212,9 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = true;
                                   }
+                                  dashboardController.isOverView.value = false;
+                                  controller.changeModuleIndex(4);
+                                  Get.back();
                                 },
                                 image: AppImages.calender,
                                 title: AppStrings.calendar,
@@ -396,7 +399,7 @@ class HomeScreen extends StatelessWidget {
               title: AppStrings.deviceSetup,
               onTap: (){
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(4);
+                controller.changeModuleIndex(5);
                 Get.back();
               }
           ),

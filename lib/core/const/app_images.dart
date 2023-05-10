@@ -94,5 +94,7 @@ class AppImages {
   static const String roundedDone = 'assets/images/rounded_done.png';
   static const String archive = 'assets/images/archive.png';
   static const String sync = 'assets/images/sync.png';
+  static const String sensors = 'assets/images/sensors.png';
+  static const String restart = 'assets/images/restart.png';
 
 }

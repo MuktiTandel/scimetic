@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
+import 'package:scimetic/core/elements/select_widget.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -121,34 +122,6 @@ class TodoScreen extends StatelessWidget {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget selectWidget({ required VoidCallback onTap,
-    required String text, required bool isSelected}) {
-    return GestureDetector(
-      onTap: (){
-        onTap();
-      },
-      child: Container(
-        height: 35.h,
-        decoration: BoxDecoration(
-            color: isSelected == true
-                ? Get.isDarkMode ? AppColors.darkBlue : Colors.white
-                : Get.isDarkMode ? AppColors.darkTheme : AppColors.lightGray2,
-            borderRadius: BorderRadius.circular(8)
-        ),
-        child: Center(
-          child: CustomText(
-            text: text,
-            color: isSelected == true
-                ? Get.isDarkMode ? Colors.white : Colors.black
-                : Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w500,
-          ),
         ),
       ),
     );

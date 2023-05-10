@@ -173,7 +173,7 @@ class DashboardScreen extends StatelessWidget {
                                           color: AppColors.buttonColor
                                       ),
                                     ),
-                                    hintText: AppStrings.placeholder,
+                                    hintText: AppStrings.addDescription,
                                     contentPadding: EdgeInsets.all(10.w),
                                     hintStyle:  TextStyle(
                                         color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,

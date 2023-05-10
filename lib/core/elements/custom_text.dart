@@ -29,7 +29,7 @@ class CustomText extends StatelessWidget {
           fontWeight: fontWeight,
           fontFamily: 'Poppins',
           color: color,
-        decoration: TextDecoration.none
+        decoration: TextDecoration.none,
       ),
     );
   }

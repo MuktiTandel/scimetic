@@ -178,6 +178,15 @@ class AppStrings {
   static const String deviceSettings = "Device settings";
   static const String refresh = "Refresh";
   static const String devices = "devices";
+  static const String id = "ID";
+  static const String description_ = "DESCRIPTION";
+  static const String location_ = "LOCATION";
+  static const String state = "STATE";
+  static const String reconnect = "Reconnect";
+  static const String restart = "Restart";
+  static const String day = "Day";
+  static const String year = "Year";
+  static const String addDescription = "Add description";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

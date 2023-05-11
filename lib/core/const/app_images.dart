@@ -96,5 +96,7 @@ class AppImages {
   static const String sync = 'assets/images/sync.png';
   static const String sensors = 'assets/images/sensors.png';
   static const String restart = 'assets/images/restart.png';
+  static const String calendarLeftArrow = 'assets/images/calendar_left_arrow.png';
+  static const String calendarRightArrow = 'assets/images/calendar_right_arrow.png';
 
 }

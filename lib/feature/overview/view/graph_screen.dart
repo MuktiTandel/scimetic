@@ -32,6 +32,8 @@ class GraphScreen extends StatelessWidget {
           },
           profileTap: (){},
           leadingIcon: AppImages.backArrow,
+          isPersonal: false.obs,
+          isCrop: false.obs,
         ),
       ),
       body: ScrollConfiguration(

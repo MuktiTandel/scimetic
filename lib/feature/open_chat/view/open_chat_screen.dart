@@ -306,7 +306,7 @@ class OpenChatScreen extends StatelessWidget {
         ],
       ),
       bottomSheet: Obx(() => Container(
-        height: controller.emojiShowing.value == false ? 55.h : 300.h,
+        height: controller.emojiShowing.value == false ? 58.h : 308.h,
         color: Get.isDarkMode ? AppColors.darkBlue : Colors.white,
         child: Column(
           children: [

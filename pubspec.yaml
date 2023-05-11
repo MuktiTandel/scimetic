@@ -70,6 +70,9 @@ dependencies:
   # for calendar
   syncfusion_flutter_calendar: ^21.2.4
 
+  # for date format
+  intl: ^0.18.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

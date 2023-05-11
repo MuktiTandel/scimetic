@@ -622,7 +622,7 @@ class TodoScreen extends StatelessWidget {
                           ));
                         },
                         decoration: InputDecoration(
-                            hintText: AppStrings.placeholder,
+                            hintText: AppStrings.addDescription,
                             border: InputBorder.none,
                             hintStyle: TextStyle(
                                 color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,

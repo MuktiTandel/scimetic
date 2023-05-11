@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_strings.dart';
-import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class DayCalendar extends StatelessWidget {
@@ -12,7 +11,7 @@ class DayCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 550.h,
+      height: 537.h,
       child: SfCalendar(
         headerDateFormat: "dd EEEE",
         backgroundColor: Get.isDarkMode
@@ -34,12 +33,7 @@ class DayCalendar extends StatelessWidget {
                 timeRegionDetails.region.text!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white
-                ),
+                style: timeRegionDetails.region.textStyle
               )
             ),
           );
@@ -82,7 +76,13 @@ class DayCalendar extends StatelessWidget {
         endTime: DateTime(2023,05,10,11),
         enablePointerInteraction: false,
         color: AppColors.blue,
-          text: AppStrings.taskDesc
+          text: AppStrings.taskDesc,
+          textStyle: TextStyle(
+              fontSize: 11.sp,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w400,
+              color: Colors.white
+          ),
       ),
     );
 
@@ -91,7 +91,13 @@ class DayCalendar extends StatelessWidget {
       endTime: DateTime(2023,05,10,15),
       enablePointerInteraction: false,
       color: AppColors.orange,
-        text: AppStrings.taskDesc
+        text: AppStrings.taskDesc,
+      textStyle: TextStyle(
+          fontSize: 11.sp,
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w400,
+          color: Colors.black
+      ),
     ),);
 
     return regions;

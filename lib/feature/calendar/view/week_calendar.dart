@@ -11,7 +11,7 @@ class WeekCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 550.h,
+      height: 537.h,
       child: SfCalendar(
         view: CalendarView.week,
         backgroundColor: Get.isDarkMode
@@ -32,13 +32,9 @@ class WeekCalendar extends StatelessWidget {
                 child: Text(
                   timeRegionDetails.region.text!,
                   maxLines: 1,
+                  textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white
-                  ),
+                  style: timeRegionDetails.region.textStyle
                 )
             ),
           );
@@ -94,7 +90,13 @@ class WeekCalendar extends StatelessWidget {
           endTime: DateTime(2023,05,10,11),
           enablePointerInteraction: false,
           color: AppColors.blue,
-          text: AppStrings.taskDesc
+          text: AppStrings.taskDesc,
+        textStyle: TextStyle(
+            fontSize: 13.sp,
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w400,
+            color: Colors.white
+        ),
       ),
     );
 
@@ -103,7 +105,13 @@ class WeekCalendar extends StatelessWidget {
         endTime: DateTime(2023,05,10,15),
         enablePointerInteraction: false,
         color: AppColors.orange,
-        text: AppStrings.taskDesc
+        text: AppStrings.taskDesc,
+      textStyle: TextStyle(
+          fontSize: 13.sp,
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+      ),
     ),);
 
     regions.add(TimeRegion(
@@ -111,7 +119,13 @@ class WeekCalendar extends StatelessWidget {
         endTime: DateTime(2023,05,07,07),
         enablePointerInteraction: false,
         color: AppColors.orange,
-        text: AppStrings.taskDesc
+        text: AppStrings.taskDesc,
+      textStyle: TextStyle(
+          fontSize: 13.sp,
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w400,
+          color: Colors.black
+      ),
     ),);
 
     regions.add(TimeRegion(
@@ -119,7 +133,13 @@ class WeekCalendar extends StatelessWidget {
         endTime: DateTime(2023,05,08,08),
         enablePointerInteraction: false,
         color: AppColors.blue,
-        text: AppStrings.taskDesc
+        text: AppStrings.taskDesc,
+      textStyle: TextStyle(
+          fontSize: 13.sp,
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w400,
+          color: Colors.white
+      ),
     ),);
 
     regions.add(
@@ -128,7 +148,13 @@ class WeekCalendar extends StatelessWidget {
           endTime: DateTime(2023,05,10,08),
           enablePointerInteraction: false,
           color: AppColors.blue,
-          text: AppStrings.taskDesc
+          text: AppStrings.taskDesc,
+        textStyle: TextStyle(
+            fontSize: 13.sp,
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w400,
+            color: Colors.white
+        ),
       ),
     );
 
@@ -138,7 +164,13 @@ class WeekCalendar extends StatelessWidget {
           endTime: DateTime(2023,05,13,09),
           enablePointerInteraction: false,
           color: AppColors.orange,
-          text: AppStrings.taskDesc
+          text: AppStrings.taskDesc,
+        textStyle: TextStyle(
+            fontSize: 13.sp,
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w400,
+            color: Colors.black
+        ),
       ),
     );
 

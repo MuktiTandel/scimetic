@@ -10,6 +10,7 @@ import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
+import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
@@ -20,6 +21,8 @@ class HomeScreen extends StatelessWidget {
    final controller = Get.put(HomeController());
 
    final dashboardController = Get.put(DashboardController());
+
+   final calendarController = Get.put(CalendarController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,9 @@ class HomeScreen extends StatelessWidget {
             },
             profileTap: (){},
           leadingIcon: AppImages.drawer,
+          isCalendar: controller.isCalender.value,
+          isCrop: calendarController.personalCalendar,
+          isPersonal: calendarController.cropCalendar,
         )),
       ),
       body: Obx(() => dashboardController.isOverView.value == false ? IndexedStack(

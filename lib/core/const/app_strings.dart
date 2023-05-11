@@ -187,6 +187,10 @@ class AppStrings {
   static const String day = "Day";
   static const String year = "Year";
   static const String addDescription = "Add description";
+  static const String personal = "Personal";
+  static const String crop = "Crop";
+  static const String month3 = "3 Month";
+  static const String month6 = "6 Month";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

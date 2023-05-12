@@ -98,5 +98,8 @@ class AppImages {
   static const String restart = 'assets/images/restart.png';
   static const String calendarLeftArrow = 'assets/images/calendar_left_arrow.png';
   static const String calendarRightArrow = 'assets/images/calendar_right_arrow.png';
+  static const String lightUnselectToggle = 'assets/images/light_unselect_toggle.png';
+  static const String darkSelectedToggle = 'assets/images/dark_selected_toggle.png';
+  static const String darkUnselectToggle = 'assets/images/dark_unselect_toggle.png';
 
 }

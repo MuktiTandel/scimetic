@@ -6,6 +6,8 @@ import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
+import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
+import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
 
 class HomeController extends GetxController {
@@ -50,6 +52,10 @@ class HomeController extends GetxController {
       return AppStrings.calendar;
     } else if (moduleIndex.value == 5 ) {
       return AppStrings.deviceSettings;
+    } else if (moduleIndex.value == 6 ) {
+      return AppStrings.temperatureControl;
+    } else if ( moduleIndex.value == 7 ) {
+      return AppStrings.humidityControl;
     }
   }
 
@@ -60,7 +66,9 @@ class HomeController extends GetxController {
     ChatScreen(),
     TodoScreen(),
     CalendarScreen(),
-    DeviceSettingsScreen()
+    DeviceSettingsScreen(),
+    TemperatureControllerScreen(),
+    HumidityControlScreen()
   ];
 
 }

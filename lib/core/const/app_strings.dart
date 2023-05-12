@@ -191,6 +191,29 @@ class AppStrings {
   static const String crop = "Crop";
   static const String month3 = "3 Month";
   static const String month6 = "6 Month";
+  static const String status = "Status";
+  static const String auto = "Auto";
+  static const String on = "On";
+  static const String dayCoolingMode = "Day cooling Mode";
+  static const String setTargetTemperature = "Set target temperature";
+  static const String deadband = "Deadband";
+  static const String switchSelection = "Switch selection";
+  static const String chooseSwitch = "Choose switch";
+  static const String nightCoolingMode = "Night cooling Mode";
+  static const String dayHeatingMode = "Day heating Mode";
+  static const String nightHeatingMode = "Night heating Mode";
+  static const String circulationFan = "Circulation Fan";
+  static const String temperatureOOF = "Temperature OOF";
+  static const String humidityON = "Humidity ON";
+  static const String temperatureOOFDeadband = "Temperature OOF Deadband";
+  static const String humidityONDeadband = "Humidity ON Deadband";
+  static const String timeON = "Time ON";
+  static const String timeOFF = "Time OFF";
+  static const String extractorFan = "Extractor Fan";
+  static const String wetWall = "Wet wall";
+  static const String temperatureDeadband = "Temperature Deadband";
+  static const String dayHumidityMode = "Day Humidity Mode";
+  static const String setTargetRelativeHumidity = "Set target Relative Humidity";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

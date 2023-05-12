@@ -24,7 +24,7 @@ class WeekCalendar extends StatelessWidget {
           return Padding(
             padding:  EdgeInsets.all(5.w),
             child: Container(
-                padding: EdgeInsets.all(5.w),
+                padding: EdgeInsets.all(7.w),
                 decoration:  BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: timeRegionDetails.region.color

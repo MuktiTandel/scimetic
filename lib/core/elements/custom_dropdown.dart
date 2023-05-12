@@ -12,18 +12,22 @@ class CustomDropDown extends StatelessWidget {
     required this.hintText,
     required this.itemList,
     required this.value,
-    required this.onChange
+    required this.onChange,
+    this.isFilled
   }) : super(key: key);
 
   final String hintText;
   final List<String> itemList;
   final String value;
   final ValueChanged<String>? onChange;
+  final bool? isFilled;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField2(
         itemHeight: 40.h,
+        dropdownWidth: 330.w,
+        buttonPadding: EdgeInsets.only(left: 10.w),
         value: value,
         isExpanded: true,
         decoration: InputDecoration(
@@ -39,6 +43,8 @@ class CustomDropDown extends StatelessWidget {
               borderSide: BorderSide(color: Get.isDarkMode
                   ? AppColors.darkText : AppColors.lightBorder,)
           ),
+          filled: isFilled ?? true,
+          fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
         ),
         hint: CustomText(
           text: hintText,

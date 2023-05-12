@@ -116,6 +116,7 @@ class HomeScreen extends StatelessWidget {
                                     controller.isCalender.value = false;
                                   }
                                   dashboardController.isOverView.value = false;
+                                  controller.isCalender.value = false;
                                   controller.changeModuleIndex(0);
                                   Get.back();
                                 },
@@ -136,6 +137,7 @@ class HomeScreen extends StatelessWidget {
                                     controller.isCalender.value = false;
                                   }
                                   dashboardController.isOverView.value = false;
+                                  controller.isCalender.value = false;
                                   controller.changeModuleIndex(1);
                                   Get.back();
                                 },
@@ -156,6 +158,7 @@ class HomeScreen extends StatelessWidget {
                                     controller.isCalender.value = false;
                                   }
                                   dashboardController.isOverView.value = false;
+                                  controller.isCalender.value = false;
                                   controller.changeModuleIndex(2);
                                   Get.back();
                                 },
@@ -177,6 +180,9 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = false;
                                     controller.isCalender.value = false;
                                   }
+                                  dashboardController.isOverView.value = false;
+                                  controller.isCalender.value = false;
+                                  Get.back();
                                 },
                                 image: AppImages.reports,
                                 title: AppStrings.reports,
@@ -194,6 +200,7 @@ class HomeScreen extends StatelessWidget {
                                     controller.isTodo.value = true;
                                     controller.isCalender.value = false;
                                   }
+                                  controller.isCalender.value = false;
                                   dashboardController.isOverView.value = false;
                                   controller.changeModuleIndex(3);
                                   Get.back();
@@ -219,6 +226,8 @@ class HomeScreen extends StatelessWidget {
                                     controller.isCalender.value = true;
                                   }
                                   dashboardController.isOverView.value = false;
+                                  calendarController.personalCalendar.value = false;
+                                  calendarController.cropCalendar.value = true;
                                   controller.changeModuleIndex(4);
                                   Get.back();
                                 },
@@ -406,6 +415,7 @@ class HomeScreen extends StatelessWidget {
               onTap: (){
                 dashboardController.isOverView.value = false;
                 controller.changeModuleIndex(5);
+                controller.isCalender.value = false;
                 Get.back();
               }
           ),
@@ -413,13 +423,23 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
-              onTap: (){}
+              onTap: (){
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(6);
+                controller.isCalender.value = false;
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
-              onTap: (){}
+              onTap: (){
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(7);
+                controller.isCalender.value = false;
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(

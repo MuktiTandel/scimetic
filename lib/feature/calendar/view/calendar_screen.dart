@@ -194,7 +194,9 @@ class CalendarScreen extends StatelessWidget {
             ),
           ),
         ),
-        Obx(() => controller.isCropWeek.value == true ? CropWeek() : SizedBox())
+        Obx(() => controller.isCropWeek.value == true
+            ? CropWeek(getDay: controller.getIndex(),getDates
+            : controller.getDateList(),) : SizedBox())
       ],
     );
   }

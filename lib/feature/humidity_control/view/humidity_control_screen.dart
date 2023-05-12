@@ -42,6 +42,14 @@ class HumidityControlScreen extends StatelessWidget {
                       onChanged: (value) {},
                     contentPadding: 20.w
                   ),
+                  SizedBox(height: 10.h,),
+                  commonTexField(
+                      title: AppStrings.deadband,
+                      controller: controller.dayHumidityDeadband,
+                      suffixText: "%",
+                      hintText: AppStrings.rH,
+                      onChanged: (value){}
+                  )
                 ],
               ),
             ),

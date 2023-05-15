@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 
 Widget commonTimeTextField({
@@ -16,6 +17,7 @@ Widget commonTimeTextField({
       textInputType: TextInputType.number,
       borderRadius: 8,
       hintText: hintText,
+      isFilled: Get.isDarkMode ? true : false,
       contentPadding: EdgeInsets.only(left: 10.w,top: 10.h, bottom: 10.h),
       onchange: onChanged,
     ),

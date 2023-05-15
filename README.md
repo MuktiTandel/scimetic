@@ -14,3 +14,12 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+- create user api data
+- {
+  "firstName" : "Test",
+  "lastName" : "Hello",
+  "email" : "mukti.igeek@gmail.com",
+  "password" : "Test@123",
+  "connection" : "Username-Password-Authentication"
+  }

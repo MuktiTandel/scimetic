@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/feature/calendar/view/calendar_screen.dart';
 import 'package:scimetic/feature/chat/view/chat_screen.dart';
+import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
+import 'package:scimetic/feature/energy_management/view/energy_management_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
+import 'package:scimetic/feature/lightning_control/view/lightning_control_screen.dart';
 import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
 
@@ -56,6 +59,12 @@ class HomeController extends GetxController {
       return AppStrings.temperatureControl;
     } else if ( moduleIndex.value == 7 ) {
       return AppStrings.humidityControl;
+    } else if ( moduleIndex.value == 8 ) {
+      return AppStrings.co2Control;
+    } else if ( moduleIndex.value == 9 ) {
+      return AppStrings.lightingControl;
+    } else if ( moduleIndex.value == 10 ) {
+      return AppStrings.energyManagement;
     }
   }
 
@@ -68,7 +77,10 @@ class HomeController extends GetxController {
     CalendarScreen(),
     DeviceSettingsScreen(),
     TemperatureControllerScreen(),
-    HumidityControlScreen()
+    HumidityControlScreen(),
+    Co2ControlScreen(),
+    LightningControlScreen(),
+    EnergyManagementScreen()
   ];
 
 }

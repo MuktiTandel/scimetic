@@ -413,6 +413,12 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
               onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
                 dashboardController.isOverView.value = false;
                 controller.changeModuleIndex(5);
                 controller.isCalender.value = false;
@@ -424,6 +430,12 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
               onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
                 dashboardController.isOverView.value = false;
                 controller.changeModuleIndex(6);
                 controller.isCalender.value = false;
@@ -435,6 +447,12 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
               onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
                 dashboardController.isOverView.value = false;
                 controller.changeModuleIndex(7);
                 controller.isCalender.value = false;
@@ -445,19 +463,52 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.cloud,
               title: AppStrings.co2Control,
-              onTap: (){}
+              onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(8);
+                controller.isCalender.value = false;
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.sun1,
               title: AppStrings.lightingControl,
-              onTap: (){}
+              onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(9);
+                controller.isCalender.value = false;
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.energy,
               title: AppStrings.energyManagement,
-              onTap: (){}
+              onTap: (){
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(10);
+                controller.isCalender.value = false;
+                Get.back();
+              }
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(

@@ -73,6 +73,12 @@ dependencies:
   # for date format
   intl: ^0.18.1
 
+  # for slider
+  syncfusion_flutter_sliders: ^21.2.4
+
+  # for theme
+  syncfusion_flutter_core: ^21.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

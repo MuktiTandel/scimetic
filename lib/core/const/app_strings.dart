@@ -213,7 +213,24 @@ class AppStrings {
   static const String wetWall = "Wet wall";
   static const String temperatureDeadband = "Temperature Deadband";
   static const String dayHumidityMode = "Day Humidity Mode";
+  static const String nightHumidityMode = "Night Humidity Mode";
   static const String setTargetRelativeHumidity = "Set target Relative Humidity";
+  static const String dayDehumidificationMode = "Day Dehumidification Mode";
+  static const String nightDehumidificationMode = "Night Dehumidification Mode";
+  static const String dayLightningMode = "Day lightning Mode";
+  static const String nightLightningMode = "Night lightning Mode";
+  static const String setTargetCO2Level = "Set target CO2 level";
+  static const String minimum = "Minimum";
+  static const String maximum = "Maximum";
+  static const String highCO2Protection = "High CO2 Protection";
+  static const String dayLightningSettings = "Day lightning Settings";
+  static const String nightLightningSettings = "Night lightning Settings";
+  static const String lightOutputLevel = "Light output level";
+  static const String phase1 = "Phase - 1";
+  static const String phase2 = "Phase - 2";
+  static const String phase3 = "Phase - 3";
+  static const String voltages = "Voltages";
+  static const String fuelLevel = "Fuel level";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

@@ -749,9 +749,11 @@ class GrowSheetsScreen extends StatelessWidget {
       child: CustomTextField(
         controller: controller,
         textInputType: TextInputType.number,
+        textAlign: TextAlign.center,
+        textAlignVertical: TextAlignVertical.center,
         borderRadius: 8,
         hintText: AppStrings.mm,
-        contentPadding: EdgeInsets.only(left: 10.w,top: 10.h, bottom: 10.h),
+        contentPadding: EdgeInsets.only(left: 15.w,top: 10.h, bottom: 10.h, right: 10.w),
         onchange: (val){},
       ),
     );

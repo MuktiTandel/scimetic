@@ -102,5 +102,8 @@ class AppImages {
   static const String darkSelectedToggle = 'assets/images/dark_selected_toggle.png';
   static const String darkUnselectToggle = 'assets/images/dark_unselect_toggle.png';
   static const String thumbIcon = 'assets/images/thumb_icon.png';
+  static const String generatorReady = 'assets/images/generator_ready.png';
+  static const String generatorRunning = 'assets/images/generator_running.png';
+  static const String close1 = 'assets/images/close1.png';
 
 }

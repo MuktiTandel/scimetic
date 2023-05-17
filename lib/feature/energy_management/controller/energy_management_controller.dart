@@ -18,6 +18,10 @@ class EnergyManagementController extends GetxController {
   RxBool isVoltageWeek = false.obs;
   RxBool isVoltageMonth = false.obs;
 
+  RxDouble currentRunTime = 60.0.obs;
+  RxDouble serviceRunTime = 30.0.obs;
+  RxDouble totalRunTime = 70.0.obs;
+
   List<HourData> temperatureHourDataList = [
     HourData(0, 22.5),
     HourData(1, 22.5),

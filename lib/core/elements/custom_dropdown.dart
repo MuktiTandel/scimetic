@@ -13,7 +13,8 @@ class CustomDropDown extends StatelessWidget {
     required this.itemList,
     required this.value,
     required this.onChange,
-    this.isFilled
+    this.isFilled,
+    this.width
   }) : super(key: key);
 
   final String hintText;
@@ -21,12 +22,13 @@ class CustomDropDown extends StatelessWidget {
   final String value;
   final ValueChanged<String>? onChange;
   final bool? isFilled;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField2(
         itemHeight: 40.h,
-        dropdownWidth: 330.w,
+        dropdownWidth: width ?? 310.w,
         buttonPadding: EdgeInsets.only(left: 10.w),
         value: value,
         isExpanded: true,

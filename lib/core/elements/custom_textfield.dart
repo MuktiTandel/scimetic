@@ -69,6 +69,7 @@ class CustomTextField extends StatelessWidget {
       autofocus: autoFocus ?? false,
       readOnly: readOnly ?? false,
       textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
+      textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLine ?? 1,
       keyboardType: textInputType ?? TextInputType.text,
       style:  TextStyle(

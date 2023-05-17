@@ -14,11 +14,13 @@ Widget commonTimeTextField({
     width: width ?? 50.w ,
     child: CustomTextField(
       controller: controller,
+      textAlignVertical: TextAlignVertical.center,
+      textAlign: TextAlign.center,
       textInputType: TextInputType.number,
       borderRadius: 8,
       hintText: hintText,
       isFilled: Get.isDarkMode ? true : false,
-      contentPadding: EdgeInsets.only(left: 10.w,top: 10.h, bottom: 10.h),
+      contentPadding: EdgeInsets.only(top: 10.h, bottom: 10.h),
       onchange: onChanged,
     ),
   );

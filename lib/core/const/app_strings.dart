@@ -3,8 +3,10 @@ class AppStrings {
   static const String rNAccount = "Register new account";
   static const String eYCTCNAccount = "Enter your credentials to create new account";
   static const String eYCTCYAccount = "Enter your credentials to access your account";
-  static const String eOrUsername = "Email or username";
-  static const String eYROUsername = "Enter your email or username";
+  static const String eOrUsername = "Email";
+  static const String fullName = "Full Name";
+  static const String eYROUsername = "Enter your email";
+  static const String eYFName = "Enter your full name";
   static const String cPassword = "Create password";
   static const String eYPassword = "Enter your password";
   static const String rPassword = "Repeat password";
@@ -231,6 +233,28 @@ class AppStrings {
   static const String phase3 = "Phase - 3";
   static const String voltages = "Voltages";
   static const String fuelLevel = "Fuel level";
+  static const String total = "Total";
+  static const String averageConsumption = "Average Consumption";
+  static const String currentConsumption = "Current Consumption";
+  static const String generatorReady = "Generator ready";
+  static const String generatorRunning = "Generator running";
+  static const String alarms = "Alarms";
+  static const String currentRunTime = "Current Run Time";
+  static const String serviceRunTime = "Service Run Time";
+  static const String totalRunTime = "Total Run Time";
+  static const String h100 = "100h";
+  static const String h30 = "30h";
+  static const String h130 = "130h";
+  static const String error = "Error";
+  static const String allFieldRequired = "All field are required.";
+  static const String invalidEmail = "Invalid email.";
+  static const String noInternetConnection = "No internet connection";
+  static const String name = "Name";
+  static const String dayStart = "Day Start";
+  static const String nightStart = "Night Start";
+  static const String invalidPassword = "Invalid password. At least 8 "
+      "Characters, requires to have lowercase & uppercase letter(s), "
+      "number(s) and at least one special character.";
   static const String taskDesc = "Short task description. Lorem ipsum dolor "
       "sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
       "ut labore et dolore magna aliqua.";

@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 
 class DashboardScreen extends StatelessWidget {
    DashboardScreen({Key? key}) : super(key: key);
@@ -27,19 +28,28 @@ class DashboardScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(height: 15.h,),
-            ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: (BuildContext context, int index) {
-                  return listWidget(
-                    onTap: (){
-                      controller.isOverView.value = true;
-                    },
-                    context: context
-                  );
-                }),
+            Obx(() =>  controller.isGetData.value == false ? const Center(
+             child: CircularProgressIndicator(
+               color: AppColors.buttonColor,
+             ),
+           ) : ListView.builder(
+               padding: EdgeInsets.zero,
+               shrinkWrap: true,
+               physics: const NeverScrollableScrollPhysics(),
+               itemCount: controller.dataList.length,
+               itemBuilder: (BuildContext context, int index) {
+
+                 GrowController data = controller.dataList[index];
+
+                 return listWidget(
+                     onTap: (){
+                       controller.isOverView.value = true;
+                     },
+                     context: context,
+                     title: data.name ?? "",
+                     desc: data.description ?? ""
+                 );
+               }),),
             SizedBox(height: 10.h,),
             Padding(
               padding:  EdgeInsets.only(right: 18.w),
@@ -67,7 +77,7 @@ class DashboardScreen extends StatelessWidget {
                               child: CustomTextField(
                                 controller: controller.growspaceNameController,
                                 isFilled: false,
-                                hintText: AppStrings.placeholder,
+                                hintText: AppStrings.name,
                                 borderRadius: 8,
                                 focusBorderColor: AppColors.buttonColor,
                                 contentPadding: EdgeInsets.only(left: 10.w),
@@ -193,6 +203,26 @@ class DashboardScreen extends StatelessWidget {
                                   },
                                 )
                             )),
+                            SizedBox(height: 15.h,),
+                            Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    CustomText(
+                                      text: AppStrings.dayStart,
+                                      fontWeight: FontWeight.w500,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightText,
+                                    ),
+                                    Row(
+                                      children: [
+
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                             SizedBox(height: 20.h,),
                             CustomButton(
                               onTap: (){
@@ -233,7 +263,12 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget listWidget({ required VoidCallback onTap, required BuildContext context}) {
+  Widget listWidget({
+    required VoidCallback onTap,
+    required BuildContext context,
+    required String title,
+    required String desc,
+  }) {
     return GestureDetector(
       onTap: (){
         onTap();
@@ -251,7 +286,7 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      AppStrings.gWellington,
+                      title,
                       style: TextStyleDecoration.headline5,
                     ),
                     PopupMenuButton<int>(
@@ -338,7 +373,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h,),
                 Text(
-                  AppStrings.tODesc,
+                  desc,
                   style: TextStyleDecoration.body1,
                 ),
                 SizedBox(height: 10.h,),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/elements/common_view_screen.dart';
+import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/register_new_account/controller/register_new_account_controller.dart';
@@ -26,6 +26,48 @@ class RegisterNewAccountScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+           // controller.isValid.value == false ? Container(
+           //   width: Get.width,
+           //    padding: EdgeInsets.all(15.w),
+           //    decoration: BoxDecoration(
+           //      borderRadius: BorderRadius.circular(10),
+           //      border: Border.all(
+           //        color: AppColors.lightRed,
+           //        width: 1.w
+           //      )
+           //    ),
+           //    child: Column(
+           //      children: [
+           //        Row(
+           //          children: [
+           //            CustomText(
+           //                text: AppStrings.error,
+           //              color: AppColors.subTitleColor,
+           //              fontWeight: FontWeight.w500,
+           //              fontSize: 14.sp,
+           //            ),
+           //          ],
+           //        )
+           //      ],
+           //    ),
+           //  ) : const SizedBox.shrink(),
+           //  SizedBox(height: 10.h,),
+            Text(
+              AppStrings.fullName,
+              style: TextStyleDecoration.headline1,
+            ),
+            SizedBox(height: 5.h,),
+            SizedBox(
+              height: 45.h,
+              child: CustomTextField(
+                controller: controller.nameController,
+                hintText: AppStrings.eYFName,
+                onchange: (val) {},
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
             Text(
               AppStrings.eOrUsername,
               style: TextStyleDecoration.headline1,
@@ -141,7 +183,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
       ),
       buttonText: AppStrings.register,
       buttonTap: (){
-        Get.offAllNamed(AppPages.HOME);
+        controller.trySubmit();
       },
       isSubtitle: true,
       isEmail: false,

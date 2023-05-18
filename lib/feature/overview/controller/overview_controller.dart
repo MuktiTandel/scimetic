@@ -1,8 +1,20 @@
+import 'dart:convert';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kd_api_call/kd_api_call.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/elements/custom_snack.dart';
+import 'package:scimetic/core/services/api_path.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
 import 'package:scimetic/feature/overview/element/month_graph.dart';
 import 'package:scimetic/feature/overview/element/week_graph.dart';
+import 'package:http/http.dart' as http;
+import 'package:scimetic/feature/overview/model/climate_model.dart';
+import 'package:scimetic/feature/overview/model/device_model.dart';
+import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 
 class OverviewController extends GetxController {
 
@@ -246,6 +258,168 @@ class OverviewController extends GetxController {
     MonthData(30, 0.94),
     MonthData(31, 0.93),
   ];
+
+  String token = "";
+
+  StoreData storeData = StoreData();
+
+  http.Response? apiResponse;
+
+  RxInt id = 0.obs;
+
+  GrowSheetData growSheetData = GrowSheetData();
+
+  ClimateModel climateModel = ClimateModel();
+
+  DeviceModel deviceModel = DeviceModel();
+
+  Future getGrowSheetData({required int id}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.growSheetGrowController}/$id?applied=true',
+            requestType: HTTPRequestType.GET,
+            headers: {
+              "Authorization" : 'Bearer $token',
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          growSheetData = GrowSheetData.fromJson(data);
+
+          AppConst().debug('grow sheet data => ${growSheetData.growsheets}');
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
+
+  Future getClimateData({required String identifier }) async {
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.growController}/$identifier/climate?range=24h',
+            requestType: HTTPRequestType.GET,
+            headers: {
+              "Authorization" : 'Bearer $token',
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          climateModel = ClimateModel.fromJson(data);
+
+          AppConst().debug('grow sheet data => ${climateModel.growspace}');
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+  }
+
+  Future getDeviceData({required int id}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.device}/$id',
+            requestType: HTTPRequestType.GET,
+            headers: {
+              "Authorization" : 'Bearer $token',
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          deviceModel = DeviceModel.fromJson(data);
+
+          AppConst().debug('grow sheet data => ${deviceModel.devices}');
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
 
 }
 

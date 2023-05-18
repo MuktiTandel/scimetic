@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/view/calendar_screen.dart';
 import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
@@ -29,6 +30,8 @@ class HomeController extends GetxController {
   RxInt moduleIndex = 0.obs;
 
   void toggle() => isSetting.value = isSetting.value ? false : true;
+
+  StoreData storeData = StoreData();
 
   void openDrawer() {
     scaffoldKey.currentState!.openDrawer();

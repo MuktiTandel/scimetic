@@ -7,5 +7,7 @@ class ApiPath {
   static const verificationCode = "/auth/send_verification_code";
   static const verifyAccount = "/auth/verify_account";
   static const growController = "/grow_controller";
+  static const growSheetGrowController = "/growsheet/grow_controller";
+  static const device = "/device";
 
 }

@@ -64,11 +64,24 @@ class GrowSheetsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              ListView.builder(
-                shrinkWrap: true,
+              /*Obx(() => controller.isGetData.value == false ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.buttonColor,
+                ),
+              ) : ListView.builder(
+                  shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                itemCount: 2,
+                  padding: EdgeInsets.zero,
+                  itemCount: controller.growSheetDataList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return listWidget();
+                  }
+              ),),*/
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: 2,
                   itemBuilder: (BuildContext context, int index) {
                     return listWidget();
                   }

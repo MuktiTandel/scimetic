@@ -3,6 +3,7 @@ import 'package:get_storage/get_storage.dart';
 class StoreData {
 
   static const String accessToken = "accessToken";
+  static const String id = "id";
 
   void setData(String key, dynamic value) => GetStorage().write(key, value);
 

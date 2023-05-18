@@ -252,6 +252,8 @@ class AppStrings {
   static const String name = "Name";
   static const String dayStart = "Day Start";
   static const String nightStart = "Night Start";
+  static const String locationErrorMessage = "Location has to be comma "
+      "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "
       "Characters, requires to have lowercase & uppercase letter(s), "
       "number(s) and at least one special character.";

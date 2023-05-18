@@ -10,8 +10,10 @@ import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
 
@@ -23,6 +25,8 @@ class HomeScreen extends StatelessWidget {
    final dashboardController = Get.put(DashboardController());
 
    final calendarController = Get.put(CalendarController());
+
+   final growSheetController = Get.put(GrowSheetController());
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +122,8 @@ class HomeScreen extends StatelessWidget {
                                   dashboardController.isOverView.value = false;
                                   controller.isCalender.value = false;
                                   controller.changeModuleIndex(0);
+                                  dashboardController.getDataList();
+                                  dashboardController.isSelect.value = false;
                                   Get.back();
                                 },
                                 image: AppImages.dashboard,
@@ -126,206 +132,217 @@ class HomeScreen extends StatelessWidget {
                               isRightWidget: false
                             ),),
                             SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isGrowSheet.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = true;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.isCalender.value = false;
-                                  controller.changeModuleIndex(1);
-                                  Get.back();
-                                },
-                                image: AppImages.growSheets,
-                                title: AppStrings.growSheets,
-                                isSelect: controller.isGrowSheet.value,
-                                isRightWidget: false
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isChat.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = true;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.isCalender.value = false;
-                                  controller.changeModuleIndex(2);
-                                  Get.back();
-                                },
-                                image: AppImages.chat,
-                                title: AppStrings.chat,
-                                isSelect: controller.isChat.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.redRectangle,
-                              rightText: "8"
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isReport.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = true;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.isCalender.value = false;
-                                  Get.back();
-                                },
-                                image: AppImages.reports,
-                                title: AppStrings.reports,
-                                isSelect: controller.isReport.value,
-                                isRightWidget: false
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isTodo.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = true;
-                                    controller.isCalender.value = false;
-                                  }
-                                  controller.isCalender.value = false;
-                                  dashboardController.isOverView.value = false;
-                                  controller.changeModuleIndex(3);
-                                  Get.back();
-                                },
-                                image: AppImages.toDo,
-                                title: AppStrings.toDo,
-                                isSelect: controller.isTodo.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.orangeRectangle,
-                              rightText: "12",
-                              height: 20.h,
-                              width: 20.w
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isCalender.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = true;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  calendarController.personalCalendar.value = false;
-                                  calendarController.cropCalendar.value = true;
-                                  controller.changeModuleIndex(4);
-                                  Get.back();
-                                },
-                                image: AppImages.calender,
-                                title: AppStrings.calendar,
-                                isSelect: controller.isCalender.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.greenRectangle,
-                              rightText: "3"
-                            ),),
-                            SizedBox(height: 10.h,),
-                            SizedBox(
-                              height: 45.h,
-                              width: 226.w,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 15.w,),
-                                  Image.asset(
-                                    AppImages.settings,
-                                    height: 20.h,
-                                    width: 20.w,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  CustomText(
-                                    text: AppStrings.settings,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                  ),
-                                  Expanded(child: SizedBox(width: 10.w,)),
-                                  Obx(() => GestureDetector(
+                            Obx(() => dashboardController.isSelect.value == true
+                                ? Column(
+                              children: [
+                                Obx(() => drawerWidget(
                                     onTap: (){
-                                      controller.toggle();
-                                    },
-                                    child: SizedBox(
-                                      child: Image.asset(
-                                        controller.isSetting.value == false ? AppImages.downArrow : AppImages.upArrow,
-                                        height: 25.h,
-                                        width: 25.w,
-                                        fit: BoxFit.cover,
-                                        color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                      ),
-                                    ),
-                                  ),),
-                                  SizedBox(width: 10.w,)
-                                ],
-                              ),
-                            ),
-                            Obx(() => controller.isSetting.value == true
-                                ? settingWidget() : const SizedBox.shrink()),
-                            SizedBox(height: 5.h,),
-                            SizedBox(
-                              height: 45.h,
-                              width: 226.w,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 15.w,),
-                                  Image.asset(
-                                    AppImages.sun,
-                                    height: 20.h,
-                                    width: 20.w,
-                                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
-                                  ),
-                                  SizedBox(
-                                    width: Get.isDarkMode ? 10.w : 5.w,
-                                  ),
-                                  GestureDetector(
-                                    onTap: (){
-                                      ThemeService().switchTheme();
+                                      if ( controller.isGrowSheet.value == false ) {
+                                        controller.isDashboard.value = false;
+                                        controller.isGrowSheet.value = true;
+                                        controller.isChat.value = false;
+                                        controller.isReport.value = false;
+                                        controller.isTodo.value = false;
+                                        controller.isCalender.value = false;
+                                      }
+                                      dashboardController.isOverView.value = false;
+                                      controller.isCalender.value = false;
+                                      controller.changeModuleIndex(1);
+                                      int id = controller.storeData.getInt(StoreData.id)!;
+                                      if ( id != 0) {
+                                         growSheetController.getGrowSheetData(id: id);
+                                      }
                                       Get.back();
                                     },
-                                    child: SizedBox(
-                                      height: 28.h,
-                                      width: 36.w,
-                                      child: SvgPicture.asset(
-                                        Get.isDarkMode
-                                            ? AppImages.lightSelectSwitch
-                                            : AppImages.lightUnselectSwitch,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: Get.isDarkMode ? 5.w : 10.w,
-                                  ),
-                                  Image.asset(
-                                    AppImages.theme,
+                                    image: AppImages.growSheets,
+                                    title: AppStrings.growSheets,
+                                    isSelect: controller.isGrowSheet.value,
+                                    isRightWidget: false
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( controller.isChat.value == false ) {
+                                        controller.isDashboard.value = false;
+                                        controller.isGrowSheet.value = false;
+                                        controller.isChat.value = true;
+                                        controller.isReport.value = false;
+                                        controller.isTodo.value = false;
+                                        controller.isCalender.value = false;
+                                      }
+                                      dashboardController.isOverView.value = false;
+                                      controller.isCalender.value = false;
+                                      controller.changeModuleIndex(2);
+                                      Get.back();
+                                    },
+                                    image: AppImages.chat,
+                                    title: AppStrings.chat,
+                                    isSelect: controller.isChat.value,
+                                    isRightWidget: true,
+                                    rightImage: AppImages.redRectangle,
+                                    rightText: "8"
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( controller.isReport.value == false ) {
+                                        controller.isDashboard.value = false;
+                                        controller.isGrowSheet.value = false;
+                                        controller.isChat.value = false;
+                                        controller.isReport.value = true;
+                                        controller.isTodo.value = false;
+                                        controller.isCalender.value = false;
+                                      }
+                                      dashboardController.isOverView.value = false;
+                                      controller.isCalender.value = false;
+                                      Get.back();
+                                    },
+                                    image: AppImages.reports,
+                                    title: AppStrings.reports,
+                                    isSelect: controller.isReport.value,
+                                    isRightWidget: false
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( controller.isTodo.value == false ) {
+                                        controller.isDashboard.value = false;
+                                        controller.isGrowSheet.value = false;
+                                        controller.isChat.value = false;
+                                        controller.isReport.value = false;
+                                        controller.isTodo.value = true;
+                                        controller.isCalender.value = false;
+                                      }
+                                      controller.isCalender.value = false;
+                                      dashboardController.isOverView.value = false;
+                                      controller.changeModuleIndex(3);
+                                      Get.back();
+                                    },
+                                    image: AppImages.toDo,
+                                    title: AppStrings.toDo,
+                                    isSelect: controller.isTodo.value,
+                                    isRightWidget: true,
+                                    rightImage: AppImages.orangeRectangle,
+                                    rightText: "12",
                                     height: 20.h,
-                                    width: 20.w,
-                                    color: Get.isDarkMode ? AppColors.buttonColor :  AppColors.lightBorder,
+                                    width: 20.w
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( controller.isCalender.value == false ) {
+                                        controller.isDashboard.value = false;
+                                        controller.isGrowSheet.value = false;
+                                        controller.isChat.value = false;
+                                        controller.isReport.value = false;
+                                        controller.isTodo.value = false;
+                                        controller.isCalender.value = true;
+                                      }
+                                      dashboardController.isOverView.value = false;
+                                      calendarController.personalCalendar.value = false;
+                                      calendarController.cropCalendar.value = true;
+                                      controller.changeModuleIndex(4);
+                                      Get.back();
+                                    },
+                                    image: AppImages.calender,
+                                    title: AppStrings.calendar,
+                                    isSelect: controller.isCalender.value,
+                                    isRightWidget: true,
+                                    rightImage: AppImages.greenRectangle,
+                                    rightText: "3"
+                                ),),
+                                SizedBox(height: 10.h,),
+                                SizedBox(
+                                  height: 45.h,
+                                  width: 226.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 15.w,),
+                                      Image.asset(
+                                        AppImages.settings,
+                                        height: 20.h,
+                                        width: 20.w,
+                                        color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                      ),
+                                      SizedBox(
+                                        width: 20.w,
+                                      ),
+                                      CustomText(
+                                        text: AppStrings.settings,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                      ),
+                                      Expanded(child: SizedBox(width: 10.w,)),
+                                      Obx(() => GestureDetector(
+                                        onTap: (){
+                                          controller.toggle();
+                                        },
+                                        child: SizedBox(
+                                          child: Image.asset(
+                                            controller.isSetting.value == false ? AppImages.downArrow : AppImages.upArrow,
+                                            height: 25.h,
+                                            width: 25.w,
+                                            fit: BoxFit.cover,
+                                            color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                          ),
+                                        ),
+                                      ),),
+                                      SizedBox(width: 10.w,)
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 40.h,)
+                                ),
+                                Obx(() => controller.isSetting.value == true
+                                    ? settingWidget() : const SizedBox.shrink()),
+                                SizedBox(height: 5.h,),
+                                SizedBox(
+                                  height: 45.h,
+                                  width: 226.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 15.w,),
+                                      Image.asset(
+                                        AppImages.sun,
+                                        height: 20.h,
+                                        width: 20.w,
+                                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+                                      ),
+                                      SizedBox(
+                                        width: Get.isDarkMode ? 10.w : 5.w,
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+                                          ThemeService().switchTheme();
+                                          Get.back();
+                                        },
+                                        child: SizedBox(
+                                          height: 28.h,
+                                          width: 36.w,
+                                          child: SvgPicture.asset(
+                                            Get.isDarkMode
+                                                ? AppImages.lightSelectSwitch
+                                                : AppImages.lightUnselectSwitch,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: Get.isDarkMode ? 5.w : 10.w,
+                                      ),
+                                      Image.asset(
+                                        AppImages.theme,
+                                        height: 20.h,
+                                        width: 20.w,
+                                        color: Get.isDarkMode ? AppColors.buttonColor :  AppColors.lightBorder,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 40.h,)
+                              ],
+                            )
+                                : const SizedBox.shrink()
+                            )
                           ],
                         ),
                       ),

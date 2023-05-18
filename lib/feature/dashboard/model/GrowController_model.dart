@@ -25,7 +25,12 @@ class GrowModel {
   };
 }
 
+GrowController growControllerFromJson(String str) => GrowController.fromJson(json.decode(str));
+
+String growControllerToJson(GrowController data) => json.encode(data.toJson());
+
 class GrowController {
+
   GrowController({
     this.id,
     this.name,
@@ -66,17 +71,17 @@ class GrowController {
     id: json["id"],
     name: json["name"],
     identifier: json["identifier"],
-    description: json["description"] == null ? null : json["description"],
-    longitude: json["longitude"].toDouble(),
-    latitude: json["latitude"].toDouble(),
+    description: json["description"] ?? "",
+    longitude: json["longitude"] == null ? 0.0 : json["longitude"].toDouble(),
+    latitude: json["latitude"] == null ? 0.0 : json["latitude"].toDouble(),
     dayStart: json["dayStart"],
     nightStart: json["nightStart"],
     temperatureControlAuto: json["temperatureControlAuto"],
     humidityControlAuto: json["humidityControlAuto"],
     co2ControlAuto: json["co2ControlAuto"],
     lightingControlAuto: json["lightingControlAuto"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt: json["createdAt"] == null ? DateTime.now() : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? DateTime.now() : DateTime.parse(json["updatedAt"]),
     companyId: json["companyId"],
     creator: json["creator"],
   );
@@ -85,17 +90,17 @@ class GrowController {
     "id": id,
     "name": name,
     "identifier": identifier,
-    "description": description == null ? null : description,
-    "longitude": longitude,
-    "latitude": latitude,
+    "description": description ?? "",
+    "longitude": longitude ?? 0.0,
+    "latitude": latitude ?? 0.0,
     "dayStart": dayStart,
     "nightStart": nightStart,
     "temperatureControlAuto": temperatureControlAuto,
     "humidityControlAuto": humidityControlAuto,
     "co2ControlAuto": co2ControlAuto,
     "lightingControlAuto": lightingControlAuto,
-    "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
-    "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
+    "createdAt": createdAt == null ? DateTime.now().toIso8601String() : createdAt!.toIso8601String(),
+    "updatedAt": updatedAt == null ? DateTime.now().toIso8601String() : updatedAt!.toIso8601String(),
     "companyId": companyId,
     "creator": creator,
   };

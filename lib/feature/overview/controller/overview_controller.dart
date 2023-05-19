@@ -273,6 +273,8 @@ class OverviewController extends GetxController {
 
   DeviceModel deviceModel = DeviceModel();
 
+  RxBool isGetData = false.obs;
+
   Future getGrowSheetData({required int id}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;

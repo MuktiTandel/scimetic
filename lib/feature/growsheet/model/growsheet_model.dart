@@ -61,7 +61,7 @@ class GrowSheet {
     this.fertigationControl01,
     this.fertigationControl02,
     this.growController,
-    this.company,
+    // this.company,
   });
 
   int? id;
@@ -97,7 +97,7 @@ class GrowSheet {
   dynamic fertigationControl01;
   dynamic fertigationControl02;
   GrowController? growController;
-  Company? company;
+  // Company? company;
 
   factory GrowSheet.fromJson(Map<String, dynamic> json) => GrowSheet(
     id: json["id"] ?? 0,
@@ -133,7 +133,7 @@ class GrowSheet {
     fertigationControl01: json["fertigationControl01"],
     fertigationControl02: json["fertigationControl02"],
     growController: GrowController.fromJson(json["growController"]),
-    company: Company.fromJson(json["company"]),
+    // company: Company.fromJson(json["company"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -170,7 +170,7 @@ class GrowSheet {
     "fertigationControl01": fertigationControl01,
     "fertigationControl02": fertigationControl02,
     "growController": growController!.toJson(),
-    "company": company!.toJson(),
+    // "company": company!.toJson(),
   };
 }
 

@@ -8,8 +8,10 @@ import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
 import 'package:scimetic/feature/energy_management/view/energy_management_screen.dart';
+import 'package:scimetic/feature/fertigation_control/view/fertigation_control_screen.dart';
 import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
+import 'package:scimetic/feature/irrigation_control/view/irrigation_control_screen.dart';
 import 'package:scimetic/feature/lightning_control/view/lightning_control_screen.dart';
 import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
@@ -26,6 +28,18 @@ class HomeController extends GetxController {
   RxBool isCalender = false.obs;
   RxBool isSetting = false.obs;
   RxBool isOverview = false.obs;
+  RxBool isDeviceSetup = false.obs;
+  RxBool isTemperatureControl = false.obs;
+  RxBool isHumidityControl = false.obs;
+  RxBool isCo2Control = false.obs;
+  RxBool isLightingControl = false.obs;
+  RxBool isEnergyManagement = false.obs;
+  RxBool isIrrigation = false.obs;
+  RxBool isFertigation = false.obs;
+  RxBool isAccessSetting = false.obs;
+  RxBool isOrganisationSettings = false.obs;
+  RxBool isUserSetting = false.obs;
+  RxBool isNotifications = false.obs;
 
   RxInt moduleIndex = 0.obs;
 
@@ -68,6 +82,10 @@ class HomeController extends GetxController {
       return AppStrings.lightingControl;
     } else if ( moduleIndex.value == 10 ) {
       return AppStrings.energyManagement;
+    } else if ( moduleIndex.value == 11 ) {
+      return AppStrings.irrigationControl;
+    } else if ( moduleIndex.value == 12 ) {
+      return AppStrings.fertigationControl;
     }
   }
 
@@ -83,7 +101,9 @@ class HomeController extends GetxController {
     HumidityControlScreen(),
     Co2ControlScreen(),
     LightningControlScreen(),
-    EnergyManagementScreen()
+    EnergyManagementScreen(),
+    IrrigationControlScreen(),
+    FertigationControlScreen()
   ];
 
 }

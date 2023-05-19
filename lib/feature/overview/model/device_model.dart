@@ -63,9 +63,9 @@ class Sensor {
 
   factory Sensor.fromJson(Map<String, dynamic> json) => Sensor(
     devices: List<dynamic>.from(json["devices"].map((x) => x)),
-    total: json["total"],
-    online: json["online"],
-    offline: json["offline"],
+    total: json["total"] ?? 0,
+    online: json["online"] ?? 0,
+    offline: json["offline"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {

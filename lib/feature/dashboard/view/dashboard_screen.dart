@@ -52,10 +52,14 @@ class DashboardScreen extends StatelessWidget {
                      onTap: (){
                        controller.isOverView.value = true;
                        controller.isSelect.value = true;
+                       controller.id.value = data.id!;
                        overViewController.id.value = data.id!;
+                       overViewController.isGetData.value = false;
                        overViewController.getClimateData(identifier: data.identifier!).whenComplete(() {
                          overViewController.getGrowSheetData(id: data.id!).whenComplete(() {
-                           overViewController.getDeviceData(id: data.id!);
+                           overViewController.getDeviceData(id: data.id!).whenComplete(() {
+                             overViewController.isGetData.value = true;
+                           });
                          });
                        });
                        controller.storeData.setData(StoreData.id, data.id!);
@@ -65,6 +69,7 @@ class DashboardScreen extends StatelessWidget {
                      desc: data.description ?? "",
                    editTap: (){
 
+                     controller.id.value = data.id!;
                        controller.isEdit.value = true;
                        controller.growspaceNameController.text = data.name!;
                        controller.locationController.text = "${data.latitude
@@ -326,6 +331,7 @@ class DashboardScreen extends StatelessWidget {
           controller.dayMinuteController.clear();
           controller.nightHourController.clear();
           controller.nightMinuteController.clear();
+          Get.back();
         },
         widget: Padding(
           padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 6.h),
@@ -504,7 +510,13 @@ class DashboardScreen extends StatelessWidget {
                           commonTimeTextField(
                               controller: controller.dayHourController,
                               hintText: AppStrings.hh,
-                              onChanged: (value) {}
+                              onChanged: (value) {
+                                if ( value.isNotEmpty ) {
+                                  if (int.parse(value) > 23) {
+                                    controller.dayHourController.text = "23";
+                                  }
+                                }
+                              }
                           ),
                           SizedBox(width: 6.w,),
                           CustomText(
@@ -519,7 +531,13 @@ class DashboardScreen extends StatelessWidget {
                           commonTimeTextField(
                               controller: controller.dayMinuteController,
                               hintText: AppStrings.mm,
-                              onChanged: (value) {}
+                              onChanged: (value) {
+                                if ( value.isNotEmpty ) {
+                                  if (int.parse(value) > 59) {
+                                    controller.dayMinuteController.text = "59";
+                                  }
+                                }
+                              }
                           ),
                         ],
                       )
@@ -541,7 +559,13 @@ class DashboardScreen extends StatelessWidget {
                           commonTimeTextField(
                               controller: controller.nightHourController,
                               hintText: AppStrings.hh,
-                              onChanged: (value) {}
+                              onChanged: (value) {
+                                if ( value.isNotEmpty ) {
+                                  if (int.parse(value) > 23) {
+                                    controller.nightHourController.text = "23";
+                                  }
+                                }
+                              }
                           ),
                           SizedBox(width: 6.w,),
                           CustomText(
@@ -556,7 +580,13 @@ class DashboardScreen extends StatelessWidget {
                           commonTimeTextField(
                               controller: controller.nightMinuteController,
                               hintText: AppStrings.mm,
-                              onChanged: (value) {}
+                              onChanged: (value) {
+                                if ( value.isNotEmpty ) {
+                                  if (int.parse(value) > 59) {
+                                    controller.nightMinuteController.text = "59";
+                                  }
+                                }
+                              }
                           ),
                         ],
                       )

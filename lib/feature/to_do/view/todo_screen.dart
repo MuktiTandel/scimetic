@@ -559,6 +559,9 @@ class TodoScreen extends StatelessWidget {
   Widget commonDialog({required BuildContext context}) {
     return CommonDialogWidget(
             title: AppStrings.addNewTask,
+            onTap: (){
+              Get.back();
+            },
             widget: SizedBox(
               width: 310.w,
               child: Padding(

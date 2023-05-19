@@ -6,6 +6,8 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_graph_widget.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
 import 'package:scimetic/feature/overview/element/month_graph.dart';
@@ -15,16 +17,36 @@ import 'package:scimetic/feature/overview/element/week_graph.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
-class OverviewScreen extends StatelessWidget {
-   OverviewScreen({Key? key}) : super(key: key);
+class OverviewScreen extends StatefulWidget {
+   const OverviewScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OverviewScreen> createState() => _OverviewScreenState();
+}
+
+class _OverviewScreenState extends State<OverviewScreen> {
 
    final controller = Get.put(OverviewController());
+
+   final homeController = Get.put(HomeController());
+
+   final dashboardController = Get.put(DashboardController());
+
+   @override
+  void initState() {
+     super.initState();
+     homeController.isDashboard.value = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
         behavior: AppBehavior(),
-        child: SingleChildScrollView(
+        child: Obx(() => controller.isGetData.value == false ? const Center(
+          child: CircularProgressIndicator(
+            color: AppColors.buttonColor,
+          ),
+        ) : SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(height: 10.h,),
@@ -77,12 +99,12 @@ class OverviewScreen extends StatelessWidget {
                       dataList: controller.temperatureMonthDataList,
                       format: "°C"
                   ),
-                color: AppColors.orange,
-                onTap: (){
+                  color: AppColors.orange,
+                  onTap: (){
                     controller.isTemperature.value = true;
                     Get.toNamed(AppPages.GRAPH);
-                },
-                isPhase: false
+                  },
+                  isPhase: false
               )),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
@@ -94,10 +116,10 @@ class OverviewScreen extends StatelessWidget {
                   isWeek: controller.isElectricWeek.value,
                   isMonth: controller.isElectricMonth.value,
                   graph: controller.isElectricHour.value == true ? HourGraph(
-                      minY: 80,
-                      maxY: 91,
-                      graphColor: AppColors.lightBlue,
-                      dataList: controller.electricalDataList,
+                    minY: 80,
+                    maxY: 91,
+                    graphColor: AppColors.lightBlue,
+                    dataList: controller.electricalDataList,
                     format: "kW",
                   ) : controller.isElectricWeek.value == true
                       ? WeekGraph(
@@ -136,11 +158,11 @@ class OverviewScreen extends StatelessWidget {
                     }
                   },
                   color: AppColors.lightBlue,
-                onTap: (){
+                  onTap: (){
                     controller.isElectricalLoad.value = true;
                     Get.toNamed(AppPages.GRAPH);
-                },
-                isPhase: false
+                  },
+                  isPhase: false
               )
               ),
               SizedBox(height: 10.h,),
@@ -153,10 +175,10 @@ class OverviewScreen extends StatelessWidget {
                   isWeek: controller.isCo2Week.value,
                   isMonth: controller.isCo2Month.value,
                   graph: controller.isCo2Hour.value == true ? HourGraph(
-                      minY: 700,
-                      maxY: 810,
-                      graphColor: AppColors.lightGreen1,
-                      dataList: controller.co2DataList,
+                    minY: 700,
+                    maxY: 810,
+                    graphColor: AppColors.lightGreen1,
+                    dataList: controller.co2DataList,
                     format: " ppm",
                   ) : controller.isCo2Week.value == true
                       ? WeekGraph(
@@ -195,11 +217,11 @@ class OverviewScreen extends StatelessWidget {
                     }
                   },
                   color: AppColors.lightGreen1,
-                onTap: (){
+                  onTap: (){
                     controller.isCo2.value = true;
                     Get.toNamed(AppPages.GRAPH);
-                },
-                isPhase: false
+                  },
+                  isPhase: false
               )
               ),
               SizedBox(height: 10.h,),
@@ -253,13 +275,13 @@ class OverviewScreen extends StatelessWidget {
                       controller.isLightMonth.value = true;
                     }
                   },
-                color: AppColors.pink,
-                onTap: (){
+                  color: AppColors.pink,
+                  onTap: (){
                     controller.isLightning.value = true;
                     Get.toNamed(AppPages.GRAPH);
-                },
-                isPhase: false
-                  ),
+                  },
+                  isPhase: false
+              ),
               ),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
@@ -271,19 +293,19 @@ class OverviewScreen extends StatelessWidget {
                   isWeek: controller.isVdpWeek.value,
                   isMonth: controller.isVdpMonth.value,
                   graph: controller.isVdpHour.value == true ? HourGraph(
-                      minY: 0.85,
-                      maxY: 1.06,
-                      graphColor: AppColors.lightBlue2,
-                      dataList: controller.vdpDataList,
+                    minY: 0.85,
+                    maxY: 1.06,
+                    graphColor: AppColors.lightBlue2,
+                    dataList: controller.vdpDataList,
                     format: " kPa",
                   ) : controller.isVdpWeek.value == true
                       ? WeekGraph(
-                      minY: 0.85,
-                      maxY: 1.06,
-                      graphColor: AppColors.lightBlue2,
-                      dataList: controller.vdpWeekDataList,
-                      format: " kPa",
-                      graphColor1: AppColors.darkBlue2,
+                    minY: 0.85,
+                    maxY: 1.06,
+                    graphColor: AppColors.lightBlue2,
+                    dataList: controller.vdpWeekDataList,
+                    format: " kPa",
+                    graphColor1: AppColors.darkBlue2,
                   ) : MonthGraph(
                       minY: 0.85,
                       maxY: 1.06,
@@ -313,11 +335,11 @@ class OverviewScreen extends StatelessWidget {
                     }
                   },
                   color: AppColors.lightBlue2,
-                onTap: (){
+                  onTap: (){
                     controller.isVdp.value = true;
                     Get.toNamed(AppPages.GRAPH);
-                },
-                isPhase: false
+                  },
+                  isPhase: false
               )
               ),
               SizedBox(height: 10.h,),
@@ -583,13 +605,31 @@ class OverviewScreen extends StatelessWidget {
               SizedBox(height: 10.h,),
               growSheetWidget(),
               SizedBox(height: 10.h,),
-              deviceOverviewWidget(),
+              deviceOverviewWidget(
+                  onTap: (){
+                    dashboardController.isOverView.value = false;
+                    homeController.isDeviceSetup.value = true;
+                    homeController.isSetting.value = true;
+                    homeController.changeModuleIndex(5);
+                  },
+                  switchesOnline: controller.deviceModel.devices!
+                      .devicesSwitch!.online.toString(),
+                  switchesOffline: controller.deviceModel
+                      .devices!.devicesSwitch!.offline.toString(),
+                  sensorOnline: controller.deviceModel
+                      .devices!.sensor!.online.toString(),
+                  sensorOffline: controller.deviceModel
+                      .devices!.sensor!.offline.toString(),
+                  valvesOnline: controller.deviceModel
+                      .devices!.valve!.online.toString(),
+                  valvesOffline: controller.deviceModel
+                      .devices!.valve!.offline.toString()
+              ),
               SizedBox(height: 20.h,)
             ],
           ),
-        )
+        ))
     );
   }
-
 }
 

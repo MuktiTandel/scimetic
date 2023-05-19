@@ -11,6 +11,10 @@ class DeviceSettingsController extends GetxController {
 
   RxInt descriptionLength = 0.obs;
 
+  RxBool isSwitches = false.obs;
+  RxBool isSensors = false.obs;
+  RxBool isValves = false.obs;
+
   final TextEditingController serialNumberController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();

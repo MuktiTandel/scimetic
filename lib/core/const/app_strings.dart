@@ -252,6 +252,14 @@ class AppStrings {
   static const String name = "Name";
   static const String dayStart = "Day Start";
   static const String nightStart = "Night Start";
+  static const String irrigationControl = "Irrigation control";
+  static const String fertigationControl = "Fertigation control";
+  static const String night = "Night";
+  static const String addNewSchedules = "Add New Schedules";
+  static const String dayIrrigationMode = "Day Irrigation Mode";
+  static const String nightIrrigationMode = "Night Irrigation Mode";
+  static const String ingredient = "Ingredient";
+  static const String quantity = "Quantity";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

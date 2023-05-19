@@ -11,13 +11,13 @@ class CommonDialogWidget extends StatelessWidget {
     required this.title,
     required this.widget,
     this.padding,
-    this.onTap
+    required this.onTap
   }) : super(key: key);
 
   final String title;
   final Widget widget;
   final EdgeInsets? padding;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,7 @@ class CommonDialogWidget extends StatelessWidget {
                       Expanded(child: SizedBox(width: 10.w,)),
                       GestureDetector(
                         onTap: (){
-                          onTap!();
-                          Get.back();
+                          onTap();
                         },
                         child: Image.asset(
                           AppImages.close,

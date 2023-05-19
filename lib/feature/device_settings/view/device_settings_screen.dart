@@ -12,11 +12,14 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
+import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
 class DeviceSettingsScreen extends StatelessWidget {
    DeviceSettingsScreen({Key? key}) : super(key: key);
 
    final controller = Get.put(DeviceSettingsController());
+
+   final overviewController = Get.put(OverviewController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +32,37 @@ class DeviceSettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(height: 10.h,),
-              ListView.builder(
-                itemCount: 3,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (BuildContext context, int index) {
-                    return commonListView(
-                      title: controller.deviceList[index].name,
-                      totalDevice: controller.deviceList[index].totalDevices,
-                      totalOnline: controller.deviceList[index].totalOnline,
-                      totalOffline: controller.deviceList[index].totalOffline,
-                      isSelect: controller.deviceList[index].isSelect
-                    );
-                  }
-              ),
+              Obx(() => overviewController.isGetData.value == false ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.buttonColor,
+                ),
+              ) : Column(
+                children: [
+                  commonListView(
+                      title: AppStrings.switches,
+                      totalDevice: overviewController.deviceModel.devices!.devicesSwitch!.total! ?? 0,
+                      totalOnline: overviewController.deviceModel.devices!.devicesSwitch!.online!,
+                      totalOffline: overviewController.deviceModel.devices!.devicesSwitch!.offline!,
+                      isSelect: controller.isSwitches
+                  ),
+                  SizedBox(height: 8.h,),
+                  commonListView(
+                      title: AppStrings.sensors,
+                      totalDevice: overviewController.deviceModel.devices!.sensor!.total!,
+                      totalOnline: overviewController.deviceModel.devices!.sensor!.online!,
+                      totalOffline: overviewController.deviceModel.devices!.sensor!.offline!,
+                      isSelect: controller.isSensors
+                  ),
+                  SizedBox(height: 8.h,),
+                  commonListView(
+                      title: AppStrings.valves,
+                      totalDevice: overviewController.deviceModel.devices!.valve!.total!,
+                      totalOnline: overviewController.deviceModel.devices!.valve!.online!,
+                      totalOffline: overviewController.deviceModel.devices!.valve!.offline!,
+                      isSelect: controller.isValves
+                  )
+                ],
+              ),),
               SizedBox(height: 10.h,),
               Padding(
                 padding:  EdgeInsets.only(right: 10.w),
@@ -54,6 +73,9 @@ class DeviceSettingsScreen extends StatelessWidget {
                     Get.dialog(
                       CommonDialogWidget(
                           title: AppStrings.addNewDevice,
+                          onTap: (){
+                            Get.back();
+                          },
                           widget: SizedBox(
                             width: 350.w,
                             child: Padding(
@@ -323,7 +345,7 @@ class DeviceSettingsScreen extends StatelessWidget {
               ),
               SizedBox(height: 5.h,),
               CustomText(
-                text: '$totalDevice ${AppStrings.devices}',
+                text: '${totalDevice.toString()} ${AppStrings.devices}',
                 fontWeight: FontWeight.w500,
                 fontSize: 13.sp,
                 color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,

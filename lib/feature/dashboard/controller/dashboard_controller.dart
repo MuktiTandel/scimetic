@@ -54,6 +54,8 @@ class DashboardController extends GetxController {
 
   RxBool isSelect = false.obs;
 
+  RxInt id = 0.obs;
+
   Future getDataList() async {
 
     isGetData.value = false;
@@ -164,7 +166,59 @@ class DashboardController extends GetxController {
 
   }
 
-  Future updateGrowSpace({required }) async {
+  Future updateGrowSpace({required int id, required GrowController growController }) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.growController}/$id",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: {
+              "name" : growController.name,
+              "description" : growController.description,
+              "dayStart" : growController.dayStart,
+              "nightStart" : growController.nightStart,
+              "temperatureControlAuto" : growController.temperatureControlAuto,
+              "humidityControlAuto" : growController.humidityControlAuto,
+              "co2ControlAuto" : growController.co2ControlAuto,
+              "lightingControlAuto" : growController.lightingControlAuto
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
 
   }
 
@@ -205,23 +259,48 @@ class DashboardController extends GetxController {
 
       if ( isConnected == true ) {
 
-        GrowspaceModel growspaceModel = GrowspaceModel();
+        if ( isEdit.value == false ) {
 
-        growspaceModel.name = growspaceNameController.text;
-        growspaceModel.identifier = serialNumberController.text;
-        growspaceModel.description = descriptionController.text;
-        growspaceModel.location = locationController.text;
-        growspaceModel.dayStart = dayHourController.text.isNotEmpty ?
-        "${dayHourController.text}"
-            ":${dayMinuteController.text}" : "";
-        growspaceModel.nightStart = nightHourController.text.isNotEmpty ?
-        "${nightHourController.text}"
-            ":${nightMinuteController.text}" : "";
+          GrowspaceModel growspaceModel = GrowspaceModel();
 
-        await createGrowSpace(growspaceModel: growspaceModel).whenComplete(() {
-          Get.back();
-          getDataList();
-        });
+          growspaceModel.name = growspaceNameController.text;
+          growspaceModel.identifier = serialNumberController.text;
+          growspaceModel.description = descriptionController.text;
+          growspaceModel.location = locationController.text;
+          growspaceModel.dayStart = dayHourController.text.isNotEmpty ?
+          "${dayHourController.text}"
+              ":${dayMinuteController.text}" : "";
+          growspaceModel.nightStart = nightHourController.text.isNotEmpty ?
+          "${nightHourController.text}"
+              ":${nightMinuteController.text}" : "";
+
+          await createGrowSpace(growspaceModel: growspaceModel)
+              .whenComplete(() {
+            Get.back();
+            getDataList();
+          });
+
+        } else {
+
+          GrowController growController = GrowController();
+
+          growController.name = growspaceNameController.text;
+          growController.description = descriptionController.text;
+          growController.dayStart = "${dayHourController.text}:${dayMinuteController.text}";
+          growController.nightStart = "${nightHourController.text}:${nightMinuteController.text}";
+          growController.temperatureControlAuto = true;
+          growController.humidityControlAuto = true;
+          growController.co2ControlAuto = true;
+          growController.lightingControlAuto = true;
+
+          await updateGrowSpace(id: id.value, growController: growController)
+              .whenComplete(() {
+                Get.back();
+                getDataList();
+          });
+
+
+        }
 
         growspaceNameController.clear();
         serialNumberController.clear();

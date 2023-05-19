@@ -7,6 +7,7 @@ import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/graph_controller.dart';
+import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
 import 'package:scimetic/feature/overview/element/grpah_widget.dart';
@@ -15,6 +16,8 @@ class GraphScreen extends StatelessWidget {
    GraphScreen({Key? key}) : super(key: key);
 
    final controller = Get.put(GraphController());
+
+   final overviewController = Get.put(OverviewController());
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,21 @@ class GraphScreen extends StatelessWidget {
               SizedBox(height: 10.h,),
               growSheetWidget(),
               SizedBox(height: 10.h,),
-              deviceOverviewWidget(),
+              deviceOverviewWidget(
+                onTap: (){},
+                  switchesOnline: overviewController.deviceModel.devices!
+                      .devicesSwitch!.online.toString(),
+                  switchesOffline: overviewController.deviceModel
+                      .devices!.devicesSwitch!.offline.toString(),
+                  sensorOnline: overviewController.deviceModel
+                      .devices!.sensor!.online.toString(),
+                  sensorOffline: overviewController.deviceModel
+                      .devices!.sensor!.offline.toString(),
+                  valvesOnline: overviewController.deviceModel
+                      .devices!.valve!.online.toString(),
+                  valvesOffline: overviewController.deviceModel
+                      .devices!.valve!.offline.toString()
+              ),
               SizedBox(height: 20.h,)
             ],
           ),

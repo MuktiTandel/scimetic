@@ -40,7 +40,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                 children: [
                   commonListView(
                       title: AppStrings.switches,
-                      totalDevice: overviewController.deviceModel.devices!.devicesSwitch!.total! ?? 0,
+                      totalDevice: overviewController.deviceModel.devices!.devicesSwitch!.total!,
                       totalOnline: overviewController.deviceModel.devices!.devicesSwitch!.online!,
                       totalOffline: overviewController.deviceModel.devices!.devicesSwitch!.offline!,
                       isSelect: controller.isSwitches

@@ -13,6 +13,7 @@ import 'package:scimetic/core/elements/common_time_textfield.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
+import 'package:scimetic/core/elements/edit_delete_popup.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
@@ -181,89 +182,7 @@ class DashboardScreen extends StatelessWidget {
                       title,
                       style: TextStyleDecoration.headline5,
                     ),
-                    PopupMenuButton<int>(
-                      offset: Offset(0, 17.h),
-                      padding: EdgeInsets.zero,
-                      color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                      constraints: BoxConstraints(
-                          maxWidth: 115.w,
-                          maxHeight: 75.h
-                      ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Image.asset(
-                        AppImages.menu,
-                        height: 14.h,
-                        width: 8.w,
-                        color: Get.isDarkMode ? AppColors.darkIcon : AppColors.lightText,
-                      ),
-                      onSelected: (item) {},
-                      itemBuilder: (context) => [
-                        PopupMenuItem<int>(
-                            padding: EdgeInsets.zero,
-                            value: 0,
-                            onTap: (){
-                              editTap();
-                            },
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        AppImages.edit,
-                                        height: 25.h,
-                                        width: 25.w,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText : AppColors.lightGray1,
-                                      ),
-                                      SizedBox(width: 10.w,),
-                                      CustomText(
-                                        text: AppStrings.edit,
-                                        fontSize: 15.sp,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText : AppColors.lightGray1,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  color: Get.isDarkMode
-                                      ? AppColors.darkBlue1
-                                      : AppColors.lightGray2,
-                                  thickness: 1.w,
-                                )
-                              ],
-                            )
-                        ),
-                        PopupMenuItem<int>(
-                            value: 1,
-                            padding: EdgeInsets.zero,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 6.h),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    AppImages.trash,
-                                    height: 25.h,
-                                    width: 25.w,
-                                  ),
-                                  SizedBox(width: 10.w,),
-                                  CustomText(
-                                    text: AppStrings.delete,
-                                    fontSize: 15.sp,
-                                    color: AppColors.red,
-                                    fontWeight: FontWeight.w500,
-                                  )
-                                ],
-                              ),
-                            )
-                        ),
-                      ],
-                    ),
+                    editDeletePopup(editTap: editTap)
                   ],
                 ),
                 SizedBox(height: 5.h,),

@@ -12,6 +12,12 @@ class FertigationController extends GetxController {
   final TextEditingController tagController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  final TextEditingController dayIngredientController = TextEditingController();
+  final TextEditingController dayQuantityController = TextEditingController();
+
+  final TextEditingController nightIngredientController = TextEditingController();
+  final TextEditingController nightQuantityController = TextEditingController();
+
   RxInt descriptionLength = 0.obs;
 
   RxBool isSelect = false.obs;

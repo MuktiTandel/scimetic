@@ -6,7 +6,6 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
-import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/common_popup.dart';
 import 'package:scimetic/core/elements/custom_button.dart';

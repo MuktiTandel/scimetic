@@ -4,6 +4,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 
 progressDialog(bool isLoading, BuildContext context) {
   AlertDialog dialog = AlertDialog(
+    backgroundColor: Colors.white,
     insetPadding: EdgeInsets.symmetric(horizontal: 140.w),
     content: Container(
         height: 40.h,

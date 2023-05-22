@@ -69,7 +69,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
               height: 20.h,
             ),
             Text(
-              AppStrings.eOrUsername,
+              AppStrings.email,
               style: TextStyleDecoration.headline1,
             ),
             SizedBox(height: 5.h,),

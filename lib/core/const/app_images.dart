@@ -106,5 +106,9 @@ class AppImages {
   static const String generatorRunning = 'assets/images/generator_running.png';
   static const String close1 = 'assets/images/close1.png';
   static const String tag = 'assets/images/tag.png';
+  static const String group15 = 'assets/images/group15.png';
+  static const String key = 'assets/images/key.png';
+  static const String logo = 'assets/images/logo.png';
+  static const String organization = 'assets/images/organization.png';
 
 }

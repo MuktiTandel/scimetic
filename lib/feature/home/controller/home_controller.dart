@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/access_setting/view/access_setting_screen.dart';
 import 'package:scimetic/feature/calendar/view/calendar_screen.dart';
 import 'package:scimetic/feature/chat/view/chat_screen.dart';
 import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
@@ -13,6 +14,8 @@ import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
 import 'package:scimetic/feature/irrigation_control/view/irrigation_control_screen.dart';
 import 'package:scimetic/feature/lightning_control/view/lightning_control_screen.dart';
+import 'package:scimetic/feature/organization_settings/view/organization_setting_screen.dart';
+import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
 
@@ -20,7 +23,8 @@ class HomeController extends GetxController {
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
-  RxBool isDashboard = true.obs;
+  RxBool isOrganization = true.obs;
+  RxBool isDashboard = false.obs;
   RxBool isGrowSheet = false.obs;
   RxBool isChat = false.obs;
   RxBool isReport = false.obs;
@@ -60,39 +64,46 @@ class HomeController extends GetxController {
   }
 
   appbarTitle() {
-    if (moduleIndex.value == 0 ) {
+    if (moduleIndex.value == 1 ) {
       return AppStrings.tOverview;
-    } else if ( moduleIndex.value == 1 ) {
-      return AppStrings.growSheets;
     } else if ( moduleIndex.value == 2 ) {
-      return AppStrings.chat;
+      return AppStrings.growSheets;
     } else if ( moduleIndex.value == 3 ) {
-      return AppStrings.toDo;
+      return AppStrings.chat;
     } else if ( moduleIndex.value == 4 ) {
+      return AppStrings.toDo;
+    } else if ( moduleIndex.value == 5 ) {
       return AppStrings.calendar;
-    } else if (moduleIndex.value == 5 ) {
-      return AppStrings.deviceSettings;
     } else if (moduleIndex.value == 6 ) {
+      return AppStrings.deviceSettings;
+    } else if (moduleIndex.value == 7 ) {
       return AppStrings.temperatureControl;
-    } else if ( moduleIndex.value == 7 ) {
-      return AppStrings.humidityControl;
     } else if ( moduleIndex.value == 8 ) {
-      return AppStrings.co2Control;
+      return AppStrings.humidityControl;
     } else if ( moduleIndex.value == 9 ) {
-      return AppStrings.lightingControl;
+      return AppStrings.co2Control;
     } else if ( moduleIndex.value == 10 ) {
-      return AppStrings.energyManagement;
+      return AppStrings.lightingControl;
     } else if ( moduleIndex.value == 11 ) {
-      return AppStrings.irrigationControl;
+      return AppStrings.energyManagement;
     } else if ( moduleIndex.value == 12 ) {
+      return AppStrings.irrigationControl;
+    } else if ( moduleIndex.value == 13 ) {
       return AppStrings.fertigationControl;
+    } else if ( moduleIndex.value == 14 ) {
+      return AppStrings.accessSetting;
+    } else if ( moduleIndex.value == 15 ) {
+      return AppStrings.organisationSettings;
+    } else if ( moduleIndex.value == 0 ) {
+      return AppStrings.organizations;
     }
   }
 
 
   List<Widget> moduleList = [
-     DashboardScreen(),
-     GrowSheetsScreen(),
+    OrganizationScreen(),
+    DashboardScreen(),
+    GrowSheetsScreen(),
     ChatScreen(),
     TodoScreen(),
     CalendarScreen(),
@@ -103,7 +114,9 @@ class HomeController extends GetxController {
     LightningControlScreen(),
     EnergyManagementScreen(),
     IrrigationControlScreen(),
-    FertigationControlScreen()
+    FertigationControlScreen(),
+    AccessSettingScreen(),
+    OrganizationSettingScreen(),
   ];
 
 }

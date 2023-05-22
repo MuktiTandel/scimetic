@@ -15,6 +15,7 @@ import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
+import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -27,6 +28,8 @@ class HomeScreen extends StatelessWidget {
    final calendarController = Get.put(CalendarController());
 
    final growSheetController = Get.put(GrowSheetController());
+
+   final organizationController = Get.put(OrganizationController());
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,9 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             Obx(() => drawerWidget(
                                 onTap: (){
-                                  if ( controller.isDashboard.value == false ) {
-                                    controller.isDashboard.value = true;
+                                  if ( controller.isOrganization.value == false ) {
+                                    controller.isOrganization.value = true;
+                                    controller.isDashboard.value = false;
                                     controller.isGrowSheet.value = false;
                                     controller.isChat.value = false;
                                     controller.isReport.value = false;
@@ -135,6 +139,41 @@ class HomeScreen extends StatelessWidget {
                                   dashboardController.isOverView.value = false;
                                   controller.isCalender.value = false;
                                   controller.changeModuleIndex(0);
+                                  Get.back();
+                                },
+                                image: AppImages.dashboard,
+                                title: AppStrings.organizations,
+                                isSelect: controller.isOrganization.value,
+                                isRightWidget: false
+                            ),),
+                            SizedBox(height: 5.h,),
+                            Obx(() => drawerWidget(
+                                onTap: (){
+                                  if ( controller.isDashboard.value == false ) {
+                                    controller.isOrganization.value = false;
+                                    controller.isDashboard.value = true;
+                                    controller.isGrowSheet.value = false;
+                                    controller.isChat.value = false;
+                                    controller.isReport.value = false;
+                                    controller.isTodo.value = false;
+                                    controller.isCalender.value = false;
+                                    controller.isSetting.value = false;
+                                    controller.isDeviceSetup.value = false;
+                                    controller.isTemperatureControl.value = false;
+                                    controller.isHumidityControl.value = false;
+                                    controller.isCo2Control.value = false;
+                                    controller.isLightingControl.value = false;
+                                    controller.isEnergyManagement.value = false;
+                                    controller.isIrrigation.value = false;
+                                    controller.isFertigation.value = false;
+                                    controller.isAccessSetting.value = false;
+                                    controller.isOrganisationSettings.value = false;
+                                    controller.isUserSetting.value = false;
+                                    controller.isNotifications.value = false;
+                                  }
+                                  dashboardController.isOverView.value = false;
+                                  controller.isCalender.value = false;
+                                  controller.changeModuleIndex(1);
                                   dashboardController.getDataList();
                                   dashboardController.isSelect.value = false;
                                   Get.back();
@@ -173,7 +212,7 @@ class HomeScreen extends StatelessWidget {
                                       }
                                       dashboardController.isOverView.value = false;
                                       controller.isCalender.value = false;
-                                      controller.changeModuleIndex(1);
+                                      controller.changeModuleIndex(2);
                                       int id = controller.storeData.getInt(StoreData.id)!;
                                       if ( id != 0) {
                                          growSheetController.getGrowSheetData(id: id);
@@ -186,41 +225,41 @@ class HomeScreen extends StatelessWidget {
                                     isRightWidget: false
                                 ),),
                                 SizedBox(height: 5.h,),
-                                Obx(() => drawerWidget(
-                                    onTap: (){
-                                      if ( controller.isChat.value == false ) {
-                                        controller.isDashboard.value = false;
-                                        controller.isGrowSheet.value = false;
-                                        controller.isChat.value = true;
-                                        controller.isReport.value = false;
-                                        controller.isTodo.value = false;
-                                        controller.isCalender.value = false;
-                                        controller.isSetting.value = false;
-                                        controller.isDeviceSetup.value = false;
-                                        controller.isTemperatureControl.value = false;
-                                        controller.isHumidityControl.value = false;
-                                        controller.isCo2Control.value = false;
-                                        controller.isLightingControl.value = false;
-                                        controller.isEnergyManagement.value = false;
-                                        controller.isIrrigation.value = false;
-                                        controller.isFertigation.value = false;
-                                        controller.isAccessSetting.value = false;
-                                        controller.isOrganisationSettings.value = false;
-                                        controller.isUserSetting.value = false;
-                                        controller.isNotifications.value = false;
-                                      }
-                                      dashboardController.isOverView.value = false;
-                                      controller.isCalender.value = false;
-                                      controller.changeModuleIndex(2);
-                                      Get.back();
-                                    },
-                                    image: AppImages.chat,
-                                    title: AppStrings.chat,
-                                    isSelect: controller.isChat.value,
-                                    isRightWidget: true,
-                                    rightImage: AppImages.redRectangle,
-                                    rightText: "8"
-                                ),),
+                                // Obx(() => drawerWidget(
+                                //     onTap: (){
+                                //       if ( controller.isChat.value == false ) {
+                                //         controller.isDashboard.value = false;
+                                //         controller.isGrowSheet.value = false;
+                                //         controller.isChat.value = true;
+                                //         controller.isReport.value = false;
+                                //         controller.isTodo.value = false;
+                                //         controller.isCalender.value = false;
+                                //         controller.isSetting.value = false;
+                                //         controller.isDeviceSetup.value = false;
+                                //         controller.isTemperatureControl.value = false;
+                                //         controller.isHumidityControl.value = false;
+                                //         controller.isCo2Control.value = false;
+                                //         controller.isLightingControl.value = false;
+                                //         controller.isEnergyManagement.value = false;
+                                //         controller.isIrrigation.value = false;
+                                //         controller.isFertigation.value = false;
+                                //         controller.isAccessSetting.value = false;
+                                //         controller.isOrganisationSettings.value = false;
+                                //         controller.isUserSetting.value = false;
+                                //         controller.isNotifications.value = false;
+                                //       }
+                                //       dashboardController.isOverView.value = false;
+                                //       controller.isCalender.value = false;
+                                //       controller.changeModuleIndex(2);
+                                //       Get.back();
+                                //     },
+                                //     image: AppImages.chat,
+                                //     title: AppStrings.chat,
+                                //     isSelect: controller.isChat.value,
+                                //     isRightWidget: true,
+                                //     rightImage: AppImages.redRectangle,
+                                //     rightText: "8"
+                                // ),),
                                 SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
                                     onTap: (){
@@ -280,7 +319,7 @@ class HomeScreen extends StatelessWidget {
                                       }
                                       controller.isCalender.value = false;
                                       dashboardController.isOverView.value = false;
-                                      controller.changeModuleIndex(3);
+                                      controller.changeModuleIndex(4);
                                       Get.back();
                                     },
                                     image: AppImages.toDo,
@@ -319,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                                       dashboardController.isOverView.value = false;
                                       calendarController.personalCalendar.value = false;
                                       calendarController.cropCalendar.value = true;
-                                      controller.changeModuleIndex(4);
+                                      controller.changeModuleIndex(5);
                                       Get.back();
                                     },
                                     image: AppImages.calender,
@@ -373,54 +412,54 @@ class HomeScreen extends StatelessWidget {
                                 Obx(() => controller.isSetting.value == true
                                     ? settingWidget() : const SizedBox.shrink()),
                                 SizedBox(height: 5.h,),
-                                SizedBox(
-                                  height: 45.h,
-                                  width: 226.w,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: 15.w,),
-                                      Image.asset(
-                                        AppImages.sun,
-                                        height: 20.h,
-                                        width: 20.w,
-                                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
-                                      ),
-                                      SizedBox(
-                                        width: Get.isDarkMode ? 10.w : 5.w,
-                                      ),
-                                      GestureDetector(
-                                        onTap: (){
-                                          ThemeService().switchTheme();
-                                          Get.back();
-                                        },
-                                        child: SizedBox(
-                                          height: 28.h,
-                                          width: 36.w,
-                                          child: SvgPicture.asset(
-                                            Get.isDarkMode
-                                                ? AppImages.lightSelectSwitch
-                                                : AppImages.lightUnselectSwitch,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: Get.isDarkMode ? 5.w : 10.w,
-                                      ),
-                                      Image.asset(
-                                        AppImages.theme,
-                                        height: 20.h,
-                                        width: 20.w,
-                                        color: Get.isDarkMode ? AppColors.buttonColor :  AppColors.lightBorder,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 40.h,)
                               ],
                             )
                                 : const SizedBox.shrink()
-                            )
+                            ),
+                            SizedBox(
+                              height: 45.h,
+                              width: 226.w,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 15.w,),
+                                  Image.asset(
+                                    AppImages.sun,
+                                    height: 20.h,
+                                    width: 20.w,
+                                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+                                  ),
+                                  SizedBox(
+                                    width: Get.isDarkMode ? 10.w : 5.w,
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      ThemeService().switchTheme();
+                                      Get.back();
+                                    },
+                                    child: SizedBox(
+                                      height: 28.h,
+                                      width: 36.w,
+                                      child: SvgPicture.asset(
+                                        Get.isDarkMode
+                                            ? AppImages.lightSelectSwitch
+                                            : AppImages.lightUnselectSwitch,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: Get.isDarkMode ? 5.w : 10.w,
+                                  ),
+                                  Image.asset(
+                                    AppImages.theme,
+                                    height: 20.h,
+                                    width: 20.w,
+                                    color: Get.isDarkMode ? AppColors.buttonColor :  AppColors.lightBorder,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 40.h,)
                           ],
                         ),
                       ),
@@ -451,7 +490,8 @@ class HomeScreen extends StatelessWidget {
       },
       child: Container(
         color: isSelect == true
-            ? Get.isDarkMode ? AppColors.darkBlue : AppColors.lightAppbar : Colors.transparent,
+            ? Get.isDarkMode ? AppColors.darkBlue
+            : AppColors.lightAppbar : Colors.transparent,
         height: 45.h,
         width: 226.w,
         child: Row(
@@ -527,7 +567,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(5);
+                controller.changeModuleIndex(6);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -557,7 +597,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(6);
+                controller.changeModuleIndex(7);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -587,7 +627,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(7);
+                controller.changeModuleIndex(8);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -617,7 +657,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(8);
+                controller.changeModuleIndex(9);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -647,7 +687,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(9);
+                controller.changeModuleIndex(10);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -677,7 +717,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(10);
+                controller.changeModuleIndex(11);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -707,7 +747,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(11);
+                controller.changeModuleIndex(12);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -737,7 +777,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
                 dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(12);
+                controller.changeModuleIndex(13);
                 controller.isCalender.value = false;
                 Get.back();
               },
@@ -749,6 +789,12 @@ class HomeScreen extends StatelessWidget {
               title: AppStrings.accessSettings,
               onTap: (){
                 controller.isAccessSetting.value = true;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -760,6 +806,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(14);
+                controller.isCalender.value = false;
+                Get.back();
               },
             isSelect: controller.isAccessSetting
           ),
@@ -769,6 +819,12 @@ class HomeScreen extends StatelessWidget {
               title: AppStrings.organisationSettings,
               onTap: (){
                 controller.isOrganisationSettings.value = true;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isChat.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -780,6 +836,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isDeviceSetup.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                dashboardController.isOverView.value = false;
+                controller.changeModuleIndex(15);
+                controller.isCalender.value = false;
+                Get.back();
               },
             isSelect: controller.isOrganisationSettings
           ),
@@ -839,7 +899,10 @@ class HomeScreen extends StatelessWidget {
         onTap();
       },
       child: Container(
-        color: isSelect.value == false ? Colors.transparent : Colors.white,
+        color: Get.isDarkMode
+            ? isSelect.value == true
+            ? Colors.transparent : Colors.transparent
+            : isSelect.value == false ? Colors.transparent : Colors.white,
         child: Row(
           children: [
             SizedBox(width: 20.w,),
@@ -848,7 +911,8 @@ class HomeScreen extends StatelessWidget {
               height: 20.h,
               width: 20.w,
               color: Get.isDarkMode
-                  ? AppColors.darkIcon
+                  ? isSelect.value == true ? AppColors.buttonColor
+                  : AppColors.darkIcon
                   : isSelect.value == false
                   ? AppColors.lightGray1 : AppColors.buttonColor,
             ),
@@ -857,7 +921,8 @@ class HomeScreen extends StatelessWidget {
               text: title,
               fontSize: 14.sp,
               color: Get.isDarkMode
-                  ? AppColors.darkIcon
+                  ? isSelect.value == true
+                  ? AppColors.buttonColor : AppColors.darkIcon
                   : isSelect.value == false
                   ? AppColors.lightGray1 : AppColors.buttonColor,
               fontWeight: FontWeight.w500,

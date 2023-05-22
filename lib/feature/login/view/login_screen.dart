@@ -73,7 +73,7 @@ class LoginScreen extends StatelessWidget {
               Obx(() => controller.isValid.value == false
                   ? SizedBox(height: 10.h,) : const SizedBox.shrink(),),
               Text(
-                AppStrings.eOrUsername,
+                AppStrings.email,
                 style: TextStyleDecoration.headline1,
               ),
               SizedBox(height: 5.h,),

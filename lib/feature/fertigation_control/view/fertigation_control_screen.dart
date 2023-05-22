@@ -138,6 +138,20 @@ class FertigationControlScreen extends StatelessWidget {
                                                         fontSize: 12.h,
                                                       ),
                                                       SizedBox(height: 5.h,),
+                                                      SizedBox(
+                                                        height: 40.h,
+                                                        width: 135.w,
+                                                        child: CustomTextField(
+                                                          controller: controller.dayIngredientController,
+                                                          borderRadius: 8,
+                                                          contentPadding: EdgeInsets.only(left: 10.w),
+                                                          hintText: AppStrings.ingredient,
+                                                          hintTextSize: 12.sp,
+                                                          focusBorderColor: AppColors.buttonColor,
+                                                          isFilled: Get.isDarkMode ? true : false,
+                                                          onchange: (value){},
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                   SizedBox(width: 15.w,),
@@ -150,6 +164,31 @@ class FertigationControlScreen extends StatelessWidget {
                                                         fontSize: 12.h,
                                                       ),
                                                       SizedBox(height: 5.h,),
+                                                      SizedBox(
+                                                        height: 40.h,
+                                                        width: 100.w,
+                                                        child: CustomTextField(
+                                                          controller: controller.dayQuantityController,
+                                                          borderRadius: 8,
+                                                          textInputType: TextInputType.number,
+                                                          contentPadding: EdgeInsets.only(left: 10.w),
+                                                          hintText: "",
+                                                          hintTextSize: 12.sp,
+                                                          focusBorderColor: AppColors.buttonColor,
+                                                          isFilled: Get.isDarkMode ? true : false,
+                                                          suffixWidget: Padding(
+                                                            padding: EdgeInsets.only(top: 10.h, left: 10.w),
+                                                            child: CustomText(
+                                                              text: "ml",
+                                                              fontSize: 13.sp,
+                                                              color: Get.isDarkMode
+                                                                  ? Colors.white
+                                                                  : AppColors.subTitleColor,
+                                                            ),
+                                                          ),
+                                                          onchange: (value){},
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ],
@@ -159,7 +198,7 @@ class FertigationControlScreen extends StatelessWidget {
                                         ),
                                         SizedBox(height: 10.h,),
                                         Container(
-                                          color: AppColors.lightAppbar,
+                                          color: Get.isDarkMode ? AppColors.darkTheme : AppColors.lightAppbar,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 15.w,
                                               vertical: 10.h
@@ -204,12 +243,12 @@ class FertigationControlScreen extends StatelessWidget {
                                                       SizedBox(height: 5.h,),
                                                       SizedBox(
                                                         height: 40.h,
-                                                        width: 80.w,
+                                                        width: 135.w,
                                                         child: CustomTextField(
-                                                          controller: controller.nameController,
+                                                          controller: controller.nightIngredientController,
                                                           borderRadius: 8,
                                                           contentPadding: EdgeInsets.only(left: 10.w),
-                                                          hintText: AppStrings.name,
+                                                          hintText: AppStrings.ingredient,
                                                           hintTextSize: 12.sp,
                                                           focusBorderColor: AppColors.buttonColor,
                                                           isFilled: Get.isDarkMode ? true : false,
@@ -230,15 +269,25 @@ class FertigationControlScreen extends StatelessWidget {
                                                       SizedBox(height: 5.h,),
                                                       SizedBox(
                                                         height: 40.h,
-                                                        width: 80.w,
+                                                        width: 100.w,
                                                         child: CustomTextField(
-                                                          controller: controller.nameController,
+                                                          controller: controller.nightQuantityController,
                                                           borderRadius: 8,
+                                                          textInputType: TextInputType.number,
                                                           contentPadding: EdgeInsets.only(left: 10.w),
-                                                          hintText: AppStrings.name,
+                                                          hintText: "",
                                                           hintTextSize: 12.sp,
                                                           focusBorderColor: AppColors.buttonColor,
                                                           isFilled: Get.isDarkMode ? true : false,
+                                                          suffixWidget: Padding(
+                                                            padding: EdgeInsets.only(top: 10.h, left: 10.w),
+                                                            child: CustomText(
+                                                                text: "ml",
+                                                              fontSize: 13.sp,
+                                                              color: Get.isDarkMode
+                                                                  ? Colors.white : AppColors.subTitleColor,
+                                                            ),
+                                                          ),
                                                           onchange: (value){},
                                                         ),
                                                       ),
@@ -357,7 +406,8 @@ class FertigationControlScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    SizedBox(height: 20.h,)
                   ],
                 ),
               ),

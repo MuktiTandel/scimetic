@@ -110,5 +110,8 @@ class AppImages {
   static const String key = 'assets/images/key.png';
   static const String logo = 'assets/images/logo.png';
   static const String organization = 'assets/images/organization.png';
+  static const String manageGrowspaces = 'assets/images/manage_growspaces.png';
+  static const String manageUser = 'assets/images/manage_user.png';
+  static const String suspend = 'assets/images/suspend.png';
 
 }

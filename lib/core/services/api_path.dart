@@ -9,5 +9,6 @@ class ApiPath {
   static const growController = "/grow_controller";
   static const growSheetGrowController = "/growsheet/grow_controller";
   static const device = "/device";
+  static const company = "/company";
 
 }

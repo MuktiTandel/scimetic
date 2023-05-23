@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-LoginResponseModel welcome1FromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
+LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
 
-String welcome1ToJson(LoginResponseModel data) => json.encode(data.toJson());
+String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJson());
 
 class LoginResponseModel {
   LoginResponseModel({
@@ -28,7 +28,7 @@ class LoginResponseModel {
     "message": message,
     "accessToken": accessToken,
     "idToken": idToken,
-    "user": user?.toJson(),
+    "user": user!.toJson(),
   };
 }
 
@@ -58,15 +58,15 @@ class User {
   String? name;
   bool? inDarkMode;
   bool? emailVerified;
-  int? verificationCode;
+  dynamic verificationCode;
   dynamic mobile;
   dynamic recoveryEmail;
   dynamic image;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic companyId;
+  dynamic createdAt;
+  dynamic updatedAt;
+  int? companyId;
   int? roleId;
-  dynamic company;
+  Company? company;
   Role? role;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -76,15 +76,15 @@ class User {
     name: json["name"] ?? "",
     inDarkMode: json["inDarkMode"] ?? false,
     emailVerified: json["emailVerified"] ?? false,
-    verificationCode: json["verificationCode"] ?? 0,
+    verificationCode: json["verificationCode"] ?? "",
     mobile: json["mobile"] ?? "",
     recoveryEmail: json["recoveryEmail"] ?? "",
     image: json["image"] ?? "",
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
-    companyId: json["companyId"] ?? "",
+    createdAt: json["createdAt"] ?? "",
+    updatedAt: json["updatedAt"] ?? "",
+    companyId: json["companyId"] ?? 0,
     roleId: json["roleId"] ?? 0,
-    company: json["company"] ?? "",
+    company: Company.fromJson(json["company"]),
     role: Role.fromJson(json["role"]),
   );
 
@@ -99,12 +99,68 @@ class User {
     "mobile": mobile,
     "recoveryEmail": recoveryEmail,
     "image": image,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
+    "createdAt": createdAt,
+    "updatedAt": updatedAt,
     "companyId": companyId,
     "roleId": roleId,
-    "company": company,
-    "role": role?.toJson(),
+    "company": company!.toJson(),
+    "role": role!.toJson(),
+  };
+}
+
+class Company {
+  Company({
+    this.id,
+    this.name,
+    this.address,
+    this.logo,
+    this.registrationNumber,
+    this.licenseNumber,
+    this.mobileNumber,
+    this.email,
+    this.website,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int? id;
+  String? name;
+  dynamic address;
+  dynamic logo;
+  dynamic registrationNumber;
+  dynamic licenseNumber;
+  dynamic mobileNumber;
+  dynamic email;
+  dynamic website;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory Company.fromJson(Map<String, dynamic> json) => Company(
+    id: json["id"] ?? 0,
+    name: json["name"] ?? "",
+    address: json["address"] ?? "",
+    logo: json["logo"] ?? "",
+    registrationNumber: json["registrationNumber"] ?? "",
+    licenseNumber: json["licenseNumber"] ?? "",
+    mobileNumber: json["mobileNumber"] ?? "",
+    email: json["email"] ?? "",
+    website: json["website"] ?? "",
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "address": address,
+    "logo": logo,
+    "registrationNumber": registrationNumber,
+    "licenseNumber": licenseNumber,
+    "mobileNumber": mobileNumber,
+    "email": email,
+    "website": website,
+    "createdAt": createdAt!.toIso8601String(),
+    "updatedAt": updatedAt!.toIso8601String(),
   };
 }
 

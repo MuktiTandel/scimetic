@@ -18,14 +18,30 @@ import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
-class DashboardScreen extends StatelessWidget {
-   DashboardScreen({Key? key}) : super(key: key);
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
 
    final controller = Get.put(DashboardController());
 
    final overViewController = Get.put(OverviewController());
+
+   final homeController = Get.put(HomeController());
+
+   @override
+  void initState() {
+    super.initState();
+    homeController.isOrganization.value = false;
+    homeController.isDashboard.value = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +69,7 @@ class DashboardScreen extends StatelessWidget {
                      onTap: (){
                        controller.isOverView.value = true;
                        controller.isSelect.value = true;
+                       controller.isOverViewTitle.value = true;
                        controller.id.value = data.id!;
                        overViewController.id.value = data.id!;
                        overViewController.isGetData.value = false;

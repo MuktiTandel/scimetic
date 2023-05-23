@@ -275,6 +275,8 @@ class OverviewController extends GetxController {
 
   RxBool isGetData = false.obs;
 
+  RxBool isOverview = false.obs;
+
   Future getGrowSheetData({required int id}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;

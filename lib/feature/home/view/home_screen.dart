@@ -13,9 +13,12 @@ import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
+import 'package:scimetic/feature/organizations/view/organization_screen.dart';
+import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -31,6 +34,8 @@ class HomeScreen extends StatelessWidget {
 
    final organizationController = Get.put(OrganizationController());
 
+   final overviewController = Get.put(OverviewController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +47,8 @@ class HomeScreen extends StatelessWidget {
             drawerTap: (){
               controller.openDrawer();
             },
-            title: dashboardController.isOverView.value == false
-                ?  controller.appbarTitle()
-                : AppStrings.overview,
+            title: dashboardController.isOverViewTitle.value == false
+                ? controller.appbarTitle() : AppStrings.overview,
             notificationTap: (){
               Get.toNamed(AppPages.NOTIFICATION);
             },
@@ -55,10 +59,17 @@ class HomeScreen extends StatelessWidget {
           isPersonal: calendarController.cropCalendar,
         )),
       ),
-      body: Obx(() => dashboardController.isOverView.value == false ? IndexedStack(
+      body: Obx(() => organizationController.isSelect.value == false
+          ? OrganizationScreen()
+          : dashboardController.isOverView.value == false
+          ? const DashboardScreen()
+          : controller.isModuleView.value == false
+          ? const OverviewScreen()
+          : IndexedStack(
         index: controller.moduleIndex.value,
         children: controller.moduleList,
-      ) :  const OverviewScreen()),
+      )
+      ),
       drawer: Drawer(
         width: 230.w,
         shape: const RoundedRectangleBorder(
@@ -114,31 +125,15 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             Obx(() => drawerWidget(
                                 onTap: (){
-                                  if ( controller.isOrganization.value == false ) {
-                                    controller.isOrganization.value = true;
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                    controller.isSetting.value = false;
-                                    controller.isDeviceSetup.value = false;
-                                    controller.isTemperatureControl.value = false;
-                                    controller.isHumidityControl.value = false;
-                                    controller.isCo2Control.value = false;
-                                    controller.isLightingControl.value = false;
-                                    controller.isEnergyManagement.value = false;
-                                    controller.isIrrigation.value = false;
-                                    controller.isFertigation.value = false;
-                                    controller.isAccessSetting.value = false;
-                                    controller.isOrganisationSettings.value = false;
-                                    controller.isUserSetting.value = false;
-                                    controller.isNotifications.value = false;
-                                  }
+                                  controller.isOrganization.value = true;
+                                  organizationController.isSelect.value = false;
+                                  controller.isDashboard.value = false;
+                                  dashboardController.isSelect.value = false;
                                   dashboardController.isOverView.value = false;
-                                  controller.isCalender.value = false;
-                                  controller.changeModuleIndex(0);
+                                  dashboardController.isOverViewTitle.value = false;
+                                  controller.isModuleView.value = false;
+                                  controller.unSelectSettingValue();
+                                  controller.unSelectModule();
                                   Get.back();
                                 },
                                 image: AppImages.dashboard,
@@ -147,72 +142,42 @@ class HomeScreen extends StatelessWidget {
                                 isRightWidget: false
                             ),),
                             SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
+                            Obx(() => organizationController.isSelect.value == true ? drawerWidget(
                                 onTap: (){
-                                  if ( controller.isDashboard.value == false ) {
-                                    controller.isOrganization.value = false;
-                                    controller.isDashboard.value = true;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                    controller.isSetting.value = false;
-                                    controller.isDeviceSetup.value = false;
-                                    controller.isTemperatureControl.value = false;
-                                    controller.isHumidityControl.value = false;
-                                    controller.isCo2Control.value = false;
-                                    controller.isLightingControl.value = false;
-                                    controller.isEnergyManagement.value = false;
-                                    controller.isIrrigation.value = false;
-                                    controller.isFertigation.value = false;
-                                    controller.isAccessSetting.value = false;
-                                    controller.isOrganisationSettings.value = false;
-                                    controller.isUserSetting.value = false;
-                                    controller.isNotifications.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.isCalender.value = false;
-                                  controller.changeModuleIndex(1);
                                   dashboardController.getDataList();
+                                  dashboardController.isOverView.value = false;
                                   dashboardController.isSelect.value = false;
+                                  controller.isDashboard.value = true;
+                                  controller.isModuleView.value = false;
+                                  dashboardController.isOverViewTitle.value = false;
+                                  controller.unSelectSettingValue();
+                                  controller.unSelectModule();
                                   Get.back();
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,
                                 isSelect: controller.isDashboard.value,
                               isRightWidget: false
-                            ),),
+                            ) : const SizedBox.shrink(),),
                             SizedBox(height: 5.h,),
                             Obx(() => dashboardController.isSelect.value == true
                                 ? Column(
                               children: [
                                 Obx(() => drawerWidget(
                                     onTap: (){
-                                      if ( controller.isGrowSheet.value == false ) {
-                                        controller.isDashboard.value = false;
-                                        controller.isGrowSheet.value = true;
-                                        controller.isChat.value = false;
-                                        controller.isReport.value = false;
-                                        controller.isTodo.value = false;
-                                        controller.isCalender.value = false;
-                                        controller.isSetting.value = false;
-                                        controller.isDeviceSetup.value = false;
-                                        controller.isTemperatureControl.value = false;
-                                        controller.isHumidityControl.value = false;
-                                        controller.isCo2Control.value = false;
-                                        controller.isLightingControl.value = false;
-                                        controller.isEnergyManagement.value = false;
-                                        controller.isIrrigation.value = false;
-                                        controller.isFertigation.value = false;
-                                        controller.isAccessSetting.value = false;
-                                        controller.isOrganisationSettings.value = false;
-                                        controller.isUserSetting.value = false;
-                                        controller.isNotifications.value = false;
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
                                       }
-                                      dashboardController.isOverView.value = false;
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = true;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = false;
                                       controller.isCalender.value = false;
-                                      controller.changeModuleIndex(2);
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                     controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(0);
                                       int id = controller.storeData.getInt(StoreData.id)!;
                                       if ( id != 0) {
                                          growSheetController.getGrowSheetData(id: id);
@@ -263,29 +228,19 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
                                     onTap: (){
-                                      if ( controller.isReport.value == false ) {
-                                        controller.isDashboard.value = false;
-                                        controller.isGrowSheet.value = false;
-                                        controller.isChat.value = false;
-                                        controller.isReport.value = true;
-                                        controller.isTodo.value = false;
-                                        controller.isCalender.value = false;
-                                        controller.isSetting.value = false;
-                                        controller.isDeviceSetup.value = false;
-                                        controller.isTemperatureControl.value = false;
-                                        controller.isHumidityControl.value = false;
-                                        controller.isCo2Control.value = false;
-                                        controller.isLightingControl.value = false;
-                                        controller.isEnergyManagement.value = false;
-                                        controller.isIrrigation.value = false;
-                                        controller.isFertigation.value = false;
-                                        controller.isAccessSetting.value = false;
-                                        controller.isOrganisationSettings.value = false;
-                                        controller.isUserSetting.value = false;
-                                        controller.isNotifications.value = false;
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
                                       }
-                                      dashboardController.isOverView.value = false;
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = true;
+                                      controller.isTodo.value = false;
                                       controller.isCalender.value = false;
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(1);
                                       Get.back();
                                     },
                                     image: AppImages.reports,
@@ -296,30 +251,19 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
                                     onTap: (){
-                                      if ( controller.isTodo.value == false ) {
-                                        controller.isDashboard.value = false;
-                                        controller.isGrowSheet.value = false;
-                                        controller.isChat.value = false;
-                                        controller.isReport.value = false;
-                                        controller.isTodo.value = true;
-                                        controller.isCalender.value = false;
-                                        controller.isSetting.value = false;
-                                        controller.isDeviceSetup.value = false;
-                                        controller.isTemperatureControl.value = false;
-                                        controller.isHumidityControl.value = false;
-                                        controller.isCo2Control.value = false;
-                                        controller.isLightingControl.value = false;
-                                        controller.isEnergyManagement.value = false;
-                                        controller.isIrrigation.value = false;
-                                        controller.isFertigation.value = false;
-                                        controller.isAccessSetting.value = false;
-                                        controller.isOrganisationSettings.value = false;
-                                        controller.isUserSetting.value = false;
-                                        controller.isNotifications.value = false;
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
                                       }
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = true;
                                       controller.isCalender.value = false;
-                                      dashboardController.isOverView.value = false;
-                                      controller.changeModuleIndex(4);
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(2);
                                       Get.back();
                                     },
                                     image: AppImages.toDo,
@@ -334,31 +278,21 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
                                     onTap: (){
-                                      if ( controller.isCalender.value == false ) {
-                                        controller.isDashboard.value = false;
-                                        controller.isGrowSheet.value = false;
-                                        controller.isChat.value = false;
-                                        controller.isReport.value = false;
-                                        controller.isTodo.value = false;
-                                        controller.isCalender.value = true;
-                                        controller.isSetting.value = false;
-                                        controller.isDeviceSetup.value = false;
-                                        controller.isTemperatureControl.value = false;
-                                        controller.isHumidityControl.value = false;
-                                        controller.isCo2Control.value = false;
-                                        controller.isLightingControl.value = false;
-                                        controller.isEnergyManagement.value = false;
-                                        controller.isIrrigation.value = false;
-                                        controller.isFertigation.value = false;
-                                        controller.isAccessSetting.value = false;
-                                        controller.isOrganisationSettings.value = false;
-                                        controller.isUserSetting.value = false;
-                                        controller.isNotifications.value = false;
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
                                       }
-                                      dashboardController.isOverView.value = false;
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = false;
+                                      controller.isCalender.value = true;
+                                      controller.isSetting.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(3);
                                       calendarController.personalCalendar.value = false;
                                       calendarController.cropCalendar.value = true;
-                                      controller.changeModuleIndex(5);
+                                      dashboardController.isOverViewTitle.value = false;
                                       Get.back();
                                     },
                                     image: AppImages.calender,
@@ -394,6 +328,14 @@ class HomeScreen extends StatelessWidget {
                                       Obx(() => GestureDetector(
                                         onTap: (){
                                           controller.toggle();
+                                          controller.isGrowSheet.value = false;
+                                          controller.isReport.value = false;
+                                          controller.isTodo.value = false;
+                                          controller.isCalender.value = false;
+                                          controller.unSelectSettingValue();
+                                          controller.isDashboard.value == false;
+                                          controller.isOrganization.value = false;
+                                          dashboardController.isOverViewTitle.value = false;
                                         },
                                         child: SizedBox(
                                           child: Image.asset(
@@ -548,13 +490,16 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
               onTap: (){
-                controller.isDeviceSetup.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = true;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -566,9 +511,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(6);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(4);
                 Get.back();
               },
             isSelect: controller.isDeviceSetup
@@ -578,14 +522,17 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
               onTap: (){
-                controller.isTemperatureControl.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
                 controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = true;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
                 controller.isLightingControl.value = false;
@@ -596,9 +543,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(7);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(5);
                 Get.back();
               },
             isSelect: controller.isTemperatureControl
@@ -608,15 +554,18 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
               onTap: (){
-                controller.isHumidityControl.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
-                controller.isTemperatureControl.value = false;
                 controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = true;
                 controller.isCo2Control.value = false;
                 controller.isLightingControl.value = false;
                 controller.isEnergyManagement.value = false;
@@ -626,9 +575,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(8);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(6);
                 Get.back();
               },
             isSelect: controller.isHumidityControl
@@ -638,16 +586,19 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.cloud,
               title: AppStrings.co2Control,
               onTap: (){
-                controller.isCo2Control.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isCo2Control.value = true;
                 controller.isLightingControl.value = false;
                 controller.isEnergyManagement.value = false;
                 controller.isIrrigation.value = false;
@@ -656,9 +607,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(9);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(7);
                 Get.back();
               },
             isSelect: controller.isCo2Control
@@ -668,17 +618,20 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.sun1,
               title: AppStrings.lightingControl,
               onTap: (){
-                controller.isLightingControl.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isLightingControl.value = true;
                 controller.isEnergyManagement.value = false;
                 controller.isIrrigation.value = false;
                 controller.isFertigation.value = false;
@@ -686,9 +639,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(10);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(8);
                 Get.back();
               },
             isSelect: controller.isLightingControl
@@ -698,27 +650,29 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.energy,
               title: AppStrings.energyManagement,
               onTap: (){
-                controller.isEnergyManagement.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
                 controller.isLightingControl.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isEnergyManagement.value = true;
                 controller.isIrrigation.value = false;
                 controller.isFertigation.value = false;
                 controller.isAccessSetting.value = false;
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(11);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(9);
                 Get.back();
               },
             isSelect: controller.isEnergyManagement
@@ -728,27 +682,29 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.wateringCan,
               title: AppStrings.irrigation,
               onTap: (){
-                controller.isIrrigation.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
                 controller.isLightingControl.value = false;
                 controller.isEnergyManagement.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isIrrigation.value = true;
                 controller.isFertigation.value = false;
                 controller.isAccessSetting.value = false;
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(12);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(10);
                 Get.back();
               },
             isSelect: controller.isIrrigation
@@ -758,27 +714,29 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.fertigation,
               title: AppStrings.fertigation,
               onTap: (){
-                controller.isFertigation.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
                 controller.isLightingControl.value = false;
                 controller.isEnergyManagement.value = false;
                 controller.isIrrigation.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isFertigation.value = true;
                 controller.isAccessSetting.value = false;
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(13);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(11);
                 Get.back();
               },
             isSelect: controller.isFertigation
@@ -788,13 +746,16 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.lock,
               title: AppStrings.accessSettings,
               onTap: (){
-                controller.isAccessSetting.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -802,13 +763,12 @@ class HomeScreen extends StatelessWidget {
                 controller.isEnergyManagement.value = false;
                 controller.isIrrigation.value = false;
                 controller.isFertigation.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isAccessSetting.value = true;
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(14);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(12);
                 Get.back();
               },
             isSelect: controller.isAccessSetting
@@ -818,13 +778,16 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.briefcase,
               title: AppStrings.organisationSettings,
               onTap: (){
-                controller.isOrganisationSettings.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
                 controller.isDashboard.value = false;
                 controller.isGrowSheet.value = false;
-                controller.isChat.value = false;
                 controller.isReport.value = false;
                 controller.isTodo.value = false;
                 controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -833,12 +796,11 @@ class HomeScreen extends StatelessWidget {
                 controller.isIrrigation.value = false;
                 controller.isFertigation.value = false;
                 controller.isAccessSetting.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isOrganisationSettings.value = true;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
-                dashboardController.isOverView.value = false;
-                controller.changeModuleIndex(15);
-                controller.isCalender.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(13);
                 Get.back();
               },
             isSelect: controller.isOrganisationSettings
@@ -848,7 +810,16 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.user,
               title: AppStrings.userSetting,
               onTap: (){
-                controller.isUserSetting.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -858,8 +829,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isFertigation.value = false;
                 controller.isAccessSetting.value = false;
                 controller.isOrganisationSettings.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isUserSetting.value = true;
                 controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(14);
               },
             isSelect: controller.isUserSetting
           ),
@@ -868,7 +841,16 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.notification,
               title: AppStrings.notifications,
               onTap: (){
-                controller.isNotifications.value = true;
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
                 controller.isTemperatureControl.value = false;
                 controller.isHumidityControl.value = false;
                 controller.isCo2Control.value = false;
@@ -879,7 +861,9 @@ class HomeScreen extends StatelessWidget {
                 controller.isAccessSetting.value = false;
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
-                controller.isDeviceSetup.value = false;
+                controller.isNotifications.value = true;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(15);
               },
             isSelect: controller.isNotifications
           ),

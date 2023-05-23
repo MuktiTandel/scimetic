@@ -36,6 +36,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   void initState() {
      super.initState();
      homeController.isDashboard.value = false;
+     controller.isOverview.value = true;
   }
 
   @override
@@ -51,6 +52,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
             children: [
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
+                context: context,
                   title: AppStrings.temperature,
                   image: AppImages.menu_,
                   value: "24",
@@ -108,6 +110,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               )),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
+                  context: context,
                   title: AppStrings.electricalLoad,
                   image: AppImages.fillSettings,
                   value: "85",
@@ -167,6 +170,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               ),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
+                  context: context,
                   title: AppStrings.cO2,
                   image: AppImages.horizontalMenu,
                   value: "750",
@@ -226,6 +230,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               ),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
+                  context: context,
                   title: AppStrings.lightMode,
                   image: AppImages.menu_,
                   value: "40",
@@ -285,6 +290,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
               ),
               SizedBox(height: 10.h,),
               Obx(() => commonGraphWidget(
+                  context: context,
                   title: AppStrings.vpd,
                   image: AppImages.horizontalMenu,
                   value: "0.95",

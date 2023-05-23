@@ -7,6 +7,7 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/hwm_select_widge.dart';
 
 Widget commonGraphWidget( {
+  required BuildContext context,
   required String title,
   required String image,
   required String value,
@@ -32,7 +33,7 @@ Widget commonGraphWidget( {
       onTap();
     },
     child: Container(
-      color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
+      color: context.theme.cardColor,
       child: Column(
         children: [
           Padding(

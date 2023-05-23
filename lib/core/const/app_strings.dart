@@ -292,6 +292,11 @@ class AppStrings {
   static const String controllers = "Controllers";
   static const String admins = "Admins";
   static const String technicians = "Technicians";
+  static const String manageGrowspaces = "Manage Growspaces";
+  static const String manageUsers = "Manage Users";
+  static const String suspend = "Suspend";
+  static const String newOrganization = "New Organization";
+  static const String mainInformation = "Main Information";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

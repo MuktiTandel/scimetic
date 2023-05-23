@@ -32,6 +32,7 @@ class EnergyManagementScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 10.h,),
                 Obx(() => commonGraphWidget(
+                    context: context,
                     title: AppStrings.temperature,
                     image: AppImages.menu_,
                     value: "24",
@@ -90,6 +91,7 @@ class EnergyManagementScreen extends StatelessWidget {
                 )),
                 SizedBox(height: 10.h,),
                 Obx(() => commonGraphWidget(
+                    context: context,
                     title: AppStrings.electricalLoad,
                     image: AppImages.fillSettings,
                     value: "82",
@@ -153,6 +155,7 @@ class EnergyManagementScreen extends StatelessWidget {
                 )),
                 SizedBox(height: 10.h,),
                 Obx(() => commonGraphWidget(
+                    context: context,
                     title: AppStrings.voltages,
                     image: AppImages.horizontalMenu,
                     value: "710",

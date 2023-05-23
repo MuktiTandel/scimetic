@@ -18,6 +18,8 @@ class DashboardController extends GetxController {
 
   RxBool isOverView = false.obs;
 
+  RxBool isOverViewTitle = false.obs;
+
   RxBool isDark = Get.isDarkMode.obs;
 
   RxInt descriptionLength = 0.obs;
@@ -324,9 +326,4 @@ class DashboardController extends GetxController {
 
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    getDataList();
-  }
 }

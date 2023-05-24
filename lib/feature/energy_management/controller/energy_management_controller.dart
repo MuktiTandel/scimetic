@@ -23,33 +23,6 @@ class EnergyManagementController extends GetxController {
   RxDouble totalRunTime = 70.0.obs;
 
   List<HourData> temperatureHourDataList = [
-    HourData(0, 22.5),
-    HourData(1, 22.5),
-    HourData(2, 22.5),
-    HourData(3, 23),
-    HourData(4, 23),
-    HourData(5, 23),
-    HourData(6, 23),
-    HourData(7, 23),
-    HourData(8, 23.5),
-    HourData(9, 23.5),
-    HourData(10, 23.5),
-    HourData(11, 23.5),
-    HourData(12, 23.5),
-    HourData(13, 24),
-    HourData(14, 24),
-    HourData(15, 24),
-    HourData(16, 24),
-    HourData(17, 23.5),
-    HourData(18, 23.5),
-    HourData(19, 23.5),
-    HourData(20, 23.5),
-    HourData(21, 23.5),
-    HourData(22, 23),
-    HourData(23, 23),
-    HourData(24, 23),
-    HourData(24.5, 23),
-    HourData(24.5, 23),
   ];
 
   List<WeekData> temperatureWeekDataList = [
@@ -73,19 +46,6 @@ class EnergyManagementController extends GetxController {
   ];
 
   List<HourData> electricalLoadHourData = [
-    HourData(0, 85),
-    HourData(2, 85),
-    HourData(4, 85),
-    HourData(6, 86),
-    HourData(8, 86),
-    HourData(10, 86),
-    HourData(12, 87),
-    HourData(14, 87),
-    HourData(16, 86),
-    HourData(18, 86),
-    HourData(20, 86),
-    HourData(22, 85),
-    HourData(24, 85)
   ];
 
   List<WeekData> electricalLoadWeekData = [
@@ -109,19 +69,6 @@ class EnergyManagementController extends GetxController {
   ];
 
   List<HourData> voltageHourData = [
-    HourData(0, 710),
-    HourData(2, 720),
-    HourData(4, 730),
-    HourData(6, 740),
-    HourData(8, 750),
-    HourData(10, 760),
-    HourData(12, 750),
-    HourData(14, 740),
-    HourData(16, 730),
-    HourData(18, 720),
-    HourData(20, 710),
-    HourData(22, 720),
-    HourData(24, 730)
   ];
 
   List<WeekData> voltageWeekData = [

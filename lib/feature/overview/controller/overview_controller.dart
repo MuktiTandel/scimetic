@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
@@ -24,65 +24,80 @@ class OverviewController extends GetxController {
   RxBool isLightning = false.obs;
   RxBool isVdp = false.obs;
 
-  RxBool isTemHour = true.obs;
-  RxBool isTemWeek = false.obs;
-  RxBool isTemMonth = false.obs;
+  RxBool isHour = true.obs;
+  RxBool isWeek = false.obs;
+  RxBool isMonth = false.obs;
 
-  RxBool isLightHour = true.obs;
-  RxBool isLightWeek = false.obs;
-  RxBool isLightMonth = false.obs;
+  RxString chooseItem = "".obs;
 
-  RxBool isElectricHour = true.obs;
-  RxBool isElectricWeek = false.obs;
-  RxBool isElectricMonth = false.obs;
+  RxDouble minTemperatureHourY = 0.0.obs;
+  RxDouble maxTemperatureHourY = 0.0.obs;
 
-  RxBool isCo2Hour = true.obs;
-  RxBool isCo2Week = false.obs;
-  RxBool isCo2Month = false.obs;
+  RxDouble minTemperatureWeekY = 0.0.obs;
+  RxDouble maxTemperatureWeekY = 0.0.obs;
 
-  RxBool isVdpHour = true.obs;
-  RxBool isVdpWeek = false.obs;
-  RxBool isVdpMonth = false.obs;
+  RxDouble minTemperatureMonthY = 0.0.obs;
+  RxDouble maxTemperatureMonthY = 0.0.obs;
 
-  List<HourData> temperatureHourDataList = [
-    HourData(0, 22.5),
-    HourData(1, 22.5),
-    HourData(2, 22.5),
-    HourData(3, 23),
-    HourData(4, 23),
-    HourData(5, 23),
-    HourData(6, 23),
-    HourData(7, 23),
-    HourData(8, 23.5),
-    HourData(9, 23.5),
-    HourData(10, 23.5),
-    HourData(11, 23.5),
-    HourData(12, 23.5),
-    HourData(13, 24),
-    HourData(14, 24),
-    HourData(15, 24),
-    HourData(16, 24),
-    HourData(17, 23.5),
-    HourData(18, 23.5),
-    HourData(19, 23.5),
-    HourData(20, 23.5),
-    HourData(21, 23.5),
-    HourData(22, 23),
-    HourData(23, 23),
-    HourData(24, 23),
-    HourData(24.5, 23),
-    HourData(24.5, 23),
-  ];
+  RxDouble minHumidityHourY = 0.0.obs;
+  RxDouble maxHumidityHourY = 0.0.obs;
 
-  List<WeekData> temperatureWeekDataList = [
-    WeekData(AppStrings.monday, 24, 26),
-    WeekData(AppStrings.tuesday, 22, 26),
-    WeekData(AppStrings.wednesday, 23, 25),
-    WeekData(AppStrings.thursday, 22, 26),
-    WeekData(AppStrings.friday, 22, 25),
-    WeekData(AppStrings.saturday, 24, 27),
-    WeekData(AppStrings.sunday, 25, 27),
-  ];
+  RxDouble minHumidityWeekY = 0.0.obs;
+  RxDouble maxHumidityWeekY = 0.0.obs;
+
+  RxDouble minHumidityMonthY = 0.0.obs;
+  RxDouble maxHumidityMonthY = 0.0.obs;
+
+  RxDouble minCo2HourY = 0.0.obs;
+  RxDouble maxCo2HourY = 0.0.obs;
+
+  RxDouble minCo2WeekY = 0.0.obs;
+  RxDouble maxCo2WeekY = 0.0.obs;
+
+  RxDouble minCo2MonthY = 0.0.obs;
+  RxDouble maxCo2MonthY = 0.0.obs;
+
+  RxDouble minLightningHourY = 0.0.obs;
+  RxDouble maxLightningHourY = 0.0.obs;
+
+  RxDouble minLightningWeekY = 0.0.obs;
+  RxDouble maxLightningWeekY = 0.0.obs;
+
+  RxDouble minLightningMonthY = 0.0.obs;
+  RxDouble maxLightningMonthY = 0.0.obs;
+
+  RxDouble minVpdHourY = 0.0.obs;
+  RxDouble maxVpdHourY = 0.0.obs;
+
+  RxDouble minVpdWeekY = 0.0.obs;
+  RxDouble maxVpdWeekY = 0.0.obs;
+
+  RxDouble minVpdMonthY = 0.0.obs;
+  RxDouble maxVpdMonthY = 0.0.obs;
+
+  List<double> temperatureHourYList = [];
+  List<double> temperatureWeekYList = [];
+  List<double> temperatureMonthYList = [];
+
+  List<double> humidityHourYList = [];
+  List<double> humidityWeekYList = [];
+  List<double> humidityMonthYList = [];
+
+  List<double> co2HourYList = [];
+  List<double> co2WeekYList = [];
+  List<double> co2MonthYList = [];
+
+  List<double> lightningHourYList = [];
+  List<double> lightningWeekYList = [];
+  List<double> lightningMonthYList = [];
+
+  List<double> vpdHourYList = [];
+  List<double> vpdWeekYList = [];
+  List<double> vpdMonthYList = [];
+
+  List<HourData> temperatureHourDataList = [];
+
+  List<WeekData> temperatureWeekDataList = [];
 
   List<MonthData> temperatureMonthDataList = [
     MonthData(0, 22),
@@ -95,15 +110,7 @@ class OverviewController extends GetxController {
     MonthData(31, 24),
   ];
 
-  List<WeekData> electricalWeekDataList = [
-    WeekData(AppStrings.monday, 85, 86),
-    WeekData(AppStrings.tuesday, 84, 86),
-    WeekData(AppStrings.wednesday, 85, 87),
-    WeekData(AppStrings.thursday, 84, 86),
-    WeekData(AppStrings.friday, 83, 87),
-    WeekData(AppStrings.saturday, 84, 89),
-    WeekData(AppStrings.sunday, 85, 88),
-  ];
+  List<WeekData> electricalWeekDataList = [];
 
   List<MonthData> electricalMonthDataList = [
     MonthData(0, 84),
@@ -116,49 +123,13 @@ class OverviewController extends GetxController {
     MonthData(31, 84),
   ];
 
-  List<HourData> electricalDataList = [
-    HourData(0, 83),
-    HourData(2, 83),
-    HourData(4, 83),
-    HourData(6, 83),
-    HourData(8, 84),
-    HourData(10, 84),
-    HourData(12, 84),
-    HourData(14, 83),
-    HourData(16, 83),
-    HourData(18, 83),
-    HourData(20, 84),
-    HourData(22, 84),
-    HourData(24, 84),
-    HourData(24.5, 84),
+  List<HourData> electricalHourDataList = [
   ];
 
-  List<HourData> co2DataList = [
-    HourData(0, 750),
-    HourData(2, 750),
-    HourData(4, 750),
-    HourData(6, 740),
-    HourData(8, 740),
-    HourData(10, 740),
-    HourData(12, 740),
-    HourData(14, 760),
-    HourData(16, 760),
-    HourData(18, 760),
-    HourData(20, 760),
-    HourData(22, 750),
-    HourData(24, 750),
-    HourData(24.5, 750),
+  List<HourData> co2HourDataList = [
   ];
 
-  List<WeekData> co2WeekDataList = [
-    WeekData(AppStrings.monday, 750, 770),
-    WeekData(AppStrings.tuesday, 760, 780),
-    WeekData(AppStrings.wednesday, 750, 770),
-    WeekData(AppStrings.thursday, 740, 760),
-    WeekData(AppStrings.friday, 730, 750),
-    WeekData(AppStrings.saturday, 740, 760),
-    WeekData(AppStrings.sunday, 740, 765),
-  ];
+  List<WeekData> co2WeekDataList = [];
 
   List<MonthData> co2MonthDataList = [
     MonthData(0, 750),
@@ -171,45 +142,10 @@ class OverviewController extends GetxController {
     MonthData(31, 760),
   ];
 
-  List<HourData> lightningDataList = [
-    HourData(0, 40),
-    HourData(1, 40),
-    HourData(2, 40),
-    HourData(3, 40),
-    HourData(4, 40),
-    HourData(5, 40),
-    HourData(6, 41.5),
-    HourData(7, 41.5),
-    HourData(8, 41.5),
-    HourData(9, 41.5),
-    HourData(10, 41.5),
-    HourData(11, 41),
-    HourData(12, 41),
-    HourData(13, 41),
-    HourData(14, 41),
-    HourData(15, 41),
-    HourData(16, 41),
-    HourData(17, 41),
-    HourData(18, 40),
-    HourData(19, 40),
-    HourData(20, 40),
-    HourData(21, 40),
-    HourData(22, 40),
-    HourData(23, 42),
-    HourData(24, 42),
-    HourData(24.5, 42),
-    HourData(24.5, 42),
+  List<HourData> lightningHourDataList = [
   ];
 
-  List<WeekData> lightningWeekDataList = [
-    WeekData(AppStrings.monday, 40, 42),
-    WeekData(AppStrings.tuesday, 41, 43),
-    WeekData(AppStrings.wednesday, 42, 44),
-    WeekData(AppStrings.thursday, 43, 46),
-    WeekData(AppStrings.friday, 44, 48),
-    WeekData(AppStrings.saturday, 42, 44),
-    WeekData(AppStrings.sunday, 41, 42),
-  ];
+  List<WeekData> lightningWeekDataList = [];
 
   List<MonthData> lightningMonthDataList = [
     MonthData(0, 42),
@@ -222,31 +158,10 @@ class OverviewController extends GetxController {
     MonthData(31, 40),
   ];
 
-  List<HourData> vdpDataList = [
-    HourData(0, 0.95),
-    HourData(2, 0.95),
-    HourData(4, 0.95),
-    HourData(6, 0.95),
-    HourData(8, 0.98),
-    HourData(10, 0.98),
-    HourData(12, 0.98),
-    HourData(14, 0.95),
-    HourData(16, 0.95),
-    HourData(18, 0.9),
-    HourData(20, 0.9),
-    HourData(22, 0.9),
-    HourData(24, 0.9)
+  List<HourData> vdpHourDataList = [
   ];
 
-  List<WeekData> vdpWeekDataList = [
-    WeekData(AppStrings.monday, 0.94, 0.96),
-    WeekData(AppStrings.tuesday, 0.94, 0.96),
-    WeekData(AppStrings.wednesday, 0.86, 0.95),
-    WeekData(AppStrings.thursday, 0.86, 0.98),
-    WeekData(AppStrings.friday, 0.86, 0.98),
-    WeekData(AppStrings.saturday, 0.86, 0.9),
-    WeekData(AppStrings.sunday, 0.86, 0.9),
-  ];
+  List<WeekData> vdpWeekDataList = [];
 
   List<MonthData> vdpMonthDataList = [
     MonthData(0, 0.95),
@@ -269,13 +184,17 @@ class OverviewController extends GetxController {
 
   GrowSheetData growSheetData = GrowSheetData();
 
-  ClimateModel climateModel = ClimateModel();
+  ClimateModel climateData = ClimateModel();
 
   DeviceModel deviceModel = DeviceModel();
 
   RxBool isGetData = false.obs;
 
   RxBool isOverview = false.obs;
+
+  RxBool isClimateData = false.obs;
+
+  List<ClimateData> climateDataList = [];
 
   Future getGrowSheetData({required int id}) async {
 
@@ -327,14 +246,17 @@ class OverviewController extends GetxController {
 
   }
 
-  Future getClimateData({required String identifier }) async {
+  Future getClimateData({required String identifier, required String range}) async {
     token =  storeData.getString(StoreData.accessToken)!;
 
     if ( token.isNotEmpty ) {
+
+      isClimateData.value = false;
+
       try {
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
-            url: '${ApiPath.baseUrl}${ApiPath.growController}/$identifier/climate?range=24h',
+            url: '${ApiPath.baseUrl}${ApiPath.growController}/$identifier/climate?range=$range',
             requestType: HTTPRequestType.GET,
             headers: {
               "Authorization" : 'Bearer $token',
@@ -349,9 +271,113 @@ class OverviewController extends GetxController {
 
         if ( apiResponse!.statusCode == 200 ) {
 
-          climateModel = ClimateModel.fromJson(data);
+          climateData = ClimateModel.fromJson(data);
 
-          AppConst().debug('grow sheet data => ${climateModel.growspace}');
+          AppConst().debug('grow sheet data => ${climateData.growspace}');
+
+          if ( climateData.climateData!.isNotEmpty ) {
+            isClimateData.value = true;
+            climateDataList.addAll(climateData.climateData!);
+            if ( climateDataList.isNotEmpty ) {
+              if ( isHour.value == true ) {
+                temperatureHourDataList.clear();
+                electricalHourDataList.clear();
+                co2HourDataList.clear();
+                lightningHourDataList.clear();
+                vdpHourDataList.clear();
+                for (var element in climateDataList) {
+                  HourData temperatureData = HourData(
+                      element.time!, element.temperature!);
+                  temperatureHourDataList.add(temperatureData);
+                  temperatureHourDataList.sort((a, b) => a.x.compareTo(b.x));
+                  HourData humidityData = HourData(
+                      element.time!, element.humidity!);
+                  electricalHourDataList.add(humidityData);
+                  electricalHourDataList.sort((a, b) => a.x.compareTo(b.x));
+                  HourData co2Data = HourData(element.time!, element.co2!);
+                  co2HourDataList.add(co2Data);
+                  co2HourDataList.sort((a, b) => a.x.compareTo(b.x));
+                  HourData vpdData = HourData(element.time!, element.vpd!);
+                  vdpHourDataList.add(vpdData);
+                  vdpHourDataList.sort((a, b) => a.x.compareTo(b.x));
+                  HourData lightningData = HourData(element.time!, element.mol!.toDouble());
+                  lightningHourDataList.add(lightningData);
+                  lightningHourDataList.sort((a, b) => a.x.compareTo(b.x));
+                }
+              }
+            }
+            if ( isHour.value == true ) {
+              if (temperatureHourDataList.isNotEmpty) {
+                for (var element in temperatureHourDataList) {
+                  temperatureHourYList.add(element.y);
+                }
+                if (temperatureHourYList.isNotEmpty) {
+                  AppConst().debug(
+                      "${temperatureHourYList.cast<double>().reduce(min)}");
+                  AppConst().debug(
+                      "${temperatureHourYList.cast<double>().reduce(max)}");
+                  minTemperatureHourY.value =
+                      temperatureHourYList.cast<double>().reduce(min);
+                  maxTemperatureHourY.value =
+                      temperatureHourYList.cast<double>().reduce(max);
+                }
+              }
+              if (electricalHourDataList.isNotEmpty) {
+                for (var element in electricalHourDataList) {
+                  humidityHourYList.add(element.y);
+                }
+                if (electricalHourDataList.isNotEmpty) {
+                  minHumidityHourY.value =
+                      humidityHourYList.cast<double>().reduce(min);
+                  maxHumidityHourY.value =
+                      humidityHourYList.cast<double>().reduce(max);
+                  AppConst().debug(
+                      "humidity hour min y${minHumidityHourY.value}");
+                  AppConst().debug(
+                      "humidity hour max y ${maxHumidityHourY.value}");
+                }
+              }
+              if ( co2HourDataList.isNotEmpty ) {
+                for (var element in co2HourDataList) {
+                  co2HourYList.add(element.y);
+                }
+                if ( co2HourYList.isNotEmpty ) {
+                  minCo2HourY.value =  co2HourYList.cast<double>().reduce(min);
+                  maxCo2HourY.value =  co2HourYList.cast<double>().reduce(max);
+                  AppConst().debug(
+                      "co2 hour min y${minCo2HourY.value}");
+                  AppConst().debug(
+                      "co2 hour max y ${maxCo2HourY.value}");
+                }
+              }
+              if ( vdpHourDataList.isNotEmpty ) {
+                for (var element in vdpHourDataList) {
+                  vpdHourYList.add(element.y);
+                }
+                if ( vdpHourDataList.isNotEmpty ) {
+                  minVpdHourY.value =  vpdHourYList.cast<double>().reduce(min);
+                  maxVpdHourY.value =  vpdHourYList.cast<double>().reduce(max);
+                  AppConst().debug(
+                      "vpd hour min y${minVpdHourY.value}");
+                  AppConst().debug(
+                      "vpd hour max y ${maxVpdHourY.value}");
+                }
+              }
+              if ( lightningHourDataList.isNotEmpty ) {
+                for (var element in lightningHourDataList) {
+                  lightningHourYList.add(element.y);
+                }
+                if ( vdpHourDataList.isNotEmpty ) {
+                  minLightningHourY.value =  lightningHourYList.cast<double>().reduce(min);
+                  maxLightningHourY.value =  lightningHourYList.cast<double>().reduce(max);
+                  AppConst().debug(
+                      "lightning hour min y${minLightningHourY.value}");
+                  AppConst().debug(
+                      "lightning hour max y ${maxLightningHourY.value}");
+                }
+              }
+            }
+          }
 
           return true;
         } else {
@@ -423,6 +449,45 @@ class OverviewController extends GetxController {
       }
     }
 
+  }
+
+  Future getHourData({required int id, required String identifier}) async {
+
+    isGetData.value = false;
+
+   await getClimateData(identifier: identifier, range: "24h").whenComplete(() async {
+      await getGrowSheetData(id: id).whenComplete(() async {
+        await getDeviceData(id: id).whenComplete(() {
+          isGetData.value = true;
+        });
+      });
+    });
+  }
+
+  Future getWeekData({required int id, required String identifier}) async {
+
+    isGetData.value = false;
+
+    await getClimateData(identifier: identifier, range: "1w").whenComplete(() async {
+      await getGrowSheetData(id: id).whenComplete(() async {
+        await getDeviceData(id: id).whenComplete(() {
+          isGetData.value = true;
+        });
+      });
+    });
+  }
+
+  Future getMonthData({required int id, required String identifier}) async {
+
+    isGetData.value = false;
+
+    await getClimateData(identifier: identifier, range: "30d").whenComplete(() async {
+      await getGrowSheetData(id: id).whenComplete(() async {
+        await getDeviceData(id: id).whenComplete(() {
+          isGetData.value = true;
+        });
+      });
+    });
   }
 
 }

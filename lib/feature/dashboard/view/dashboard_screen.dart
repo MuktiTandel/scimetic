@@ -73,7 +73,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                        controller.id.value = data.id!;
                        overViewController.id.value = data.id!;
                        overViewController.isGetData.value = false;
-                       overViewController.getClimateData(identifier: data.identifier!).whenComplete(() {
+                       controller.selectItem.value = data.identifier ?? "";
+                       if ( controller.dataList.isNotEmpty ) {
+                         controller.itemList.clear();
+                         for (var element in controller.dataList) {
+                           controller.itemList.add(element.identifier!);
+                         }
+                         AppConst().debug('item list length => ${controller.itemList.length}');
+                       }
+                       overViewController.getClimateData(identifier: data.identifier!, range: "24h").whenComplete(() {
                          overViewController.getGrowSheetData(id: data.id!).whenComplete(() {
                            overViewController.getDeviceData(id: data.id!).whenComplete(() {
                              overViewController.isGetData.value = true;
@@ -81,11 +89,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                          });
                        });
                        controller.storeData.setData(StoreData.id, data.id!);
+                       controller.storeData.setData(StoreData.identifier, data.identifier!);
                      },
                      context: context,
                      title: data.name ?? "",
                      desc: data.description ?? "",
-                   editTap: (){
+                     editTap: (){
 
                      controller.id.value = data.id!;
                        controller.isEdit.value = true;
@@ -132,7 +141,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           dialog()
                          );
                        });
-                   }
+                   },
+                   temperature: data.climate!.temperature ?? 0.0,
+                   co2: data.climate!.co2 ?? 0.0,
+                   humidity: data.climate!.humidity ?? 0.0,
+                   vpd: data.climate!.vpd ?? 0.0
                  );
                }),),
             SizedBox(height: 10.h,),
@@ -177,8 +190,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required BuildContext context,
     required String title,
     required String desc,
-    required VoidCallback editTap
+    required VoidCallback editTap,
+    required double temperature,
+    required double humidity,
+    required double co2,
+    required double vpd
   }) {
+
+     String temperatureValue = temperature != 0 ? temperature.toString() : "-";
+     String humidityValue = humidity != 0.0 ? humidity.toString() : "-";
+     String co2Value = co2 != 0 ? co2.toString() : "-";
+     String vpdValue = vpd != 0.0 ? vpd.toString() : "-";
+
     return GestureDetector(
       onTap: (){
         onTap();
@@ -213,18 +236,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        featureWidget(title: AppStrings.temperature, value: "25° С"),
+                        featureWidget(title: AppStrings.temperature, value: "$temperatureValue° С"),
                         SizedBox(height: 15.h,),
-                        featureWidget(title: AppStrings.cO2, value: "600 ppm"),
+                        featureWidget(title: AppStrings.cO2, value: "$co2Value ppm"),
                       ],
                     ),
                     Expanded(child: SizedBox(width: 10.w,)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        featureWidget(title: AppStrings.humidity, value: "75 %"),
+                        featureWidget(title: AppStrings.humidity, value: "$humidityValue %"),
                         SizedBox(height: 15.h,),
-                        featureWidget(title: AppStrings.vpd, value: "0.95 kPa"),
+                        featureWidget(title: AppStrings.vpd, value: "$vpdValue kPa"),
                       ],
                     ),
                     Expanded(child: SizedBox(width: 10.w,)),

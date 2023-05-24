@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             Obx(() => organizationController.isSelect.value == true ? drawerWidget(
                                 onTap: (){
-                                  dashboardController.getDataList();
+                                  // dashboardController.getDataList();
                                   dashboardController.isOverView.value = false;
                                   dashboardController.isSelect.value = false;
                                   controller.isDashboard.value = true;

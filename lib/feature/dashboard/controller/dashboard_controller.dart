@@ -56,6 +56,10 @@ class DashboardController extends GetxController {
 
   RxBool isSelect = false.obs;
 
+  List<String> itemList = [];
+
+  RxString selectItem = "".obs;
+
   RxInt id = 0.obs;
 
   Future getDataList() async {

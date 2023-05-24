@@ -58,7 +58,8 @@ class OrganizationScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Obx(() => controller.isGetData.value == true ? ListView.builder(
+                    Obx(() => controller.isGetData.value == true
+                        ? ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
@@ -91,7 +92,12 @@ class OrganizationScreen extends StatelessWidget {
                             }
                           );
                         }
-                    ) : const SizedBox.shrink()),
+                    )
+                        : const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.buttonColor,
+                          ),
+                    )),
                     SizedBox(height: 10.h,),
                     Padding(
                       padding:  EdgeInsets.only(right: 18.w),

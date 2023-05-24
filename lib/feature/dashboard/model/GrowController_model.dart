@@ -48,7 +48,7 @@ class GrowController {
     this.updatedAt,
     this.companyId,
     this.creator,
-    // this.climate,
+    this.climate,
   });
 
   int? id;
@@ -67,7 +67,7 @@ class GrowController {
   DateTime? updatedAt;
   dynamic companyId;
   int? creator;
-  // Climate? climate;
+  Climate? climate;
 
   factory GrowController.fromJson(Map<String, dynamic> json) => GrowController(
     id: json["id"],
@@ -86,7 +86,13 @@ class GrowController {
     updatedAt: json["updatedAt"] == null ? DateTime.now() : DateTime.parse(json["updatedAt"]),
     companyId: json["companyId"],
     creator: json["creator"],
-    // climate: json["climate"] == null ? null : Climate.fromJson(json["climate"]),
+    climate: json["climate"] == null ? Climate(
+      temperature: 0.0,
+      vpd: 0.0,
+      humidity: 0.0,
+      mol: 0,
+      co2: 0.0
+    ) : Climate.fromJson(json["climate"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -106,7 +112,7 @@ class GrowController {
     "updatedAt": updatedAt == null ? DateTime.now().toIso8601String() : updatedAt!.toIso8601String(),
     "companyId": companyId,
     "creator": creator,
-    // "climate": climate == null ? null : climate!.toJson(),
+    "climate": climate == null ? null : climate!.toJson(),
   };
 }
 
@@ -119,24 +125,24 @@ class Climate {
     this.co2,
   });
 
-  int? temperature;
+  double? temperature;
   double? vpd;
   double? humidity;
   int? mol;
-  int? co2;
+  double? co2;
 
   factory Climate.fromJson(Map<String, dynamic> json) => Climate(
-    temperature: json["temperature"] ?? 0,
-    vpd: json["vpd"] == null ? 0 : json["vpd"].toDouble(),
-    humidity: json["humidity"] == null ? 0 : json["humidity"].toDouble(),
+    temperature: json["temperature"] == null ? 0.0 : json["temperature"].toDouble(),
+    vpd: json["vpd"] == null ? 0.0 : json["vpd"].toDouble(),
+    humidity: json["humidity"] == null ? 0.0 : json["humidity"].toDouble(),
     mol: json["mol"] ?? 0,
-    co2: json["co2"] ?? 0,
+    co2: json["co2"] == null ? 0.0 : json["co2"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
     "temperature": temperature,
-    "vpd": vpd ?? 0,
-    "humidity": humidity ?? 0,
+    "vpd": vpd,
+    "humidity": humidity,
     "mol": mol,
     "co2": co2,
   };

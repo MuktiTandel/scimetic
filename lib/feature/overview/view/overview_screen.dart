@@ -12,10 +12,8 @@ import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart'
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
-import 'package:scimetic/feature/overview/element/month_graph.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
-import 'package:scimetic/feature/overview/element/week_graph.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
@@ -131,26 +129,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                         }
                       },
                       graph: Obx(() => controller.isClimateData.value == true
-                          ? controller.isHour.value == true
                           ? HourGraph(
-                        minY: controller.minTemperatureHourY.value,
-                        maxY: controller.maxTemperatureHourY.value,
-                        dataList: controller.temperatureHourDataList,
+                        minY: controller.minTemperatureY.value,
+                        maxY: controller.maxTemperatureY.value,
+                        dataList: controller.temperatureDataList,
                         graphColor: AppColors.orange,
                         format: "°C",
-                      )
-                          : controller.isWeek.value == true ? HourGraph(
-                          minY: controller.minTemperatureWeekY.value,
-                          maxY: controller.maxTemperatureWeekY.value,
-                          graphColor: AppColors.orange,
-                          dataList: controller.temperatureWeekDataList,
-                          format: "°C",
-                      ) : MonthGraph(
-                          minY: controller.minTemperatureMonthY.value,
-                          maxY: controller.maxTemperatureMonthY.value,
-                          graphColor: AppColors.orange,
-                          dataList: controller.temperatureMonthDataList,
-                          format: "°C"
                       ) : SizedBox(
                         height: 150.h,
                       ) ),
@@ -166,35 +150,18 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       context: context,
                       title: AppStrings.humidity,
                       image: AppImages.fillSettings,
-                      value: controller.humidityValue.value.toString(),
+                      value: controller.humidityValue.value.toStringAsFixed(2).toString(),
                       value1: "%",
                       isHour: controller.isHour.value,
                       isWeek: controller.isWeek.value,
                       isMonth: controller.isMonth.value,
                       graph: Obx(() => controller.isClimateData.value == true
-                          ? controller.isHour.value == true
                           ? HourGraph(
-                        minY: controller.minHumidityHourY.value,
-                        maxY: controller.maxHumidityHourY.value,
+                        minY: controller.minHumidityY.value,
+                        maxY: controller.maxHumidityY.value,
                         graphColor: AppColors.lightBlue,
-                        dataList: controller.electricalHourDataList,
+                        dataList: controller.humidityDataList,
                         format: "kW",
-                      )
-                          : controller.isWeek.value == true
-                          ? WeekGraph(
-                          minY: controller.minHumidityWeekY.value,
-                          maxY: controller.maxHumidityWeekY.value,
-                          graphColor: AppColors.lightBlue,
-                          dataList: controller.electricalWeekDataList,
-                          format: "kW",
-                          graphColor1: AppColors.lightBlue3
-                      )
-                          : MonthGraph(
-                          minY: controller.minHumidityMonthY.value,
-                          maxY: controller.maxHumidityMonthY.value,
-                          graphColor: AppColors.lightBlue,
-                          dataList: controller.electricalMonthDataList,
-                          format: "kW"
                       )
                           : SizedBox(height: 150.h,)),
                       hourSelect: () {
@@ -249,28 +216,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       isWeek: controller.isWeek.value,
                       isMonth: controller.isMonth.value,
                       graph: Obx(() => controller.isClimateData.value == true
-                          ? controller.isHour.value == true
                           ? HourGraph(
-                        minY: controller.minCo2HourY.value,
-                        maxY: controller.maxCo2HourY.value,
+                        minY: controller.minCo2Y.value,
+                        maxY: controller.maxCo2Y.value,
                         graphColor: AppColors.lightGreen1,
-                        dataList: controller.co2HourDataList,
+                        dataList: controller.co2DataList,
                         format: " ppm",
-                      ) : controller.isWeek.value == true
-                          ? WeekGraph(
-                          minY: controller.minCo2WeekY.value,
-                          maxY: controller.maxCo2WeekY.value,
-                          graphColor: AppColors.lightGreen1,
-                          dataList: controller.co2WeekDataList,
-                          format: " ppm",
-                          graphColor1: AppColors.lightGreen2
-                      )
-                          : MonthGraph(
-                          minY: controller.minCo2MonthY.value,
-                          maxY: controller.maxCo2MonthY.value,
-                          graphColor: AppColors.lightGreen1,
-                          dataList: controller.co2MonthDataList,
-                          format: " ppm"
                       ) : SizedBox(height: 150.h,)),
                       hourSelect: () {
                         controller.getHourData(
@@ -324,28 +275,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       isWeek: controller.isWeek.value,
                       isMonth: controller.isMonth.value,
                       graph: Obx(() => controller.isClimateData.value == true
-                          ? controller.isHour.value == true
                           ? HourGraph(
-                        minY: controller.minLightningHourY.value,
-                        maxY: controller.maxLightningHourY.value,
-                        dataList: controller.lightningHourDataList,
+                        minY: controller.minLightY.value,
+                        maxY: controller.maxLightY.value,
+                        dataList: controller.lightDataList,
                         graphColor: AppColors.pink,
                         format: " mol/m2day",
-                      ) : controller.isWeek.value == true
-                          ? WeekGraph(
-                          minY: controller.minLightningWeekY.value,
-                          maxY: controller.maxLightningWeekY.value,
-                          graphColor: AppColors.lightPink,
-                          dataList: controller.lightningWeekDataList,
-                          format: " mol/m2day",
-                          graphColor1: AppColors.pink
-                      )
-                          : MonthGraph(
-                          minY: controller.minLightningMonthY.value,
-                          maxY: controller.maxLightningMonthY.value,
-                          graphColor: AppColors.pink,
-                          dataList: controller.lightningMonthDataList,
-                          format: " mol/m2day"
                       )
                           : SizedBox(height: 150.h,)),
                       hourSelect: (){
@@ -400,28 +335,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       isWeek: controller.isWeek.value,
                       isMonth: controller.isMonth.value,
                       graph: Obx(() => controller.isClimateData.value == true
-                          ? controller.isHour.value == true
                           ? HourGraph(
-                        minY: controller.minVpdHourY.value,
-                        maxY: controller.maxVpdHourY.value,
+                        minY: controller.minVpdY.value,
+                        maxY: controller.maxVpdY.value,
                         graphColor: AppColors.lightBlue2,
-                        dataList: controller.vpdHourDataList,
+                        dataList: controller.vpdDataList,
                         format: " kPa",
-                      ) : controller.isWeek.value == true
-                          ? WeekGraph(
-                        minY: controller.minVpdWeekY.value,
-                        maxY: controller.maxVpdWeekY.value,
-                        graphColor: AppColors.lightBlue2,
-                        dataList: controller.vpdWeekDataList,
-                        format: " kPa",
-                        graphColor1: AppColors.darkBlue2,
-                      )
-                          : MonthGraph(
-                          minY: controller.minVpdMonthY.value,
-                          maxY: controller.maxVpdMonthY.value,
-                          graphColor: AppColors.lightBlue2,
-                          dataList: controller.vpdMonthDataList,
-                          format: " kPa"
                       )
                           : SizedBox(height: 150.h,)),
                       hourSelect: (){
@@ -741,7 +660,18 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     ),
                   ),
                   SizedBox(height: 10.h,),
-                  growSheetWidget(),
+                  growSheetWidget(
+                    selectStage: controller.selectStage,
+                    isVegetative: controller.isVegetative,
+                    isSeedling: controller.isSeedling,
+                    isGermination: controller.isGermination,
+                    isFlowering: controller.isFlowering,
+                    context: context,
+                    harvestDate: controller.harvestDate,
+                    plantedDate: controller.plantedDate,
+                    plantedDateValue: controller.plantedDateValue,
+                    harvestDateValue: controller.harvestDateValue
+                  ),
                   SizedBox(height: 10.h,),
                   deviceOverviewWidget(
                       onTap: (){

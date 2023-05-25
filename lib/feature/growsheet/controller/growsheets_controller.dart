@@ -86,7 +86,7 @@ class GrowSheetController extends GetxController {
 
   GrowSheetData growSheetData = GrowSheetData();
 
-  List<GrowSheet> growSheetDataList = [];
+  List<Growsheet> growSheetDataList = [];
 
   RxBool isGetData = false.obs;
 

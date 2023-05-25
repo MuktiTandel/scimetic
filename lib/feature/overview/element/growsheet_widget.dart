@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-Widget growSheetWidget() {
-  return Container(
+Widget growSheetWidget( {
+  required BuildContext context,
+  required RxString selectStage,
+  required RxBool isGermination,
+  required RxBool isSeedling,
+  required RxBool isVegetative,
+  required RxBool isFlowering,
+  required DateRangePickerController plantedDate,
+  required DateRangePickerController harvestDate,
+  required RxString plantedDateValue,
+  required RxString harvestDateValue
+} ) {
+  return Obx(() => Container(
     width: Get.width,
     color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
     child: Column(
@@ -93,7 +106,7 @@ Widget growSheetWidget() {
                             child: Row(
                               children: [
                                 CustomText(
-                                  text: AppStrings.flowering,
+                                  text: selectStage.value,
                                   fontSize: 15.sp,
                                   color: AppColors.red,
                                   fontWeight: FontWeight.w400,
@@ -112,6 +125,13 @@ Widget growSheetWidget() {
                               PopupMenuItem<int>(
                                   padding: EdgeInsets.zero,
                                   value: 0,
+                                  onTap: (){
+                                    selectStage.value = AppStrings.germination;
+                                    isGermination.value = true;
+                                    isSeedling.value = false;
+                                    isVegetative.value = false;
+                                    isFlowering.value = false;
+                                  },
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -120,7 +140,8 @@ Widget growSheetWidget() {
                                         child: CustomText(
                                           text: AppStrings.germination,
                                           fontSize: 15.sp,
-                                          color: Get.isDarkMode
+                                          color: isGermination.value == true
+                                              ? AppColors.buttonColor : Get.isDarkMode
                                               ? AppColors.darkText : AppColors.lightGray1,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -137,6 +158,13 @@ Widget growSheetWidget() {
                               PopupMenuItem<int>(
                                   padding: EdgeInsets.zero,
                                   value: 0,
+                                  onTap: (){
+                                    selectStage.value = AppStrings.seedling;
+                                    isGermination.value = false;
+                                    isSeedling.value = true;
+                                    isVegetative.value = false;
+                                    isFlowering.value = false;
+                                  },
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -145,7 +173,8 @@ Widget growSheetWidget() {
                                         child: CustomText(
                                           text: AppStrings.seedling,
                                           fontSize: 15.sp,
-                                          color: Get.isDarkMode
+                                          color: isSeedling.value == true
+                                              ? AppColors.buttonColor : Get.isDarkMode
                                               ? AppColors.darkText : AppColors.lightGray1,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -162,6 +191,13 @@ Widget growSheetWidget() {
                               PopupMenuItem<int>(
                                   padding: EdgeInsets.zero,
                                   value: 0,
+                                  onTap: (){
+                                    selectStage.value = AppStrings.vegetative;
+                                    isGermination.value = false;
+                                    isSeedling.value = false;
+                                    isVegetative.value = true;
+                                    isFlowering.value = false;
+                                  },
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -170,7 +206,8 @@ Widget growSheetWidget() {
                                         child: CustomText(
                                           text: AppStrings.vegetative,
                                           fontSize: 15.sp,
-                                          color: Get.isDarkMode
+                                          color: isVegetative.value == true
+                                              ? AppColors.buttonColor : Get.isDarkMode
                                               ? AppColors.darkText : AppColors.lightGray1,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -188,12 +225,20 @@ Widget growSheetWidget() {
                                   value: 1,
                                   padding: EdgeInsets.zero,
                                   height: 20.h,
+                                  onTap: (){
+                                    selectStage.value = AppStrings.flowering;
+                                    isGermination.value = false;
+                                    isSeedling.value = false;
+                                    isVegetative.value = false;
+                                    isFlowering.value = true;
+                                  },
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 10.w, right: 10.w),
                                     child: CustomText(
                                       text: AppStrings.flowering,
                                       fontSize: 15.sp,
-                                      color: Get.isDarkMode
+                                      color: isFlowering.value == true
+                                          ? AppColors.buttonColor : Get.isDarkMode
                                           ? AppColors.darkText : AppColors.lightGray1,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -215,12 +260,26 @@ Widget growSheetWidget() {
                             fontWeight: FontWeight.w500,
                           ),
                           Expanded(child: SizedBox(width: 10.w,)),
-                          CustomText(
-                            text: "01.03.2020",
-                            fontSize: 15.sp,
-                            color: Get.isDarkMode
-                                ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w500,
+                          GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return picDate(
+                                        date: plantedDate,
+                                      dateValue: plantedDateValue
+                                    );
+                                  }
+                              );
+                            },
+                            child: CustomText(
+                              text: plantedDateValue.value,
+                              fontSize: 15.sp,
+                              color: Get.isDarkMode
+                                  ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
                           )
                         ],
                       ),
@@ -236,12 +295,26 @@ Widget growSheetWidget() {
                             fontWeight: FontWeight.w500,
                           ),
                           Expanded(child: SizedBox(width: 10.w,)),
-                          CustomText(
-                            text: "30.03.2021",
-                            fontSize: 15.sp,
-                            color: Get.isDarkMode
-                                ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w500,
+                          GestureDetector(
+                            onTap: (){
+                              showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return picDate(
+                                        date: harvestDate,
+                                      dateValue: harvestDateValue
+                                    );
+                                  }
+                              );
+                            },
+                            child: CustomText(
+                              text: harvestDateValue.value,
+                              fontSize: 15.sp,
+                              color: Get.isDarkMode
+                                  ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
                           )
                         ],
                       ),
@@ -341,6 +414,84 @@ Widget growSheetWidget() {
             ],
           ),
         )
+      ],
+    ),
+  ));
+}
+
+Widget picDate({required DateRangePickerController date, required RxString dateValue}) {
+  return AlertDialog(
+    contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+    backgroundColor: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 10.h,),
+        SizedBox(
+          width: 200.w,
+          height: 220.h,
+          child: SfDateRangePicker(
+            showActionButtons: true,
+            controller: date,
+            view: DateRangePickerView.month,
+            headerStyle: DateRangePickerHeaderStyle(
+              textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 14.sp,
+                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  fontWeight: FontWeight.w500
+              ),
+            ),
+            onSubmit: (context){
+              Get.back();
+              AppConst().debug('Select date => ${date.selectedDate}');
+              dateValue.value = "${date.selectedDate!.day}.${date.selectedDate!.month}.${date.selectedDate!.year}";
+            },
+            onCancel: (){
+              Get.back();
+            },
+            showNavigationArrow: true,
+            monthViewSettings: DateRangePickerMonthViewSettings(
+              showTrailingAndLeadingDates: true,
+              viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                  textStyle: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 12.sp,
+                      color: Get.isDarkMode ? AppColors.darkBlue3 : AppColors.lightIcon,
+                      fontWeight: FontWeight.w500
+                  )
+              ),
+            ),
+            monthCellStyle: DateRangePickerMonthCellStyle(
+              textStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 12.sp,
+                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  fontWeight: FontWeight.w500
+              ),
+              disabledDatesTextStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 12.sp,
+                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                  fontWeight: FontWeight.w500
+              ),
+              todayTextStyle: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 12.sp,
+                  color: Get.isDarkMode ? Colors.white : AppColors.lightText,
+                  fontWeight: FontWeight.w500
+              ),
+            ),
+            selectionColor: AppColors.buttonColor,
+            todayHighlightColor: AppColors.lightIcon,
+            selectionTextStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 12.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w500
+            ),
+          ),
+        ),
       ],
     ),
   );

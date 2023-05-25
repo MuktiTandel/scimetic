@@ -14,6 +14,7 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
+import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 
 class GrowSheetsScreen extends StatelessWidget {
    GrowSheetsScreen({Key? key}) : super(key: key);
@@ -53,18 +54,10 @@ class GrowSheetsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10.h,),
-                    CustomDropDown(
-                        hintText: AppStrings.placeholder,
-                      itemList: controller.placeHolderList,
-                      value: controller.placeHolderValue.value,
-                      onChange: (value) {
-                          controller.placeHolderValue.value = value;
-                      },
-                    )
                   ],
                 ),
               ),
-              /*Obx(() => controller.isGetData.value == false ? const Center(
+              Obx(() => controller.isGetData.value == false ? const Center(
                 child: CircularProgressIndicator(
                   color: AppColors.buttonColor,
                 ),
@@ -74,18 +67,34 @@ class GrowSheetsScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemCount: controller.growSheetDataList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return listWidget();
+
+                    Growsheet data = controller.growSheetDataList[index];
+
+                    return listWidget(
+                      name: data.name ?? "",
+                      desc:  data.description ?? "",
+                      seedBank: data.seedBank ?? "",
+                      dayTemperatureValue: data.dayTargetTemperature.toString(),
+                      nightTemperatureValue: data.nightTargetTemperature.toString(),
+                      dayHumidityValue: data.dayTargetRelativeHumidity.toString(),
+                      nightHumidityValue: data.nightTargetRelativeHumidity.toString(),
+                      dayCo2Value: data.dayTargetCo2.toString(),
+                      nightCo2Value: data.nightTargetCo2.toString(),
+                      irrigationName: data.irrigationControl!.name ?? "",
+                      fertigationName1: data.fertigationControl01!.name ?? "",
+                      fertigationName2: data.fertigationControl02!.name ?? ""
+                    );
                   }
-              ),),*/
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: 2,
-                  itemBuilder: (BuildContext context, int index) {
-                    return listWidget();
-                  }
-              ),
+              ),),
+              // ListView.builder(
+              //     shrinkWrap: true,
+              //     physics: const NeverScrollableScrollPhysics(),
+              //     padding: EdgeInsets.zero,
+              //     itemCount: 2,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return listWidget();
+              //     }
+              // ),
               SizedBox(height: 10.h,),
               Padding(
                 padding:  EdgeInsets.only(right: 18.w),
@@ -445,19 +454,34 @@ class GrowSheetsScreen extends StatelessWidget {
     );
   }
 
-  Widget listWidget () {
+  Widget listWidget ( {
+    required String name,
+    required String desc,
+    required String seedBank,
+    required String dayTemperatureValue,
+    required String nightTemperatureValue,
+    required String dayHumidityValue,
+    required String nightHumidityValue,
+    required String dayCo2Value,
+    required String nightCo2Value,
+    required String irrigationName,
+    required String fertigationName1,
+    required String fertigationName2
+} ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
           child: Padding(
             padding: EdgeInsets.all(15.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     CustomText(
-                      text: AppStrings.oGKushSeedlingSheet,
+                      text: name,
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.buttonColor,
@@ -468,38 +492,38 @@ class GrowSheetsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 6.h,),
                 Text(
-                  AppStrings.tODesc,
+                  desc,
                   style: TextStyleDecoration.body1,
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.seedBank,
-                    value: AppStrings.bankName
+                    value: seedBank
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.temperature,
-                    value: "24°C / 26°C"
+                    value: "$dayTemperatureValue°C / $nightTemperatureValue°C"
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.rH,
-                    value: "75% / 80%"
+                    value: "$dayHumidityValue% / $nightHumidityValue%"
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.cO2,
-                    value: "950 ppm"
+                    value: "$dayCo2Value ppm / $nightCo2Value ppm"
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.irrigation,
-                    value: AppStrings.scheduleName
+                    value: irrigationName
                 ),
                 SizedBox(height: 10.h,),
                 commonWidget(
                     title: AppStrings.fertigation,
-                    value: AppStrings.formulaName
+                    value: "$fertigationName1 $fertigationName2"
                 ),
               ],
             ),

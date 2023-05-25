@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
+import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
@@ -15,6 +16,8 @@ import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/overview/model/climate_model.dart';
 import 'package:scimetic/feature/overview/model/device_model.dart';
 import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
+import 'package:scimetic/feature/overview/model/growsheet_labeler_model.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class OverviewController extends GetxController {
 
@@ -28,6 +31,11 @@ class OverviewController extends GetxController {
   RxBool isWeek = false.obs;
   RxBool isMonth = false.obs;
 
+  RxBool isGermination = true.obs;
+  RxBool isSeedling = false.obs;
+  RxBool isVegetative = false.obs;
+  RxBool isFlowering = false.obs;
+
   RxString chooseItem = "".obs;
 
   RxDouble temperatureValue = 0.0.obs;
@@ -35,6 +43,11 @@ class OverviewController extends GetxController {
   RxDouble co2Value = 0.0.obs;
   RxDouble lightningValue = 0.0.obs;
   RxDouble vpdValue = 0.0.obs;
+
+  RxString selectStage = AppStrings.germination.obs;
+
+  DateRangePickerController plantedDate = DateRangePickerController();
+  DateRangePickerController harvestDate = DateRangePickerController();
 
   RxDouble minTemperatureY = 0.0.obs;
   RxDouble maxTemperatureY = 0.0.obs;
@@ -165,11 +178,20 @@ class OverviewController extends GetxController {
 
   DeviceModel deviceModel = DeviceModel();
 
+  GrowSheetLabelerModel growSheetLabelerModel = GrowSheetLabelerModel();
+
+  GrowsheetLabeler growsheetLabeler = GrowsheetLabeler();
+
   RxBool isGetData = false.obs;
 
   RxBool isOverview = false.obs;
 
   RxBool isClimateData = false.obs;
+
+  RxString plantedDateValue = "".obs;
+  RxString harvestDateValue = "".obs;
+
+  RxInt growSheetId = 0.obs;
 
   List<ClimateData> climateDataList = [];
 
@@ -198,7 +220,19 @@ class OverviewController extends GetxController {
 
           growSheetData = GrowSheetData.fromJson(data);
 
-          AppConst().debug('grow sheet data => ${growSheetData.growsheets}');
+          growSheetId.value = growSheetData.growsheets!.first.id!;
+
+          if ( growSheetData.growsheets!.isNotEmpty ) {
+            getGrowSheetLabelerData(id: growSheetId.value).whenComplete(() {
+              selectStage.value = growSheetLabelerModel.growsheetLabeler!.stage ?? AppStrings.germination;
+              plantedDateValue.value = growSheetLabelerModel.growsheetLabeler!
+                  .plantedDate ?? "${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}";
+              harvestDateValue.value = growSheetLabelerModel
+                  .growsheetLabeler!.harvestDate ?? "${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}";
+            });
+          }
+
+          AppConst().debug('grow sheet id => ${growSheetId.value}');
 
           return true;
         } else {
@@ -225,6 +259,8 @@ class OverviewController extends GetxController {
 
   Future getClimateData({required String identifier, required String range}) async {
     token =  storeData.getString(StoreData.accessToken)!;
+
+    climateDataList.clear();
 
     if ( token.isNotEmpty ) {
 
@@ -253,9 +289,10 @@ class OverviewController extends GetxController {
           AppConst().debug('grow sheet data => ${climateData.growspace}');
 
           if ( climateData.climateData!.isNotEmpty ) {
-            climateDataList.clear();
-            isClimateData.value = true;
             climateDataList.addAll(climateData.climateData!);
+            if ( climateDataList.isNotEmpty ) {
+              getGraphData();
+            }
           }
 
           return true;
@@ -330,14 +367,61 @@ class OverviewController extends GetxController {
 
   }
 
+  Future getGrowSheetLabelerData({required int id}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.growSheetLabeler}/$id',
+            requestType: HTTPRequestType.GET,
+            headers: {
+              "Authorization" : 'Bearer $token',
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          growSheetLabelerModel = GrowSheetLabelerModel.fromJson(data);
+
+          AppConst().debug('grow sheet label => ${growSheetLabelerModel.growsheetLabeler}');
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
+
   Future getHourData({required int id, required String identifier}) async {
 
     isGetData.value = false;
 
    await getClimateData(identifier: identifier, range: "24h").whenComplete(() async {
-     if ( climateDataList.isNotEmpty ) {
-       getHourGraphData();
-     }
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
           isGetData.value = true;
@@ -351,9 +435,6 @@ class OverviewController extends GetxController {
     isGetData.value = false;
 
     await getClimateData(identifier: identifier, range: "1w").whenComplete(() async {
-      if ( climateDataList.isNotEmpty ) {
-        getWeekGraphData();
-      }
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
           isGetData.value = true;
@@ -367,15 +448,121 @@ class OverviewController extends GetxController {
     isGetData.value = false;
 
     await getClimateData(identifier: identifier, range: "30d").whenComplete(() async {
-      if ( climateDataList.isNotEmpty ) {
-        getMonthGraphData();
-      }
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
           isGetData.value = true;
         });
       });
     });
+  }
+
+  void getGraphData() {
+    temperatureDataList.clear();
+    temperatureYValueList.clear();
+    humidityDataList.clear();
+    humidityYValueList.clear();
+    co2DataList.clear();
+    co2YValueList.clear();
+    lightDataList.clear();
+    lightYValueList.clear();
+    vpdDataList.clear();
+    vpdYValueList.clear();
+    if ( climateDataList.isNotEmpty ) {
+      isClimateData.value = true;
+      for (var element in climateDataList) {
+        temperatureValue.value = climateDataList.last.temperature ?? 0.0;
+        humidityValue.value = climateDataList.last.humidity ?? 0.0;
+        co2Value.value = climateDataList.last.co2 ?? 0.0;
+        lightningValue.value = climateDataList.last.mol!.toDouble();
+        vpdValue.value = climateDataList.last.vpd ?? 0.0;
+        HourData temperatureData = HourData(
+            element.time!, element.temperature!);
+        temperatureDataList.add(temperatureData);
+        temperatureDataList.sort((a, b) => a.x.compareTo(b.x));
+        HourData humidityData = HourData(
+            element.time!, element.humidity!);
+        humidityDataList.add(humidityData);
+        humidityDataList.sort((a, b) => a.x.compareTo(b.x));
+        HourData co2Data = HourData(element.time!, element.co2!);
+        co2DataList.add(co2Data);
+        co2DataList.sort((a, b) => a.x.compareTo(b.x));
+        HourData vpdData = HourData(element.time!, element.vpd!);
+        vpdDataList.add(vpdData);
+        vpdDataList.sort((a, b) => a.x.compareTo(b.x));
+        HourData lightningData = HourData(element.time!, element.mol!.toDouble());
+        lightDataList.add(lightningData);
+        lightDataList.sort((a, b) => a.x.compareTo(b.x));
+      }
+      if (temperatureDataList.isNotEmpty) {
+        for (var element in temperatureDataList) {
+          temperatureYValueList.add(element.y);
+        }
+        if (temperatureYValueList.isNotEmpty) {
+          minTemperatureY.value =
+              temperatureYValueList.cast<double>().reduce(min);
+          maxTemperatureY.value =
+              temperatureYValueList.cast<double>().reduce(max);
+          AppConst().debug(
+              "temperature  min y${minTemperatureY.value}");
+          AppConst().debug(
+              "temperature  max y ${maxTemperatureY.value}");
+        }
+      }
+      if (humidityDataList.isNotEmpty) {
+        for (var element in humidityDataList) {
+          humidityYValueList.add(element.y);
+        }
+        if (humidityYValueList.isNotEmpty) {
+          minHumidityY.value =
+              humidityYValueList.cast<double>().reduce(min);
+          maxHumidityY.value =
+              humidityYValueList.cast<double>().reduce(max);
+          AppConst().debug(
+              "humidity min y${minHumidityY.value}");
+          AppConst().debug(
+              "humidity max y ${maxHumidityY.value}");
+        }
+      }
+      if ( co2DataList.isNotEmpty ) {
+        for (var element in co2DataList) {
+          co2YValueList.add(element.y);
+        }
+        if ( co2YValueList.isNotEmpty ) {
+          minCo2Y.value =  co2YValueList.cast<double>().reduce(min);
+          maxCo2Y.value =  co2YValueList.cast<double>().reduce(max);
+          AppConst().debug(
+              "co2 min y${minCo2Y.value}");
+          AppConst().debug(
+              "co2 max y ${maxCo2Y.value}");
+        }
+      }
+      if ( vpdDataList.isNotEmpty ) {
+        for (var element in vpdDataList) {
+          vpdYValueList.add(element.y);
+        }
+        if ( vpdYValueList.isNotEmpty ) {
+          minVpdY.value =  vpdYValueList.cast<double>().reduce(min);
+          maxVpdY.value =  vpdYValueList.cast<double>().reduce(max);
+          AppConst().debug(
+              "vpd min y${minVpdY.value}");
+          AppConst().debug(
+              "vpd max y ${maxVpdY.value}");
+        }
+      }
+      if ( lightDataList.isNotEmpty ) {
+        for (var element in lightDataList) {
+          lightYValueList.add(element.y);
+        }
+        if ( lightYValueList.isNotEmpty ) {
+          minLightY.value =  lightYValueList.cast<double>().reduce(min);
+          maxLightY.value =  lightYValueList.cast<double>().reduce(max);
+          AppConst().debug(
+              "lightning min y${minLightY.value}");
+          AppConst().debug(
+              "lightning max y ${maxLightY.value}");
+        }
+      }
+    }
   }
 
   void getHourGraphData() {

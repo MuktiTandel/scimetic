@@ -84,8 +84,8 @@ Widget growSheetWidget() {
                             padding: EdgeInsets.zero,
                             color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                             constraints: BoxConstraints(
-                                maxWidth: 115.w,
-                                maxHeight: 75.h
+                                maxWidth: 126.w,
+                                maxHeight: 138.h
                             ),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)
@@ -118,9 +118,60 @@ Widget growSheetWidget() {
                                       Padding(
                                         padding:  EdgeInsets.only(left: 10.w,right: 20.w),
                                         child: CustomText(
-                                          text: AppStrings.flowering,
+                                          text: AppStrings.germination,
                                           fontSize: 15.sp,
-                                          color: AppColors.buttonColor,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.lightGray1,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Divider(
+                                        color: Get.isDarkMode
+                                            ? AppColors.darkBlue1
+                                            : AppColors.lightGray2,
+                                        thickness: 1.w,
+                                      )
+                                    ],
+                                  )
+                              ),
+                              PopupMenuItem<int>(
+                                  padding: EdgeInsets.zero,
+                                  value: 0,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:  EdgeInsets.only(left: 10.w,right: 20.w),
+                                        child: CustomText(
+                                          text: AppStrings.seedling,
+                                          fontSize: 15.sp,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.lightGray1,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Divider(
+                                        color: Get.isDarkMode
+                                            ? AppColors.darkBlue1
+                                            : AppColors.lightGray2,
+                                        thickness: 1.w,
+                                      )
+                                    ],
+                                  )
+                              ),
+                              PopupMenuItem<int>(
+                                  padding: EdgeInsets.zero,
+                                  value: 0,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:  EdgeInsets.only(left: 10.w,right: 20.w),
+                                        child: CustomText(
+                                          text: AppStrings.vegetative,
+                                          fontSize: 15.sp,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.lightGray1,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -139,24 +190,12 @@ Widget growSheetWidget() {
                                   height: 20.h,
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                                    child: Row(
-                                      children: [
-                                        CustomText(
-                                          text: AppStrings.seedling,
-                                          fontSize: 15.sp,
-                                          color: Get.isDarkMode
-                                              ? AppColors.darkText : AppColors.lightGray1,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        Expanded(child: SizedBox(width: 20.w,)),
-                                        Image.asset(
-                                          AppImages.rightArrow,
-                                          height: 10.h,
-                                          width: 10.w,
-                                          color: Get.isDarkMode
-                                              ? AppColors.darkText : AppColors.lightGray1,
-                                        )
-                                      ],
+                                    child: CustomText(
+                                      text: AppStrings.flowering,
+                                      fontSize: 15.sp,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   )
                               ),

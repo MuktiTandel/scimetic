@@ -58,7 +58,7 @@ class HourGraph extends StatelessWidget {
           ),
         ),
         primaryXAxis: DateTimeAxis(
-          intervalType: DateTimeIntervalType.hours,
+          maximumLabels: 5,
           dateFormat: DateFormat("HH:mm"),
           majorGridLines: const MajorGridLines(
             width: 0,
@@ -67,21 +67,20 @@ class HourGraph extends StatelessWidget {
           axisLine: const AxisLine(
               width: 0
           ),
-          interval: 4,
           labelStyle: TextStyle(
               color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
               fontSize: 10.h,
             fontWeight: FontWeight.w500,
             fontFamily: "Poppins"
           ),
-          title: AxisTitle(
-            text: "07.03.2021",
-            textStyle:  TextStyle(
-                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                fontSize: 10.h,
-              fontFamily: "Poppins"
-            ),
-        )
+         //  title: AxisTitle(
+         //    text: "07.03.2021",
+         //    textStyle:  TextStyle(
+         //        color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+         //        fontSize: 10.h,
+         //      fontFamily: "Poppins"
+         //    ),
+         // )
         ),
         series: <ChartSeries>[
           SplineAreaSeries<HourData, DateTime>(

@@ -71,6 +71,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                        controller.isSelect.value = true;
                        controller.isOverViewTitle.value = true;
                        controller.id.value = data.id!;
+                       overViewController.isHour.value = true;
+                       overViewController.isWeek.value = false;
+                       overViewController.isMonth.value = false;
                        overViewController.id.value = data.id!;
                        overViewController.isGetData.value = false;
                        controller.selectItem.value = data.identifier ?? "";

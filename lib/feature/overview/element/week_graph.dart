@@ -50,7 +50,7 @@ class WeekGraph extends StatelessWidget {
           plotOffset: 20,
           minimum: minY,
           maximum: maxY,
-          maximumLabels: 1,
+          maximumLabels: 2,
           labelStyle: TextStyle(
             color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
             fontSize: 10.h,
@@ -59,8 +59,9 @@ class WeekGraph extends StatelessWidget {
           ),
         ),
         primaryXAxis: DateTimeAxis(
-            intervalType: DateTimeIntervalType.hours,
+            // intervalType: DateTimeIntervalType.hours,
             dateFormat: DateFormat("HH:mm"),
+            maximumLabels: 5,
             majorGridLines: const MajorGridLines(
               width: 0,
             ),
@@ -68,21 +69,20 @@ class WeekGraph extends StatelessWidget {
             axisLine: const AxisLine(
                 width: 0
             ),
-            interval: 4,
             labelStyle: TextStyle(
                 color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                 fontSize: 10.h,
                 fontWeight: FontWeight.w500,
                 fontFamily: "Poppins"
             ),
-            title: AxisTitle(
-              text: "01.03 - 07.03",
-              textStyle:  TextStyle(
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  fontSize: 10.h,
-                  fontFamily: "Poppins"
-              ),
-            )
+            // title: AxisTitle(
+            //   text: "01.03 - 07.03",
+            //   textStyle:  TextStyle(
+            //       color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+            //       fontSize: 10.h,
+            //       fontFamily: "Poppins"
+            //   ),
+            // )
         ),
         series: <ChartSeries>[
           SplineAreaSeries<WeekData, DateTime>(

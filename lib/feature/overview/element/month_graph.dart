@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -48,7 +49,7 @@ class MonthGraph extends StatelessWidget {
           plotOffset: 20,
           minimum: minY,
           maximum: maxY,
-          maximumLabels: 1,
+          maximumLabels: 2,
           labelStyle: TextStyle(
             color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
             fontSize: 10.h,
@@ -56,37 +57,33 @@ class MonthGraph extends StatelessWidget {
             fontFamily: "Poppins",
           ),
         ),
-        primaryXAxis: NumericAxis(
-          // visibleMinimum: 1,
-          //  visibleMaximum: 26.6.w,
-          minimum: 1,
-            maximum: 31,
-            interval: 2,
-            majorGridLines: const MajorGridLines(
-              width: 0,
-            ),
-            majorTickLines: const MajorTickLines(width: 0),
-            axisLine: const AxisLine(
-                width: 0
-            ),
-            labelStyle: TextStyle(
-                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                fontSize: 10.h,
-                fontWeight: FontWeight.w500,
-                fontFamily: "Poppins"
-            ),
-            isVisible: true,
-            title: AxisTitle(
-              text: "March",
-              textStyle:  TextStyle(
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  fontSize: 10.h,
-                  fontFamily: "Poppins"
-              ),
-            )
+        primaryXAxis: DateTimeAxis(
+          maximumLabels: 5,
+          dateFormat: DateFormat("HH:mm"),
+          majorGridLines: const MajorGridLines(
+            width: 0,
+          ),
+          majorTickLines: const MajorTickLines(width: 0),
+          axisLine: const AxisLine(
+              width: 0
+          ),
+          labelStyle: TextStyle(
+              color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+              fontSize: 10.h,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Poppins"
+          ),
+          //  title: AxisTitle(
+          //    text: "07.03.2021",
+          //    textStyle:  TextStyle(
+          //        color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+          //        fontSize: 10.h,
+          //      fontFamily: "Poppins"
+          //    ),
+          // )
         ),
         series: <ChartSeries>[
-          SplineAreaSeries<MonthData, double>(
+          SplineAreaSeries<MonthData, DateTime>(
             borderWidth: 3.w,
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -106,6 +103,6 @@ class MonthGraph extends StatelessWidget {
 
 class MonthData {
   MonthData(this.x, this.y);
-  final double x;
+  final DateTime x;
   final double y;
 }

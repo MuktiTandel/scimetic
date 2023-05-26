@@ -6,7 +6,7 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget commonPopup() {
+Widget commonPopup({ required VoidCallback deleteTap }) {
   return PopupMenuButton<int>(
     offset: Offset(0, 18.h),
     padding: EdgeInsets.zero,
@@ -134,6 +134,9 @@ Widget commonPopup() {
       PopupMenuItem<int>(
           value: 1,
           padding: EdgeInsets.zero,
+          onTap: (){
+            deleteTap();
+          },
           child: Padding(
             padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 9.h),
             child: Row(

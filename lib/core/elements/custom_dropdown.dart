@@ -18,7 +18,7 @@ class CustomDropDown extends StatelessWidget {
   }) : super(key: key);
 
   final String hintText;
-  final List<String> itemList;
+  final List itemList;
   final String value;
   final ValueChanged<String>? onChange;
   final bool? isFilled;
@@ -31,7 +31,6 @@ class CustomDropDown extends StatelessWidget {
         dropdownMaxHeight: 150.h,
         dropdownWidth: width ?? 310.w,
         buttonPadding: EdgeInsets.only(left: 10.w),
-        value: value,
         isExpanded: true,
         decoration: InputDecoration(
           isDense: true,
@@ -77,7 +76,7 @@ class CustomDropDown extends StatelessWidget {
               )
           );
         }).toList(),
-        onChanged: (value) {
+        onChanged: ( dynamic value) {
           onChange!(value!);
         },
     );

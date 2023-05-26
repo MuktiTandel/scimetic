@@ -69,20 +69,20 @@ class Growsheet {
   String? description;
   String? seedBank;
   String? tag;
-  int? dayTargetTemperature;
-  int? dayTemperatureDeadband;
-  int? dayTargetRelativeHumidity;
-  int? dayHumidityDeadband;
-  int? dayTargetCo2;
-  int? dayCo2Deadband;
+  dynamic dayTargetTemperature;
+  dynamic dayTemperatureDeadband;
+  dynamic dayTargetRelativeHumidity;
+  dynamic dayHumidityDeadband;
+  dynamic dayTargetCo2;
+  dynamic dayCo2Deadband;
   String? dayLightTimeOn;
   String? dayLightTimeOff;
-  int? nightTargetTemperature;
-  int? nightTemperatureDeadband;
-  int? nightTargetRelativeHumidity;
-  int? nightHumidityDeadband;
-  int? nightTargetCo2;
-  int? nightCo2Deadband;
+  dynamic nightTargetTemperature;
+  dynamic nightTemperatureDeadband;
+  dynamic nightTargetRelativeHumidity;
+  dynamic nightHumidityDeadband;
+  dynamic nightTargetCo2;
+  dynamic nightCo2Deadband;
   String? nightLightTimeOn;
   String? nightLightTimeOff;
   bool? applied;
@@ -140,8 +140,8 @@ class Growsheet {
     "id": id,
     "name": name,
     "description": description,
-    "seedBank": seedBank == null ? null : seedBank,
-    "tag": tag == null ? null : tag,
+    "seedBank": seedBank,
+    "tag": tag,
     "dayTargetTemperature": dayTargetTemperature,
     "dayTemperatureDeadband": dayTemperatureDeadband,
     "dayTargetRelativeHumidity": dayTargetRelativeHumidity,

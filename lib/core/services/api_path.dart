@@ -11,5 +11,7 @@ class ApiPath {
   static const device = "/device";
   static const company = "/company";
   static const growSheetLabeler = "/growsheet/growsheet_labeler";
+  static const growSheetFormOptions = "/growsheet/form_options";
+  static const growSheet = "/growsheet";
 
 }

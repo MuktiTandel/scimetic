@@ -5,6 +5,9 @@ class StoreData {
   static const String accessToken = "accessToken";
   static const String id = "id";
   static const String identifier = "identifier";
+  static const String irrigationId = "irrigationId";
+  static const String fertigationId1 = "fertigationId1";
+  static const String fertigationId2 = "fertigationId2";
 
   void setData(String key, dynamic value) => GetStorage().write(key, value);
 

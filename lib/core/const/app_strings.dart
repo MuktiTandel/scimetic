@@ -299,6 +299,10 @@ class AppStrings {
   static const String mainInformation = "Main Information";
   static const String germination = "Germination";
   static const String vegetative = "Vegetative";
+  static const String deadbandC = "Deadband °C";
+  static const String deadbandRH = "Deadband RH";
+  static const String deadbandCO2 = "Deadband CO2";
+  static const String noData = "No Data";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

@@ -303,6 +303,15 @@ class AppStrings {
   static const String deadbandRH = "Deadband RH";
   static const String deadbandCO2 = "Deadband CO2";
   static const String noData = "No Data";
+  static const String generateReport = "Generate report";
+  static const String batchID = "Batch ID";
+  static const String chooseSensor = "Choose Sensor";
+  static const String dateRange = "Date Range";
+  static const String startDate = "Start date";
+  static const String endDate = "End date";
+  static const String generateExport = "Generate & Export";
+  static const String generate = "Generate";
+  static const String companyName = "Company Name";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

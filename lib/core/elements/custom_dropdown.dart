@@ -15,6 +15,7 @@ class CustomDropDown extends StatelessWidget {
     required this.onChange,
     this.isFilled,
     this.width,
+    this.yValue
   }) : super(key: key);
 
   final String hintText;
@@ -23,6 +24,7 @@ class CustomDropDown extends StatelessWidget {
   final ValueChanged<String>? onChange;
   final bool? isFilled;
   final double? width;
+  final double? yValue;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class CustomDropDown extends StatelessWidget {
           width: 20.w,
           color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
         ),
-        offset: const Offset(0, -20),
+        offset: Offset(0, yValue ?? -20),
         dropdownDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white

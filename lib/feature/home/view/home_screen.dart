@@ -20,6 +20,7 @@ import 'package:scimetic/feature/organizations/controller/organization_controlle
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
+import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
@@ -35,6 +36,8 @@ class HomeScreen extends StatelessWidget {
    final organizationController = Get.put(OrganizationController());
 
    final overviewController = Get.put(OverviewController());
+
+   final todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
@@ -264,6 +267,9 @@ class HomeScreen extends StatelessWidget {
                                       dashboardController.isOverViewTitle.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(2);
+                                      todoController.getTodoList().whenComplete(() async {
+                                        await todoController.getCompanyUser();
+                                      });
                                       Get.back();
                                     },
                                     image: AppImages.toDo,

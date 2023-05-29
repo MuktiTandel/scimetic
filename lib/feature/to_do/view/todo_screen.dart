@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
+import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
@@ -14,6 +16,7 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/select_widget.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
+import 'package:scimetic/feature/to_do/model/todo_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class TodoScreen extends StatelessWidget {
@@ -84,9 +87,44 @@ class TodoScreen extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: controller.isTodo.value == true
-                            ? 3 : controller.isProgress.value == true ? 1 : 1,
+                            ? controller.todoList.length
+                            : controller.isProgress.value == true
+                            ? controller.inProgressList.length
+                            : controller.completedList.length,
                         itemBuilder: (BuildContext context, int index ) {
-                          return listWidget(isCompleted: controller.isCompleted.value);
+
+                          Todo todo = Todo();
+
+                          String growSpaceId = "";
+
+                          String date = "";
+
+                          if ( controller.isTodo.value == true ) {
+
+                            todo = controller.todoList[index];
+                            growSpaceId = controller.todoIdentifierList[index];
+                            DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.todoList[index].dueDate!);
+                            date = DateFormat("dd.MM.yyyy").format(parseDate);
+
+                          } else if ( controller.isProgress.value == true ) {
+
+                            todo = controller.inProgressList[index];
+                            growSpaceId = controller.inProgressIdentifierList[index];
+
+                          } else if ( controller.isCompleted.value == true ) {
+
+                            todo = controller.completedList[index];
+                            growSpaceId = controller.completedIdentifierList[index];
+
+                          }
+
+                          return listWidget(
+                              isCompleted: controller.isCompleted.value,
+                            desc: todo.description ?? "",
+                            date: date,
+                            tag: todo.tag ?? "",
+                            growSpace: growSpaceId
+                          );
                         }
                     )),
                     SizedBox(height: 10.h,),
@@ -127,7 +165,13 @@ class TodoScreen extends StatelessWidget {
     );
   }
 
-  Widget listWidget({required bool isCompleted}) {
+  Widget listWidget({
+    required bool isCompleted,
+    required String desc,
+    required String date,
+    required String tag,
+    required String growSpace
+  }) {
     return Column(
       children: [
         Container(
@@ -137,6 +181,7 @@ class TodoScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12)
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -150,24 +195,24 @@ class TodoScreen extends StatelessWidget {
                   controller.isCompleted.value == false
                       ? controller.isProgress.value == false
                       ? PopupMenuButton<int>(
-                    offset: Offset(0, 17.h),
-                    padding: EdgeInsets.zero,
-                    color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                    constraints: BoxConstraints(
-                        maxWidth: 205.w,
-                        maxHeight: 148.h
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Image.asset(
-                      AppImages.menu,
-                      height: 14.h,
-                      width: 8.w,
-                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                    ),
-                    onSelected: (item) {},
-                    itemBuilder: (context) => [
+                        offset: Offset(0, 17.h),
+                        padding: EdgeInsets.zero,
+                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        constraints: BoxConstraints(
+                            maxWidth: 205.w,
+                            maxHeight: 148.h
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Image.asset(
+                          AppImages.menu,
+                          height: 14.h,
+                          width: 8.w,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        onSelected: (item) {},
+                        itemBuilder: (context) => [
                       PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
@@ -373,6 +418,7 @@ class TodoScreen extends StatelessWidget {
                             });
                           },
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -435,7 +481,7 @@ class TodoScreen extends StatelessWidget {
               ),
               SizedBox(height: 12.h,),
               CustomText(
-                text: AppStrings.taskDesc,
+                text: desc,
                 color: Get.isDarkMode ? Colors.white : AppColors.lightText,
               ),
               SizedBox(height: 10.h,),
@@ -451,7 +497,7 @@ class TodoScreen extends StatelessWidget {
                      ),
                      SizedBox(width: 10.w,),
                      CustomText(
-                       text: 'due 20.04.2023',
+                       text: 'due $date',
                        color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
                        fontWeight: FontWeight.w500,
                        fontSize: 13.sp,
@@ -507,12 +553,26 @@ class TodoScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w,),
                   CustomText(
-                    text: 'Growspace works',
+                    text: tag,
                     color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
                     fontWeight: FontWeight.w500,
                     fontSize: 13.sp,
                   ),
                 ],
+              ),
+              SizedBox(height: 10.h,),
+              CustomText(
+                  text: AppStrings.growspaces,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightGray1,
+              ),
+              SizedBox(height: 5.h,),
+              CustomText(
+                text: growSpace,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
               ),
               SizedBox(height: 10.h,),
               isCompleted == false ? Row(
@@ -583,6 +643,7 @@ class TodoScreen extends StatelessWidget {
                         controller: controller.taskNameController,
                         isFilled: false,
                         hintText: AppStrings.taskName,
+                        focusBorderColor: AppColors.buttonColor,
                         borderRadius: 8,
                         contentPadding: EdgeInsets.only(left: 10.w),
                         onchange: (value){},
@@ -597,46 +658,9 @@ class TodoScreen extends StatelessWidget {
                           ? AppColors.darkText : AppColors.lightText,
                     ),
                     SizedBox(height: 5.h,),
-                    Container(
-                      height: 100.h,
-                      padding: EdgeInsets.only(left: 10.w, right: 10.w,bottom: 10.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Get.isDarkMode
-                                ? AppColors.darkText : AppColors.lightBorder,
-                          )
-                      ),
-                      child: TextFormField(
+                    commonDescriptionTextField(
                         controller: controller.descriptionController,
-                        maxLength: 80,
-                        maxLines: 10,
-                        cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                        style:  TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 15.sp,
-                          color: Get.isDarkMode ? Colors.white : Colors.black,
-                        ),
-                        buildCounter: (BuildContext context, { int? currentLength, int? maxLength, bool? isFocused }){
-                          return Obx(() => CustomText(
-                            text: "${controller.descriptionLength}/80",
-                            fontSize: 13.sp,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                          ));
-                        },
-                        decoration: InputDecoration(
-                            hintText: AppStrings.addDescription,
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                fontSize: 14.sp,
-                                fontFamily: "Poppins"
-                            )
-                        ),
-                        onChanged: (value) {
-                          controller.descriptionLength.value = value.length;
-                        },
-                      ),
+                        descriptionLength: controller.descriptionLength
                     ),
                     SizedBox(height: 10.h,),
                     CustomText(
@@ -654,6 +678,7 @@ class TodoScreen extends StatelessWidget {
                         readOnly: true,
                         isFilled: false,
                         borderRadius: 8,
+                        focusBorderColor: AppColors.buttonColor,
                         hintText: AppStrings.selectDate,
                         contentPadding: EdgeInsets.only(left: 10.w),
                         suffixWidget: GestureDetector(
@@ -793,6 +818,7 @@ class TodoScreen extends StatelessWidget {
                         isFilled: false,
                         borderRadius: 8,
                         hintText: AppStrings.tagName,
+                        focusBorderColor: AppColors.buttonColor,
                         contentPadding: EdgeInsets.only(left: 10.w),
                         suffixWidget: Padding(
                           padding:  EdgeInsets.all(13.w),
@@ -814,6 +840,8 @@ class TodoScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 6.h,),
                     CustomDropDown(
+                      width: 290.w,
+                      yValue: 0,
                       hintText: AppStrings.selectAssignName,
                       itemList: controller.userNameList,
                       value: controller.userNameList.first,

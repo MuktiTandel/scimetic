@@ -13,5 +13,8 @@ class ApiPath {
   static const growSheetLabeler = "/growsheet/growsheet_labeler";
   static const growSheetFormOptions = "/growsheet/form_options";
   static const growSheet = "/growsheet";
+  static const report = "/report";
+  static const todo = "/todo";
+  static const companyUsers = "/company_users";
 
 }

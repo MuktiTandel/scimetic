@@ -7,7 +7,6 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/elements/select_widget.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
-import 'package:scimetic/feature/calendar/view/crop_week.dart';
 import 'package:scimetic/feature/calendar/view/day_calendar.dart';
 import 'package:scimetic/feature/calendar/view/month_calendar.dart';
 import 'package:scimetic/feature/calendar/view/week_calendar.dart';

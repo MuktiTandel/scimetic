@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +8,14 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget deviceOverviewWidget() {
+Widget deviceOverviewWidget({ required VoidCallback onTap,
+  required String switchesOnline,
+  required String switchesOffline,
+  required String sensorOnline,
+  required String sensorOffline,
+  required String valvesOnline,
+  required String valvesOffline
+}) {
   return Container(
     width: Get.width,
     color: Get.isDarkMode ? AppColors.darkTheme :  Colors.white,
@@ -45,14 +51,28 @@ Widget deviceOverviewWidget() {
           padding: EdgeInsets.all(15.w),
           child: Column(
             children: [
-              commonDeviceOverviewWidget(title: AppStrings.switches),
+              commonDeviceOverviewWidget(
+                  title: AppStrings.switches,
+                  online: switchesOnline,
+                  offline: switchesOffline
+              ),
               SizedBox(height: 10.h,),
-              commonDeviceOverviewWidget(title: AppStrings.sensor),
+              commonDeviceOverviewWidget(
+                  title: AppStrings.sensor,
+                online: sensorOnline,
+                offline: sensorOffline
+              ),
               SizedBox(height: 10.h,),
-              commonDeviceOverviewWidget(title: AppStrings.valves),
+              commonDeviceOverviewWidget(
+                  title: AppStrings.valves,
+                online: valvesOnline,
+                offline: valvesOffline
+              ),
               SizedBox(height: 15.h,),
               CustomButton(
-                onTap: (){},
+                onTap: (){
+                  onTap();
+                },
                 height: 42.h,
                 buttonText: AppStrings.addNewDevice,
                 child: Center(
@@ -82,7 +102,9 @@ Widget deviceOverviewWidget() {
   );
 }
 
-Widget commonDeviceOverviewWidget( {required String title }) {
+Widget commonDeviceOverviewWidget( {required String title,
+  required String online,
+  required String offline}) {
   return Container(
     padding: EdgeInsets.all(10.w),
     color: Get.isDarkMode ? AppColors.darkBlue : AppColors.lightAppbar,
@@ -132,7 +154,7 @@ Widget commonDeviceOverviewWidget( {required String title }) {
             ),
             SizedBox(width: 5.w,),
             CustomText(
-              text: "15",
+              text: online,
               fontWeight: FontWeight.w500,
               fontSize: 14.sp,
               color: Get.isDarkMode ? Colors.white : Colors.black,
@@ -151,7 +173,7 @@ Widget commonDeviceOverviewWidget( {required String title }) {
             ),
             SizedBox(width: 5.w,),
             CustomText(
-              text: "3",
+              text: offline,
               fontWeight: FontWeight.w500,
               fontSize: 14.sp,
               color: Get.isDarkMode ? Colors.white : Colors.black,

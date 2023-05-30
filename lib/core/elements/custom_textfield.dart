@@ -28,7 +28,9 @@ class CustomTextField extends StatelessWidget {
     this.textAlignVertical,
     this.textInputType,
     this.isFilled,
-    this.contentPadding
+    this.contentPadding,
+    this.readOnly,
+    this.hintTextSize
   }) :_onchange = onchange,
         super(key: key);
 
@@ -54,6 +56,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final bool? isFilled;
   final EdgeInsets? contentPadding;
+  final bool? readOnly;
+  final double? hintTextSize;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,9 @@ class CustomTextField extends StatelessWidget {
       cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
       minLines: 1,
       autofocus: autoFocus ?? false,
+      readOnly: readOnly ?? false,
       textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
+      textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLine ?? 1,
       keyboardType: textInputType ?? TextInputType.text,
       style:  TextStyle(
@@ -101,8 +107,8 @@ class CustomTextField extends StatelessWidget {
           ) : null,
           hintStyle:  TextStyle(
             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-            fontSize: 14.sp,
-            fontFamily: "Poppins"
+            fontSize: hintTextSize ?? 14.sp,
+            fontFamily: "Poppins",
           )
       ),
       validator: validator,

@@ -93,5 +93,25 @@ class AppImages {
   static const String checkCalender = 'assets/images/check_calender.png';
   static const String roundedDone = 'assets/images/rounded_done.png';
   static const String archive = 'assets/images/archive.png';
+  static const String sync = 'assets/images/sync.png';
+  static const String sensors = 'assets/images/sensors.png';
+  static const String restart = 'assets/images/restart.png';
+  static const String calendarLeftArrow = 'assets/images/calendar_left_arrow.png';
+  static const String calendarRightArrow = 'assets/images/calendar_right_arrow.png';
+  static const String lightUnselectToggle = 'assets/images/light_unselect_toggle.png';
+  static const String darkSelectedToggle = 'assets/images/dark_selected_toggle.png';
+  static const String darkUnselectToggle = 'assets/images/dark_unselect_toggle.png';
+  static const String thumbIcon = 'assets/images/thumb_icon.png';
+  static const String generatorReady = 'assets/images/generator_ready.png';
+  static const String generatorRunning = 'assets/images/generator_running.png';
+  static const String close1 = 'assets/images/close1.png';
+  static const String tag = 'assets/images/tag.png';
+  static const String group15 = 'assets/images/group15.png';
+  static const String key = 'assets/images/key.png';
+  static const String logo = 'assets/images/logo.png';
+  static const String organization = 'assets/images/organization.png';
+  static const String manageGrowspaces = 'assets/images/manage_growspaces.png';
+  static const String manageUser = 'assets/images/manage_user.png';
+  static const String suspend = 'assets/images/suspend.png';
 
 }

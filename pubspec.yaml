@@ -58,6 +58,39 @@ dependencies:
   # for show drop down
   dropdown_button2: ^1.0.7
 
+  # for pic emojis
+  emoji_picker_flutter: ^1.5.4
+
+  # for pic file
+  file_picker: ^5.3.0
+
+  # for date picker
+  syncfusion_flutter_datepicker: ^21.2.4
+
+  # for calendar
+  syncfusion_flutter_calendar: ^21.2.4
+
+  # for date format
+  intl: ^0.18.1
+
+  # for slider
+  syncfusion_flutter_sliders: ^21.2.4
+
+  # for theme
+  syncfusion_flutter_core: ^21.2.4
+
+  # for dotted line
+  dotted_line: ^3.1.0
+
+  # for api integration
+  kd_api_call: ^0.1.1
+
+  # for http request
+  http: ^0.13.6
+
+  # for pick country code
+  intl_phone_field: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -118,5 +151,9 @@ flutter:
         - asset: assets/fonts/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins-SemiBold.ttf
         - asset: assets/fonts/Poppins-Light.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

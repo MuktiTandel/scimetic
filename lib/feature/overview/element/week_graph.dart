@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -49,7 +50,7 @@ class WeekGraph extends StatelessWidget {
           plotOffset: 20,
           minimum: minY,
           maximum: maxY,
-          maximumLabels: 1,
+          maximumLabels: 2,
           labelStyle: TextStyle(
             color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
             fontSize: 10.h,
@@ -57,10 +58,10 @@ class WeekGraph extends StatelessWidget {
             fontFamily: "Poppins",
           ),
         ),
-        primaryXAxis: CategoryAxis(
-           // visibleMaximum: 5.18.w,
-           // visibleMinimum: 0,
-          labelPlacement: LabelPlacement.onTicks,
+        primaryXAxis: DateTimeAxis(
+            // intervalType: DateTimeIntervalType.hours,
+            dateFormat: DateFormat("HH:mm"),
+            maximumLabels: 5,
             majorGridLines: const MajorGridLines(
               width: 0,
             ),
@@ -74,17 +75,17 @@ class WeekGraph extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontFamily: "Poppins"
             ),
-            title: AxisTitle(
-              text: "01.03 - 07.03",
-              textStyle:  TextStyle(
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  fontSize: 10.h,
-                  fontFamily: "Poppins"
-              ),
-            )
+            // title: AxisTitle(
+            //   text: "01.03 - 07.03",
+            //   textStyle:  TextStyle(
+            //       color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+            //       fontSize: 10.h,
+            //       fontFamily: "Poppins"
+            //   ),
+            // )
         ),
         series: <ChartSeries>[
-          SplineAreaSeries<WeekData, String>(
+          SplineAreaSeries<WeekData, DateTime>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -92,18 +93,18 @@ class WeekGraph extends StatelessWidget {
               ),
               dataSource: dataList,
               xValueMapper: (WeekData data, _) => data.x,
-              yValueMapper: (WeekData data,_) => data.y1
+              yValueMapper: (WeekData data,_) => data.y
           ),
-          SplineAreaSeries<WeekData, String>(
-               gradient: LinearGradient(
-                   begin: Alignment.topCenter,
-                   end: Alignment.bottomCenter,
-                   colors: [graphColor1, graphColor1.withOpacity(0)]
-               ),
-               dataSource: dataList,
-               xValueMapper: (WeekData data, _) => data.x,
-               yValueMapper: (WeekData data,_) => data.y
-           ),
+          // SplineAreaSeries<WeekData, String>(
+          //      gradient: LinearGradient(
+          //          begin: Alignment.topCenter,
+          //          end: Alignment.bottomCenter,
+          //          colors: [graphColor1, graphColor1.withOpacity(0)]
+          //      ),
+          //      dataSource: dataList,
+          //      xValueMapper: (WeekData data, _) => data.x,
+          //      yValueMapper: (WeekData data,_) => data.y
+          //  ),
         ],
       ),
     );
@@ -113,9 +114,7 @@ class WeekGraph extends StatelessWidget {
 class WeekData {
   WeekData(
       this.x,
-      this.y,
-      this.y1);
-  final String x;
+      this.y,);
+  final DateTime x;
   final double y;
-  final double y1;
 }

@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
+import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
+import 'package:scimetic/core/elements/select_widget.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
+import 'package:scimetic/feature/to_do/model/todo_model.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class TodoScreen extends StatelessWidget {
   TodoScreen({Key? key}) : super(key: key);
@@ -81,197 +87,51 @@ class TodoScreen extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: controller.isTodo.value == true
-                            ? 3 : controller.isProgress.value == true ? 1 : 1,
+                            ? controller.todoList.length
+                            : controller.isProgress.value == true
+                            ? controller.inProgressList.length
+                            : controller.completedList.length,
                         itemBuilder: (BuildContext context, int index ) {
-                          return listWidget(isCompleted: controller.isCompleted.value);
+
+                          Todo todo = Todo();
+
+                          String growSpaceId = "";
+
+                          String date = "";
+
+                          if ( controller.isTodo.value == true ) {
+
+                            todo = controller.todoList[index];
+                            growSpaceId = controller.todoIdentifierList[index];
+                            DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.todoList[index].dueDate!);
+                            date = DateFormat("dd.MM.yyyy").format(parseDate);
+
+                          } else if ( controller.isProgress.value == true ) {
+
+                            todo = controller.inProgressList[index];
+                            growSpaceId = controller.inProgressIdentifierList[index];
+
+                          } else if ( controller.isCompleted.value == true ) {
+
+                            todo = controller.completedList[index];
+                            growSpaceId = controller.completedIdentifierList[index];
+
+                          }
+
+                          return listWidget(
+                              isCompleted: controller.isCompleted.value,
+                            desc: todo.description ?? "",
+                            date: date,
+                            tag: todo.tag ?? "",
+                            growSpace: growSpaceId
+                          );
                         }
                     )),
                     SizedBox(height: 10.h,),
                     Obx(() =>  controller.isCompleted.value == false ? CustomButton(
                      onTap: (){
                        Get.dialog(
-                         CommonDialogWidget(
-                             title: AppStrings.addNewTask,
-                             widget: SizedBox(
-                               width: 310.w,
-                               child: Padding(
-                                   padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                 child: Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     CustomText(
-                                       text: AppStrings.taskName,
-                                       fontWeight: FontWeight.w500,
-                                       color: Get.isDarkMode
-                                           ? AppColors.darkText : AppColors.lightText,
-                                     ),
-                                     SizedBox(height: 6.h,),
-                                     SizedBox(
-                                       height: 38.h,
-                                       width: 310.w,
-                                       child: CustomTextField(
-                                         controller: controller.taskNameController,
-                                         isFilled: false,
-                                         hintText: AppStrings.taskName,
-                                         borderRadius: 8,
-                                         focusBorderColor: AppColors.buttonColor,
-                                         contentPadding: EdgeInsets.only(left: 10.w),
-                                         onchange: (value){},
-                                       ),
-                                     ),
-                                     SizedBox(height: 10.h,),
-                                     CustomText(
-                                       text: AppStrings.description,
-                                       fontWeight: FontWeight.w500,
-                                       fontSize: 14.sp,
-                                       color: Get.isDarkMode
-                                           ? AppColors.darkText : AppColors.lightText,
-                                     ),
-                                     SizedBox(height: 5.h,),
-                                     Container(
-                                       height: 100.h,
-                                       padding: EdgeInsets.only(left: 10.w, right: 10.w,bottom: 10.h),
-                                       decoration: BoxDecoration(
-                                           borderRadius: BorderRadius.circular(8),
-                                           border: Border.all(
-                                             color: Get.isDarkMode
-                                                 ? AppColors.darkText : AppColors.lightBorder,
-                                           )
-                                       ),
-                                       child: TextFormField(
-                                         controller: controller.descriptionController,
-                                         maxLength: 80,
-                                         maxLines: 10,
-                                         cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                         style:  TextStyle(
-                                           fontFamily: "Poppins",
-                                           fontSize: 15.sp,
-                                           color: Get.isDarkMode ? Colors.white : Colors.black,
-                                         ),
-                                         buildCounter: (BuildContext context, { int? currentLength, int? maxLength, bool? isFocused }){
-                                           return Obx(() => CustomText(
-                                             text: "${controller.descriptionLength}/80",
-                                             fontSize: 13.sp,
-                                             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                           ));
-                                         },
-                                         decoration: InputDecoration(
-                                             hintText: AppStrings.placeholder,
-                                             border: InputBorder.none,
-                                             hintStyle: TextStyle(
-                                                 color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                 fontSize: 14.sp,
-                                                 fontFamily: "Poppins"
-                                             )
-                                         ),
-                                         onChanged: (value) {
-                                           controller.descriptionLength.value = value.length;
-                                         },
-                                       ),
-                                     ),
-                                     SizedBox(height: 10.h,),
-                                     CustomText(
-                                       text: AppStrings.dueDate,
-                                       fontWeight: FontWeight.w500,
-                                       fontSize: 14.sp,
-                                       color: Get.isDarkMode
-                                           ? AppColors.darkText : AppColors.lightText,
-                                     ),
-                                     SizedBox(height: 6.h,),
-                                     SizedBox(
-                                       height: 40.h,
-                                       child: CustomTextField(
-                                         controller: controller.dateTimeController,
-                                         isFilled: false,
-                                         borderRadius: 8,
-                                         hintText: AppStrings.selectDate,
-                                         contentPadding: EdgeInsets.only(left: 10.w),
-                                         suffixWidget: Padding(
-                                           padding:  EdgeInsets.all(13.w),
-                                           child: Image.asset(
-                                             AppImages.calender,
-                                             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                           ),
-                                         ),
-                                         onchange: (value) {},
-                                       ),
-                                     ),
-                                     SizedBox(height: 10.h,),
-                                     CustomText(
-                                       text: AppStrings.addTag,
-                                       fontWeight: FontWeight.w500,
-                                       fontSize: 14.sp,
-                                       color: Get.isDarkMode
-                                           ? AppColors.darkText : AppColors.lightText,
-                                     ),
-                                     SizedBox(height: 6.h,),
-                                     SizedBox(
-                                       height: 40.h,
-                                       child: CustomTextField(
-                                         controller: controller.tagController,
-                                         isFilled: false,
-                                         borderRadius: 8,
-                                         hintText: AppStrings.tagName,
-                                         contentPadding: EdgeInsets.only(left: 10.w),
-                                         suffixWidget: Padding(
-                                           padding:  EdgeInsets.all(13.w),
-                                           child: Image.asset(
-                                             AppImages.label,
-                                             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                           ),
-                                         ),
-                                         onchange: (value) {},
-                                       ),
-                                     ),
-                                     SizedBox(height: 10.h,),
-                                     CustomText(
-                                       text: AppStrings.assignedTo,
-                                       fontWeight: FontWeight.w500,
-                                       fontSize: 14.sp,
-                                       color: Get.isDarkMode
-                                           ? AppColors.darkText : AppColors.lightText,
-                                     ),
-                                     SizedBox(height: 6.h,),
-                                     CustomDropDown(
-                                       hintText: AppStrings.selectAssignName,
-                                       itemList: controller.userNameList,
-                                       value: controller.userNameList.first,
-                                       onChange: (value) {
-                                         controller.selectValue.value = value;
-                                       },
-                                     ),
-                                     SizedBox(height: 10.h,),
-                                     Row(
-                                       children: [
-                                         Expanded(
-                                           child: OutLineButton(
-                                             onTap: (){
-                                               Get.back();
-                                             },
-                                             color: AppColors.red,
-                                             buttonText: AppStrings.cancel,
-                                           ),
-                                         ),
-                                         SizedBox(width: 10.w,),
-                                         Expanded(
-                                           child: CustomButton(
-                                             onTap: (){
-                                               Get.back();
-                                             },
-                                             buttonText: AppStrings.save,
-                                             width: 100.w,
-                                             height: 40.h,
-                                             fontSize: 15.sp,
-                                           ),
-                                         )
-                                       ],
-                                     ),
-                                     SizedBox(height: 10.h,)
-                                   ],
-                                 ),
-                               ),
-                             )
-                         )
+                         commonDialog(context: context)
                        );
                      },
                      buttonText: AppStrings.addTask,
@@ -305,34 +165,13 @@ class TodoScreen extends StatelessWidget {
     );
   }
 
-  Widget selectWidget({ required VoidCallback onTap, required String text, required bool isSelected}) {
-    return GestureDetector(
-      onTap: (){
-        onTap();
-      },
-      child: Container(
-        height: 35.h,
-        decoration: BoxDecoration(
-            color: isSelected == true
-                ? Get.isDarkMode ? AppColors.darkBlue : Colors.white
-                : Get.isDarkMode ? AppColors.darkTheme : AppColors.lightGray2,
-            borderRadius: BorderRadius.circular(8)
-        ),
-        child: Center(
-          child: CustomText(
-            text: text,
-            color: isSelected == true
-                ? Get.isDarkMode ? Colors.white : Colors.black
-                : Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget listWidget({required bool isCompleted}) {
+  Widget listWidget({
+    required bool isCompleted,
+    required String desc,
+    required String date,
+    required String tag,
+    required String growSpace
+  }) {
     return Column(
       children: [
         Container(
@@ -342,6 +181,7 @@ class TodoScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12)
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -352,25 +192,27 @@ class TodoScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                   Expanded(child: SizedBox(width: 10.w,)),
-                  PopupMenuButton<int>(
-                    offset: Offset(0, 17.h),
-                    padding: EdgeInsets.zero,
-                    color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                    constraints: BoxConstraints(
-                        maxWidth: 205.w,
-                        maxHeight: 148.h
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Image.asset(
-                      AppImages.menu,
-                      height: 14.h,
-                      width: 8.w,
-                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                    ),
-                    onSelected: (item) {},
-                    itemBuilder: (context) => [
+                  controller.isCompleted.value == false
+                      ? controller.isProgress.value == false
+                      ? PopupMenuButton<int>(
+                        offset: Offset(0, 17.h),
+                        padding: EdgeInsets.zero,
+                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        constraints: BoxConstraints(
+                            maxWidth: 205.w,
+                            maxHeight: 148.h
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Image.asset(
+                          AppImages.menu,
+                          height: 14.h,
+                          width: 8.w,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        onSelected: (item) {},
+                        itemBuilder: (context) => [
                       PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
@@ -444,6 +286,16 @@ class TodoScreen extends StatelessWidget {
                       PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
+                          onTap: (){
+                            Future.delayed(const Duration(seconds: 0), (){
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return commonDialog(context: context);
+                                  }
+                              );
+                            });
+                          },
                           child: Column(
                             children: [
                               Padding(
@@ -501,12 +353,135 @@ class TodoScreen extends StatelessWidget {
                           )
                       ),
                     ],
-                  ),
+                  )
+                      : PopupMenuButton<int>(
+                    offset: Offset(0, 17.h),
+                    padding: EdgeInsets.zero,
+                    color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                    constraints: BoxConstraints(
+                        maxWidth: 205.w,
+                        maxHeight: 110.h
+                    ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Image.asset(
+                      AppImages.menu,
+                      height: 14.h,
+                      width: 8.w,
+                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    onSelected: (item) {},
+                    itemBuilder: (context) => [
+                      PopupMenuItem<int>(
+                          padding: EdgeInsets.zero,
+                          value: 0,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                        AppImages.progressCheck,
+                                        height: 25.h,
+                                        width: 25.w,
+                                        color: AppColors.buttonColor
+                                    ),
+                                    SizedBox(width: 10.w,),
+                                    CustomText(
+                                      text: AppStrings.moveToCompleted,
+                                      fontSize: 15.sp,
+                                      color: AppColors.buttonColor,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Get.isDarkMode
+                                    ? AppColors.darkBlue1
+                                    : AppColors.lightGray2,
+                                thickness: 1.w,
+                              )
+                            ],
+                          )
+                      ),
+                      PopupMenuItem<int>(
+                          padding: EdgeInsets.zero,
+                          value: 0,
+                          onTap: (){
+                            Future.delayed(const Duration(seconds: 0), (){
+                              Get.dialog(
+                                  commonDialog(context: context)
+                              );
+                            });
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      AppImages.edit,
+                                      height: 25.h,
+                                      width: 25.w,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                    ),
+                                    SizedBox(width: 10.w,),
+                                    CustomText(
+                                      text: AppStrings.edit,
+                                      fontSize: 15.sp,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Get.isDarkMode
+                                    ? AppColors.darkBlue1
+                                    : AppColors.lightGray2,
+                                thickness: 1.w,
+                              )
+                            ],
+                          )
+                      ),
+                      PopupMenuItem<int>(
+                          value: 1,
+                          padding: EdgeInsets.zero,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AppImages.trash,
+                                  height: 25.h,
+                                  width: 25.w,
+                                ),
+                                SizedBox(width: 10.w,),
+                                CustomText(
+                                  text: AppStrings.delete,
+                                  fontSize: 15.sp,
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.w500,
+                                )
+                              ],
+                            ),
+                          )
+                      ),
+                    ],
+                  )
+                      : const SizedBox.shrink(),
                 ],
               ),
               SizedBox(height: 12.h,),
               CustomText(
-                text: AppStrings.taskDesc,
+                text: desc,
                 color: Get.isDarkMode ? Colors.white : AppColors.lightText,
               ),
               SizedBox(height: 10.h,),
@@ -522,7 +497,7 @@ class TodoScreen extends StatelessWidget {
                      ),
                      SizedBox(width: 10.w,),
                      CustomText(
-                       text: 'due 20.04.2023',
+                       text: 'due $date',
                        color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
                        fontWeight: FontWeight.w500,
                        fontSize: 13.sp,
@@ -578,12 +553,26 @@ class TodoScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w,),
                   CustomText(
-                    text: 'Growspace works',
+                    text: tag,
                     color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
                     fontWeight: FontWeight.w500,
                     fontSize: 13.sp,
                   ),
                 ],
+              ),
+              SizedBox(height: 10.h,),
+              CustomText(
+                  text: AppStrings.growspaces,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightGray1,
+              ),
+              SizedBox(height: 5.h,),
+              CustomText(
+                text: growSpace,
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w500,
+                color: Get.isDarkMode ? Colors.white : AppColors.lightGray,
               ),
               SizedBox(height: 10.h,),
               isCompleted == false ? Row(
@@ -625,5 +614,280 @@ class TodoScreen extends StatelessWidget {
         SizedBox(height: 10.h,)
       ],
     );
+  }
+
+  Widget commonDialog({required BuildContext context}) {
+    return CommonDialogWidget(
+            title: AppStrings.addNewTask,
+            onTap: (){
+              Get.back();
+            },
+            widget: SizedBox(
+              width: 310.w,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: AppStrings.taskName,
+                      fontWeight: FontWeight.w500,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    SizedBox(height: 6.h,),
+                    SizedBox(
+                      height: 38.h,
+                      width: 310.w,
+                      child: CustomTextField(
+                        controller: controller.taskNameController,
+                        isFilled: false,
+                        hintText: AppStrings.taskName,
+                        focusBorderColor: AppColors.buttonColor,
+                        borderRadius: 8,
+                        contentPadding: EdgeInsets.only(left: 10.w),
+                        onchange: (value){},
+                      ),
+                    ),
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: AppStrings.description,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    SizedBox(height: 5.h,),
+                    commonDescriptionTextField(
+                        controller: controller.descriptionController,
+                        descriptionLength: controller.descriptionLength
+                    ),
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: AppStrings.dueDate,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    SizedBox(height: 6.h,),
+                    SizedBox(
+                      height: 40.h,
+                      child: CustomTextField(
+                        controller: controller.dateTimeController,
+                        readOnly: true,
+                        isFilled: false,
+                        borderRadius: 8,
+                        focusBorderColor: AppColors.buttonColor,
+                        hintText: AppStrings.selectDate,
+                        contentPadding: EdgeInsets.only(left: 10.w),
+                        suffixWidget: GestureDetector(
+                          onTap: (){
+                            FocusScope.of(context).unfocus();
+                            showDialog(
+                                barrierColor: Colors.transparent,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                                    backgroundColor: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CustomText(
+                                              text: AppStrings.setDueDate,
+                                              fontSize: 14.sp,
+                                              color: Get.isDarkMode
+                                                  ? Colors.white : AppColors.subTitleColor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            Expanded(child: SizedBox(width: 10.w,)),
+                                            GestureDetector(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: Image.asset(
+                                                AppImages.close,
+                                                height: 25.h,
+                                                width: 25.w,
+                                                color: Get.isDarkMode
+                                                    ? AppColors.darkText : AppColors.lightIcon,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(height: 10.h,),
+                                        SizedBox(
+                                          width: 200.w,
+                                          height: 220.h,
+                                          child: SfDateRangePicker(
+                                            showActionButtons: true,
+                                            controller: controller.date,
+                                            view: DateRangePickerView.month,
+                                            headerStyle: DateRangePickerHeaderStyle(
+                                              textStyle: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 14.sp,
+                                                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                            onSubmit: (context){
+                                              Get.back();
+                                              AppConst().debug('Select date => ${controller.date.selectedDate}');
+                                              controller.dateTimeController.text = "${controller.date.selectedDate!.day}"
+                                                  "/${controller.date.selectedDate!.month}/${controller.date.selectedDate!.year}";
+                                            },
+                                            onCancel: (){
+                                              Get.back();
+                                            },
+                                            showNavigationArrow: true,
+                                            monthViewSettings: DateRangePickerMonthViewSettings(
+                                              showTrailingAndLeadingDates: true,
+                                              viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                                                  textStyle: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 12.sp,
+                                                      color: Get.isDarkMode ? AppColors.darkBlue3 : AppColors.lightIcon,
+                                                      fontWeight: FontWeight.w500
+                                                  )
+                                              ),
+                                            ),
+                                            monthCellStyle: DateRangePickerMonthCellStyle(
+                                              textStyle: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 12.sp,
+                                                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                              disabledDatesTextStyle: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 12.sp,
+                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                              todayTextStyle: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 12.sp,
+                                                  color: Get.isDarkMode ? Colors.white : AppColors.lightText,
+                                                  fontWeight: FontWeight.w500
+                                              ),
+                                            ),
+                                            selectionColor: AppColors.buttonColor,
+                                            todayHighlightColor: AppColors.lightIcon,
+                                            selectionTextStyle: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontSize: 12.sp,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                            );
+                          },
+                          child: Padding(
+                            padding:  EdgeInsets.all(13.w),
+                            child: Image.asset(
+                              AppImages.calender,
+                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            ),
+                          ),
+                        ),
+                        onchange: (value) {},
+                      ),
+                    ),
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: AppStrings.addTag,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    SizedBox(height: 6.h,),
+                    SizedBox(
+                      height: 40.h,
+                      child: CustomTextField(
+                        controller: controller.tagController,
+                        isFilled: false,
+                        borderRadius: 8,
+                        hintText: AppStrings.tagName,
+                        focusBorderColor: AppColors.buttonColor,
+                        contentPadding: EdgeInsets.only(left: 10.w),
+                        suffixWidget: Padding(
+                          padding:  EdgeInsets.all(13.w),
+                          child: Image.asset(
+                            AppImages.label,
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                          ),
+                        ),
+                        onchange: (value) {},
+                      ),
+                    ),
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: AppStrings.assignedTo,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
+                    ),
+                    SizedBox(height: 6.h,),
+                    CustomDropDown(
+                      width: 290.w,
+                      yValue: 0,
+                      hintText: AppStrings.selectAssignName,
+                      itemList: controller.userNameList,
+                      value: controller.userNameList.first,
+                      onChange: (value) {
+                        controller.selectValue.value = value;
+                      },
+                    ),
+                    SizedBox(height: 10.h,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutLineButton(
+                            onTap: (){
+                              controller.taskNameController.clear();
+                              controller.descriptionController.clear();
+                              controller.dateTimeController.clear();
+                              controller.tagController.clear();
+                              Get.back();
+                            },
+                            color: AppColors.red,
+                            buttonText: AppStrings.cancel,
+                          ),
+                        ),
+                        SizedBox(width: 10.w,),
+                        Expanded(
+                          child: CustomButton(
+                            onTap: (){
+                              controller.taskNameController.clear();
+                              controller.descriptionController.clear();
+                              controller.dateTimeController.clear();
+                              controller.tagController.clear();
+                              Get.back();
+                            },
+                            buttonText: AppStrings.save,
+                            width: 100.w,
+                            height: 40.h,
+                            fontSize: 15.sp,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10.h,)
+                  ],
+                ),
+              ),
+            )
+        );
   }
 }

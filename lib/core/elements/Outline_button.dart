@@ -9,18 +9,22 @@ class OutLineButton extends StatelessWidget {
     Key? key,
     required this.onTap,
     this.color,
-    this.buttonText
+    this.buttonText,
+    this.height,
+    this.width
   }) : super(key: key);
 
   final VoidCallback onTap;
   final String? buttonText;
   final Color? color;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40.h,
-      width: 100.w,
+      height: height ?? 40.h,
+      width: width ?? 100.w,
       child: ElevatedButton(
         onPressed: (){
           onTap();

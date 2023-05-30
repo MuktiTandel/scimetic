@@ -1,3 +1,4 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -304,86 +305,117 @@ class OpenChatScreen extends StatelessWidget {
           SizedBox(height: 60.h,),
         ],
       ),
-      bottomSheet: Container(
-        height: 55.h,
-        padding: EdgeInsets.all(15.w),
+      bottomSheet: Obx(() => Container(
+        height: controller.emojiShowing.value == false ? 58.h : 308.h,
         color: Get.isDarkMode ? AppColors.darkBlue : Colors.white,
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 25.h,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 15.w),
+              child: Row(
+                children: [
+                  Expanded(
                     child: TextFormField(
-                     cursorColor: Get.isDarkMode
-                         ? AppColors.darkText : AppColors.lightText,
+                      cursorColor: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
                       controller: controller.messageController,
+                      onTap: (){
+                        if ( controller.emojiShowing.value == true ) {
+                          controller.emojiShowing.value = false;
+                        }
+                      },
                       style: TextStyle(
-                        fontSize: 14.sp,
+                          fontSize: 14.sp,
                           fontFamily: "Poppins",
-                        color: Get.isDarkMode ? Colors.white : Colors.black
+                          color: Get.isDarkMode ? Colors.white : Colors.black
                       ),
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: AppStrings.typeMessageHere,
-                        hintStyle: TextStyle(
-                          fontSize: 13.sp,
-                          fontFamily: "Poppins",
-                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                        )
+                          contentPadding: EdgeInsets.only(
+                            left: 10.w,
+                            right: 10.w,
+                          ),
+                          border: InputBorder.none,
+                          hintText: AppStrings.typeMessageHere,
+                          hintStyle: TextStyle(
+                            fontSize: 13.sp,
+                            fontFamily: "Poppins",
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                          )
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 5.w,),
-                GestureDetector(
-                  onTap: (){},
-                  child: Image.asset(
+                  SizedBox(width: 5.w,),
+                  GestureDetector(
+                    onTap: (){
+                      FocusScope.of(context).unfocus();
+                      controller.emojiShowing.value = !controller.emojiShowing.value;
+                    },
+                    child: Image.asset(
                       AppImages.smile,
-                    height: 22.h,
-                    width: 22.w,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText : AppColors.lightBlack,
+                      height: 22.h,
+                      width: 22.w,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightBlack,
+                    ),
                   ),
-                ),
-                SizedBox(width: 5.w,),
-                GestureDetector(
-                  onTap: (){},
-                  child: Image.asset(
-                    AppImages.image,
-                    height: 20.h,
-                    width: 20.w,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText : AppColors.lightBlack,
+                  SizedBox(width: 5.w,),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Image.asset(
+                      AppImages.image,
+                      height: 20.h,
+                      width: 20.w,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightBlack,
+                    ),
                   ),
-                ),
-                SizedBox(width: 5.w,),
-                GestureDetector(
-                  onTap: (){},
-                  child: Image.asset(
-                    AppImages.file,
-                    height: 15.h,
-                    width: 15.w,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText : AppColors.lightBlack,
+                  SizedBox(width: 5.w,),
+                  GestureDetector(
+                    onTap: () async {
+                      await controller.selectFile();
+                    },
+                    child: Image.asset(
+                      AppImages.file,
+                      height: 15.h,
+                      width: 15.w,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightBlack,
+                    ),
                   ),
-                ),
-                SizedBox(width: 10.w,),
-                GestureDetector(
-                  onTap: (){},
-                  child: Image.asset(
-                    AppImages.sendFill,
-                    height: 28.h,
-                    width: 28.w,
-                  ),
-                )
-              ],
+                  SizedBox(width: 10.w,),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Image.asset(
+                      AppImages.sendFill,
+                      height: 28.h,
+                      width: 28.w,
+                    ),
+                  )
+                ],
+              ),
             ),
+            Offstage(
+              offstage: !controller.emojiShowing.value,
+              child: SizedBox(
+                height: 250.h,
+                child: EmojiPicker(
+                  textEditingController: controller.messageController,
+                  config: Config(
+                    bgColor: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar,
+                    iconColorSelected: Get.isDarkMode
+                        ? AppColors.darkText : AppColors.lightText,
+                    indicatorColor: Get.isDarkMode
+                        ? AppColors.darkText : AppColors.lightText,
+                    iconColor: Get.isDarkMode
+                        ? AppColors.darkIcon : AppColors.lightIcon
+                  ),
+                ),
+              ),
+            )
             // SizedBox(height: 5.h,)
           ],
         ),
-      ),
+      )),
     );
   }
 

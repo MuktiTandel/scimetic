@@ -14,7 +14,8 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.fontSize,
     this.fontWeight,
-    this.child
+    this.child,
+    this.buttonTextColor
   }) : super(key: key);
 
   final VoidCallback onTap;
@@ -26,6 +27,7 @@ class CustomButton extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final Widget? child;
+  final Color? buttonTextColor;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,8 @@ class CustomButton extends StatelessWidget {
                   style: TextStyle(
                       fontWeight: fontWeight ?? FontWeight.w500,
                       fontSize: fontSize ?? 13.sp,
-                    fontFamily: "Poppins"
+                    fontFamily: "Poppins",
+                    color: buttonTextColor ?? Colors.white
                   ),
                 ),
               ),

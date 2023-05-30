@@ -3,15 +3,30 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
+import 'package:scimetic/feature/overview/element/hour_graph.dart';
 import 'package:scimetic/feature/overview/element/hour_graph2.dart';
 import 'package:scimetic/feature/overview/element/month_graph2.dart';
 import 'package:scimetic/feature/overview/element/week_graph2.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class GraphController extends GetxController {
 
   RxBool isHour = true.obs;
   RxBool isWeek = false.obs;
   RxBool isMonth = false.obs;
+
+  RxBool isGermination = true.obs;
+  RxBool isSeedling = false.obs;
+  RxBool isVegetative = false.obs;
+  RxBool isFlowering = false.obs;
+
+  DateRangePickerController plantedDate = DateRangePickerController();
+  DateRangePickerController harvestDate = DateRangePickerController();
+
+  RxString plantedDateValue = "".obs;
+  RxString harvestDateValue = "".obs;
+
+  RxString selectStage = AppStrings.germination.obs;
 
   final controller = Get.put(OverviewController());
 
@@ -293,150 +308,45 @@ class GraphController extends GetxController {
 
   graph() {
     if ( controller.isTemperature.value == true ) {
-      if ( isHour.value == true ) {
-        return HourGraph2(
-            minY: 20,
-            maxY: 31,
-            graphColor: AppColors.orange,
-            dataList: temperatureHourData,
-            format: "°C",
-            graphColor1: AppColors.darkOrange
-        );
-      } else if ( isWeek.value == true ) {
-        return WeekGraph2(
-            minY: 20,
-            maxY: 31,
-            graphColor: AppColors.orange,
-            dataList: temperatureWeekData,
-            format: "°C",
-            graphColor1: AppColors.darkOrange
-        );
-      } else if ( isMonth.value == true ) {
-        return MonthGraph2(
-            minY: 20,
-            maxY: 31,
-            graphColor: AppColors.orange,
-            dataList: temperatureMonthData,
-            format: "°C",
-            graphColor1: AppColors.darkOrange
-        );
-      }
+      return HourGraph(
+        minY: controller.minTemperatureY.value,
+        maxY: controller.maxTemperatureY.value,
+        dataList: controller.temperatureDataList,
+        graphColor: AppColors.orange,
+        format: "°C",
+      );
     } else if ( controller.isElectricalLoad.value == true ) {
-      if ( isHour.value == true ) {
-        return HourGraph2(
-            minY: 80,
-            maxY: 91,
-            graphColor: AppColors.lightBlue,
-            dataList: electricalLoadHourData,
-            format: "kW",
-            graphColor1: AppColors.lightBlue3
-        );
-      } else if ( isWeek.value == true ) {
-        return WeekGraph2(
-            minY: 80,
-            maxY: 91,
-            graphColor: AppColors.lightBlue,
-            dataList: electricalLoadWeekData,
-            format: "kW",
-            graphColor1: AppColors.lightBlue3
-        );
-      } else if ( isMonth.value == true ) {
-        return MonthGraph2(
-            minY: 80,
-            maxY: 91,
-            graphColor: AppColors.lightBlue,
-            dataList: electricalLoadMonthData,
-            format: "kW",
-            graphColor1: AppColors.lightBlue3
-        );
-      }
+      return HourGraph(
+        minY: controller.minHumidityY.value,
+        maxY: controller.maxHumidityY.value,
+        graphColor: AppColors.lightBlue,
+        dataList: controller.humidityDataList,
+        format: "kW",
+      );
     } else if ( controller.isCo2.value == true ) {
-      if ( isHour.value == true ) {
-        return HourGraph2(
-            minY: 700,
-            maxY: 810,
-            graphColor: AppColors.lightGreen1,
-            dataList: co2HourData,
-            format: " ppm",
-            graphColor1: AppColors.lightGreen2
-        );
-      } else if ( isWeek.value == true ) {
-        return WeekGraph2(
-            minY: 700,
-            maxY: 810,
-            graphColor: AppColors.lightGreen1,
-            dataList: co2WeekData,
-            format: " ppm",
-            graphColor1: AppColors.lightGreen2
-        );
-      } else if ( isMonth.value == true ) {
-        return MonthGraph2(
-            minY: 700,
-            maxY: 810,
-            graphColor: AppColors.lightGreen1,
-            dataList: co2MonthData,
-            format: " ppm",
-            graphColor1: AppColors.lightGreen2
-        );
-      }
+      return HourGraph(
+        minY: controller.minCo2Y.value,
+        maxY: controller.maxCo2Y.value,
+        graphColor: AppColors.lightGreen1,
+        dataList: controller.co2DataList,
+        format: " ppm",
+      );
     } else if ( controller.isLightning.value == true ) {
-      if ( isHour.value == true ) {
-        return HourGraph2(
-            minY: 35,
-            maxY: 46,
-            graphColor: AppColors.lightPink,
-            dataList: lightningHourData,
-            format: " mol/m2day",
-            graphColor1: AppColors.pink
-        );
-      } else if ( isWeek.value == true ) {
-        return WeekGraph2(
-            minY: 35,
-            maxY: 46,
-            graphColor: AppColors.lightPink,
-            dataList: lightningWeekData,
-            format: " mol/m2day",
-            graphColor1: AppColors.pink
-        );
-      } else if ( isMonth.value == true ) {
-        return MonthGraph2(
-            minY: 35,
-            maxY: 46,
-            graphColor: AppColors.lightPink,
-            dataList: lightningMonthData,
-            format: " mol/m2day",
-            graphColor1: AppColors.pink
-        );
-      }
+      return HourGraph(
+        minY: controller.minLightY.value,
+        maxY: controller.maxLightY.value,
+        dataList: controller.lightDataList,
+        graphColor: AppColors.pink,
+        format: " mol/m2day",
+      );
     } else if ( controller.isVdp.value == true ) {
-      if ( isHour.value == true ) {
-        return HourGraph2(
-          minY: 0.85,
-          maxY: 1.06,
-          graphColor: AppColors.lightBlue2,
-          dataList: vdpHourData,
-          format: " kPa",
-          graphColor1: AppColors.darkBlue2,
-        );
-      } else if ( isWeek.value == true ) {
-        return WeekGraph2(
-          minY: 0.85,
-          maxY: 1.06,
-          graphColor: AppColors.lightBlue2,
-          dataList: vdpWeekData,
-          format: " kPa",
-          graphColor1: AppColors.darkBlue2,
-        );
-      } else if ( isMonth.value == true ) {
-        return MonthGraph2(
-          minY: 0.85,
-          maxY: 1.06,
-          graphColor: AppColors.lightBlue2,
-          dataList: vdpMonthData,
-          format: " kPa",
-          graphColor1: AppColors.darkBlue2,
-        );
-      }
+      HourGraph(
+        minY: controller.minVpdY.value,
+        maxY: controller.maxVpdY.value,
+        graphColor: AppColors.lightBlue2,
+        dataList: controller.vpdDataList,
+        format: " kPa",
+      );
     }
   }
 

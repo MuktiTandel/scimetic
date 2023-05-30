@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget selectWidget( {
+Widget hwmSelectWidget( {
   required String title,
   required double width,
   required bool isSelected,

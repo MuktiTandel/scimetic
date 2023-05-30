@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
-import 'package:scimetic/feature/overview/element/select_widge.dart';
+import 'package:scimetic/core/elements/hwm_select_widge.dart';
 
 Widget graphWidget({
   required String title,
@@ -78,7 +78,7 @@ Widget graphWidget({
               SizedBox(height: 10.h,),
               Row(
                 children: [
-                  selectWidget(
+                  hwmSelectWidget(
                       title: AppStrings.hours,
                       width: 34.w,
                       isSelected: isHour,
@@ -87,7 +87,7 @@ Widget graphWidget({
                       }
                   ),
                   SizedBox(width: 10.w,),
-                  selectWidget(
+                  hwmSelectWidget(
                       title: AppStrings.week,
                       width: 46.w,
                       isSelected: isWeek,
@@ -96,7 +96,7 @@ Widget graphWidget({
                       }
                   ),
                   SizedBox(width: 10.w,),
-                  selectWidget(
+                  hwmSelectWidget(
                       title: AppStrings.month,
                       width: 50.w,
                       isSelected: isMonth,

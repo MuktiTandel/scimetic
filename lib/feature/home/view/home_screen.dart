@@ -10,9 +10,17 @@ import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
+import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
+import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
+import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
+import 'package:scimetic/feature/organizations/view/organization_screen.dart';
+import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
+import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
@@ -20,6 +28,16 @@ class HomeScreen extends StatelessWidget {
    final controller = Get.put(HomeController());
 
    final dashboardController = Get.put(DashboardController());
+
+   final calendarController = Get.put(CalendarController());
+
+   final growSheetController = Get.put(GrowSheetController());
+
+   final organizationController = Get.put(OrganizationController());
+
+   final overviewController = Get.put(OverviewController());
+
+   final todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +50,29 @@ class HomeScreen extends StatelessWidget {
             drawerTap: (){
               controller.openDrawer();
             },
-            title: dashboardController.isOverView.value == false
-                ?  controller.appbarTitle()
-                : AppStrings.overview,
+            title: dashboardController.isOverViewTitle.value == false
+                ? controller.appbarTitle() : AppStrings.overview,
             notificationTap: (){
               Get.toNamed(AppPages.NOTIFICATION);
             },
             profileTap: (){},
           leadingIcon: AppImages.drawer,
+          isCalendar: controller.isCalender.value,
+          isCrop: calendarController.personalCalendar,
+          isPersonal: calendarController.cropCalendar,
         )),
       ),
-      body: Obx(() => dashboardController.isOverView.value == false ? IndexedStack(
+      body: Obx(() => organizationController.isSelect.value == false
+          ? OrganizationScreen()
+          : dashboardController.isOverView.value == false
+          ? const DashboardScreen()
+          : controller.isModuleView.value == false
+          ? const OverviewScreen()
+          : IndexedStack(
         index: controller.moduleIndex.value,
         children: controller.moduleList,
-      ) :  OverviewScreen()),
+      )
+      ),
       drawer: Drawer(
         width: 230.w,
         shape: const RoundedRectangleBorder(
@@ -101,169 +128,242 @@ class HomeScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             Obx(() => drawerWidget(
                                 onTap: (){
-                                  if ( controller.isDashboard.value == false ) {
-                                    controller.isDashboard.value = true;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
+                                  controller.isOrganization.value = true;
+                                  organizationController.isSelect.value = false;
+                                  controller.isDashboard.value = false;
+                                  dashboardController.isSelect.value = false;
                                   dashboardController.isOverView.value = false;
-                                  controller.changeModuleIndex(0);
+                                  dashboardController.isOverViewTitle.value = false;
+                                  controller.isModuleView.value = false;
+                                  controller.unSelectSettingValue();
+                                  controller.unSelectModule();
+                                  Get.back();
+                                },
+                                image: AppImages.dashboard,
+                                title: AppStrings.organizations,
+                                isSelect: controller.isOrganization.value,
+                                isRightWidget: false
+                            ),),
+                            SizedBox(height: 5.h,),
+                            Obx(() => organizationController.isSelect.value == true ? drawerWidget(
+                                onTap: (){
+                                   dashboardController.getDataList();
+                                   dashboardController.isOverView.value = false;
+                                  dashboardController.isSelect.value = false;
+                                  controller.isDashboard.value = true;
+                                  controller.isModuleView.value = false;
+                                  dashboardController.isOverViewTitle.value = false;
+                                  controller.unSelectSettingValue();
+                                  controller.unSelectModule();
                                   Get.back();
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,
                                 isSelect: controller.isDashboard.value,
                               isRightWidget: false
-                            ),),
+                            ) : const SizedBox.shrink(),),
                             SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isGrowSheet.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = true;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.changeModuleIndex(1);
-                                  Get.back();
-                                },
-                                image: AppImages.growSheets,
-                                title: AppStrings.growSheets,
-                                isSelect: controller.isGrowSheet.value,
-                                isRightWidget: false
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isChat.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = true;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.changeModuleIndex(2);
-                                  Get.back();
-                                },
-                                image: AppImages.chat,
-                                title: AppStrings.chat,
-                                isSelect: controller.isChat.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.redRectangle,
-                              rightText: "8"
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isReport.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = true;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = false;
-                                  }
-                                },
-                                image: AppImages.reports,
-                                title: AppStrings.reports,
-                                isSelect: controller.isReport.value,
-                                isRightWidget: false
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isTodo.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = true;
-                                    controller.isCalender.value = false;
-                                  }
-                                  dashboardController.isOverView.value = false;
-                                  controller.changeModuleIndex(3);
-                                  Get.back();
-                                },
-                                image: AppImages.toDo,
-                                title: AppStrings.toDo,
-                                isSelect: controller.isTodo.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.orangeRectangle,
-                              rightText: "12",
-                              height: 20.h,
-                              width: 20.w
-                            ),),
-                            SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
-                                onTap: (){
-                                  if ( controller.isCalender.value == false ) {
-                                    controller.isDashboard.value = false;
-                                    controller.isGrowSheet.value = false;
-                                    controller.isChat.value = false;
-                                    controller.isReport.value = false;
-                                    controller.isTodo.value = false;
-                                    controller.isCalender.value = true;
-                                  }
-                                },
-                                image: AppImages.calender,
-                                title: AppStrings.calendar,
-                                isSelect: controller.isCalender.value,
-                                isRightWidget: true,
-                              rightImage: AppImages.greenRectangle,
-                              rightText: "3"
-                            ),),
-                            SizedBox(height: 10.h,),
-                            SizedBox(
-                              height: 45.h,
-                              width: 226.w,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 15.w,),
-                                  Image.asset(
-                                    AppImages.settings,
-                                    height: 20.h,
-                                    width: 20.w,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                  ),
-                                  SizedBox(
-                                    width: 20.w,
-                                  ),
-                                  CustomText(
-                                    text: AppStrings.settings,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Get.isDarkMode ? AppColors.white1 : Colors.black,
-                                  ),
-                                  Expanded(child: SizedBox(width: 10.w,)),
-                                  Obx(() => GestureDetector(
+                            Obx(() => dashboardController.isSelect.value == true
+                                ? Column(
+                              children: [
+                                Obx(() => drawerWidget(
                                     onTap: (){
-                                      controller.toggle();
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
+                                      }
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = true;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = false;
+                                      controller.isCalender.value = false;
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                     controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(0);
+                                      int id = controller.storeData.getInt(StoreData.id)!;
+                                      if ( id != 0) {
+                                         growSheetController.getGrowSheetData(id: id);
+                                      }
+                                      Get.back();
                                     },
-                                    child: SizedBox(
-                                      child: Image.asset(
-                                        controller.isSetting.value == false ? AppImages.downArrow : AppImages.upArrow,
-                                        height: 25.h,
-                                        width: 25.w,
-                                        fit: BoxFit.cover,
+                                    image: AppImages.growSheets,
+                                    title: AppStrings.growSheets,
+                                    isSelect: controller.isGrowSheet.value,
+                                    isRightWidget: false
+                                ),),
+                                SizedBox(height: 5.h,),
+                                // Obx(() => drawerWidget(
+                                //     onTap: (){
+                                //       if ( controller.isChat.value == false ) {
+                                //         controller.isDashboard.value = false;
+                                //         controller.isGrowSheet.value = false;
+                                //         controller.isChat.value = true;
+                                //         controller.isReport.value = false;
+                                //         controller.isTodo.value = false;
+                                //         controller.isCalender.value = false;
+                                //         controller.isSetting.value = false;
+                                //         controller.isDeviceSetup.value = false;
+                                //         controller.isTemperatureControl.value = false;
+                                //         controller.isHumidityControl.value = false;
+                                //         controller.isCo2Control.value = false;
+                                //         controller.isLightingControl.value = false;
+                                //         controller.isEnergyManagement.value = false;
+                                //         controller.isIrrigation.value = false;
+                                //         controller.isFertigation.value = false;
+                                //         controller.isAccessSetting.value = false;
+                                //         controller.isOrganisationSettings.value = false;
+                                //         controller.isUserSetting.value = false;
+                                //         controller.isNotifications.value = false;
+                                //       }
+                                //       dashboardController.isOverView.value = false;
+                                //       controller.isCalender.value = false;
+                                //       controller.changeModuleIndex(2);
+                                //       Get.back();
+                                //     },
+                                //     image: AppImages.chat,
+                                //     title: AppStrings.chat,
+                                //     isSelect: controller.isChat.value,
+                                //     isRightWidget: true,
+                                //     rightImage: AppImages.redRectangle,
+                                //     rightText: "8"
+                                // ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
+                                      }
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = true;
+                                      controller.isTodo.value = false;
+                                      controller.isCalender.value = false;
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(1);
+                                      Get.back();
+                                    },
+                                    image: AppImages.reports,
+                                    title: AppStrings.reports,
+                                    isSelect: controller.isReport.value,
+                                    isRightWidget: false
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
+                                      }
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = true;
+                                      controller.isCalender.value = false;
+                                      controller.isSetting.value = false;
+                                      dashboardController.isOverViewTitle.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(2);
+                                      todoController.getTodoList().whenComplete(() async {
+                                        await todoController.getCompanyUser();
+                                      });
+                                      Get.back();
+                                    },
+                                    image: AppImages.toDo,
+                                    title: AppStrings.toDo,
+                                    isSelect: controller.isTodo.value,
+                                    isRightWidget: true,
+                                    rightImage: AppImages.orangeRectangle,
+                                    rightText: "12",
+                                    height: 20.h,
+                                    width: 20.w
+                                ),),
+                                SizedBox(height: 5.h,),
+                                Obx(() => drawerWidget(
+                                    onTap: (){
+                                      if ( dashboardController.isOverView.value == true ) {
+                                        controller.isModuleView.value = true;
+                                      }
+                                      controller.isOrganization.value = false;
+                                      controller.isDashboard.value = false;
+                                      controller.isGrowSheet.value = false;
+                                      controller.isReport.value = false;
+                                      controller.isTodo.value = false;
+                                      controller.isCalender.value = true;
+                                      controller.isSetting.value = false;
+                                      controller.unSelectSettingValue();
+                                      controller.changeModuleIndex(3);
+                                      calendarController.personalCalendar.value = false;
+                                      calendarController.cropCalendar.value = true;
+                                      dashboardController.isOverViewTitle.value = false;
+                                      Get.back();
+                                    },
+                                    image: AppImages.calender,
+                                    title: AppStrings.calendar,
+                                    isSelect: controller.isCalender.value,
+                                    isRightWidget: true,
+                                    rightImage: AppImages.greenRectangle,
+                                    rightText: "3"
+                                ),),
+                                SizedBox(height: 10.h,),
+                                SizedBox(
+                                  height: 45.h,
+                                  width: 226.w,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 15.w,),
+                                      Image.asset(
+                                        AppImages.settings,
+                                        height: 20.h,
+                                        width: 20.w,
                                         color: Get.isDarkMode ? AppColors.white1 : Colors.black,
                                       ),
-                                    ),
-                                  ),),
-                                  SizedBox(width: 10.w,)
-                                ],
-                              ),
+                                      SizedBox(
+                                        width: 20.w,
+                                      ),
+                                      CustomText(
+                                        text: AppStrings.settings,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                      ),
+                                      Expanded(child: SizedBox(width: 10.w,)),
+                                      Obx(() => GestureDetector(
+                                        onTap: (){
+                                          controller.toggle();
+                                          controller.isGrowSheet.value = false;
+                                          controller.isReport.value = false;
+                                          controller.isTodo.value = false;
+                                          controller.isCalender.value = false;
+                                          controller.unSelectSettingValue();
+                                          controller.isDashboard.value == false;
+                                          controller.isOrganization.value = false;
+                                          dashboardController.isOverViewTitle.value = false;
+                                        },
+                                        child: SizedBox(
+                                          child: Image.asset(
+                                            controller.isSetting.value == false ? AppImages.downArrow : AppImages.upArrow,
+                                            height: 25.h,
+                                            width: 25.w,
+                                            fit: BoxFit.cover,
+                                            color: Get.isDarkMode ? AppColors.white1 : Colors.black,
+                                          ),
+                                        ),
+                                      ),),
+                                      SizedBox(width: 10.w,)
+                                    ],
+                                  ),
+                                ),
+                                Obx(() => controller.isSetting.value == true
+                                    ? settingWidget() : const SizedBox.shrink()),
+                                SizedBox(height: 5.h,),
+                              ],
+                            )
+                                : const SizedBox.shrink()
                             ),
-                            Obx(() => controller.isSetting.value == true
-                                ? settingWidget() : const SizedBox.shrink()),
-                            SizedBox(height: 5.h,),
                             SizedBox(
                               height: 45.h,
                               width: 226.w,
@@ -338,7 +438,8 @@ class HomeScreen extends StatelessWidget {
       },
       child: Container(
         color: isSelect == true
-            ? Get.isDarkMode ? AppColors.darkBlue : AppColors.lightAppbar : Colors.transparent,
+            ? Get.isDarkMode ? AppColors.darkBlue
+            : AppColors.lightAppbar : Colors.transparent,
         height: 45.h,
         width: 226.w,
         child: Row(
@@ -394,73 +495,383 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = true;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(4);
+                Get.back();
+              },
+            isSelect: controller.isDeviceSetup
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = true;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(5);
+                Get.back();
+              },
+            isSelect: controller.isTemperatureControl
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = true;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(6);
+                Get.back();
+              },
+            isSelect: controller.isHumidityControl
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.cloud,
               title: AppStrings.co2Control,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = true;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(7);
+                Get.back();
+              },
+            isSelect: controller.isCo2Control
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.sun1,
               title: AppStrings.lightingControl,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = true;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(8);
+                Get.back();
+              },
+            isSelect: controller.isLightingControl
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.energy,
               title: AppStrings.energyManagement,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = true;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(9);
+                Get.back();
+              },
+            isSelect: controller.isEnergyManagement
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.wateringCan,
               title: AppStrings.irrigation,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = true;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(10);
+                Get.back();
+              },
+            isSelect: controller.isIrrigation
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.fertigation,
               title: AppStrings.fertigation,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = true;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(11);
+                Get.back();
+              },
+            isSelect: controller.isFertigation
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.lock,
               title: AppStrings.accessSettings,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = true;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(12);
+                Get.back();
+              },
+            isSelect: controller.isAccessSetting
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.briefcase,
               title: AppStrings.organisationSettings,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = true;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(13);
+                Get.back();
+              },
+            isSelect: controller.isOrganisationSettings
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.user,
               title: AppStrings.userSetting,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = true;
+                controller.isNotifications.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(14);
+              },
+            isSelect: controller.isUserSetting
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
               image: AppImages.notification,
               title: AppStrings.notifications,
-              onTap: (){}
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = true;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(15);
+              },
+            isSelect: controller.isNotifications
           ),
         ],
       ),
@@ -470,32 +881,45 @@ class HomeScreen extends StatelessWidget {
   Widget settingCommonWidget ({
     required String image,
     required String title,
-    required VoidCallback onTap
+    required VoidCallback onTap,
+    required RxBool isSelect
   }) {
-    return GestureDetector(
+    return Obx(() => GestureDetector(
       onTap: (){
         onTap();
       },
-      child: Row(
-        children: [
-          SizedBox(width: 20.w,),
-          Image.asset(
-            image,
-            height: 20.h,
-            width: 20.w,
-            color: Get.isDarkMode
-                ? AppColors.darkIcon : AppColors.lightGray1,
-          ),
-          SizedBox(width: 10.w,),
-          CustomText(
-            text: title,
-            fontSize: 14.sp,
-            color: Get.isDarkMode
-                ? AppColors.darkIcon : AppColors.lightGray1,
-            fontWeight: FontWeight.w500,
-          )
-        ],
+      child: Container(
+        color: Get.isDarkMode
+            ? isSelect.value == true
+            ? Colors.transparent : Colors.transparent
+            : isSelect.value == false ? Colors.transparent : Colors.white,
+        child: Row(
+          children: [
+            SizedBox(width: 20.w,),
+            Image.asset(
+              image,
+              height: 20.h,
+              width: 20.w,
+              color: Get.isDarkMode
+                  ? isSelect.value == true ? AppColors.buttonColor
+                  : AppColors.darkIcon
+                  : isSelect.value == false
+                  ? AppColors.lightGray1 : AppColors.buttonColor,
+            ),
+            SizedBox(width: 10.w,),
+            CustomText(
+              text: title,
+              fontSize: 14.sp,
+              color: Get.isDarkMode
+                  ? isSelect.value == true
+                  ? AppColors.buttonColor : AppColors.darkIcon
+                  : isSelect.value == false
+                  ? AppColors.lightGray1 : AppColors.buttonColor,
+              fontWeight: FontWeight.w500,
+            )
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

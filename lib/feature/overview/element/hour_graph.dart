@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -48,7 +49,7 @@ class HourGraph extends StatelessWidget {
              plotOffset: 20,
             minimum: minY,
             maximum: maxY,
-            maximumLabels: 1,
+            maximumLabels: 2,
           labelStyle: TextStyle(
               color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
               fontSize: 10.h,
@@ -56,7 +57,9 @@ class HourGraph extends StatelessWidget {
             fontFamily: "Poppins",
           ),
         ),
-        primaryXAxis: NumericAxis(
+        primaryXAxis: DateTimeAxis(
+          maximumLabels: 5,
+          dateFormat: DateFormat("HH:mm"),
           majorGridLines: const MajorGridLines(
             width: 0,
           ),
@@ -64,26 +67,23 @@ class HourGraph extends StatelessWidget {
           axisLine: const AxisLine(
               width: 0
           ),
-          minimum: 0,
-          maximum: 25,
-          interval: 2,
           labelStyle: TextStyle(
               color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
               fontSize: 10.h,
             fontWeight: FontWeight.w500,
             fontFamily: "Poppins"
           ),
-          title: AxisTitle(
-            text: "07.03.2021",
-            textStyle:  TextStyle(
-                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                fontSize: 10.h,
-              fontFamily: "Poppins"
-            ),
-        )
+         //  title: AxisTitle(
+         //    text: "07.03.2021",
+         //    textStyle:  TextStyle(
+         //        color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+         //        fontSize: 10.h,
+         //      fontFamily: "Poppins"
+         //    ),
+         // )
         ),
         series: <ChartSeries>[
-          SplineAreaSeries<HourData, double>(
+          SplineAreaSeries<HourData, DateTime>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -101,6 +101,6 @@ class HourGraph extends StatelessWidget {
 
 class HourData {
   HourData(this.x, this.y);
-  final double x;
+  final DateTime x;
   final double y;
 }

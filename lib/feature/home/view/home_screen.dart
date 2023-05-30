@@ -267,6 +267,7 @@ class HomeScreen extends StatelessWidget {
                                       dashboardController.isOverViewTitle.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(2);
+                                      todoController.isTodo.value = true;
                                       todoController.getTodoList().whenComplete(() async {
                                         await todoController.getCompanyUser();
                                       });
@@ -283,7 +284,7 @@ class HomeScreen extends StatelessWidget {
                                 ),),
                                 SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
-                                    onTap: (){
+                                    onTap: () async {
                                       if ( dashboardController.isOverView.value == true ) {
                                         controller.isModuleView.value = true;
                                       }
@@ -299,6 +300,7 @@ class HomeScreen extends StatelessWidget {
                                       calendarController.personalCalendar.value = false;
                                       calendarController.cropCalendar.value = true;
                                       dashboardController.isOverViewTitle.value = false;
+                                      await calendarController.getEventList();
                                       Get.back();
                                     },
                                     image: AppImages.calender,

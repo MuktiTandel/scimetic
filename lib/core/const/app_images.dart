@@ -113,5 +113,7 @@ class AppImages {
   static const String manageGrowspaces = 'assets/images/manage_growspaces.png';
   static const String manageUser = 'assets/images/manage_user.png';
   static const String suspend = 'assets/images/suspend.png';
+  static const String forward = 'assets/images/forward.png';
+  static const String backward = 'assets/images/backward.png';
 
 }

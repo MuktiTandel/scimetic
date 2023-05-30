@@ -98,7 +98,9 @@ class CalendarScreen extends StatelessWidget {
           ),
         ),
         Obx(() => controller.isDay.value == true
-            ? DayCalendar()
+            ? DayCalendar(
+          dayEventList: controller.dayEventList,
+        )
             : controller.isWeek.value == true
             ?  WeekCalendar()
             : controller.isMonth.value == true

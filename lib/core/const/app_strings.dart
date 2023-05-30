@@ -312,6 +312,10 @@ class AppStrings {
   static const String generateExport = "Generate & Export";
   static const String generate = "Generate";
   static const String companyName = "Company Name";
+  static const String assignGrowSpace = "Assign Growspace";
+  static const String moveForward = "Move Forward";
+  static const String moveBackward = "Move Backward";
+  static const String moveToTodo = "Move To Todo";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

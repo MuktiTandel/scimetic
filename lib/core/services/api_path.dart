@@ -16,5 +16,6 @@ class ApiPath {
   static const report = "/report";
   static const todo = "/todo";
   static const companyUsers = "/company_users";
+  static const events = "/events";
 
 }

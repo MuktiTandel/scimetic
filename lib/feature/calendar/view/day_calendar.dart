@@ -6,7 +6,12 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class DayCalendar extends StatelessWidget {
-  const DayCalendar({Key? key}) : super(key: key);
+   DayCalendar({
+    Key? key,
+    required this.dayEventList
+  }) : super(key: key);
+
+  List<TimeRegion> dayEventList;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class DayCalendar extends StatelessWidget {
         headerDateFormat: "dd EEEE",
         backgroundColor: Get.isDarkMode
             ? AppColors.darkTheme : Colors.white,
-        specialRegions: _getTimeRegions(),
+        specialRegions: dayEventList,
         timeRegionBuilder: (BuildContext context, TimeRegionDetails timeRegionDetails ) {
           return Padding(
             padding:  EdgeInsets.only(left: 5.w, top: 5.w, bottom: 5.w),

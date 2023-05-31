@@ -316,6 +316,27 @@ class AppStrings {
   static const String moveForward = "Move Forward";
   static const String moveBackward = "Move Backward";
   static const String moveToTodo = "Move To Todo";
+  static const String keys = "Keys";
+  static const String value = "Value";
+  static const String module = "Module";
+  static const String version = "Version";
+  static const String groupTopic = "GroupTopic";
+  static const String fallbackTopic = "FallbackTopic";
+  static const String hostname = "Hostname";
+  static const String iPAddress = "IPAddress";
+  static const String webServerMode = "WebServerMode";
+  static const String restartReason = "RestartReason";
+  static const String heap = "Heap";
+  static const String time = "Time";
+  static const String ap = "AP";
+  static const String mode = "Mode";
+  static const String rSSI = "RSSI";
+  static const String sSId = "SSId";
+  static const String bSSId = "BSSId";
+  static const String signal = "Signal";
+  static const String channel = "Channel";
+  static const String downtime = "Downtime";
+  static const String deviceType = "Device Type";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

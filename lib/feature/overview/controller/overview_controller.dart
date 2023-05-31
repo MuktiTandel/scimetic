@@ -14,7 +14,7 @@ import 'package:scimetic/feature/overview/element/month_graph.dart';
 import 'package:scimetic/feature/overview/element/week_graph.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/overview/model/climate_model.dart';
-import 'package:scimetic/feature/overview/model/device_model.dart';
+import 'package:scimetic/feature/device_settings/Model/device_model.dart';
 import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 import 'package:scimetic/feature/overview/model/growsheet_labeler_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';

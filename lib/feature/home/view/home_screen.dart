@@ -14,6 +14,7 @@ import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
+import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
@@ -38,6 +39,8 @@ class HomeScreen extends StatelessWidget {
    final overviewController = Get.put(OverviewController());
 
    final todoController = Get.put(TodoController());
+
+   final deviceController = Get.put(DeviceSettingsController());
 
   @override
   Widget build(BuildContext context) {
@@ -497,7 +500,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -521,6 +524,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isNotifications.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(4);
+                await deviceController.getDeviceData();
                 Get.back();
               },
             isSelect: controller.isDeviceSetup

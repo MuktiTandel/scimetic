@@ -113,12 +113,14 @@ class CalendarController extends GetxController {
 
           if ( eventList.isNotEmpty ) {
 
+            dayEventList.clear();
+
             for ( int i = 0; i < eventList.length; i++ ) {
               Event data = eventList[i];
               dayEventList.add(
                 TimeRegion(
                   startTime: data.createdAt!.toLocal(),
-                  endTime: DateFormat("dd.MM.yyyy HH:mm:ss").parse(data.dueDate!),
+                  endTime: DateFormat("dd.MM.yyyy").parse(data.dueDate!),
                   enablePointerInteraction: false,
                   color: i.isEven ? AppColors.blue : AppColors.orange,
                   text: data.description,

@@ -102,9 +102,13 @@ class CalendarScreen extends StatelessWidget {
           dayEventList: controller.dayEventList,
         )
             : controller.isWeek.value == true
-            ?  WeekCalendar()
+            ?  WeekCalendar(
+          weekEventList: controller.dayEventList,
+        )
             : controller.isMonth.value == true
-            ?  MonthCalendar() : YearCalendar())
+            ?  MonthCalendar(
+          eventList: controller.eventList,
+        ) : YearCalendar())
       ],
     );
   }

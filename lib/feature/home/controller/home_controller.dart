@@ -13,8 +13,11 @@ import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
 import 'package:scimetic/feature/irrigation_control/view/irrigation_control_screen.dart';
 import 'package:scimetic/feature/lightning_control/view/lightning_control_screen.dart';
+import 'package:scimetic/feature/notification/view/notification_screen.dart';
+import 'package:scimetic/feature/notification_setting/view/notification_setting_screen.dart';
 import 'package:scimetic/feature/organization_settings/view/organization_setting_screen.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
+import 'package:scimetic/feature/profile_setting/view/profile_setting_screen.dart';
 import 'package:scimetic/feature/reports/view/report_screen.dart';
 import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
@@ -105,6 +108,10 @@ class HomeController extends GetxController {
         return AppStrings.accessSetting;
       } else if ( moduleIndex.value == 13 ) {
         return AppStrings.organisationSettings;
+      } else if ( moduleIndex.value == 14 ) {
+        return AppStrings.profileSettings;
+      } else if ( moduleIndex.value == 15 ) {
+        return AppStrings.notificationsSettings;
       }
     }
   }
@@ -148,6 +155,8 @@ class HomeController extends GetxController {
     FertigationControlScreen(),
     AccessSettingScreen(),
     OrganizationSettingScreen(),
+    ProfileSettingScreen(),
+    NotificationSettingScreen()
   ];
 
 }

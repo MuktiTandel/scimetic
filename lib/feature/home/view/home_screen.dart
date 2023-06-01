@@ -21,6 +21,7 @@ import 'package:scimetic/feature/organizations/controller/organization_controlle
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
+import 'package:scimetic/feature/temperature_control/controller/temperature_controller.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -41,6 +42,8 @@ class HomeScreen extends StatelessWidget {
    final todoController = Get.put(TodoController());
 
    final deviceController = Get.put(DeviceSettingsController());
+
+   final temperatureController = Get.put(TemperatureController());
 
   @override
   Widget build(BuildContext context) {
@@ -557,6 +560,9 @@ class HomeScreen extends StatelessWidget {
                 controller.isNotifications.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(5);
+                temperatureController.getTemperatureControllerData().whenComplete(() async {
+                  await temperatureController.getSwitchData();
+                });
                 Get.back();
               },
             isSelect: controller.isTemperatureControl
@@ -845,6 +851,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isNotifications.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(14);
+                Get.back();
               },
             isSelect: controller.isUserSetting
           ),
@@ -876,6 +883,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isNotifications.value = true;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(15);
+                Get.back();
               },
             isSelect: controller.isNotifications
           ),

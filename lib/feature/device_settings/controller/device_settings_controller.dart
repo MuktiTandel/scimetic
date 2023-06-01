@@ -23,6 +23,8 @@ class DeviceSettingsController extends GetxController {
   RxBool isSensors = false.obs;
   RxBool isValves = false.obs;
 
+  RxBool isEdit = false.obs;
+
   final TextEditingController serialNumberController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -133,4 +135,59 @@ class DeviceSettingsController extends GetxController {
     }
 
   }
+
+  Future updateDevice({
+    required SensorDevice sensorDevice,
+    required int id,
+    required SwitchDevice switchDevice,
+  }) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.device}/$id",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: isSensors.value == true || isValves.value == true
+                ? sensorDevice.toJson()
+                : switchDevice.toJson()
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+          isEdit.value = false;
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
+
 }

@@ -17,5 +17,7 @@ class ApiPath {
   static const todo = "/todo";
   static const companyUsers = "/company_users";
   static const events = "/events";
+  static const temperatureControl = "/ctrl/temperature_control";
+  static const switches = "/device_type/switch";
 
 }

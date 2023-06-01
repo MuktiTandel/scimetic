@@ -8,7 +8,6 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
-import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
@@ -72,111 +71,13 @@ class DeviceSettingsScreen extends StatelessWidget {
                   height: 30.h,
                   width: 85.w,
                     onTap: (){
+                    controller.isEdit.value = false;
                     Get.dialog(
-                      CommonDialogWidget(
-                          title: AppStrings.addNewDevice,
-                          onTap: (){
-                            Get.back();
-                          },
-                          widget: SizedBox(
-                            width: 350.w,
-                            child: Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 15.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    text: AppStrings.serialNumber,
-                                    fontWeight: FontWeight.w500,
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkText : AppColors.lightText,
-                                  ),
-                                  SizedBox(height: 6.h,),
-                                  SizedBox(
-                                    height: 38.h,
-                                    child: CustomTextField(
-                                      controller: controller.serialNumberController,
-                                      isFilled: false,
-                                      hintText: AppStrings.serialNumber,
-                                      borderRadius: 8,
-                                      focusBorderColor: AppColors.buttonColor,
-                                      textInputType: TextInputType.number,
-                                      contentPadding: EdgeInsets.only(left: 10.w),
-                                      onchange: (value){},
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.h,),
-                                  CustomText(
-                                    text: AppStrings.deviceType,
-                                    fontWeight: FontWeight.w500,
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkText : AppColors.lightText,
-                                  ),
-                                  SizedBox(height: 6.h,),
-                                  SizedBox(
-                                    height: 38.h,
-                                    child: CustomTextField(
-                                      controller: controller.deviceTypeController,
-                                      isFilled: false,
-                                      hintText: AppStrings.deviceType,
-                                      borderRadius: 8,
-                                      focusBorderColor: AppColors.buttonColor,
-                                      textInputType: TextInputType.number,
-                                      contentPadding: EdgeInsets.only(left: 10.w),
-                                      onchange: (value){},
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.h,),
-                                  CustomText(
-                                    text: AppStrings.location,
-                                    fontWeight: FontWeight.w500,
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkText : AppColors.lightText,
-                                  ),
-                                  SizedBox(height: 6.h,),
-                                  SizedBox(
-                                    height: 38.h,
-                                    child: CustomTextField(
-                                      controller: controller.locationController,
-                                      isFilled: false,
-                                      hintText: AppStrings.location,
-                                      borderRadius: 8,
-                                      focusBorderColor: AppColors.buttonColor,
-                                      textInputType: TextInputType.number,
-                                      contentPadding: EdgeInsets.only(left: 10.w),
-                                      onchange: (value){},
-                                    ),
-                                  ),
-                                  CustomText(
-                                    text: AppStrings.description,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14.sp,
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkText : AppColors.lightText,
-                                  ),
-                                  SizedBox(height: 5.h,),
-                                  commonDescriptionTextField(
-                                      controller: controller.descriptionController,
-                                      descriptionLength: controller.descriptionLength
-                                  ),
-                                  SizedBox(height: 15.h,),
-                                  CustomButton(
-                                    height: 40.h,
-                                      onTap: (){
-                                      controller.descriptionController.clear();
-                                      controller.serialNumberController.clear();
-                                      controller.locationController.clear();
-                                        Get.back();
-                                      },
-                                      buttonText: AppStrings.save,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  SizedBox(height: 10.h,)
-                                ],
-                              ),
-                            ),
-                          )
+                      dialogWidget(
+                        sensorDeviceData: SensorDevice(),
+                        valvesDeviceData: SensorDevice(),
+                        switchDeviceData: SwitchDevice(),
+                        id: 0
                       )
                     );
                     },
@@ -357,6 +258,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                     Info1 info1 = Info1();
                     Info2 info2 = Info2();
                     Info3 info3 = Info3();
+                    String serialNumber = "";
 
                     if ( controller.sensorDeviceList.isNotEmpty
                         && controller.isSensors.value == true) {
@@ -368,6 +270,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       info1 = sensorData.data!.info1!;
                       info2 = sensorData.data!.info2!;
                       info3 = sensorData.data!.info3!;
+                      serialNumber = sensorData.serialNumber ?? "";
                     }
 
                     if ( controller.valvesDeviceList.isNotEmpty
@@ -380,6 +283,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       info1 = valvesData.data!.info1!;
                       info2 = valvesData.data!.info2!;
                       info3 = valvesData.data!.info3!;
+                      serialNumber = valvesData.serialNumber ?? "";
                     }
 
                     if (controller.switchDeviceList.isNotEmpty
@@ -392,6 +296,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       info1 = switchData.data!.info1!;
                       info2 = switchData.data!.info2!;
                       info3 = switchData.data!.info3!;
+                      serialNumber = switchData.serialNumber ?? "";
                     }
 
                     return settingWidget(
@@ -416,7 +321,10 @@ class DeviceSettingsScreen extends StatelessWidget {
                       info1: info1,
                       info2: info2,
                       info3: info3,
-                      sensorDeviceData: sensorData
+                      sensorDeviceData: sensorData,
+                      serialNumber: serialNumber,
+                      switchDeviceData: switchData,
+                      valvesDeviceData: valvesData
                     );
                   }
               )
@@ -439,7 +347,10 @@ class DeviceSettingsScreen extends StatelessWidget {
     required Info1 info1,
     required Info2 info2,
     required Info3 info3,
-    required SensorDevice sensorDeviceData
+    required SensorDevice sensorDeviceData,
+    required String serialNumber,
+    required SwitchDevice switchDeviceData,
+    required SensorDevice valvesDeviceData
   }) {
 
     return Column(
@@ -612,20 +523,48 @@ class DeviceSettingsScreen extends StatelessWidget {
                           ? AppColors.darkText : AppColors.lightGray1,
                     ),
                     SizedBox(width: 10.w,),
-                    Image.asset(
-                      AppImages.edit,
-                      height: 25.h,
-                      width: 22.w,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightGray1,
-                    ),
-                    SizedBox(width: 5.w,),
-                    CustomText(
-                      text: AppStrings.edit,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13.sp,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightGray1,
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: (){
+                        controller.isEdit.value = true;
+                        controller.serialNumberController.text = serialNumber;
+                        controller.descriptionController.text = desc;
+                        controller.locationController.text = location;
+                        if ( controller.isSwitches.value == true ) {
+                          controller.deviceTypeController.text = AppStrings.switches;
+                        } else if ( controller.isSensors.value == true ) {
+                          controller.deviceTypeController.text = AppStrings.sensor;
+                        } else {
+                          controller.deviceTypeController.text = AppStrings.valves;
+                        }
+                        Get.dialog(
+                          dialogWidget(
+                            sensorDeviceData: sensorDeviceData,
+                            valvesDeviceData: valvesDeviceData,
+                            switchDeviceData: switchDeviceData,
+                            id: id
+                          )
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            AppImages.edit,
+                            height: 25.h,
+                            width: 22.w,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightGray1,
+                          ),
+                          SizedBox(width: 5.w,),
+                          CustomText(
+                            text: AppStrings.edit,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13.sp,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightGray1,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(width: 5.w,),
                     Image.asset(
@@ -785,4 +724,140 @@ class DeviceSettingsScreen extends StatelessWidget {
         ]
     );
   }
+
+  Widget dialogWidget({
+  required SensorDevice sensorDeviceData,
+   required SensorDevice valvesDeviceData,
+   required SwitchDevice switchDeviceData,
+    required int id
+  }) {
+    return CommonDialogWidget(
+        title: AppStrings.addNewDevice,
+        onTap: (){
+          Get.back();
+          controller.serialNumberController.clear();
+          controller.deviceTypeController.clear();
+          controller.locationController.clear();
+          controller.descriptionController.clear();
+        },
+        widget: SizedBox(
+          width: 350.w,
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 15.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: AppStrings.serialNumber,
+                  fontWeight: FontWeight.w500,
+                  color: Get.isDarkMode
+                      ? AppColors.darkText : AppColors.lightText,
+                ),
+                SizedBox(height: 6.h,),
+                SizedBox(
+                  height: 38.h,
+                  child: CustomTextField(
+                    controller: controller.serialNumberController,
+                    isFilled: false,
+                    readOnly: controller.isEdit.value == true ? true : false,
+                    hintText: AppStrings.serialNumber,
+                    borderRadius: 8,
+                    focusBorderColor: AppColors.buttonColor,
+                    textInputType: TextInputType.number,
+                    contentPadding: EdgeInsets.only(left: 10.w),
+                    onchange: (value){},
+                  ),
+                ),
+                SizedBox(height: 10.h,),
+                CustomText(
+                  text: AppStrings.deviceType,
+                  fontWeight: FontWeight.w500,
+                  color: Get.isDarkMode
+                      ? AppColors.darkText : AppColors.lightText,
+                ),
+                SizedBox(height: 6.h,),
+                SizedBox(
+                  height: 38.h,
+                  child: CustomTextField(
+                    controller: controller.deviceTypeController,
+                    isFilled: false,
+                    readOnly: controller.isEdit.value == true ? true : false,
+                    hintText: AppStrings.deviceType,
+                    borderRadius: 8,
+                    focusBorderColor: AppColors.buttonColor,
+                    textInputType: TextInputType.number,
+                    contentPadding: EdgeInsets.only(left: 10.w),
+                    onchange: (value){},
+                  ),
+                ),
+                SizedBox(height: 10.h,),
+                CustomText(
+                  text: AppStrings.location,
+                  fontWeight: FontWeight.w500,
+                  color: Get.isDarkMode
+                      ? AppColors.darkText : AppColors.lightText,
+                ),
+                SizedBox(height: 6.h,),
+                SizedBox(
+                  height: 38.h,
+                  child: CustomTextField(
+                    controller: controller.locationController,
+                    isFilled: false,
+                    hintText: AppStrings.location,
+                    borderRadius: 8,
+                    focusBorderColor: AppColors.buttonColor,
+                    textInputType: TextInputType.number,
+                    contentPadding: EdgeInsets.only(left: 10.w),
+                    onchange: (value){},
+                  ),
+                ),
+                CustomText(
+                  text: AppStrings.description,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: Get.isDarkMode
+                      ? AppColors.darkText : AppColors.lightText,
+                ),
+                SizedBox(height: 5.h,),
+                commonDescriptionTextField(
+                    controller: controller.descriptionController,
+                    descriptionLength: controller.descriptionLength
+                ),
+                SizedBox(height: 15.h,),
+                CustomButton(
+                  height: 40.h,
+                  onTap: () async {
+                    if ( controller.isEdit.value == true ) {
+                      if ( controller.isSensors.value == true ) {
+                        sensorDeviceData.location = controller.locationController.text;
+                        sensorDeviceData.description = controller.descriptionController.text;
+                      } else if ( controller.isValves.value == true ) {
+                        valvesDeviceData.location = controller.locationController.text;
+                        valvesDeviceData.description = controller.descriptionController.text;
+                      } else {
+                        switchDeviceData.location = controller.locationController.text;
+                        switchDeviceData.description = controller.descriptionController.text;
+                      }
+                      await controller.updateDevice(
+                          sensorDevice: controller.isSensors.value == true
+                              ? sensorDeviceData : valvesDeviceData,
+                          id: id,
+                          switchDevice: switchDeviceData,
+                      ).whenComplete(() async {
+                        await controller.getDeviceData();
+                      });
+                    }
+                  },
+                  buttonText: AppStrings.save,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                SizedBox(height: 10.h,)
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
 }

@@ -90,7 +90,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       context: context,
                       title: AppStrings.temperature,
                       image: AppImages.menu_,
-                      value: controller.temperatureValue.value.toString(),
+                      value: controller.temperatureValue.value.toStringAsFixed(2).toString(),
                       value1: "°C",
                       isHour: controller.isHour.value,
                       isWeek: controller.isWeek.value,

@@ -67,13 +67,10 @@ class LoginController extends GetxController {
         return true;
       } else {
 
-        if ( apiResponse!.statusCode == 403 || apiResponse!.statusCode == 404 ) {
-
           showSnack(
               width: 200.w,
               title: data["message"]
           );
-        }
 
         return false;
       }

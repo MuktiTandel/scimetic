@@ -124,18 +124,20 @@ class GrowSheetController extends GetxController {
 
         dynamic data = jsonDecode(apiResponse!.body);
 
+        isGetData.value = true;
+
         if ( apiResponse!.statusCode == 200 ) {
 
           growSheetData = GrowSheetData.fromJson(data);
 
           if ( growSheetData.growsheets!.isNotEmpty ) {
             growSheetDataList.addAll(growSheetData.growsheets!);
-            isGetData.value = true;
           }
 
           AppConst().debug('grow sheet data => ${growSheetData.growsheets}');
 
           return true;
+
         } else {
 
           if ( apiResponse!.statusCode == 403 ) {

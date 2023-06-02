@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
@@ -17,55 +16,40 @@ class TemperatureController extends GetxController {
 
   RxBool isOn = false.obs;
 
-  final TextEditingController nightCoolingTemperature = TextEditingController();
-  final TextEditingController nightCoolingDeadband = TextEditingController();
+  final TextEditingController extractorDayTemperature = TextEditingController();
+  final TextEditingController extractorNightTemperature = TextEditingController();
 
-  final TextEditingController dayHeatingTemperature = TextEditingController();
-  final TextEditingController dayHeatingDeadband = TextEditingController();
-
-  final TextEditingController nightHeatingTemperature = TextEditingController();
-  final TextEditingController nightHeatingDeadband = TextEditingController();
-
-  final TextEditingController circulationTemperature = TextEditingController();
-  final TextEditingController circulationDeadband = TextEditingController();
-  final TextEditingController circulationHumidityTemperature = TextEditingController();
-  final TextEditingController circulationHumidityDeadband = TextEditingController();
-
-  final TextEditingController extractorTemperature = TextEditingController();
-  final TextEditingController extractorTemperatureOOF = TextEditingController();
-
-  final TextEditingController wetWallTemperature = TextEditingController();
-  final TextEditingController wetWallDeadband = TextEditingController();
-
-  final TextEditingController timeOnHour = TextEditingController();
-  final TextEditingController timeOnMinute = TextEditingController();
-  final TextEditingController timeOffHour = TextEditingController();
-  final TextEditingController timeOffMinute = TextEditingController();
+  final TextEditingController wetWallDayTemperature = TextEditingController();
+  final TextEditingController wetWallNightTemperature = TextEditingController();
 
   RxString dayCoolingValue = "".obs;
   RxString dayCoolingRelaySelection = "".obs;
 
-  RxString nightCoolingValue = AppStrings.chooseSwitch.obs;
+  RxString nightCoolingSwitch = "".obs;
+  RxString nightCoolingRelay = "".obs;
 
-  RxString dayHeatingValue = AppStrings.chooseSwitch.obs;
+  RxString extractorFanDaySwitch = "".obs;
+  RxString extractorFanNightSwitch = "".obs;
+  RxString extractorFanDayRelay = "".obs;
+  RxString extractorFanNightRelay = "".obs;
 
-  RxString nightHeatingValue = AppStrings.chooseSwitch.obs;
+  RxString wetWallDaySwitch = "".obs;
+  RxString wetWallNightSwitch = "".obs;
+  RxString wetWalDayRelay = "".obs;
+  RxString wetWalNightRelay = "".obs;
 
   List<String> switchList = [];
 
   List<String> dayCoolingRelayList = [];
 
-  List<String> nightCoolingItems = [
-    AppStrings.chooseSwitch
-  ];
+  List<String> nightCoolingRelayList = [];
 
-  List<String> dayHeatingItems = [
-    AppStrings.chooseSwitch
-  ];
+  List<String> extractorFanDayRelayList = [];
 
-  List<String> nightHeatingItems = [
-    AppStrings.chooseSwitch
-  ];
+  List<String> extractorFanNightRelayList = [];
+
+  List<String> wetWalDayRelayList = [];
+  List<String> wetWalNightRelayList = [];
 
   String token = "";
 
@@ -78,6 +62,9 @@ class TemperatureController extends GetxController {
   RxBool isGetData = false.obs;
 
   RxBool isCoolingEnable = false.obs;
+  RxBool isHeatingEnable = false.obs;
+  RxBool isExtractorFanOn = false.obs;
+  RxBool isWetWallOn = false.obs;
 
   TemperatureControllerModel temperatureControllerModel = TemperatureControllerModel();
 

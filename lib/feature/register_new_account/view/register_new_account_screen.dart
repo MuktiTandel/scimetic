@@ -183,7 +183,6 @@ class RegisterNewAccountScreen extends StatelessWidget {
       ),
       buttonText: AppStrings.register,
       buttonTap: (){
-        controller.trySubmit();
       },
       isSubtitle: true,
       isEmail: false,

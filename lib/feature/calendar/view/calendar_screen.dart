@@ -30,6 +30,7 @@ class CalendarScreen extends StatelessWidget {
 
   Widget personalCalendar() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: EdgeInsets.all(10.w),

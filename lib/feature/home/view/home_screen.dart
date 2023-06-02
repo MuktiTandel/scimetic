@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
           isPersonal: calendarController.cropCalendar,
         )),
       ),
-      body: Obx(() => organizationController.isSelect.value == false
+      body: Obx(() => controller.roleId.value == 1 ? (organizationController.isSelect.value == false
           ? OrganizationScreen()
           : dashboardController.isOverView.value == false
           ? const DashboardScreen()
@@ -77,7 +77,14 @@ class HomeScreen extends StatelessWidget {
           : IndexedStack(
         index: controller.moduleIndex.value,
         children: controller.moduleList,
-      )
+      )) : (dashboardController.isOverView.value == false
+          ? const DashboardScreen()
+          : controller.isModuleView.value == false
+          ? const OverviewScreen()
+          : IndexedStack(
+        index: controller.moduleIndex.value,
+        children: controller.moduleList,
+      ))
       ),
       drawer: Drawer(
         width: 230.w,
@@ -132,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             SizedBox(height: 5.h,),
-                            Obx(() => drawerWidget(
+                            Obx(() => controller.roleId.value == 1 ? drawerWidget(
                                 onTap: (){
                                   controller.isOrganization.value = true;
                                   organizationController.isSelect.value = false;
@@ -149,8 +156,8 @@ class HomeScreen extends StatelessWidget {
                                 title: AppStrings.organizations,
                                 isSelect: controller.isOrganization.value,
                                 isRightWidget: false
-                            ),),
-                            SizedBox(height: 5.h,),
+                            ) : const SizedBox.shrink()),
+                            Obx(() => controller.roleId.value == 0 ? SizedBox(height: 5.h,) : const SizedBox.shrink() ),
                             Obx(() => organizationController.isSelect.value == true ? drawerWidget(
                                 onTap: (){
                                    dashboardController.getDataList();

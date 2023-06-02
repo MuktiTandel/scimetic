@@ -166,7 +166,7 @@ class ReportScreen extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.all(15.w),
                 child: Container(
-                  height: 350.h,
+                  height: 362.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white

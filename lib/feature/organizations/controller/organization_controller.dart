@@ -43,11 +43,14 @@ class OrganizationController extends GetxController {
 
   RxString errorMessage = "".obs;
 
+  RxInt roleId = 0.obs;
+
   Future getDataList() async {
 
     bool isConnected = await checkNetConnectivity();
 
     if ( isConnected == true ) {
+
       isGetData.value = false;
 
       dataList.clear();
@@ -296,6 +299,11 @@ class OrganizationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getDataList();
+
+    roleId.value = storeData.getInt(StoreData.roleId)!;
+
+    if ( roleId.value == 1 ) {
+      getDataList();
+    }
   }
 }

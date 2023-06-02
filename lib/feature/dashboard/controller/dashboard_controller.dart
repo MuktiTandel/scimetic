@@ -62,6 +62,19 @@ class DashboardController extends GetxController {
 
   RxInt id = 0.obs;
 
+  RxInt roleId = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    roleId.value = storeData.getInt(StoreData.roleId)!;
+
+    if ( roleId.value != 1 ) {
+      getDataList();
+    }
+  }
+
   Future getDataList() async {
 
     isGetData.value = false;
@@ -87,13 +100,14 @@ class DashboardController extends GetxController {
 
         dynamic data = jsonDecode(apiResponse!.body);
 
+        isGetData.value = true;
+
         if ( apiResponse!.statusCode == 200 ) {
 
           growModel = GrowModel.fromJson(data);
 
           if ( growModel.growControllers!.isNotEmpty ) {
             dataList.addAll(growModel.growControllers!);
-            isGetData.value = true;
           }
 
           return true;

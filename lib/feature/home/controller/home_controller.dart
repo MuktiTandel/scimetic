@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/access_setting/view/access_setting_screen.dart';
@@ -13,7 +14,6 @@ import 'package:scimetic/feature/growsheet/view/growsheets_screen.dart';
 import 'package:scimetic/feature/humidity_control/view/humidity_control_screen.dart';
 import 'package:scimetic/feature/irrigation_control/view/irrigation_control_screen.dart';
 import 'package:scimetic/feature/lightning_control/view/lightning_control_screen.dart';
-import 'package:scimetic/feature/notification/view/notification_screen.dart';
 import 'package:scimetic/feature/notification_setting/view/notification_setting_screen.dart';
 import 'package:scimetic/feature/organization_settings/view/organization_setting_screen.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
@@ -59,6 +59,18 @@ class HomeController extends GetxController {
   void toggle() => isSetting.value = isSetting.value ? false : true;
 
   StoreData storeData = StoreData();
+
+  RxInt roleId = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    roleId.value = storeData.getInt(StoreData.roleId)!;
+    AppConst().debug("role id => ${roleId.value}");
+    if ( roleId.value != 1 ) {
+      organizationController.isSelect.value = true;
+    }
+  }
 
   void openDrawer() {
     scaffoldKey.currentState!.openDrawer();

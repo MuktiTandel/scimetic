@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/services/api_service.dart';
-import 'package:scimetic/feature/register_new_account/model/create_user_model.dart';
 
 class RegisterNewAccountController extends GetxController {
 
@@ -41,32 +39,4 @@ class RegisterNewAccountController extends GetxController {
     return null;
   }
 
-  void trySubmit() {
-
-    if (nameController.text.isEmpty) {
-      isValid.value = false;
-    }
-
-    // if (!isValid) {
-    //   // formKey.currentState!.save();
-    //
-    //   CreateUserModel userModel = CreateUserModel(
-    //       firstName: nameController.text,
-    //       lastName: nameController.text,
-    //       email: emailController.text,
-    //       password: cPasswordController.text,
-    //       connection: "Username-Password-Authentication"
-    //   );
-    //
-    //   AppConst().debug("name => ${userModel.firstName}");
-    //   AppConst().debug("email => ${userModel.email}");
-    //   AppConst().debug("password => ${userModel.password}");
-    //
-    //   apiService.createUser(userModel).whenComplete(() {
-    //     /* Get.offAllNamed(AppPages.AUTHENTICATEACOOUNT,
-    //           arguments: {"email" : controller.emailController.value.text});*/
-    //   });
-    //
-    // }
-  }
 }

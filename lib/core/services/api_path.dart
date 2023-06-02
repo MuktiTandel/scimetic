@@ -1,6 +1,7 @@
 class ApiPath {
 
-  static const baseUrl = "https://api-staging.scimetic.net";
+  // static const baseUrl = "https://api-staging.scimetic.net";
+  static const baseUrl = "https://2c78-2405-201-2014-30fe-f49b-fbda-e7b0-3186.ngrok-free.app";
 
   static const login = "/auth/login";
   static const register = "/auth/register";

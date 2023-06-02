@@ -64,6 +64,8 @@ class LoginController extends GetxController {
 
         storeData.setData(StoreData.accessToken, loginResponseModel.accessToken);
 
+        storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
+
         return true;
       } else {
 

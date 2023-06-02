@@ -563,12 +563,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                           ),
                                           Expanded(child: SizedBox(width: 10.w,)),
                                           CustomText(
-                                            text: "${controller
+                                            text: controller.growSheetData.growsheets!.isNotEmpty ? "${controller
                                                 .growSheetData.growsheets!
                                                 .first.dayTargetTemperature}°C "
                                                 "/ ${controller.growSheetData
                                                 .growsheets!
-                                                .first.nightTargetTemperature}°C",
+                                                .first.nightTargetTemperature}°C" : "-",
                                             fontSize: 15.sp,
                                             color: Get.isDarkMode
                                                 ? Colors.white : Colors.black,
@@ -589,12 +589,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                           ),
                                           Expanded(child: SizedBox(width: 10.w,)),
                                           CustomText(
-                                            text: "${controller.growSheetData
+                                            text: controller.growSheetData.growsheets!.isNotEmpty ? "${controller.growSheetData
                                                 .growsheets!.first
                                                 .dayTargetRelativeHumidity}% "
                                                 "/ ${controller.growSheetData
                                                 .growsheets!.first
-                                                .nightTargetRelativeHumidity}%",
+                                                .nightTargetRelativeHumidity}%" : "-",
                                             fontSize: 15.sp,
                                             color: Get.isDarkMode
                                                 ? Colors.white : Colors.black,
@@ -615,12 +615,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                           ),
                                           Expanded(child: SizedBox(width: 10.w,)),
                                           CustomText(
-                                            text: "${controller.growSheetData
+                                            text: controller.growSheetData.growsheets!.isNotEmpty ? "${controller.growSheetData
                                                 .growsheets!.first
                                                 .dayTargetCo2}ppm / "
                                                 "${controller.growSheetData
                                                 .growsheets!.first
-                                                .nightTargetCo2}ppm",
+                                                .nightTargetCo2}ppm" : "-",
                                             fontSize: 15.sp,
                                             color: Get.isDarkMode
                                                 ? Colors.white : Colors.black,

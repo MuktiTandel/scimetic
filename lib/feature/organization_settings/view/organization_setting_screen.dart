@@ -77,7 +77,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                     SizedBox(width: 10.w,),
                     OutLineButton(
                       height: 30.h,
-                      width: 90.w,
+                      width: 100.w,
                       onTap: (){},
                       color: AppColors.red,
                       buttonText: AppStrings.remove,

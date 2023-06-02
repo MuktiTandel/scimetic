@@ -811,6 +811,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                     onchange: (value){},
                   ),
                 ),
+                SizedBox(height: 10.h,),
                 CustomText(
                   text: AppStrings.description,
                   fontWeight: FontWeight.w500,

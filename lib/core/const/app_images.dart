@@ -115,5 +115,7 @@ class AppImages {
   static const String suspend = 'assets/images/suspend.png';
   static const String forward = 'assets/images/forward.png';
   static const String backward = 'assets/images/backward.png';
+  static const String circulation = 'assets/images/circulation.png';
+  static const String controlTab = 'assets/images/control_tab.png';
 
 }

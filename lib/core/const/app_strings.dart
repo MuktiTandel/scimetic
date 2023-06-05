@@ -207,9 +207,9 @@ class AppStrings {
   static const String dayHeatingMode = "Day heating Mode";
   static const String nightHeatingMode = "Night heating Mode";
   static const String circulationFan = "Circulation Fan";
-  static const String temperatureOOF = "Temperature OOF";
+  static const String temperatureOff = "Temperature Off";
   static const String humidityON = "Humidity ON";
-  static const String temperatureOOFDeadband = "Temperature OOF Deadband";
+  static const String temperatureOffDeadband = "Temperature Off Deadband";
   static const String humidityONDeadband = "Humidity ON Deadband";
   static const String timeON = "Time ON";
   static const String timeOFF = "Time OFF";
@@ -365,6 +365,9 @@ class AppStrings {
   static const String disable = "Disable";
   static const String heating = "Heating";
   static const String relaySelection = "Relay selection";
+  static const String circulationControl = "Circulation Control";
+  static const String controlTab = "Control Tab";
+  static const String screenControl = "Screen Control";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

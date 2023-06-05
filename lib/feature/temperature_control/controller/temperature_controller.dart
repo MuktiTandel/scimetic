@@ -105,13 +105,10 @@ class TemperatureController extends GetxController {
           return true;
         } else {
 
-          if ( apiResponse!.statusCode == 403 ) {
-
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }
@@ -126,6 +123,8 @@ class TemperatureController extends GetxController {
   }
 
   Future getSwitchData() async {
+
+    isGetData.value = false;
 
     token =  storeData.getString(StoreData.accessToken)!;
 
@@ -145,6 +144,8 @@ class TemperatureController extends GetxController {
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
+
+        isGetData.value = true;
 
         if ( apiResponse!.statusCode == 200 ) {
 

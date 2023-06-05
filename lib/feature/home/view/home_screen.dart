@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
+import 'package:scimetic/feature/circulation_control/controller/circulation_control_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
@@ -44,6 +45,8 @@ class HomeScreen extends StatelessWidget {
    final deviceController = Get.put(DeviceSettingsController());
 
    final temperatureController = Get.put(TemperatureController());
+
+   final circulationController = Get.put(CirculationControlController());
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +195,7 @@ class HomeScreen extends StatelessWidget {
                                       controller.isCalender.value = false;
                                       controller.isSetting.value = false;
                                       dashboardController.isOverViewTitle.value = false;
-                                     controller.unSelectSettingValue();
+                                      controller.unSelectSettingValue();
                                       controller.changeModuleIndex(0);
                                       int id = controller.storeData.getInt(StoreData.id)!;
                                       if ( id != 0) {
@@ -532,6 +535,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(4);
                 await deviceController.getDeviceData();
@@ -565,6 +570,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(5);
                 temperatureController.getTemperatureControllerData().whenComplete(() async {
@@ -573,6 +580,75 @@ class HomeScreen extends StatelessWidget {
                 Get.back();
               },
             isSelect: controller.isTemperatureControl
+          ),
+          SizedBox(height: 14.h,),
+          settingCommonWidget(
+              image: AppImages.circulation,
+              title: AppStrings.circulationControl,
+              onTap: () async {
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = true;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(16);
+                await circulationController.getCirculationControlData();
+                Get.back();
+              },
+              isSelect: controller.isCirculationControl
+          ),
+          SizedBox(height: 14.h,),
+          settingCommonWidget(
+              image: AppImages.controlTab,
+              title: AppStrings.controlTab,
+              onTap: (){
+                if ( dashboardController.isOverView.value == true ) {
+                  controller.isModuleView.value = true;
+                }
+                controller.isOrganization.value = false;
+                controller.isDashboard.value = false;
+                controller.isGrowSheet.value = false;
+                controller.isReport.value = false;
+                controller.isTodo.value = false;
+                controller.isCalender.value = false;
+                controller.isDeviceSetup.value = false;
+                controller.isTemperatureControl.value = false;
+                controller.isHumidityControl.value = false;
+                controller.isCo2Control.value = false;
+                controller.isLightingControl.value = false;
+                controller.isEnergyManagement.value = false;
+                controller.isIrrigation.value = false;
+                controller.isFertigation.value = false;
+                controller.isAccessSetting.value = false;
+                controller.isOrganisationSettings.value = false;
+                controller.isUserSetting.value = false;
+                controller.isNotifications.value = false;
+                controller.isControlTab.value = true;
+                controller.isCirculationControl.value = false;
+                dashboardController.isOverViewTitle.value = false;
+                controller.changeModuleIndex(17);
+                Get.back();
+              },
+              isSelect: controller.isControlTab
           ),
           SizedBox(height: 14.h,),
           settingCommonWidget(
@@ -600,6 +676,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(6);
                 Get.back();
@@ -632,6 +710,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(7);
                 Get.back();
@@ -664,6 +744,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(8);
                 Get.back();
@@ -696,6 +778,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(9);
                 Get.back();
@@ -728,6 +812,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(10);
                 Get.back();
@@ -760,6 +846,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(11);
                 Get.back();
@@ -792,6 +880,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(12);
                 Get.back();
@@ -824,6 +914,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = true;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(13);
                 Get.back();
@@ -856,6 +948,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = true;
                 controller.isNotifications.value = false;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(14);
                 Get.back();
@@ -888,6 +982,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isOrganisationSettings.value = false;
                 controller.isUserSetting.value = false;
                 controller.isNotifications.value = true;
+                controller.isControlTab.value = false;
+                controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(15);
                 Get.back();

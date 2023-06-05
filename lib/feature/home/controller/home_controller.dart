@@ -5,7 +5,9 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/access_setting/view/access_setting_screen.dart';
 import 'package:scimetic/feature/calendar/view/calendar_screen.dart';
+import 'package:scimetic/feature/circulation_control/view/circulation_control_screen.dart';
 import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
+import 'package:scimetic/feature/control_tab/view/control_tab_screen.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
 import 'package:scimetic/feature/energy_management/view/energy_management_screen.dart';
@@ -53,6 +55,8 @@ class HomeController extends GetxController {
   RxBool isOrganisationSettings = false.obs;
   RxBool isUserSetting = false.obs;
   RxBool isNotifications = false.obs;
+  RxBool isCirculationControl = false.obs;
+  RxBool isControlTab = false.obs;
 
   RxInt moduleIndex = 0.obs;
 
@@ -124,6 +128,10 @@ class HomeController extends GetxController {
         return AppStrings.profileSettings;
       } else if ( moduleIndex.value == 15 ) {
         return AppStrings.notificationsSettings;
+      } else if ( moduleIndex.value == 16 ) {
+        return AppStrings.circulationControl;
+      } else if ( moduleIndex.value == 17 ) {
+        return AppStrings.screenControl;
       }
     }
   }
@@ -141,6 +149,8 @@ class HomeController extends GetxController {
     isOrganisationSettings.value = false;
     isUserSetting.value = false;
     isNotifications.value = false;
+    isCirculationControl.value = false;
+    isControlTab.value = false;
   }
 
   void unSelectModule() {
@@ -168,7 +178,9 @@ class HomeController extends GetxController {
     AccessSettingScreen(),
     OrganizationSettingScreen(),
     ProfileSettingScreen(),
-    NotificationSettingScreen()
+    NotificationSettingScreen(),
+    CirculationControlScreen(),
+    ControlTabScreen(),
   ];
 
 }

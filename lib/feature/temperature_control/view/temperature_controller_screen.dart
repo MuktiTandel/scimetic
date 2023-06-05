@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/elements/commom_enable_title_widget.dart';
 import 'package:scimetic/core/elements/common_imagetext_widget.dart';
 import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
@@ -21,7 +22,8 @@ class TemperatureControllerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: ScrollConfiguration(
+      body: Obx(() =>  controller.isGetData.value == true
+          ? ScrollConfiguration(
         behavior: AppBehavior(),
         child: SingleChildScrollView(
           child: Column(
@@ -31,7 +33,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    titleWidget(
+                    commonEnableTitleWidget(
                         title: AppStrings.cooling,
                         isSelect: controller.isCoolingEnable
                     ),
@@ -58,7 +60,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h,),
                           CustomDropDown(
-                            width: 330.w,
+                              width: 330.w,
                               hintText: AppStrings.chooseSwitch,
                               itemList: controller.switchList,
                               value: controller.dayCoolingValue.value,
@@ -152,7 +154,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    titleWidget(
+                    commonEnableTitleWidget(
                         title: AppStrings.heating,
                         isSelect: controller.isHeatingEnable
                     ),
@@ -257,141 +259,6 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.dayCoolingRelaySelection.value = value;
-                                }
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 10.h,),
-              Container(
-                color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    commonTitleWidget(
-                        title: AppStrings.extractorFan,
-                        isSelect: controller.isExtractorFanOn
-                    ),
-                    Divider(
-                      thickness: 1.w,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightBorder,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(15.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          commonImageText(
-                              image: AppImages.fillSun,
-                              title: AppStrings.dayMode,
-                              color: AppColors.lightBlue
-                          ),
-                          SizedBox(height: 8.h,),
-                          commonTexField(
-                              title: AppStrings.temperature,
-                              controller: controller.extractorDayTemperature,
-                              suffixText: "°C",
-                              hintText: AppStrings.temperature,
-                              onChanged: (value){}
-                          ),
-                          SizedBox(height: 10.h,),
-                          CustomText(
-                            text: AppStrings.switchSelection,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                            fontSize: 12.h,
-                          ),
-                          SizedBox(height: 5.h,),
-                          CustomDropDown(
-                              width: 330.w,
-                              hintText: AppStrings.chooseSwitch,
-                              itemList: controller.switchList,
-                              value: controller.extractorFanDaySwitch.value,
-                              isFilled: Get.isDarkMode ? true : false,
-                              onChange: (value) {
-                                controller.extractorFanDaySwitch.value = value;
-                              }
-                          ),
-                          SizedBox(height: 10.h,),
-                          CustomText(
-                            text: AppStrings.relaySelection,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                            fontSize: 12.h,
-                          ),
-                          SizedBox(height: 5.h,),
-                          CustomDropDown(
-                              width: 330.w,
-                              hintText: AppStrings.chooseRelay,
-                              itemList: controller.extractorFanDayRelayList,
-                              value: controller.extractorFanDayRelay.value,
-                              isFilled: Get.isDarkMode ? true : false,
-                              onChange: (value) {
-                                controller.extractorFanDayRelay.value = value;
-                              }
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.all(10.w),
-                      child: Container(
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            commonImageText(
-                                image: AppImages.fillMoon,
-                                title: AppStrings.nightMode,
-                                color: AppColors.lightBlue
-                            ),
-                            SizedBox(height: 8.h,),
-                            commonTexField(
-                                title: AppStrings.temperature,
-                                controller: controller.extractorNightTemperature,
-                                suffixText: "°C",
-                                hintText: AppStrings.temperature,
-                                onChanged: (value){}
-                            ),
-                            SizedBox(height: 10.h,),
-                            CustomText(
-                              text: AppStrings.switchSelection,
-                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                              fontSize: 12.h,
-                            ),
-                            SizedBox(height: 5.h,),
-                            CustomDropDown(
-                                width: 330.w,
-                                hintText: AppStrings.chooseSwitch,
-                                itemList: controller.switchList,
-                                value: controller.extractorFanNightSwitch.value,
-                                isFilled: Get.isDarkMode ? true : false,
-                                onChange: (value) {
-                                  controller.extractorFanNightSwitch.value = value;
-                                }
-                            ),
-                            SizedBox(height: 10.h,),
-                            CustomText(
-                              text: AppStrings.relaySelection,
-                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                              fontSize: 12.h,
-                            ),
-                            SizedBox(height: 5.h,),
-                            CustomDropDown(
-                                width: 330.w,
-                                hintText: AppStrings.chooseRelay,
-                                itemList: controller.extractorFanNightRelayList,
-                                value: controller.extractorFanNightRelay.value,
-                                isFilled: Get.isDarkMode ? true : false,
-                                onChange: (value) {
-                                  controller.extractorFanNightRelay.value = value;
                                 }
                             ),
                           ],
@@ -684,45 +551,12 @@ class TemperatureControllerScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget titleWidget({required String title, required RxBool isSelect}) {
-    return Padding(
-      padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h),
-      child: Row(
-        children: [
-          CustomText(
-            text: title,
-            fontSize: 15.sp,
-            color: AppColors.buttonColor,
-            fontWeight: FontWeight.w500,
-          ),
-          Expanded(child: SizedBox(width: 10.w,)),
-          Obx(() =>  CustomText(
-            text: isSelect.value ? AppStrings.enable : AppStrings.disable,
-            fontSize: 15.sp,
-            color: AppColors.buttonColor,
-            fontWeight: FontWeight.w500,
-          ),),
-          SizedBox(width: 10.w,),
-          Obx(() => GestureDetector(
-            onTap: (){
-              isSelect.value = !isSelect.value;
-            },
-            child: Image.asset(
-              isSelect.value == false
-                  ? Get.isDarkMode
-                  ? AppImages.darkSelectedToggle : AppImages.lightSelectToggle
-                  : Get.isDarkMode
-                  ? AppImages.darkUnselectToggle : AppImages.lightUnselectToggle,
-              height: 30.h,
-              width: 30.w,
-            ),
-          ),),
-        ],
-      ),
+      )
+          : const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.buttonColor,
+        ),
+      ),)
     );
   }
 

@@ -31,6 +31,7 @@ Widget commonTexField({
           contentPadding: EdgeInsets.only(left: 10.w),
           hintText: hintText,
           hintTextSize: 12.sp,
+          focusBorderColor: AppColors.buttonColor,
           isFilled: Get.isDarkMode ? true : false,
           suffixWidget: Padding(
             padding:  EdgeInsets.only(top: 10.h,left: contentPadding ??  10.w, right: 10.w),

@@ -111,15 +111,13 @@ class DashboardController extends GetxController {
           }
 
           return true;
-        } else {
 
-          if ( apiResponse!.statusCode == 403 ) {
+        } else {
 
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }

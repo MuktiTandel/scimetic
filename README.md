@@ -23,3 +23,13 @@ samples, guidance on mobile development, and a full API reference.
   "password" : "Test@123",
   "connection" : "Username-Password-Authentication"
   }
+
+{
+"username": "sendrossemail+test@gmail.com",
+"password": "RQFtvmZ4!phtJB8q"
+}
+
+{
+"username": "kiran.igeektech@gmail.com",
+"password": "Password@123"
+}

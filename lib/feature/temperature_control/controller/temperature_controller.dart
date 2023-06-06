@@ -8,8 +8,8 @@ import 'package:scimetic/core/const/app_const.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
+import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/core/utils/store_data.dart';
-import 'package:scimetic/feature/temperature_control/model/switch_model.dart';
 import 'package:scimetic/feature/temperature_control/model/temperature_controller_model.dart';
 
 class TemperatureController extends GetxController {
@@ -68,7 +68,7 @@ class TemperatureController extends GetxController {
 
   TemperatureControllerModel temperatureControllerModel = TemperatureControllerModel();
 
-  SwitchModel switchModel = SwitchModel();
+  ApiService apiService = ApiService();
 
   Future getTemperatureControllerData() async {
 
@@ -77,6 +77,9 @@ class TemperatureController extends GetxController {
     id.value = storeData.getInt(StoreData.id)!;
 
     if ( token.isNotEmpty ) {
+
+      isGetData.value = false;
+
       try {
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
@@ -92,6 +95,14 @@ class TemperatureController extends GetxController {
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
+
+        await apiService.getSwitchData().whenComplete(() {
+          if ( apiService.switchList.isNotEmpty ) {
+            switchList.addAll(apiService.switchList);
+          }
+          AppConst().debug('switch list length => ${switchList.length}');
+          isGetData.value = true;
+        });
 
         if ( apiResponse!.statusCode == 200 ) {
 
@@ -109,70 +120,6 @@ class TemperatureController extends GetxController {
                 width: 200.w,
                 title: data["message"]
             );
-
-          return false;
-        }
-
-      } catch (e) {
-
-        AppConst().debug(e.toString());
-
-      }
-    }
-
-  }
-
-  Future getSwitchData() async {
-
-    isGetData.value = false;
-
-    token =  storeData.getString(StoreData.accessToken)!;
-
-    if ( token.isNotEmpty ) {
-      try {
-
-        APIRequestInfo apiRequestInfo = APIRequestInfo(
-            url: '${ApiPath.baseUrl}${ApiPath.switches}',
-            requestType: HTTPRequestType.GET,
-            headers: {
-              "Authorization" : 'Bearer $token',
-            }
-        );
-
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
-
-        AppConst().debug("Api response => ${apiResponse!.statusCode}");
-
-        dynamic data = jsonDecode(apiResponse!.body);
-
-        isGetData.value = true;
-
-        if ( apiResponse!.statusCode == 200 ) {
-
-          switchModel = SwitchModel.fromJson(data);
-
-          if ( switchModel.devices!.isNotEmpty ) {
-
-            switchList.clear();
-
-            for (var element in switchModel.devices!) {
-              switchList.add(element.serialNumber!);
-            }
-          }
-
-          AppConst().debug("switches list length => ${switchList.length}");
-
-
-          return true;
-        } else {
-
-          if ( apiResponse!.statusCode == 403 ) {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
-          }
 
           return false;
         }

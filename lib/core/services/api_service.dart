@@ -1,114 +1,82 @@
+import 'dart:convert';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
+import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
-import 'package:scimetic/feature/register_new_account/model/create_user_model.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:scimetic/feature/temperature_control/model/switch_model.dart';
 
 class ApiService {
 
   http.Response? apiResponse;
 
-  Future createUser(CreateUserModel userModel) async {
+  String token = "";
 
-    try {
+  StoreData storeData = StoreData();
 
-      APIRequestInfo apiRequestInfo = APIRequestInfo(
-              url: ApiPath.baseUrl + ApiPath.register,
-            requestType: HTTPRequestType.POST,
+  SwitchModel switchModel = SwitchModel();
+
+  List<String> switchList = [];
+
+  Future getSwitchData() async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.switches}',
+            requestType: HTTPRequestType.GET,
             headers: {
-             "Content-Type" : "application/json"
-            },
-            parameter: {
-                "firstName" : userModel.firstName,
-                "lastName" : userModel.lastName,
-                "email" : userModel.email,
-                "password" : userModel.password,
-                "connection" : "Username-Password-Authentication"
-            },
-          );
+              "Authorization" : 'Bearer $token',
+            }
+        );
 
-      apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
-      AppConst().debug("Api response => ${apiResponse!.body}");
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
-      if ( apiResponse!.statusCode == 200 ) {
-        return true;
-      } else {
-        return false;
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          switchModel = SwitchModel.fromJson(data);
+
+          if ( switchModel.devices!.isNotEmpty ) {
+
+            switchList.clear();
+
+            for (var element in switchModel.devices!) {
+              switchList.add(element.serialNumber!);
+            }
+          }
+
+          AppConst().debug("switches list length => ${switchList.length}");
+
+
+          return true;
+
+        } else {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
       }
-
-    } catch (e) {
-
-      AppConst().debug(e.toString());
-
     }
 
-  }
-
-  Future sendVerificationCode({required String email}) async {
-
-    try {
-
-      APIRequestInfo apiRequestInfo = APIRequestInfo(
-        url: ApiPath.baseUrl + ApiPath.verificationCode,
-        requestType: HTTPRequestType.POST,
-        headers: {
-          "Content-Type" : "application/json"
-        },
-        parameter: {
-          "email" : email,
-        },
-      );
-
-      apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
-
-      AppConst().debug("Api response => ${apiResponse!.body}");
-
-      if ( apiResponse!.statusCode == 200 ) {
-        return true;
-      } else {
-        return false;
-      }
-
-    } catch (e) {
-
-      AppConst().debug(e.toString());
-
-    }
-
-  }
-
-  Future verifyAccount({required String email, required int code}) async {
-
-    try {
-
-      APIRequestInfo apiRequestInfo = APIRequestInfo(
-        url: ApiPath.baseUrl + ApiPath.verifyAccount,
-        requestType: HTTPRequestType.POST,
-        headers: {
-          "Content-Type" : "application/json"
-        },
-        parameter: {
-          "email" : email,
-          "code" : code
-        },
-      );
-
-      apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
-
-      AppConst().debug("Api response => ${apiResponse!.body}");
-
-      if ( apiResponse!.statusCode == 200 ) {
-        return true;
-      } else {
-        return false;
-      }
-
-    } catch (e) {
-
-      AppConst().debug(e.toString());
-
-    }
   }
 
 }

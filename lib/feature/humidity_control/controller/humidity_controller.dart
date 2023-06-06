@@ -1,45 +1,112 @@
-import 'package:flutter/cupertino.dart';
+
+import 'dart:convert';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:scimetic/core/const/app_strings.dart';
+import 'package:http/http.dart' as http;
+import 'package:kd_api_call/kd_api_call.dart';
+import 'package:scimetic/core/const/app_const.dart';
+import 'package:scimetic/core/elements/custom_snack.dart';
+import 'package:scimetic/core/services/api_path.dart';
+import 'package:scimetic/core/services/api_service.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 
 class HumidityController extends GetxController {
 
-  RxBool isOn = false.obs;
+  RxString dayHumiditySwitch = "".obs;
+  RxString dayHumidityRelay = "".obs;
 
-  final TextEditingController dayHumidityTarget = TextEditingController();
-  final TextEditingController dayHumidityDeadband = TextEditingController();
+  RxString nightHumiditySwitch = "".obs;
+  RxString nightHumidityRelay = "".obs;
 
-  final TextEditingController nightHumidityTarget = TextEditingController();
-  final TextEditingController nightHumidityDeadband = TextEditingController();
+  RxString dayDehumidificationSwitch = "".obs;
+  RxString dayDehumidificationRelay = "".obs;
 
-  final TextEditingController dayDehumidificationTarget = TextEditingController();
-  final TextEditingController dayDehumidificationDeadband = TextEditingController();
+  RxString nightDehumidificationSwitch = "".obs;
+  RxString nightDehumidificationRelay = "".obs;
 
-  final TextEditingController nightDehumidificationTarget = TextEditingController();
-  final TextEditingController nightDehumidificationDeadband = TextEditingController();
+  List<String> switchList = [];
 
-  RxString dayHumidityValue = AppStrings.switchSelection.obs;
+  List<String> dayHumidityRelayList = [];
 
-  RxString nightHumidityValue = AppStrings.switchSelection.obs;
+  List<String> nightHumidityRelayList = [];
 
-  RxString dayDehumidificationValue = AppStrings.switchSelection.obs;
+  List<String> dayDehumidificationRelayList = [];
 
-  RxString nightDehumidificationValue = AppStrings.switchSelection.obs;
+  List<String> nightDehumidificationRelayList = [];
 
-  List<String> dayHumidityList = [
-    AppStrings.switchSelection
-  ];
+  String token = "";
 
-  List<String> nightHumidityList = [
-    AppStrings.switchSelection
-  ];
+  StoreData storeData = StoreData();
 
-  List<String> dayDehumidificationList = [
-    AppStrings.switchSelection
-  ];
+  http.Response? apiResponse;
 
-  List<String> nightDehumidificationList = [
-    AppStrings.switchSelection
-  ];
+  RxInt id = 0.obs;
+
+  RxBool isGetData = false.obs;
+
+  ApiService apiService = ApiService();
+
+  Future getHumidityControllerData() async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    id.value = storeData.getInt(StoreData.id)!;
+
+    if ( token.isNotEmpty ) {
+
+      isGetData.value = false;
+
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: '${ApiPath.baseUrl}${ApiPath.humidityControl}/${id.value}',
+            requestType: HTTPRequestType.GET,
+            headers: {
+              "Authorization" : 'Bearer $token',
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        await apiService.getSwitchData().whenComplete(() {
+          if ( apiService.switchList.isNotEmpty ) {
+            switchList.addAll(apiService.switchList);
+          }
+          AppConst().debug('switch list length => ${switchList.length}');
+          isGetData.value = true;
+        });
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
+          return true;
+
+        } else {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
 
 }

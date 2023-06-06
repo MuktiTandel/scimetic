@@ -18,6 +18,7 @@ import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
+import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -47,6 +48,8 @@ class HomeScreen extends StatelessWidget {
    final temperatureController = Get.put(TemperatureController());
 
    final circulationController = Get.put(CirculationControlController());
+
+   final humidityController = Get.put(HumidityController());
 
   @override
   Widget build(BuildContext context) {
@@ -574,9 +577,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(5);
-                temperatureController.getTemperatureControllerData().whenComplete(() async {
-                  await temperatureController.getSwitchData();
-                });
+                temperatureController.getTemperatureControllerData();
                 Get.back();
               },
             isSelect: controller.isTemperatureControl
@@ -654,7 +655,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -680,6 +681,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(6);
+                await humidityController.getHumidityControllerData();
                 Get.back();
               },
             isSelect: controller.isHumidityControl

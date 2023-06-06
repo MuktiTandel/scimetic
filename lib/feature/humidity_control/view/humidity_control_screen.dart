@@ -5,8 +5,6 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_imagetext_widget.dart';
-import 'package:scimetic/core/elements/common_status_widget.dart';
-import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
@@ -27,7 +25,6 @@ class HumidityControlScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              commonStatusWidget(isOn: controller.isOn),
               Container(
                 color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                 child: Column(
@@ -43,24 +40,6 @@ class HumidityControlScreen extends StatelessWidget {
                               color: AppColors.lightBlue
                           ),
                           SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.setTargetRelativeHumidity,
-                              controller: controller.dayHumidityTarget,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value) {},
-                            contentPadding: 20.w
-                          ),
-                          SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.deadband,
-                              controller: controller.dayHumidityDeadband,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value){},
-                              contentPadding: 20.w
-                          ),
-                          SizedBox(height: 10.h,),
                           CustomText(
                             text: AppStrings.switchSelection,
                             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
@@ -69,11 +48,28 @@ class HumidityControlScreen extends StatelessWidget {
                           SizedBox(height: 5.h,),
                           CustomDropDown(
                               hintText: AppStrings.chooseSwitch,
-                              itemList: controller.dayHumidityList,
-                              value: controller.dayHumidityValue.value,
+                              itemList: controller.switchList,
+                              value: controller.dayHumiditySwitch.value,
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
-                                controller.dayHumidityValue.value = value;
+                                controller.dayHumiditySwitch.value = value;
+                              }
+                          ),
+                          SizedBox(height: 10.h,),
+                          CustomText(
+                            text: AppStrings.relaySelection,
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            fontSize: 12.h,
+                          ),
+                          SizedBox(height: 5.h,),
+                          CustomDropDown(
+                              width: 310.w,
+                              hintText: AppStrings.chooseRelay,
+                              itemList: controller.dayHumidityRelayList,
+                              value: controller.dayHumidityRelay.value,
+                              isFilled: true,
+                              onChange: (value) {
+                                controller.dayHumidityRelay.value = value;
                               }
                           ),
                         ],
@@ -95,24 +91,6 @@ class HumidityControlScreen extends StatelessWidget {
                                 title: AppStrings.nightHumidityMode,
                                 color: AppColors.lightBlue
                             ),
-                            SizedBox(height: 8.h,),
-                            commonTexField(
-                                title: AppStrings.setTargetRelativeHumidity,
-                                controller: controller.nightHumidityTarget,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
-                            SizedBox(height: 10.h,),
-                            commonTexField(
-                                title: AppStrings.deadband,
-                                controller: controller.nightHumidityDeadband,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
                             SizedBox(height: 10.h,),
                             CustomText(
                               text: AppStrings.switchSelection,
@@ -123,12 +101,29 @@ class HumidityControlScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             CustomDropDown(
                               hintText: AppStrings.chooseSwitch,
-                              itemList: controller.nightHumidityList,
-                              value: controller.nightHumidityValue.value,
+                              itemList: controller.switchList,
+                              value: controller.nightHumiditySwitch.value,
                               onChange: (value) {
-                                controller.nightHumidityValue.value = value;
+                                controller.nightHumiditySwitch.value = value;
                               },
-                              isFilled: Get.isDarkMode ? true : false,
+                              isFilled: true,
+                            ),
+                            SizedBox(height: 10.h,),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(height: 5.h,),
+                            CustomDropDown(
+                                width: 310.w,
+                                hintText: AppStrings.chooseRelay,
+                                itemList: controller.nightHumidityRelayList,
+                                value: controller.nightHumidityRelay.value,
+                                isFilled: true,
+                                onChange: (value) {
+                                  controller.nightHumidityRelay.value = value;
+                                }
                             ),
                           ],
                         ),
@@ -153,24 +148,6 @@ class HumidityControlScreen extends StatelessWidget {
                               color: AppColors.lightGray1
                           ),
                           SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.setTargetRelativeHumidity,
-                              controller: controller.dayDehumidificationTarget,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value) {},
-                              contentPadding: 20.w
-                          ),
-                          SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.deadband,
-                              controller: controller.dayDehumidificationDeadband,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value){},
-                              contentPadding: 20.w
-                          ),
-                          SizedBox(height: 10.h,),
                           CustomText(
                             text: AppStrings.switchSelection,
                             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
@@ -179,11 +156,28 @@ class HumidityControlScreen extends StatelessWidget {
                           SizedBox(height: 5.h,),
                           CustomDropDown(
                               hintText: AppStrings.chooseSwitch,
-                              itemList: controller.dayDehumidificationList,
-                              value: controller.dayDehumidificationValue.value,
+                              itemList: controller.switchList,
+                              value: controller.dayDehumidificationSwitch.value,
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
-                                controller.dayDehumidificationValue.value = value;
+                                controller.dayDehumidificationSwitch.value = value;
+                              }
+                          ),
+                          SizedBox(height: 10.h,),
+                          CustomText(
+                            text: AppStrings.relaySelection,
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            fontSize: 12.h,
+                          ),
+                          SizedBox(height: 5.h,),
+                          CustomDropDown(
+                              width: 310.w,
+                              hintText: AppStrings.chooseRelay,
+                              itemList: controller.dayDehumidificationRelayList,
+                              value: controller.dayDehumidificationRelay.value,
+                              isFilled: true,
+                              onChange: (value) {
+                                controller.dayDehumidificationRelay.value = value;
                               }
                           ),
                         ],
@@ -205,24 +199,6 @@ class HumidityControlScreen extends StatelessWidget {
                                 title: AppStrings.nightHumidityMode,
                                 color: AppColors.lightGray1
                             ),
-                            SizedBox(height: 8.h,),
-                            commonTexField(
-                                title: AppStrings.setTargetRelativeHumidity,
-                                controller: controller.nightDehumidificationTarget,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
-                            SizedBox(height: 10.h,),
-                            commonTexField(
-                                title: AppStrings.deadband,
-                                controller: controller.nightDehumidificationDeadband,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
                             SizedBox(height: 10.h,),
                             CustomText(
                               text: AppStrings.switchSelection,
@@ -233,12 +209,29 @@ class HumidityControlScreen extends StatelessWidget {
                             SizedBox(height: 5.h,),
                             CustomDropDown(
                               hintText: AppStrings.chooseSwitch,
-                              itemList: controller.nightDehumidificationList,
-                              value: controller.nightDehumidificationValue.value,
+                              itemList: controller.switchList,
+                              value: controller.nightDehumidificationSwitch.value,
                               onChange: (value) {
-                                controller.nightDehumidificationValue.value = value;
+                                controller.nightDehumidificationSwitch.value = value;
                               },
-                              isFilled: Get.isDarkMode ? true : false,
+                              isFilled: true,
+                            ),
+                            SizedBox(height: 10.h,),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(height: 5.h,),
+                            CustomDropDown(
+                                width: 310.w,
+                                hintText: AppStrings.chooseRelay,
+                                itemList: controller.nightDehumidificationRelayList,
+                                value: controller.nightDehumidificationRelay.value,
+                                isFilled: true,
+                                onChange: (value) {
+                                  controller.nightDehumidificationRelay.value = value;
+                                }
                             ),
                           ],
                         ),
@@ -251,14 +244,6 @@ class HumidityControlScreen extends StatelessWidget {
                 padding: EdgeInsets.all(15.w),
                 child: CustomButton(
                   onTap: () {
-                    controller.nightDehumidificationDeadband.clear();
-                    controller.nightDehumidificationTarget.clear();
-                    controller.dayDehumidificationDeadband.clear();
-                    controller.dayDehumidificationTarget.clear();
-                    controller.nightHumidityDeadband.clear();
-                    controller.nightHumidityTarget.clear();
-                    controller.dayHumidityDeadband.clear();
-                    controller.dayHumidityTarget.clear();
                   },
                   buttonText: AppStrings.save,
                   fontSize: 16.sp,

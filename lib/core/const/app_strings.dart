@@ -368,6 +368,17 @@ class AppStrings {
   static const String circulationControl = "Circulation Control";
   static const String controlTab = "Control Tab";
   static const String screenControl = "Screen Control";
+  static const String blackOutScreenSetting = "Black out Screen setting";
+  static const String uVScreen = "UV Screen";
+  static const String blackOutScreenOpen = "Black out Screen Open";
+  static const String blackOutScreenClose = "Black out Screen Close";
+  static const String uVScreenOpen = "UV Screen Open";
+  static const String uVScreenClose = "UV Screen Close";
+  static const String verificationDesc = "Verification code sent on email";
+  static const String passwordNotMatch = "Invalid password. "
+      "Password does not match";
+  static const String invalidFullName = "Invalid fullname. At least 4 "
+      "characters required.";
   static const String locationErrorMessage = "Location has to be comma "
       "separated longitude and latitude values e.g: 7765.2123,1224.1189";
   static const String invalidPassword = "Invalid password. At least 8 "

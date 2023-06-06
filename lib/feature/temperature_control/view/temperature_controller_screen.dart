@@ -11,12 +11,15 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/feature/temperature_control/controller/temperature_controller.dart';
 
 class TemperatureControllerScreen extends StatelessWidget {
    TemperatureControllerScreen({Key? key}) : super(key: key);
 
    final controller = Get.put(TemperatureController());
+
+   ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {

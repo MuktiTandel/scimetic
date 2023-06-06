@@ -6,7 +6,11 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget commonEnableTitleWidget({required String title, required RxBool isSelect}) {
+Widget commonEnableTitleWidget({
+  required String title,
+  required RxBool isSelect,
+  Color? titleColor,
+}) {
   return Padding(
     padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h),
     child: Row(
@@ -14,7 +18,7 @@ Widget commonEnableTitleWidget({required String title, required RxBool isSelect}
         CustomText(
           text: title,
           fontSize: 15.sp,
-          color: AppColors.buttonColor,
+          color: titleColor ?? AppColors.buttonColor,
           fontWeight: FontWeight.w500,
         ),
         Expanded(child: SizedBox(width: 10.w,)),

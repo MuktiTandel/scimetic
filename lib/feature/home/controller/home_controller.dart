@@ -58,6 +58,8 @@ class HomeController extends GetxController {
   RxBool isCirculationControl = false.obs;
   RxBool isControlTab = false.obs;
 
+  RxBool isLogOut = false.obs;
+
   RxInt moduleIndex = 0.obs;
 
   void toggle() => isSetting.value = isSetting.value ? false : true;

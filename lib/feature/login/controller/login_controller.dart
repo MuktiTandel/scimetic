@@ -34,6 +34,8 @@ class LoginController extends GetxController {
 
   StoreData storeData = StoreData();
 
+  RxBool isCall = false.obs;
+
   Future loginUser(LoginModel loginModel) async {
 
     try {
@@ -67,6 +69,7 @@ class LoginController extends GetxController {
         storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
 
         return true;
+
       } else {
 
           showSnack(
@@ -129,13 +132,14 @@ class LoginController extends GetxController {
             password: passwordController.text
         );
 
-        bool isCall = await loginUser(loginModel).whenComplete(() {
+        isCall.value = await loginUser(loginModel).whenComplete(() {
           progressDialog(false, Get.context!);
         });
 
-        if (isCall) {
+        if (isCall.value == true ) {
           Get.offAllNamed(AppPages.HOME);
         }
+
       } else {
 
         showSnack(

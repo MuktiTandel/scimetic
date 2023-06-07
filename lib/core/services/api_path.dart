@@ -1,7 +1,7 @@
 class ApiPath {
 
-   // static const baseUrl = "https://api-staging.scimetic.net";
-  static const baseUrl = "https://71af-2401-4900-1c80-ad3c-74df-ea4-39b8-3559.ngrok-free.app";
+  static const baseUrl = "https://api-staging.scimetic.net";
+  // static const baseUrl = "https://71af-2401-4900-1c80-ad3c-74df-ea4-39b8-3559.ngrok-free.app";
 
   static const login = "/auth/login";
   static const register = "/auth/register";
@@ -22,5 +22,7 @@ class ApiPath {
   static const circulationFanControl = "/ctrl/circulation_fan_control";
   static const switches = "/device_type/switch";
   static const humidityControl = "/ctrl/humidity_control";
+  static const co2Control = "/ctrl/co2_control";
+  static const lightingControl = "/ctrl/lighting_control";
 
 }

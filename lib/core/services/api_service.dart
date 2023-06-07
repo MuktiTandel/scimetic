@@ -57,6 +57,10 @@ class ApiService {
 
           AppConst().debug("switches list length => ${switchList.length}");
 
+          showSnack(
+              width: 200.w,
+              title: switchModel.message ?? ""
+          );
 
           return true;
 

@@ -56,7 +56,7 @@ class AppStrings {
   static const String temperatureControl = "Temperature Control";
   static const String humidityControl = "Humidity Control";
   static const String co2Control = "Co2 Control";
-  static const String lightingControl = "Lighting Control";
+  static const String lightingControl = "Lightning Control";
   static const String energyManagement = "Energy Management";
   static const String irrigation = "Irrigation";
   static const String fertigation = "Fertigation";
@@ -375,6 +375,9 @@ class AppStrings {
   static const String uVScreenOpen = "UV Screen Open";
   static const String uVScreenClose = "UV Screen Close";
   static const String verificationDesc = "Verification code sent on email";
+  static const String logOut = "Log out";
+  static const String daySpectrum = "Day Spectrum";
+  static const String nightSpectrum = "Night Spectrum";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

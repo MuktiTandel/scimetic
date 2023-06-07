@@ -13,12 +13,14 @@ import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/circulation_control/controller/circulation_control_controller.dart';
+import 'package:scimetic/feature/co2_control/controller/co2_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
+import 'package:scimetic/feature/lightning_control/controller/lightning_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -50,6 +52,10 @@ class HomeScreen extends StatelessWidget {
    final circulationController = Get.put(CirculationControlController());
 
    final humidityController = Get.put(HumidityController());
+
+   final co2Controller = Get.put(Co2Controller());
+
+   final lightningController = Get.put(LightningController());
 
   @override
   Widget build(BuildContext context) {
@@ -212,42 +218,6 @@ class HomeScreen extends StatelessWidget {
                                     isRightWidget: false
                                 ),),
                                 SizedBox(height: 5.h,),
-                                // Obx(() => drawerWidget(
-                                //     onTap: (){
-                                //       if ( controller.isChat.value == false ) {
-                                //         controller.isDashboard.value = false;
-                                //         controller.isGrowSheet.value = false;
-                                //         controller.isChat.value = true;
-                                //         controller.isReport.value = false;
-                                //         controller.isTodo.value = false;
-                                //         controller.isCalender.value = false;
-                                //         controller.isSetting.value = false;
-                                //         controller.isDeviceSetup.value = false;
-                                //         controller.isTemperatureControl.value = false;
-                                //         controller.isHumidityControl.value = false;
-                                //         controller.isCo2Control.value = false;
-                                //         controller.isLightingControl.value = false;
-                                //         controller.isEnergyManagement.value = false;
-                                //         controller.isIrrigation.value = false;
-                                //         controller.isFertigation.value = false;
-                                //         controller.isAccessSetting.value = false;
-                                //         controller.isOrganisationSettings.value = false;
-                                //         controller.isUserSetting.value = false;
-                                //         controller.isNotifications.value = false;
-                                //       }
-                                //       dashboardController.isOverView.value = false;
-                                //       controller.isCalender.value = false;
-                                //       controller.changeModuleIndex(2);
-                                //       Get.back();
-                                //     },
-                                //     image: AppImages.chat,
-                                //     title: AppStrings.chat,
-                                //     isSelect: controller.isChat.value,
-                                //     isRightWidget: true,
-                                //     rightImage: AppImages.redRectangle,
-                                //     rightText: "8"
-                                // ),),
-                                SizedBox(height: 5.h,),
                                 Obx(() => drawerWidget(
                                     onTap: (){
                                       if ( dashboardController.isOverView.value == true ) {
@@ -295,7 +265,7 @@ class HomeScreen extends StatelessWidget {
                                     image: AppImages.toDo,
                                     title: AppStrings.toDo,
                                     isSelect: controller.isTodo.value,
-                                    isRightWidget: true,
+                                    isRightWidget: false,
                                     rightImage: AppImages.orangeRectangle,
                                     rightText: "12",
                                     height: 20.h,
@@ -325,7 +295,7 @@ class HomeScreen extends StatelessWidget {
                                     image: AppImages.calender,
                                     title: AppStrings.calendar,
                                     isSelect: controller.isCalender.value,
-                                    isRightWidget: true,
+                                    isRightWidget: false,
                                     rightImage: AppImages.greenRectangle,
                                     rightText: "3"
                                 ),),
@@ -427,6 +397,15 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ),
+                            drawerWidget(
+                                onTap: (){
+                                  Get.offAllNamed(AppPages.LOGIN);
+                                },
+                                image: AppImages.logout,
+                                title: AppStrings.logOut,
+                                isSelect: controller.isLogOut.value,
+                                isRightWidget: false
                             ),
                             SizedBox(height: 40.h,)
                           ],
@@ -681,8 +660,8 @@ class HomeScreen extends StatelessWidget {
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(6);
-                await humidityController.getHumidityControllerData();
                 Get.back();
+                await humidityController.getHumidityControllerData();
               },
             isSelect: controller.isHumidityControl
           ),
@@ -717,6 +696,7 @@ class HomeScreen extends StatelessWidget {
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(7);
                 Get.back();
+                co2Controller.getCo2ControllerData();
               },
             isSelect: controller.isCo2Control
           ),
@@ -724,7 +704,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.sun1,
               title: AppStrings.lightingControl,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -751,6 +731,7 @@ class HomeScreen extends StatelessWidget {
                 dashboardController.isOverViewTitle.value = false;
                 controller.changeModuleIndex(8);
                 Get.back();
+                await lightningController.getLightningData();
               },
             isSelect: controller.isLightingControl
           ),

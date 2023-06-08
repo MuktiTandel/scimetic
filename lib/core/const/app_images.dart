@@ -118,5 +118,8 @@ class AppImages {
   static const String circulation = 'assets/images/circulation.png';
   static const String controlTab = 'assets/images/control_tab.png';
   static const String logout = 'assets/images/logout.png';
+  static const String unSelectedBox = 'assets/images/unSelectedBox.png';
+  static const String selectedBox = 'assets/images/selectedBox.png';
+  static const String applied = 'assets/images/applied.png';
 
 }

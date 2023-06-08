@@ -52,6 +52,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             SizedBox(height: 15.h,),
+            Padding(
+              padding:  EdgeInsets.all(15.w),
+              child: SizedBox(
+                height: 40.h,
+                child: CustomTextField(
+                  controller: controller.searchController,
+                  isFilled: true,
+                  borderRadius: 8,
+                  hintText: AppStrings.search,
+                  focusBorderColor: AppColors.buttonColor,
+                  contentPadding: EdgeInsets.only(left: 10.w),
+                  suffixWidget: Padding(
+                    padding:  EdgeInsets.all(13.w),
+                    child: Image.asset(
+                      AppImages.search,
+                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    ),
+                  ),
+                  onchange: (value) {
+                    if (value.isNotEmpty) {
+                      controller.dataList.value = controller.dataList
+                          .where((element) => element.name!.contains(value))
+                          .toList();
+                    } else {
+                      controller.dataList.clear();
+                      controller.dataList.addAll(controller.mainList);
+                    }
+                  },
+                ),
+              ),
+            ),
             Obx(() =>  controller.isGetData.value == false ? const Center(
              child: CircularProgressIndicator(
                color: AppColors.buttonColor,
@@ -76,6 +107,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                        overViewController.isMonth.value = false;
                        overViewController.id.value = data.id!;
                        overViewController.isGetData.value = false;
+                       overViewController.isGraphScreen.value = true;
                        controller.selectItem.value = data.identifier ?? "";
                        if ( controller.dataList.isNotEmpty ) {
                          controller.itemList.clear();
@@ -205,63 +237,73 @@ class _DashboardScreenState extends State<DashboardScreen> {
      String co2Value = co2 != 0 ? co2.toString() : "-";
      String vpdValue = vpd != 0.0 ? vpd.toString() : "-";
 
-    return GestureDetector(
-      onTap: (){
-        onTap();
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(15.w),
-            color: context.theme.cardColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(15.w),
+          color: context.theme.cardColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
                       title,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyleDecoration.headline5,
                     ),
-                    editDeletePopup(editTap: editTap)
-                  ],
-                ),
-                SizedBox(height: 5.h,),
-                Text(
-                  desc,
-                  style: TextStyleDecoration.body1,
-                ),
-                SizedBox(height: 10.h,),
-                Row(
+                  ),
+                  SizedBox(width: 10.w,),
+                  editDeletePopup(editTap: editTap)
+                ],
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  onTap();
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(height: 5.h,),
+                    Text(
+                      desc,
+                      style: TextStyleDecoration.body1,
+                    ),
+                    SizedBox(height: 10.h,),
+                    Row(
                       children: [
-                        featureWidget(title: AppStrings.temperature, value: "$temperatureValue° С"),
-                        SizedBox(height: 15.h,),
-                        featureWidget(title: AppStrings.cO2, value: "$co2Value ppm"),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            featureWidget(title: AppStrings.temperature, value: "$temperatureValue° С"),
+                            SizedBox(height: 15.h,),
+                            featureWidget(title: AppStrings.cO2, value: "$co2Value ppm"),
+                          ],
+                        ),
+                        Expanded(child: SizedBox(width: 10.w,)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            featureWidget(title: AppStrings.humidity, value: "$humidityValue %"),
+                            SizedBox(height: 15.h,),
+                            featureWidget(title: AppStrings.vpd, value: "$vpdValue kPa"),
+                          ],
+                        ),
+                        Expanded(child: SizedBox(width: 10.w,)),
                       ],
                     ),
-                    Expanded(child: SizedBox(width: 10.w,)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        featureWidget(title: AppStrings.humidity, value: "$humidityValue %"),
-                        SizedBox(height: 15.h,),
-                        featureWidget(title: AppStrings.vpd, value: "$vpdValue kPa"),
-                      ],
-                    ),
-                    Expanded(child: SizedBox(width: 10.w,)),
                   ],
                 ),
-              ],
-            ),
+              )
+            ],
           ),
-          SizedBox(height: 15.h,)
-        ],
-      ),
+        ),
+        SizedBox(height: 15.h,)
+      ],
     );
   }
 

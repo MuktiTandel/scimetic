@@ -53,6 +53,10 @@ class GrowSheetController extends GetxController {
 
   RxBool isValid = true.obs;
 
+  RxBool isCheckAll = false.obs;
+
+  RxBool isSelect = false.obs;
+
   RxString errorMessage = "".obs;
 
   RxBool isEdit = false.obs;
@@ -93,17 +97,31 @@ class GrowSheetController extends GetxController {
 
   OptionModel optionModel = OptionModel();
 
-  List<Growsheet> growSheetDataList = [];
+  RxList growSheetDataList = [].obs;
+
+  List<Growsheet> mainList = [];
 
   List<int> growsheetIds = [];
 
   RxBool isGetData = false.obs;
+
+  List<RxBool> appliedList = [];
+
+  List<RxBool> selectList = [];
+
+  RxBool isApply = false.obs;
 
   Future getGrowSheetData({required int id}) async {
 
     isGetData.value = false;
 
     growSheetDataList.clear();
+
+    mainList.clear();
+
+    appliedList.clear();
+
+    selectList.clear();
 
     token =  storeData.getString(StoreData.accessToken)!;
 
@@ -131,10 +149,18 @@ class GrowSheetController extends GetxController {
           growSheetData = GrowSheetData.fromJson(data);
 
           if ( growSheetData.growsheets!.isNotEmpty ) {
+            mainList.addAll(growSheetData.growsheets!);
             growSheetDataList.addAll(growSheetData.growsheets!);
+            appliedList = List.generate(growSheetDataList.length, (index) => false.obs);
+            selectList = List.generate(growSheetDataList.length, (index) => false.obs);
           }
 
           AppConst().debug('grow sheet data => ${growSheetData.growsheets}');
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
 
           return true;
 

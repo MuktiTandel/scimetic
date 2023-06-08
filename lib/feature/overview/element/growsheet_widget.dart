@@ -19,7 +19,8 @@ Widget growSheetWidget( {
   required DateRangePickerController plantedDate,
   required DateRangePickerController harvestDate,
   required RxString plantedDateValue,
-  required RxString harvestDateValue
+  required RxString harvestDateValue,
+  required TextEditingController controller
 } ) {
   return Obx(() => Container(
     width: Get.width,
@@ -97,7 +98,7 @@ Widget growSheetWidget( {
                             padding: EdgeInsets.zero,
                             color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                             constraints: BoxConstraints(
-                                maxWidth: 126.w,
+                                maxWidth: 135.w,
                                 maxHeight: 138.h
                             ),
                             shape: RoundedRectangleBorder(
@@ -330,12 +331,36 @@ Widget growSheetWidget( {
                             fontWeight: FontWeight.w500,
                           ),
                           Expanded(child: SizedBox(width: 10.w,)),
-                          CustomText(
-                            text: "1234567891012",
-                            fontSize: 15.sp,
-                            color: Get.isDarkMode
-                                ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w500,
+                          Expanded(
+                            child: SizedBox(
+                              height: 30.h,
+                              child: TextFormField(
+                                controller: controller,
+                                cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 15.sp,
+                                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.buttonColor
+                                    ),
+                                  ),
+                                  hintText: AppStrings.barcode,
+                                  contentPadding: EdgeInsets.only(right: 10.w),
+                                    hintStyle:  TextStyle(
+                                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText.withOpacity(0.5),
+                                      fontSize:  14.sp,
+                                      fontFamily: "Poppins",
+                                    )
+                                ),
+                              ),
+                            ),
                           )
                         ],
                       ),

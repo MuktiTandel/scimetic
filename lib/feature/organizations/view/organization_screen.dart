@@ -35,7 +35,7 @@ class OrganizationScreen extends StatelessWidget {
               height: 40.h,
               child: CustomTextField(
                 controller: controller.searchController,
-                isFilled: false,
+                isFilled: true,
                 borderRadius: 8,
                 hintText: AppStrings.search,
                 focusBorderColor: AppColors.buttonColor,
@@ -47,7 +47,16 @@ class OrganizationScreen extends StatelessWidget {
                     color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
-                onchange: (value) {},
+                onchange: (value) {
+                  if (value.isNotEmpty) {
+                    controller.dataList.value = controller.dataList
+                        .where((element) => element.name!.contains(value))
+                        .toList();
+                  } else {
+                    controller.dataList.clear();
+                    controller.dataList.addAll(controller.mainList);
+                  }
+                },
               ),
             ),
           ),
@@ -71,6 +80,7 @@ class OrganizationScreen extends StatelessWidget {
                           return listWidget(
                               onTap: () async {
                                 controller.isSelect.value = true;
+                                dashBoardController.companyName.value = data.name ?? "";
                                 await dashBoardController.getDataList();
                               },
                               name: data.name ?? "",
@@ -380,239 +390,248 @@ class OrganizationScreen extends StatelessWidget {
   }) {
     return  Column(
       children: [
-        GestureDetector(
-          onTap: (){
-            onTap();
-          },
-          child: Container(
-            color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.h,
-                      horizontal: 15.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            AppImages.organization,
-                            height: 18.h,
-                            width: 18.w,
-                          ),
-                          SizedBox(width: 10.w,),
-                          CustomText(
-                            text: name,
-                            fontSize: 14.sp,
-                            color: AppColors.buttonColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          Expanded(child: SizedBox(width: 10.w,)),
-                          PopupMenuButton<int>(
-                            offset: Offset(0, 18.h),
-                            padding: EdgeInsets.zero,
-                            color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                            constraints: BoxConstraints(
-                                maxWidth: 230.w,
-                                maxHeight: 147.h
-                            ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Image.asset(
-                              AppImages.menu,
-                              height: 14.h,
-                              width: 8.w,
-                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                            ),
-                            onSelected: (item) {},
-                            itemBuilder: (context) => [
-                              PopupMenuItem<int>(
-                                  padding: EdgeInsets.zero,
-                                  value: 0,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.manageGrowspaces,
-                                              height: 25.h,
-                                              width: 25.w,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                            ),
-                                            SizedBox(width: 10.w,),
-                                            CustomText(
-                                              text: AppStrings.manageGrowspaces,
-                                              fontSize: 15.sp,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                              fontWeight: FontWeight.w500,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkBlue1
-                                            : AppColors.lightGray2,
-                                        thickness: 1.w,
-                                      )
-                                    ],
-                                  )
-                              ),
-                              PopupMenuItem<int>(
-                                  padding: EdgeInsets.zero,
-                                  value: 0,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.manageUser,
-                                              height: 25.h,
-                                              width: 25.w,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                            ),
-                                            SizedBox(width: 10.w,),
-                                            CustomText(
-                                              text: AppStrings.manageUsers,
-                                              fontSize: 15.sp,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                              fontWeight: FontWeight.w500,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkBlue1
-                                            : AppColors.lightGray2,
-                                        thickness: 1.w,
-                                      )
-                                    ],
-                                  )
-                              ),
-                              PopupMenuItem<int>(
-                                  padding: EdgeInsets.zero,
-                                  value: 0,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AppImages.suspend,
-                                              height: 25.h,
-                                              width: 25.w,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                            ),
-                                            SizedBox(width: 10.w,),
-                                            CustomText(
-                                              text: AppStrings.suspend,
-                                              fontSize: 15.sp,
-                                              color: Get.isDarkMode
-                                                  ? AppColors.darkText : AppColors.darkGray,
-                                              fontWeight: FontWeight.w500,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkBlue1
-                                            : AppColors.lightGray2,
-                                        thickness: 1.w,
-                                      )
-                                    ],
-                                  )
-                              ),
-                              PopupMenuItem<int>(
-                                  value: 1,
-                                  padding: EdgeInsets.zero,
-                                  onTap: (){
-                                    onDelete();
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 9.h),
+        Container(
+          color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      AppImages.organization,
+                      height: 18.h,
+                      width: 18.w,
+                    ),
+                    SizedBox(width: 10.w,),
+                    CustomText(
+                      text: name,
+                      fontSize: 14.sp,
+                      color: AppColors.buttonColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    Expanded(child: SizedBox(width: 10.w,)),
+                    ScrollConfiguration(
+                      behavior: AppBehavior(),
+                      child: PopupMenuButton<int>(
+                        offset: Offset(0, 18.h),
+                        padding: EdgeInsets.zero,
+                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        constraints: BoxConstraints(
+                            maxWidth: 240.w,
+                            maxHeight: 150.h
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Image.asset(
+                          AppImages.menu,
+                          height: 14.h,
+                          width: 8.w,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        onSelected: (item) {},
+                        itemBuilder: (context) => [
+                          PopupMenuItem<int>(
+                              padding: EdgeInsets.zero,
+                              value: 0,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                                     child: Row(
                                       children: [
                                         Image.asset(
-                                          AppImages.trash,
+                                          AppImages.manageGrowspaces,
                                           height: 25.h,
                                           width: 25.w,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
                                         ),
                                         SizedBox(width: 10.w,),
                                         CustomText(
-                                          text: AppStrings.delete,
+                                          text: AppStrings.manageGrowspaces,
                                           fontSize: 15.sp,
-                                          color: AppColors.red,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
                                           fontWeight: FontWeight.w500,
                                         )
                                       ],
                                     ),
+                                  ),
+                                  Divider(
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkBlue1
+                                        : AppColors.lightGray2,
+                                    thickness: 1.w,
                                   )
-                              ),
-                            ],
+                                ],
+                              )
+                          ),
+                          PopupMenuItem<int>(
+                              padding: EdgeInsets.zero,
+                              value: 0,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          AppImages.manageUser,
+                                          height: 25.h,
+                                          width: 25.w,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
+                                        ),
+                                        SizedBox(width: 10.w,),
+                                        CustomText(
+                                          text: AppStrings.manageUsers,
+                                          fontSize: 15.sp,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
+                                          fontWeight: FontWeight.w500,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkBlue1
+                                        : AppColors.lightGray2,
+                                    thickness: 1.w,
+                                  )
+                                ],
+                              )
+                          ),
+                          PopupMenuItem<int>(
+                              padding: EdgeInsets.zero,
+                              value: 0,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          AppImages.suspend,
+                                          height: 25.h,
+                                          width: 25.w,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
+                                        ),
+                                        SizedBox(width: 10.w,),
+                                        CustomText(
+                                          text: AppStrings.suspend,
+                                          fontSize: 15.sp,
+                                          color: Get.isDarkMode
+                                              ? AppColors.darkText : AppColors.darkGray,
+                                          fontWeight: FontWeight.w500,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkBlue1
+                                        : AppColors.lightGray2,
+                                    thickness: 1.w,
+                                  )
+                                ],
+                              )
+                          ),
+                          PopupMenuItem<int>(
+                              value: 1,
+                              padding: EdgeInsets.zero,
+                              onTap: (){
+                                onDelete();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 9.h),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      AppImages.trash,
+                                      height: 25.h,
+                                      width: 25.w,
+                                    ),
+                                    SizedBox(width: 10.w,),
+                                    CustomText(
+                                      text: AppStrings.delete,
+                                      fontSize: 15.sp,
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              )
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  onTap();
+                },
+                child: Column(
+                  children: [
+                   Padding(
+                       padding: EdgeInsets.only(left: 15.w,right: 15.w,bottom: 10.h),
+                     child: Column(
+                       children: [
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             commonWidget(title: AppStrings.growspaces, count: "$totalGrowSpaces"),
+                             commonWidget(title: AppStrings.controllers, count: "$totalControllers"),
+                             commonWidget(title: AppStrings.sensors, count: "$totalSensors"),
+                           ],
+                         ),
+                         SizedBox(height: 15.w,),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             commonWidget(title: AppStrings.admins, count: "$totalAdmins"),
+                             commonWidget(title: AppStrings.technicians, count: "$totalTechnicians"),
+                             SizedBox(width: 10.w,)
+                           ],
+                         ),
+                       ],
+                     ),
+                   ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Column(
+                        children: [
+                          commonDetailWidget(
+                              title: AppStrings.growspaces,
+                              online: "$growSpaceOnline",
+                              offline: "$growSpaceOffline"
+                          ),
+                          SizedBox(height: 10.h,),
+                          commonDetailWidget(
+                              title: AppStrings.controllers,
+                              online: "$controllersOnline",
+                              offline: "$controllersOffline"
+                          ),
+                          SizedBox(height: 10.h,),
+                          commonDetailWidget(
+                              title: AppStrings.sensor,
+                              online: "$sensorOnline",
+                              offline: "$sensorOffline"
                           )
                         ],
                       ),
-                      SizedBox(height: 10.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          commonWidget(title: AppStrings.growspaces, count: "$totalGrowSpaces"),
-                          commonWidget(title: AppStrings.controllers, count: "$totalControllers"),
-                          commonWidget(title: AppStrings.sensors, count: "$totalSensors"),
-                        ],
-                      ),
-                      SizedBox(height: 15.w,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          commonWidget(title: AppStrings.admins, count: "$totalAdmins"),
-                          commonWidget(title: AppStrings.technicians, count: "$totalTechnicians"),
-                          SizedBox(width: 10.w,)
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10.h,)
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Column(
-                    children: [
-                      commonDetailWidget(
-                          title: AppStrings.growspaces,
-                          online: "$growSpaceOnline",
-                          offline: "$growSpaceOffline"
-                      ),
-                      SizedBox(height: 10.h,),
-                      commonDetailWidget(
-                          title: AppStrings.controllers,
-                          online: "$controllersOnline",
-                          offline: "$controllersOffline"
-                      ),
-                      SizedBox(height: 10.h,),
-                      commonDetailWidget(
-                          title: AppStrings.sensor,
-                          online: "$sensorOnline",
-                          offline: "$sensorOffline"
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h,)
-              ],
-            ),
+              )
+            ],
           ),
         ),
         SizedBox(height: 10.h,)

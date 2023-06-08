@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,11 +17,24 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  String email = "";
+
+  StoreData storeData = StoreData();
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), (){
-      Get.offNamed(AppPages.REGISTERNEWACCOUNT);
+
+    email = storeData.getString(StoreData.email) ?? "";
+
+    Future.delayed(const Duration(seconds: 3), () {
+
+      if ( email.isEmpty ) {
+        Get.offNamed(AppPages.REGISTERNEWACCOUNT);
+      } else {
+        Get.offAllNamed(AppPages.HOME);
+      }
+
     });
   }
 

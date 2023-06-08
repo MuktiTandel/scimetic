@@ -95,7 +95,7 @@ class HomeController extends GetxController {
       if (organizationController.isSelect.value == false) {
         return AppStrings.organizations;
       } else if (organizationController.isSelect.value == true) {
-        return AppStrings.dashboard;
+        return dashBoardController.companyName.value;
       }
     } else {
       if ( moduleIndex.value == 0 ) {

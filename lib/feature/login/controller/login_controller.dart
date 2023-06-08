@@ -68,6 +68,11 @@ class LoginController extends GetxController {
 
         storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
 
+        showSnack(
+            width: 200.w,
+            title: data["message"]
+        );
+
         return true;
 
       } else {
@@ -123,6 +128,7 @@ class LoginController extends GetxController {
       bool isConnected = await checkNetConnectivity();
 
       if (isConnected == true) {
+
         progressDialog(true, Get.context!);
 
         isValid.value = true;
@@ -138,6 +144,7 @@ class LoginController extends GetxController {
 
         if (isCall.value == true ) {
           Get.offAllNamed(AppPages.HOME);
+          storeData.setData(StoreData.email, emailController.text);
         }
 
       } else {

@@ -43,6 +43,7 @@ class AppStrings {
   static const String cO2 = "CO2";
   static const String vpd = "VPD";
   static const String add = "Add";
+  static const String addNewOrganization = "Add New Organization";
   static const String dashboard = "Dashboard";
   static const String growSheets = "Growsheets";
   static const String chat = "Chat";
@@ -378,6 +379,7 @@ class AppStrings {
   static const String logOut = "Log out";
   static const String daySpectrum = "Day Spectrum";
   static const String nightSpectrum = "Night Spectrum";
+  static const String checkAll = "Check All";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

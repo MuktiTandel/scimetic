@@ -32,6 +32,10 @@ class DashboardController extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  RxString companyName = AppStrings.dashboard.obs;
+
+  final TextEditingController searchController = TextEditingController();
+
   final TextEditingController growspaceNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController serialNumberController = TextEditingController();
@@ -50,7 +54,9 @@ class DashboardController extends GetxController {
 
   StoreData storeData = StoreData();
 
-  List<GrowController> dataList = [];
+  RxList dataList = [].obs;
+
+  List<GrowController> mainList = [];
 
   RxBool isGetData = false.obs;
 
@@ -81,6 +87,8 @@ class DashboardController extends GetxController {
 
     dataList.clear();
 
+    mainList.clear();
+
     token =  storeData.getString(StoreData.accessToken)!;
 
     if ( token.isNotEmpty ) {
@@ -108,7 +116,13 @@ class DashboardController extends GetxController {
 
           if ( growModel.growControllers!.isNotEmpty ) {
             dataList.addAll(growModel.growControllers!);
+            mainList.addAll(growModel.growControllers!);
           }
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
 
           return true;
 
@@ -161,6 +175,11 @@ class DashboardController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
 
           return true;
 
@@ -219,6 +238,12 @@ class DashboardController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
         } else {
 

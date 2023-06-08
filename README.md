@@ -16,20 +16,20 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 - create user api data
-- {
-  "firstName" : "Test",
-  "lastName" : "Hello",
-  "email" : "mukti.igeek@gmail.com",
-  "password" : "Test@123",
-  "connection" : "Username-Password-Authentication"
-  }
+  - {
+    "firstName" : "Test",
+    "lastName" : "Hello",
+    "email" : "mukti.igeek@gmail.com",
+    "password" : "Test@123",
+    "connection" : "Username-Password-Authentication"
+    }
 
 {
-"username": "sendrossemail+test@gmail.com",
-"password": "RQFtvmZ4!phtJB8q"
+  "username": "sendrossemail+test@gmail.com",
+  "password": "RQFtvmZ4!phtJB8q"
 }
 
 {
-"username": "kiran.igeektech@gmail.com",
-"password": "Password@123"
+  "username": "kiran.igeektech@gmail.com",
+  "password": "Password@123"
 }

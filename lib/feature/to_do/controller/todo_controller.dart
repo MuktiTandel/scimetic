@@ -78,7 +78,7 @@ class TodoController extends GetxController {
 
     growSpaceList.clear();
 
-    growSpaceList.addAll(dashBoardController.dataList);
+    growSpaceList.addAll(dashBoardController.mainList);
 
     if ( growSpaceList.isNotEmpty ) {
       growSpaceId.value = growSpaceList.first.id!;

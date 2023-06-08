@@ -35,7 +35,9 @@ class OrganizationController extends GetxController {
 
   CompanyResponseModel companyResponseModel = CompanyResponseModel();
 
-  List<Company> dataList = [];
+  RxList dataList = [].obs;
+
+  List<Company> mainList = [];
 
   RxBool isGetData = false.obs;
 
@@ -54,6 +56,8 @@ class OrganizationController extends GetxController {
       isGetData.value = false;
 
       dataList.clear();
+
+      mainList.clear();
 
       token = storeData.getString(StoreData.accessToken)!;
 
@@ -81,18 +85,23 @@ class OrganizationController extends GetxController {
             AppConst().debug('companies => ${companyResponseModel.companies!.length}');
 
             if (companyResponseModel.companies!.isNotEmpty) {
+              mainList.addAll(companyResponseModel.companies!);
               dataList.addAll(companyResponseModel.companies!);
               isGetData.value = true;
             }
 
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
             return true;
           } else {
-            if (apiResponse!.statusCode == 403) {
+
               showSnack(
                   width: 200.w,
                   title: data["message"]
               );
-            }
 
             return false;
           }

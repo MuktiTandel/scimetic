@@ -128,7 +128,7 @@ class TextStyleDecoration {
   static TextStyle get headline6 => TextStyle(
     fontFamily: fontFamily,
     color: Get.isDarkMode ? Colors.white : Colors.black,
-    fontSize: 18.sp,
+    fontSize: 16.sp,
     fontWeight: FontWeight.bold,
   );
 

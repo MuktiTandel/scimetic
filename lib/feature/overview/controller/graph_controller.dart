@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
@@ -29,6 +30,8 @@ class GraphController extends GetxController {
   RxString selectStage = AppStrings.germination.obs;
 
   final controller = Get.put(OverviewController());
+
+  final TextEditingController barcodeController = TextEditingController();
 
   List<HourGraph1> temperatureHourData = [
     HourGraph1(0, 24, 26),

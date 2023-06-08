@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_graph_widget.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
@@ -37,6 +40,32 @@ class _OverviewScreenState extends State<OverviewScreen> {
      super.initState();
      homeController.isDashboard.value = false;
      controller.isOverview.value = true;
+     // Timer.periodic(const Duration(minutes: 4), (timer) {
+     //   if ( controller.isGraphScreen.value = true ) {
+     //     if ( controller.isHour.value == true ) {
+     //       controller.getHourData(
+     //           id: controller.id.value,
+     //           identifier: dashboardController.selectItem.value
+     //       );
+     //     } else if ( controller.isWeek.value == true ) {
+     //       controller.getWeekData(
+     //           id: controller.id.value,
+     //           identifier: dashboardController.selectItem.value
+     //       );
+     //     } else if ( controller.isMonth.value == true ) {
+     //       controller.getMonthData(
+     //           id: controller.id.value,
+     //           identifier: dashboardController.selectItem.value,
+     //       );
+     //     }
+     //   }
+     // });
+  }
+
+   @override
+  void dispose() {
+     controller.isGraphScreen.value = false;
+    super.dispose();
   }
 
   @override
@@ -55,6 +84,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
                   value: dashboardController.selectItem.value,
                   onChange: (value) {
                     dashboardController.selectItem.value = value;
+                    for (var element in dashboardController.mainList) {
+                      if ( element.identifier!.contains(value)) {
+                        controller.storeData.setData(StoreData.id, element.id!);
+                        AppConst().debug('select id => ${element.id}');
+                      }
+                    }
+                    controller.storeData.setData(StoreData.identifier, value);
                     AppConst().debug('select value => ${dashboardController.selectItem.value}');
                     for (var element in dashboardController.dataList) {
                       if ( element.identifier!.contains(value)) {
@@ -670,7 +706,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
                     harvestDate: controller.harvestDate,
                     plantedDate: controller.plantedDate,
                     plantedDateValue: controller.plantedDateValue,
-                    harvestDateValue: controller.harvestDateValue
+                    harvestDateValue: controller.harvestDateValue,
+                    controller: controller.barcodeController
                   ),
                   SizedBox(height: 10.h,),
                   deviceOverviewWidget(

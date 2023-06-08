@@ -162,6 +162,7 @@ class HomeScreen extends StatelessWidget {
                                   controller.isModuleView.value = false;
                                   controller.unSelectSettingValue();
                                   controller.unSelectModule();
+                                  overviewController.isGraphScreen.value = false;
                                   Get.back();
                                 },
                                 image: AppImages.dashboard,
@@ -172,7 +173,6 @@ class HomeScreen extends StatelessWidget {
                             Obx(() => controller.roleId.value == 0 ? SizedBox(height: 5.h,) : const SizedBox.shrink() ),
                             Obx(() => organizationController.isSelect.value == true ? drawerWidget(
                                 onTap: (){
-                                   dashboardController.getDataList();
                                    dashboardController.isOverView.value = false;
                                   dashboardController.isSelect.value = false;
                                   controller.isDashboard.value = true;
@@ -180,7 +180,9 @@ class HomeScreen extends StatelessWidget {
                                   dashboardController.isOverViewTitle.value = false;
                                   controller.unSelectSettingValue();
                                   controller.unSelectModule();
+                                   overviewController.isGraphScreen.value = false;
                                   Get.back();
+                                   dashboardController.getDataList();
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,
@@ -204,13 +206,14 @@ class HomeScreen extends StatelessWidget {
                                       controller.isCalender.value = false;
                                       controller.isSetting.value = false;
                                       dashboardController.isOverViewTitle.value = false;
+                                      overviewController.isGraphScreen.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(0);
+                                      Get.back();
                                       int id = controller.storeData.getInt(StoreData.id)!;
                                       if ( id != 0) {
                                          growSheetController.getGrowSheetData(id: id);
                                       }
-                                      Get.back();
                                     },
                                     image: AppImages.growSheets,
                                     title: AppStrings.growSheets,
@@ -231,6 +234,7 @@ class HomeScreen extends StatelessWidget {
                                       controller.isCalender.value = false;
                                       controller.isSetting.value = false;
                                       dashboardController.isOverViewTitle.value = false;
+                                      overviewController.isGraphScreen.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(1);
                                       Get.back();
@@ -254,13 +258,14 @@ class HomeScreen extends StatelessWidget {
                                       controller.isCalender.value = false;
                                       controller.isSetting.value = false;
                                       dashboardController.isOverViewTitle.value = false;
+                                      overviewController.isGraphScreen.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(2);
                                       todoController.isTodo.value = true;
+                                      Get.back();
                                       todoController.getTodoList().whenComplete(() async {
                                         await todoController.getCompanyUser();
                                       });
-                                      Get.back();
                                     },
                                     image: AppImages.toDo,
                                     title: AppStrings.toDo,
@@ -284,13 +289,14 @@ class HomeScreen extends StatelessWidget {
                                       controller.isTodo.value = false;
                                       controller.isCalender.value = true;
                                       controller.isSetting.value = false;
+                                      overviewController.isGraphScreen.value = false;
                                       controller.unSelectSettingValue();
                                       controller.changeModuleIndex(3);
                                       calendarController.personalCalendar.value = false;
                                       calendarController.cropCalendar.value = true;
                                       dashboardController.isOverViewTitle.value = false;
-                                      await calendarController.getEventList();
                                       Get.back();
+                                      await calendarController.getEventList();
                                     },
                                     image: AppImages.calender,
                                     title: AppStrings.calendar,
@@ -329,6 +335,7 @@ class HomeScreen extends StatelessWidget {
                                           controller.isReport.value = false;
                                           controller.isTodo.value = false;
                                           controller.isCalender.value = false;
+                                          overviewController.isGraphScreen.value = false;
                                           controller.unSelectSettingValue();
                                           controller.isDashboard.value == false;
                                           controller.isOrganization.value = false;
@@ -520,9 +527,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(4);
-                await deviceController.getDeviceData();
                 Get.back();
+                await deviceController.getDeviceData();
               },
             isSelect: controller.isDeviceSetup
           ),
@@ -530,7 +538,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -555,9 +563,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(5);
-                temperatureController.getTemperatureControllerData();
                 Get.back();
+                await temperatureController.getTemperatureControllerData();
               },
             isSelect: controller.isTemperatureControl
           ),
@@ -590,9 +599,10 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = true;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(16);
-                await circulationController.getCirculationControlData();
                 Get.back();
+                await circulationController.getCirculationControlData();
               },
               isSelect: controller.isCirculationControl
           ),
@@ -625,6 +635,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = true;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(17);
                 Get.back();
               },
@@ -659,6 +670,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(6);
                 Get.back();
                 await humidityController.getHumidityControllerData();
@@ -694,6 +706,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(7);
                 Get.back();
                 co2Controller.getCo2ControllerData();
@@ -729,6 +742,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(8);
                 Get.back();
                 await lightningController.getLightningData();
@@ -764,6 +778,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(9);
                 Get.back();
               },
@@ -798,6 +813,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(10);
                 Get.back();
               },
@@ -832,6 +848,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(11);
                 Get.back();
               },
@@ -866,6 +883,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(12);
                 Get.back();
               },
@@ -900,6 +918,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(13);
                 Get.back();
               },
@@ -934,6 +953,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(14);
                 Get.back();
               },
@@ -968,6 +988,7 @@ class HomeScreen extends StatelessWidget {
                 controller.isControlTab.value = false;
                 controller.isCirculationControl.value = false;
                 dashboardController.isOverViewTitle.value = false;
+                overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(15);
                 Get.back();
               },
@@ -1007,15 +1028,17 @@ class HomeScreen extends StatelessWidget {
                   ? AppColors.lightGray1 : AppColors.buttonColor,
             ),
             SizedBox(width: 10.w,),
-            CustomText(
-              text: title,
-              fontSize: 14.sp,
-              color: Get.isDarkMode
-                  ? isSelect.value == true
-                  ? AppColors.buttonColor : AppColors.darkIcon
-                  : isSelect.value == false
-                  ? AppColors.lightGray1 : AppColors.buttonColor,
-              fontWeight: FontWeight.w500,
+            Expanded(
+              child: CustomText(
+                text: title,
+                fontSize: 14.sp,
+                color: Get.isDarkMode
+                    ? isSelect.value == true
+                    ? AppColors.buttonColor : AppColors.darkIcon
+                    : isSelect.value == false
+                    ? AppColors.lightGray1 : AppColors.buttonColor,
+                fontWeight: FontWeight.w500,
+              ),
             )
           ],
         ),

@@ -132,8 +132,8 @@ class Growsheet {
     irrigationControl: json["irrigationControl"] == null ? IrrigationControl() : IrrigationControl.fromJson(json["irrigationControl"]),
     fertigationControl01: json["fertigationControl01"] == null ? FertigationControl0() : FertigationControl0.fromJson(json["fertigationControl01"]),
     fertigationControl02: json["fertigationControl02"] == null ? FertigationControl0() : FertigationControl0.fromJson(json["fertigationControl02"]),
-    growController: GrowController.fromJson(json["growController"]),
-    company: Company.fromJson(json["company"]),
+    growController: json["growController"] != null ? GrowController.fromJson(json["growController"]) : GrowController(),
+    company: json["company"] != null ? Company.fromJson(json["company"]) : Company(),
   );
 
   Map<String, dynamic> toJson() => {

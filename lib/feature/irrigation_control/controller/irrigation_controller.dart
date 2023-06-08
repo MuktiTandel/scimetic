@@ -28,6 +28,8 @@ class IrrigationController extends GetxController {
 
   RxBool isSelect = false.obs;
 
+  RxBool isApply = false.obs;
+
   List<String> placeHolderList = [
     AppStrings.placeholder
   ];

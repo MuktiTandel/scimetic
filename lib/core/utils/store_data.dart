@@ -9,6 +9,7 @@ class StoreData {
   static const String fertigationId1 = "fertigationId1";
   static const String fertigationId2 = "fertigationId2";
   static const String roleId = "roleId";
+  static const String email = "email";
 
   void setData(String key, dynamic value) => GetStorage().write(key, value);
 

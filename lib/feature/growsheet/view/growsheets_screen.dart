@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/common_erroe_widget.dart';
+import 'package:scimetic/core/elements/common_hour_minute_widget.dart';
 import 'package:scimetic/core/elements/common_popup.dart';
 import 'package:scimetic/core/elements/common_time_textfield.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
@@ -46,7 +47,7 @@ class GrowSheetsScreen extends StatelessWidget {
                       height: 40.h,
                       child: CustomTextField(
                         controller: controller.searchController,
-                        isFilled: false,
+                        isFilled: true,
                         borderRadius: 8,
                         hintText: AppStrings.search,
                         contentPadding: EdgeInsets.only(left: 10.w),
@@ -61,6 +62,62 @@ class GrowSheetsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10.h,),
+                    Row(
+                      children: [
+                        Obx(() => GestureDetector(
+                          onTap: (){
+                            controller.isCheckAll.value = !controller.isCheckAll.value;
+                            if ( controller.isCheckAll.value == true ) {
+                              for (var element in controller.selectList) {
+                                element.value = true;
+                              }
+                            } else {
+                              for (var element in controller.selectList) {
+                                element.value = false;
+                              }
+                            }
+                          },
+                          child: controller.isCheckAll.value == false ? Image.asset(
+                            AppImages.unSelectedBox,
+                            height: 20.h,
+                            width: 20.w,
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                          ) : Image.asset(
+                            AppImages.selectedBox,
+                            height: 20.h,
+                            width: 20.w,
+                          ),
+                        ),),
+                        SizedBox(width: 10.w,),
+                        CustomText(
+                          text: AppStrings.checkAll,
+                          fontWeight: FontWeight.w500,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        SizedBox(width: 10.w,),
+                        Obx(() => controller.isCheckAll.value == true || controller.isSelect.value == true
+                            ? GestureDetector(
+                              onTap: (){},
+                              child: Row(
+                              children: [
+                                Image.asset(
+                                AppImages.trash,
+                                height: 20.h,
+                                width: 25.w,
+                              ),
+                                SizedBox(width: 5.w,),
+                                CustomText(
+                                text: AppStrings.delete,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.red,
+                                fontSize: 13.sp,
+                              ),
+                              ],
+                          ),
+                        )
+                            : const SizedBox.shrink())
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -90,7 +147,9 @@ class GrowSheetsScreen extends StatelessWidget {
                       irrigationName: data.irrigationControl!.name ?? "",
                       fertigationName1: data.fertigationControl01!.name ?? "",
                       fertigationName2: data.fertigationControl02!.name ?? "",
-                      id: data.id!
+                      id: data.id!,
+                      isApplied: controller.appliedList[index],
+                      isSelect: controller.selectList[index]
                     );
                   }
               ),),
@@ -228,21 +287,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ],
                                         ),
                                         SizedBox(height: 10.h,),
-                                        Row(
-                                          children: [
-                                            lightWidget(
-                                                mode: AppStrings.lightONTime,
-                                                hourController: controller.dayLightOnHourController,
-                                                minuteController: controller.dayLightOnMinuteController
-                                            ),
-                                            SizedBox(width: 15.w,),
-                                            lightWidget(
-                                                mode: AppStrings.lightOFFTime,
-                                                hourController: controller.dayLightOffHourController,
-                                                minuteController: controller.dayLightOffMinuteController
-                                            )
-                                          ],
-                                        )
+                                        commonHourMinuteWidget(
+                                            title1: AppStrings.lightONTime,
+                                            hour1: controller.dayLightOnHourController,
+                                            minute1: controller.dayLightOnMinuteController,
+                                            title2: AppStrings.lightOFFTime,
+                                            hour2: controller.dayLightOffHourController,
+                                            minute2: controller.dayLightOffMinuteController
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -322,21 +374,14 @@ class GrowSheetsScreen extends StatelessWidget {
                                           ],
                                         ),
                                         SizedBox(height: 10.h,),
-                                        Row(
-                                          children: [
-                                            lightWidget(
-                                                mode: AppStrings.lightONTime,
-                                                hourController: controller.nightLightOnHourController,
-                                                minuteController: controller.nightLightOnMinuteController
-                                            ),
-                                            SizedBox(width: 15.w,),
-                                            lightWidget(
-                                                mode: AppStrings.lightOFFTime,
-                                                hourController: controller.nightLightOffHourController,
-                                                minuteController: controller.nightLightOffMinuteController
-                                            )
-                                          ],
-                                        )
+                                        commonHourMinuteWidget(
+                                            title1: AppStrings.lightONTime,
+                                            hour1: controller.nightLightOnHourController,
+                                            minute1: controller.nightLightOnMinuteController,
+                                            title2: AppStrings.lightOFFTime,
+                                            hour2: controller.nightLightOffHourController,
+                                            minute2: controller.nightLightOffMinuteController
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -506,81 +551,120 @@ class GrowSheetsScreen extends StatelessWidget {
     required String irrigationName,
     required String fertigationName1,
     required String fertigationName2,
-    required int id
+    required int id,
+    required RxBool isApplied,
+    required RxBool isSelect
 } ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        Container(
-          color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-          child: Padding(
-            padding: EdgeInsets.all(15.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(15.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                      text: name,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.buttonColor,
+                    Row(
+                      children: [
+                        Obx(() => GestureDetector(
+                          onTap: (){
+                            isSelect.value = !isSelect.value;
+                            controller.isSelect.value = false;
+                            for (var element in controller.selectList) {
+                              if ( element.value == true ) {
+                                controller.isSelect.value = true;
+                              }
+                            }},
+                          child: isSelect.value == false ? Image.asset(
+                            AppImages.unSelectedBox,
+                            height: 18.h,
+                            width: 18.w,
+                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                          ) : Image.asset(
+                              AppImages.selectedBox,
+                            height: 18.h,
+                            width: 18.w,
+                          ),
+                        ),),
+                        SizedBox(width: 10.w,),
+                        CustomText(
+                          text: name,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.buttonColor,
+                        ),
+                        Expanded(child: SizedBox(width: 10.w,)),
+                        commonPopup(
+                            deleteTap: () async {
+                              controller.growsheetIds.clear();
+                              controller.growControllerId.value = controller.storeData.getInt(StoreData.id)!;
+                              controller.growsheetIds.add(id);
+                              if ( controller.growsheetIds.isNotEmpty ) {
+                                await controller.deleteGrowSheet().whenComplete(() async {
+                                  await controller.getGrowSheetData(id: controller.growControllerId.value);
+                                });
+                              }
+                            },
+                          applyTap: (){
+                            isApplied.value = !isApplied.value;
+                          },
+                          isApply: isApplied
+                        )
+                      ],
                     ),
-                    Expanded(child: SizedBox(width: 10.w,)),
-                    commonPopup(
-                      deleteTap: () async {
-                        controller.growsheetIds.clear();
-                        controller.growControllerId.value = controller.storeData.getInt(StoreData.id)!;
-                        controller.growsheetIds.add(id);
-                        if ( controller.growsheetIds.isNotEmpty ) {
-                          await controller.deleteGrowSheet().whenComplete(() async {
-                            await controller.getGrowSheetData(id: controller.growControllerId.value);
-                          });
-                        }
-                      }
-                    )
+                    SizedBox(height: 6.h,),
+                    Text(
+                      desc,
+                      style: TextStyleDecoration.body1,
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.seedBank,
+                        value: seedBank
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.temperature,
+                        value: "$dayTemperatureValue°C / $nightTemperatureValue°C"
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.rH,
+                        value: "$dayHumidityValue% / $nightHumidityValue%"
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.cO2,
+                        value: "$dayCo2Value ppm / $nightCo2Value ppm"
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.irrigation,
+                        value: irrigationName
+                    ),
+                    SizedBox(height: 10.h,),
+                    commonWidget(
+                        title: AppStrings.fertigation,
+                        value: "$fertigationName1 $fertigationName2"
+                    ),
                   ],
                 ),
-                SizedBox(height: 6.h,),
-                Text(
-                  desc,
-                  style: TextStyleDecoration.body1,
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.seedBank,
-                    value: seedBank
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.temperature,
-                    value: "$dayTemperatureValue°C / $nightTemperatureValue°C"
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.rH,
-                    value: "$dayHumidityValue% / $nightHumidityValue%"
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.cO2,
-                    value: "$dayCo2Value ppm / $nightCo2Value ppm"
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.irrigation,
-                    value: irrigationName
-                ),
-                SizedBox(height: 10.h,),
-                commonWidget(
-                    title: AppStrings.fertigation,
-                    value: "$fertigationName1 $fertigationName2"
-                ),
-              ],
+              ),
             ),
-          ),
+            SizedBox(height: 12.h,)
+          ],
         ),
-        SizedBox(height: 12.h,)
+        Obx(() => isApplied.value == true ? Positioned(
+          right: 20.w,
+          child: Image.asset(
+            AppImages.applied,
+            height: 22.h,
+            width: 100.w,
+          ),
+        ) : const SizedBox.shrink())
       ],
     );
   }
@@ -618,7 +702,7 @@ class GrowSheetsScreen extends StatelessWidget {
       children: [
         CustomText(
           text: title,
-          fontSize: 12.sp,
+          fontSize: 11.sp,
           fontWeight: FontWeight.w500,
           color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
         ),

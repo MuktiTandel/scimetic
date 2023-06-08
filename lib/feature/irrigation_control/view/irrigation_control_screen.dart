@@ -432,7 +432,9 @@ class IrrigationControlScreen extends StatelessWidget {
               ),
               Expanded(child: SizedBox(width: 10.w,)),
               commonPopup(
-                deleteTap: (){}
+                deleteTap: (){},
+                applyTap: (){},
+                isApply: controller.isApply
               ),
               SizedBox(width: 10.w,),
               Obx(() => GestureDetector(

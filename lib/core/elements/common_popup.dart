@@ -6,14 +6,14 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget commonPopup({ required VoidCallback deleteTap }) {
+Widget commonPopup({ required VoidCallback deleteTap, required VoidCallback applyTap, required RxBool isApply }) {
   return PopupMenuButton<int>(
     offset: Offset(0, 18.h),
     padding: EdgeInsets.zero,
     color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
     constraints: BoxConstraints(
         maxWidth: 115.w,
-        maxHeight: 147.h
+        maxHeight: 120.h
     ),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
@@ -29,17 +29,22 @@ Widget commonPopup({ required VoidCallback deleteTap }) {
       PopupMenuItem<int>(
           padding: EdgeInsets.zero,
           value: 0,
+          onTap: (){
+            applyTap();
+          },
           child: Column(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Row(
                   children: [
-                    Image.asset(
-                      AppImages.lightSelectToggle,
-                      height: 25.h,
-                      width: 25.w,
-                    ),
+                    Obx(() => Image.asset(
+                      isApply.value == false
+                          ? AppImages.lightUnselectToggle
+                          : AppImages.lightSelectToggle,
+                      height: 30.h,
+                      width: 30.w,
+                    ),),
                     SizedBox(width: 10.w,),
                     CustomText(
                       text: AppStrings.apply,
@@ -95,42 +100,42 @@ Widget commonPopup({ required VoidCallback deleteTap }) {
             ],
           )
       ),
-      PopupMenuItem<int>(
-          padding: EdgeInsets.zero,
-          value: 0,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      AppImages.export,
-                      height: 25.h,
-                      width: 25.w,
-                      color: Get.isDarkMode
-                          ? Colors.white : Colors.black,
-                    ),
-                    SizedBox(width: 10.w,),
-                    CustomText(
-                      text: AppStrings.export,
-                      fontSize: 15.sp,
-                      color: Get.isDarkMode
-                          ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.w500,
-                    )
-                  ],
-                ),
-              ),
-              Divider(
-                color: Get.isDarkMode
-                    ? AppColors.darkBlue1
-                    : AppColors.lightGray2,
-                thickness: 1.w,
-              )
-            ],
-          )
-      ),
+      // PopupMenuItem<int>(
+      //     padding: EdgeInsets.zero,
+      //     value: 0,
+      //     child: Column(
+      //       children: [
+      //         Padding(
+      //           padding: EdgeInsets.symmetric(horizontal: 10.w),
+      //           child: Row(
+      //             children: [
+      //               Image.asset(
+      //                 AppImages.export,
+      //                 height: 25.h,
+      //                 width: 25.w,
+      //                 color: Get.isDarkMode
+      //                     ? Colors.white : Colors.black,
+      //               ),
+      //               SizedBox(width: 10.w,),
+      //               CustomText(
+      //                 text: AppStrings.export,
+      //                 fontSize: 15.sp,
+      //                 color: Get.isDarkMode
+      //                     ? Colors.white : Colors.black,
+      //                 fontWeight: FontWeight.w500,
+      //               )
+      //             ],
+      //           ),
+      //         ),
+      //         Divider(
+      //           color: Get.isDarkMode
+      //               ? AppColors.darkBlue1
+      //               : AppColors.lightGray2,
+      //           thickness: 1.w,
+      //         )
+      //       ],
+      //     )
+      // ),
       PopupMenuItem<int>(
           value: 1,
           padding: EdgeInsets.zero,

@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
@@ -31,7 +34,7 @@ class OverviewController extends GetxController {
   RxBool isWeek = false.obs;
   RxBool isMonth = false.obs;
 
-  RxBool isGermination = true.obs;
+  RxBool isGermination = false.obs;
   RxBool isSeedling = false.obs;
   RxBool isVegetative = false.obs;
   RxBool isFlowering = false.obs;
@@ -195,6 +198,10 @@ class OverviewController extends GetxController {
 
   List<ClimateData> climateDataList = [];
 
+  final TextEditingController barcodeController = TextEditingController();
+
+  RxBool isGraphScreen = false.obs;
+
   Future getGrowSheetData({required int id}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -224,11 +231,63 @@ class OverviewController extends GetxController {
 
           if ( growSheetData.growsheets!.isNotEmpty ) {
             getGrowSheetLabelerData(id: growSheetId.value).whenComplete(() {
+
               selectStage.value = growSheetLabelerModel.growsheetLabeler!.stage ?? AppStrings.germination;
-              plantedDateValue.value = growSheetLabelerModel.growsheetLabeler!
-                  .plantedDate ?? "${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}";
-              harvestDateValue.value = growSheetLabelerModel
-                  .growsheetLabeler!.harvestDate ?? "${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year}";
+
+              if ( selectStage.value.contains(AppStrings.flowering) ) {
+
+                isFlowering.value = true;
+                isVegetative.value = false;
+                isSeedling.value = false;
+                isGermination.value = false;
+
+              } else if ( selectStage.value.contains(AppStrings.germination)) {
+
+                isGermination.value = true;
+                isSeedling.value = false;
+                isVegetative.value = false;
+                isFlowering.value = false;
+
+              } else if ( selectStage.value.contains(AppStrings.seedling)) {
+
+                isSeedling.value = true;
+                isFlowering.value = false;
+                isVegetative.value = false;
+                isGermination.value = false;
+
+              } else if ( selectStage.value.contains(AppStrings.vegetative)) {
+
+                isVegetative.value = true;
+                isGermination.value = false;
+                isFlowering.value = false;
+                isSeedling.value = false;
+
+              } else {
+
+                isGermination.value = true;
+                isSeedling.value = false;
+                isFlowering.value = false;
+                isVegetative.value = false;
+
+              }
+
+              if ( growSheetLabelerModel.growsheetLabeler!.plantedDate!.isNotEmpty ) {
+
+                DateTime plantedDate = DateFormat("dd.MM.yyyy").parse(growSheetLabelerModel.growsheetLabeler!.plantedDate!);
+
+                AppConst().debug('planted date => $plantedDate');
+
+                plantedDateValue.value = "${plantedDate.day}.${plantedDate.month}.${plantedDate.year}";
+
+              }
+
+              if ( growSheetLabelerModel.growsheetLabeler!.harvestDate!.isNotEmpty ) {
+
+                DateTime harvestDate = DateFormat("dd.MM.yyyy").parse(growSheetLabelerModel.growsheetLabeler!.harvestDate!);
+
+                harvestDateValue.value = "${harvestDate.day}.${harvestDate.month}.${harvestDate.year}";
+
+              }
             });
           }
 
@@ -419,12 +478,12 @@ class OverviewController extends GetxController {
 
   Future getHourData({required int id, required String identifier}) async {
 
-    isGetData.value = false;
+    progressDialog(true, Get.context!);
 
    await getClimateData(identifier: identifier, range: "24h").whenComplete(() async {
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
-          isGetData.value = true;
+          progressDialog(false, Get.context!);
         });
       });
     });
@@ -432,12 +491,12 @@ class OverviewController extends GetxController {
 
   Future getWeekData({required int id, required String identifier}) async {
 
-    isGetData.value = false;
+    progressDialog(true, Get.context!);
 
     await getClimateData(identifier: identifier, range: "1w").whenComplete(() async {
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
-          isGetData.value = true;
+          progressDialog(false, Get.context!);
         });
       });
     });
@@ -445,12 +504,12 @@ class OverviewController extends GetxController {
 
   Future getMonthData({required int id, required String identifier}) async {
 
-    isGetData.value = false;
+    progressDialog(true, Get.context!);
 
     await getClimateData(identifier: identifier, range: "30d").whenComplete(() async {
       await getGrowSheetData(id: id).whenComplete(() async {
         await getDeviceData(id: id).whenComplete(() {
-          isGetData.value = true;
+          progressDialog(false, Get.context!);
         });
       });
     });

@@ -105,16 +105,17 @@ class GraphScreen extends StatelessWidget {
               ),),
               SizedBox(height: 10.h,),
               growSheetWidget(
-                selectStage: controller.selectStage,
-                isFlowering: controller.isFlowering,
-                isGermination: controller.isGermination,
-                isSeedling: controller.isSeedling,
-                isVegetative: controller.isVegetative,
+                selectStage: overviewController.selectStage,
+                isFlowering: overviewController.isFlowering,
+                isGermination: overviewController.isGermination,
+                isSeedling: overviewController.isSeedling,
+                isVegetative: overviewController.isVegetative,
                 context: context,
-                plantedDate: controller.plantedDate,
-                harvestDate: controller.harvestDate,
+                plantedDate: overviewController.plantedDate,
+                harvestDate: overviewController.harvestDate,
                 plantedDateValue: controller.plantedDateValue,
-                harvestDateValue: controller.harvestDateValue
+                harvestDateValue: controller.harvestDateValue,
+                controller: controller.barcodeController
               ),
               SizedBox(height: 10.h,),
               deviceOverviewWidget(

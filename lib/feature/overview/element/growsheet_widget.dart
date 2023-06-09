@@ -275,10 +275,13 @@ Widget growSheetWidget( {
                               );
                             },
                             child: CustomText(
-                              text: plantedDateValue.value,
+                              text: plantedDateValue.isNotEmpty ? plantedDateValue.value : AppStrings.chooseDate,
                               fontSize: 15.sp,
                               color: Get.isDarkMode
-                                  ? Colors.white : Colors.black,
+                                  ? plantedDateValue.isNotEmpty
+                                  ? Colors.white : AppColors.darkText
+                                  : plantedDateValue.isNotEmpty
+                                  ? Colors.black : AppColors.lightText.withOpacity(0.5),
                               fontWeight: FontWeight.w500,
                             ),
                           )
@@ -310,10 +313,14 @@ Widget growSheetWidget( {
                               );
                             },
                             child: CustomText(
-                              text: harvestDateValue.value,
+                              text: harvestDateValue.isNotEmpty
+                                  ? harvestDateValue.value : AppStrings.chooseDate,
                               fontSize: 15.sp,
                               color: Get.isDarkMode
-                                  ? Colors.white : Colors.black,
+                                  ? harvestDateValue.isNotEmpty
+                                  ? Colors.white : AppColors.darkText
+                                  :  harvestDateValue.isNotEmpty
+                                  ? Colors.black : AppColors.lightText.withOpacity(0.5),
                               fontWeight: FontWeight.w500,
                             ),
                           )

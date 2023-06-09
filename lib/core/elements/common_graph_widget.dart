@@ -86,7 +86,7 @@ Widget commonGraphWidget( {
                     ],
                   ),
                 ) : SizedBox(
-                  height: 57.h,
+                  height: 60.h,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
@@ -51,6 +52,9 @@ class CirculationControlController extends GetxController {
     id.value = storeData.getInt(StoreData.id)!;
 
     if ( token.isNotEmpty ) {
+
+      progressDialog(true, Get.context!);
+
       try {
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
@@ -66,6 +70,8 @@ class CirculationControlController extends GetxController {
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
+
+        progressDialog(false, Get.context!);
 
         if ( apiResponse!.statusCode == 200 ) {
 

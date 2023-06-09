@@ -313,7 +313,7 @@ class EnergyManagementScreen extends StatelessWidget {
                                                           "80",
                                                         style: TextStyle(
                                                           color: AppColors.orange,
-                                                          fontSize: 38.sp,
+                                                          fontSize: 32.sp,
                                                           fontWeight: FontWeight.bold,
                                                           fontFamily: "Roboto"
                                                         ),
@@ -355,11 +355,15 @@ class EnergyManagementScreen extends StatelessWidget {
                               children: [
                                 Column(
                                   children: [
-                                    CustomText(
-                                        text: AppStrings.averageConsumption,
-                                      fontSize: 13.sp,
-                                      color: AppColors.subTitleColor.withOpacity(0.5),
-                                      fontWeight: FontWeight.w500,
+                                    Text(
+                                        AppStrings.averageConsumption,
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 13.sp,
+                                        color: AppColors.subTitleColor.withOpacity(0.5),
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Poppins"
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 25.h,
@@ -387,21 +391,25 @@ class EnergyManagementScreen extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                SizedBox(width: 10.w,),
+                                SizedBox(width: 4.w,),
                                 DottedLine(
                                   direction: Axis.vertical,
                                   lineLength: 42.h,
                                   lineThickness: 0.3.w,
                                   dashGapLength: 3.h,
                                 ),
-                                SizedBox(width: 10.w,),
+                                SizedBox(width: 4.w,),
                                 Column(
                                   children: [
-                                    CustomText(
-                                      text: AppStrings.currentConsumption,
-                                      fontSize: 13.sp,
-                                      color: AppColors.subTitleColor.withOpacity(0.5),
-                                      fontWeight: FontWeight.w500,
+                                    Text(
+                                      AppStrings.currentConsumption,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 13.sp,
+                                          color: AppColors.subTitleColor.withOpacity(0.5),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins"
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 25.h,

@@ -163,19 +163,20 @@ class ReportScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.all(15.w),
+              Obx(() => controller.isGetData.value == true
+                  ? Padding(
+                padding: EdgeInsets.all(15.w),
                 child: Container(
                   height: 362.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                          padding: EdgeInsets.all(10.w),
+                        padding: EdgeInsets.all(10.w),
                         child: Obx(() => CustomText(
                           text: controller.chooseSensor.value,
                           fontSize: 15.sp,
@@ -235,7 +236,7 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.all(10.w),
+                        padding: EdgeInsets.all(10.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -257,6 +258,8 @@ class ReportScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+              )
+                  : const SizedBox.shrink(),
               ),
               SizedBox(height: 20.h,)
             ],

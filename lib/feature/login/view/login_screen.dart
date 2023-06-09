@@ -128,6 +128,7 @@ class LoginScreen extends StatelessWidget {
         ),
         buttonText: AppStrings.signIn,
         buttonTap: (){
+          FocusScope.of(context).unfocus();
           controller.userLogin();
         },
       isSubtitle: true,

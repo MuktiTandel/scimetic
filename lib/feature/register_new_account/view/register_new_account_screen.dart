@@ -166,6 +166,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
       ),
       buttonText: AppStrings.register,
       buttonTap: (){
+        FocusScope.of(context).unfocus();
         controller.onRegister();
       },
       isSubtitle: true,

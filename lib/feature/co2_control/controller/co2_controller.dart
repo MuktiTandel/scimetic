@@ -80,6 +80,8 @@ class Co2Controller extends GetxController {
 
       isGetData.value = false;
 
+      // progressDialog(false, Get.context!);
+
       try {
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
@@ -102,15 +104,18 @@ class Co2Controller extends GetxController {
             switchList.addAll(apiService.switchList);
           }
           AppConst().debug('switch list length => ${switchList.length}');
-          isGetData.value = true;
         });
+
+        // progressDialog(false, Get.context!);
+
+        isGetData.value = true;
 
         if ( apiResponse!.statusCode == 200 ) {
 
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+           showSnack(
+               width: 200.w,
+               title: data["message"]
+           );
 
           return true;
 

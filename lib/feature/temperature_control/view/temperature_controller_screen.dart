@@ -116,7 +116,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseSwitch,
                                 itemList: controller.switchList,
                                 value: controller.nightCoolingSwitch.value,
@@ -133,7 +133,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseRelay,
                                 itemList: controller.nightCoolingRelayList,
                                 value: controller.nightCoolingRelay.value,
@@ -238,7 +238,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseSwitch,
                                 itemList: controller.switchList,
                                 value: controller.dayCoolingValue.value,
@@ -255,7 +255,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseRelay,
                                 itemList: controller.dayCoolingRelayList,
                                 value: controller.dayCoolingRelaySelection.value,
@@ -373,7 +373,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseSwitch,
                                 itemList: controller.switchList,
                                 value: controller.extractorFanNightSwitch.value,
@@ -390,7 +390,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseRelay,
                                 itemList: controller.extractorFanNightRelayList,
                                 value: controller.extractorFanNightRelay.value,
@@ -508,7 +508,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseSwitch,
                                 itemList: controller.switchList,
                                 value: controller.wetWallNightSwitch.value,
@@ -525,7 +525,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 5.h,),
                             CustomDropDown(
-                                width: 330.w,
+                                width: 320.w,
                                 hintText: AppStrings.chooseRelay,
                                 itemList: controller.wetWalNightRelayList,
                                 value: controller.wetWalNightRelay.value,

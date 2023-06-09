@@ -168,16 +168,20 @@ class TodoController extends GetxController {
 
           isGetData.value = true;
 
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
+
         } else {
 
-          if ( apiResponse!.statusCode == 403 ) {
 
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }

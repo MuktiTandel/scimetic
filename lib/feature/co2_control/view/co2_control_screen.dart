@@ -23,7 +23,8 @@ class Co2ControlScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: ScrollConfiguration(
+      body: Obx(() => controller.isGetData.value == true
+          ? ScrollConfiguration(
           behavior: AppBehavior(),
           child: SingleChildScrollView(
             child: Column(
@@ -33,17 +34,17 @@ class Co2ControlScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Obx(
-                        () => controller.isValid.value == true
+                            () => controller.isValid.value == true
                             ? const SizedBox.shrink()
                             : Padding(
-                                padding: EdgeInsets.only(top: 10.h,left: 15.w, right: 15.w),
-                                child: commonErrorWidget(
-                                    onTap: () {
-                                      controller.isValid.value = true;
-                                    },
-                                    errorMessage:
-                                        controller.errorMessage.value),
-                              ),
+                          padding: EdgeInsets.only(top: 10.h,left: 15.w, right: 15.w),
+                          child: commonErrorWidget(
+                              onTap: () {
+                                controller.isValid.value = true;
+                              },
+                              errorMessage:
+                              controller.errorMessage.value),
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(15.w),
@@ -81,52 +82,52 @@ class Co2ControlScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                     child: Column(
-                                  children: [
-                                    Text(
-                                      AppStrings.highCO2Protection,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Get.isDarkMode
-                                              ? AppColors.darkText
-                                              : AppColors.lightText,
-                                          fontSize: 12.h,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: CustomTextField(
-                                        controller:
-                                            controller.dayHighProtection,
-                                        borderRadius: 8,
-                                        textInputType: TextInputType.number,
-                                        contentPadding:
-                                            EdgeInsets.only(left: 10.w),
-                                        hintText: AppStrings.cO2,
-                                        hintTextSize: 12.sp,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        suffixWidget: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10.h,
-                                              left: 10.w,
-                                              right: 10.w),
-                                          child: CustomText(
-                                            text: "ppm",
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Get.isDarkMode
-                                                ? Colors.white
-                                                : AppColors.subTitleColor,
-                                          ),
+                                      children: [
+                                        Text(
+                                          AppStrings.highCO2Protection,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Get.isDarkMode
+                                                  ? AppColors.darkText
+                                                  : AppColors.lightText,
+                                              fontSize: 12.h,
+                                              fontFamily: "Poppins"),
                                         ),
-                                        onchange: (value) {},
-                                      ),
-                                    )
-                                  ],
-                                ))
+                                        SizedBox(
+                                          height: 5.h,
+                                        ),
+                                        SizedBox(
+                                          height: 40.h,
+                                          child: CustomTextField(
+                                            controller:
+                                            controller.dayHighProtection,
+                                            borderRadius: 8,
+                                            textInputType: TextInputType.number,
+                                            contentPadding:
+                                            EdgeInsets.only(left: 10.w),
+                                            hintText: AppStrings.cO2,
+                                            hintTextSize: 12.sp,
+                                            isFilled: Get.isDarkMode ? true : false,
+                                            suffixWidget: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 10.h,
+                                                  left: 10.w,
+                                                  right: 10.w),
+                                              child: CustomText(
+                                                text: "ppm",
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Get.isDarkMode
+                                                    ? Colors.white
+                                                    : AppColors.subTitleColor,
+                                              ),
+                                            ),
+                                            onchange: (value) {},
+                                          ),
+                                        )
+                                      ],
+                                    ))
                               ],
                             ),
                             SizedBox(
@@ -165,7 +166,7 @@ class Co2ControlScreen extends StatelessWidget {
                               height: 5.h,
                             ),
                             Obx(
-                              () => CustomDropDown(
+                                  () => CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
                                   itemList: controller.dayLightningRelayList,
@@ -204,7 +205,7 @@ class Co2ControlScreen extends StatelessWidget {
                                       child: commonTexField(
                                           title: AppStrings.minimum,
                                           controller:
-                                              controller.nightMinimumTarget,
+                                          controller.nightMinimumTarget,
                                           suffixText: "ppm",
                                           hintText: AppStrings.cO2,
                                           onChanged: (value) {},
@@ -216,7 +217,7 @@ class Co2ControlScreen extends StatelessWidget {
                                       child: commonTexField(
                                           title: AppStrings.maximum,
                                           controller:
-                                              controller.nightMaximumTarget,
+                                          controller.nightMaximumTarget,
                                           suffixText: "ppm",
                                           hintText: AppStrings.cO2,
                                           onChanged: (value) {},
@@ -226,54 +227,54 @@ class Co2ControlScreen extends StatelessWidget {
                                   ),
                                   Expanded(
                                       child: Column(
-                                    children: [
-                                      Text(
-                                        AppStrings.highCO2Protection,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: Get.isDarkMode
-                                                ? AppColors.darkText
-                                                : AppColors.lightText,
-                                            fontSize: 12.h,
-                                            fontFamily: "Poppins"),
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      SizedBox(
-                                        height: 40.h,
-                                        child: CustomTextField(
-                                          controller:
-                                              controller.nightHighProtection,
-                                          borderRadius: 8,
-                                          textInputType: TextInputType.number,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 10.w),
-                                          hintText: AppStrings.cO2,
-                                          hintTextSize: 12.sp,
-                                          isFilled: true,
-                                          focusBorderColor:
-                                              AppColors.buttonColor,
-                                          suffixWidget: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 10.h,
-                                                left: 10.w,
-                                                right: 10.w),
-                                            child: CustomText(
-                                              text: "ppm",
-                                              fontSize: 13.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Get.isDarkMode
-                                                  ? Colors.white
-                                                  : AppColors.subTitleColor,
-                                            ),
+                                        children: [
+                                          Text(
+                                            AppStrings.highCO2Protection,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Get.isDarkMode
+                                                    ? AppColors.darkText
+                                                    : AppColors.lightText,
+                                                fontSize: 12.h,
+                                                fontFamily: "Poppins"),
                                           ),
-                                          onchange: (value) {},
-                                        ),
-                                      )
-                                    ],
-                                  ))
+                                          SizedBox(
+                                            height: 5.h,
+                                          ),
+                                          SizedBox(
+                                            height: 40.h,
+                                            child: CustomTextField(
+                                              controller:
+                                              controller.nightHighProtection,
+                                              borderRadius: 8,
+                                              textInputType: TextInputType.number,
+                                              contentPadding:
+                                              EdgeInsets.only(left: 10.w),
+                                              hintText: AppStrings.cO2,
+                                              hintTextSize: 12.sp,
+                                              isFilled: true,
+                                              focusBorderColor:
+                                              AppColors.buttonColor,
+                                              suffixWidget: Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: 10.h,
+                                                    left: 10.w,
+                                                    right: 10.w),
+                                                child: CustomText(
+                                                  text: "ppm",
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Get.isDarkMode
+                                                      ? Colors.white
+                                                      : AppColors.subTitleColor,
+                                                ),
+                                              ),
+                                              onchange: (value) {},
+                                            ),
+                                          )
+                                        ],
+                                      ))
                                 ],
                               ),
                               SizedBox(
@@ -313,11 +314,11 @@ class Co2ControlScreen extends StatelessWidget {
                                 height: 5.h,
                               ),
                               Obx(
-                                () => CustomDropDown(
+                                    () => CustomDropDown(
                                     width: 320.w,
                                     hintText: AppStrings.chooseRelay,
                                     itemList:
-                                        controller.nightLightningRelayList,
+                                    controller.nightLightningRelayList,
                                     value: controller.nightLightningRelay.value,
                                     isFilled: true,
                                     onChange: (value) {
@@ -347,7 +348,12 @@ class Co2ControlScreen extends StatelessWidget {
                 ),
               ],
             ),
-          )),
+          ))
+          : const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.buttonColor,
+        ),
+      )),
     );
   }
 }

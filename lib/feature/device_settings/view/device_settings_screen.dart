@@ -493,28 +493,26 @@ class DeviceSettingsScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Image.asset(
                       AppImages.sensors,
                       height: 25.h,
-                      width: 25.w,
+                      width: 20.w,
                     ),
-                    SizedBox(width: 5.w,),
                     CustomText(
                       text: AppStrings.reconnect,
                       fontWeight: FontWeight.w500,
                       fontSize: 13.sp,
                       color: AppColors.buttonColor,
                     ),
-                    SizedBox(width: 5.w,),
                     Image.asset(
                       AppImages.restart,
                       height: 16.h,
-                      width: 16.w,
+                      width: 12.w,
                       color: Get.isDarkMode
                           ? AppColors.darkText : AppColors.lightGray1,
                     ),
-                    SizedBox(width: 5.w,),
                     CustomText(
                       text: AppStrings.restart,
                       fontWeight: FontWeight.w500,
@@ -522,7 +520,6 @@ class DeviceSettingsScreen extends StatelessWidget {
                       color: Get.isDarkMode
                           ? AppColors.darkText : AppColors.lightGray1,
                     ),
-                    SizedBox(width: 10.w,),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: (){
@@ -566,13 +563,11 @@ class DeviceSettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(width: 5.w,),
                     Image.asset(
                       AppImages.trash,
                       height: 25.h,
                       width: 25.w,
                     ),
-                    SizedBox(width: 5.w,),
                     CustomText(
                       text: AppStrings.delete,
                       fontWeight: FontWeight.w500,

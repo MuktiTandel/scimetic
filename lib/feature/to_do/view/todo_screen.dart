@@ -319,7 +319,7 @@ class TodoScreen extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         constraints: BoxConstraints(
-                            maxWidth: 205.w,
+                            maxWidth: 220.w,
                             maxHeight: 148.h
                         ),
                         shape: RoundedRectangleBorder(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
@@ -212,7 +213,7 @@ class HomeScreen extends StatelessWidget {
                                       Get.back();
                                       int id = controller.storeData.getInt(StoreData.id)!;
                                       if ( id != 0) {
-                                         growSheetController.getGrowSheetData(id: id);
+                                         growSheetController.getGrowSheetData();
                                       }
                                     },
                                     image: AppImages.growSheets,
@@ -408,6 +409,7 @@ class HomeScreen extends StatelessWidget {
                             drawerWidget(
                                 onTap: (){
                                   Get.offAllNamed(AppPages.LOGIN);
+                                  GetStorage().remove(StoreData.email);
                                 },
                                 image: AppImages.logout,
                                 title: AppStrings.logOut,

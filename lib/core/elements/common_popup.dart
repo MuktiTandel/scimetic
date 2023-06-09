@@ -6,7 +6,12 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget commonPopup({ required VoidCallback deleteTap, required VoidCallback applyTap, required RxBool isApply }) {
+Widget commonPopup({
+  required VoidCallback deleteTap,
+  required VoidCallback applyTap,
+  required RxBool isApply,
+  required VoidCallback editTap
+}) {
   return PopupMenuButton<int>(
     offset: Offset(0, 18.h),
     padding: EdgeInsets.zero,
@@ -67,6 +72,9 @@ Widget commonPopup({ required VoidCallback deleteTap, required VoidCallback appl
       PopupMenuItem<int>(
           padding: EdgeInsets.zero,
           value: 0,
+          onTap: (){
+            editTap();
+          },
           child: Column(
             children: [
               Padding(

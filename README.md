@@ -27,6 +27,8 @@ samples, guidance on mobile development, and a full API reference.
 {
   "username": "sendrossemail+test@gmail.com",
   "password": "RQFtvmZ4!phtJB8q"
+sendrossemail+test@gmail.com
+Test20071979@@
 }
 
 {

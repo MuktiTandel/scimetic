@@ -24,7 +24,7 @@ class NotificationSettingScreen extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(15.w),
-                color: Colors.white,
+                color: context.theme.cardColor,
                 child: Column(
                   children: [
                     commonTitleWidget(
@@ -73,7 +73,7 @@ class NotificationSettingScreen extends StatelessWidget {
               SizedBox(height: 15.h,),
               Container(
                 padding: EdgeInsets.all(15.w),
-                color: Colors.white,
+                color: context.theme.cardColor,
                 child: Column(
                   children: [
                     commonTitleWidget(
@@ -115,7 +115,7 @@ class NotificationSettingScreen extends StatelessWidget {
       children: [
         CustomText(
           text: title,
-          color: AppColors.subTitleColor,
+          color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
           fontWeight: FontWeight.w500,
           fontSize: 13.sp,
         ),
@@ -125,7 +125,9 @@ class NotificationSettingScreen extends StatelessWidget {
             isSelect.value = !isSelect.value;
           },
           child: Image.asset(
-            isSelect.value ? AppImages.lightUnselectToggle : AppImages.lightSelectToggle,
+            isSelect.value
+                ? Get.isDarkMode ? AppImages.darkUnselectToggle : AppImages.lightUnselectToggle
+                : Get.isDarkMode ? AppImages.darkSelectedToggle : AppImages.lightSelectToggle,
             height: 35.h,
             width: 35.w,
           ),
@@ -134,7 +136,9 @@ class NotificationSettingScreen extends StatelessWidget {
         Obx(() => CustomText(
           text: isSelect.value
               ? AppStrings.off : AppStrings.on,
-          color: isSelect.value ? AppColors.lightText : AppColors.subTitleColor,
+          color: isSelect.value
+              ? Get.isDarkMode ? AppColors.darkText : AppColors.lightText
+              : Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
           fontWeight: FontWeight.w500,
           fontSize: 13.sp,
         )
@@ -154,19 +158,19 @@ class NotificationSettingScreen extends StatelessWidget {
           image,
           height: 18.h,
           width: 18.w,
-          color: AppColors.subTitleColor,
+          color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
         ),
         SizedBox(width: 10.w,),
         CustomText(
           text: title,
-          color: AppColors.subTitleColor,
+          color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
         ),
         Expanded(child: SizedBox(width: 10.w,)),
         Obx(() => CustomText(
           text: isSelect.value ? AppStrings.allTurnOff : AppStrings.allTurnOn,
-          color: AppColors.lightText,
+          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
         ),),
@@ -176,7 +180,9 @@ class NotificationSettingScreen extends StatelessWidget {
             isSelect.value = !isSelect.value;
           },
           child: Image.asset(
-            isSelect.value ? AppImages.lightUnselectToggle : AppImages.lightSelectToggle,
+            isSelect.value
+                ? Get.isDarkMode ? AppImages.darkUnselectToggle : AppImages.lightUnselectToggle
+                : Get.isDarkMode ? AppImages.darkSelectedToggle : AppImages.lightSelectToggle,
             height: 35.h,
             width: 35.w,
           ),

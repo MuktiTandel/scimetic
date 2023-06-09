@@ -165,11 +165,11 @@ class RegisterNewAccountController extends GetxController {
           progressDialog(false, Get.context!);
         });
 
-         // if ( isSuccess.value == true ) {
-         //   Get.offAllNamed(AppPages.AUTHENTICATEACOOUNT, arguments: { "email" : emailController.text });
-         // }
+          if ( isSuccess.value == true ) {
+            Get.offAllNamed(AppPages.AUTHENTICATEACOOUNT, arguments: { "email" : emailController.text });
+          }
 
-        Get.offAllNamed(AppPages.AUTHENTICATEACOOUNT, arguments: { "email" : emailController.text });
+        // Get.offAllNamed(AppPages.AUTHENTICATEACOOUNT, arguments: { "email" : emailController.text });
 
       } else {
 

@@ -7,6 +7,7 @@ import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:http/http.dart' as http;
+import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/check_net_connectivity.dart';
@@ -111,7 +112,11 @@ class GrowSheetController extends GetxController {
 
   RxBool isApply = false.obs;
 
-  Future getGrowSheetData({required int id}) async {
+  RxInt growSheetId = 0.obs;
+
+  RxInt id = 0.obs;
+
+  Future getGrowSheetData() async {
 
     isGetData.value = false;
 
@@ -125,11 +130,13 @@ class GrowSheetController extends GetxController {
 
     token =  storeData.getString(StoreData.accessToken)!;
 
+    id.value = storeData.getInt(StoreData.id)!;
+
     if ( token.isNotEmpty ) {
       try {
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
-            url: '${ApiPath.baseUrl}${ApiPath.growSheetGrowController}/$id',
+            url: '${ApiPath.baseUrl}${ApiPath.growSheetGrowController}/${id.value}',
             requestType: HTTPRequestType.GET,
             headers: {
               "Authorization" : 'Bearer $token',
@@ -153,6 +160,17 @@ class GrowSheetController extends GetxController {
             growSheetDataList.addAll(growSheetData.growsheets!);
             appliedList = List.generate(growSheetDataList.length, (index) => false.obs);
             selectList = List.generate(growSheetDataList.length, (index) => false.obs);
+          }
+
+          if ( growSheetDataList.isNotEmpty && appliedList.isNotEmpty ) {
+            for ( int i = 0; i < growSheetDataList.length; i++ ) {
+              Growsheet data = growSheetDataList[i];
+              for ( int j = 0; j < appliedList.length; j++ ) {
+                if ( data.applied == true && i == j ) {
+                  appliedList[j].value = true;
+                }
+              }
+            }
           }
 
           AppConst().debug('grow sheet data => ${growSheetData.growsheets}');
@@ -360,6 +378,118 @@ class GrowSheetController extends GetxController {
 
   }
 
+  Future updateGrowSheet({ required CreateGrowSheet createGrowSheet}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.growSheet}/${growSheetId.value}",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: createGrowSheet.toJson()
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
+
+  Future toggleApply({required int id, required bool applied}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+
+      progressDialog(true, Get.context!);
+
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.growSheet}/$id/toggle_apply",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: {
+              "applied": applied
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        progressDialog(false, Get.context!);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+  }
+
   void onSave() async {
 
     isValid.value = true;
@@ -490,62 +620,65 @@ class GrowSheetController extends GetxController {
 
       if ( isConnected == true ) {
 
+        AppConst().debug("select irrigation id => ${irrigationId.value}");
+        AppConst().debug("select fertigation id => ${fertigationId1.value}");
+        AppConst().debug("select fertigation id => ${fertigationId2.value}");
+
+        CreateGrowSheet data = CreateGrowSheet();
+
+        data.strain = strainNameController.text;
+        data.description = descriptionController.text;
+        data.seedBank = seedBankController.text;
+        data.tag = tagController.text;
+        data.dayTargetTemperature = double.parse(dayTemperatureController.text);
+        data.dayTemperatureDeadband = double.parse(dayDeadbandTemperatureController.text);
+        data.dayTargetRelativeHumidity = double.parse(dayRhController.text);
+        data.dayHumidityDeadband = double.parse(dayDeadbandHumidityController.text);
+        data.dayTargetCo2 = double.parse(dayCo2Controller.text);
+        data.dayCo2Deadband = double.parse(dayDeadbandCo2Controller.text);
+        data.dayLightTimeOn = dayLightOnHourController.text.isNotEmpty ? "${dayLightOnHourController.text}"
+            ":${dayLightOnMinuteController.text}" : "";
+        data.dayLightTimeOff = dayLightOffHourController.text.isNotEmpty ? "${dayLightOffHourController.text}"
+            ":${dayLightOffMinuteController.text}" : "";
+        data.nightTargetTemperature = double.parse(nightTemperatureController.text);
+        data.nightTemperatureDeadband = double.parse(nightDeadbandTemperatureController.text);
+        data.nightTargetRelativeHumidity = double.parse(nightRhController.text);
+        data.nightHumidityDeadband = double.parse(nightDeadbandHumidityController.text);
+        data.nightTargetCo2 = double.parse(nightCo2Controller.text);
+        data.nightCo2Deadband = double.parse(nightDeadbandCo2Controller.text);
+        data.nightLightTimeOn = nightLightOnHourController.text.isNotEmpty ? "${nightLightOnHourController.text}"
+            ":${nightLightOnMinuteController.text}" : "";
+        data.nightLightTimeOff = nightLightOffHourController.text.isNotEmpty ? "${nightLightOffHourController.text}"
+            ":${nightLightOffMinuteController.text}" : "";
+        data.applied = false;
+
+        if ( irrigationList.isNotEmpty ) {
+          AppConst().debug("select irrigation id => ${irrigationValue.id}");
+          data.irrigationControlId = irrigationId.value;
+        }
+
+        if ( fertigationList1.isNotEmpty ) {
+          data.fertigationControlId01 = fertigationId1.value;
+        }
+
+        if ( fertigationList2.isNotEmpty ) {
+          data.fertigationControlId02 = fertigationId2.value;
+        }
+
         if ( isEdit.value == false ) {
-
-          AppConst().debug("select irrigation id => ${irrigationId.value}");
-          AppConst().debug("select fertigation id => ${fertigationId1.value}");
-          AppConst().debug("select fertigation id => ${fertigationId2.value}");
-
-          CreateGrowSheet data = CreateGrowSheet();
-
-          data.strain = strainNameController.text;
-          data.description = descriptionController.text;
-          data.seedBank = seedBankController.text;
-          data.tag = tagController.text;
-          data.dayTargetTemperature = double.parse(dayTemperatureController.text);
-          data.dayTemperatureDeadband = double.parse(dayDeadbandTemperatureController.text);
-          data.dayTargetRelativeHumidity = double.parse(dayRhController.text);
-          data.dayHumidityDeadband = double.parse(dayDeadbandHumidityController.text);
-          data.dayTargetCo2 = double.parse(dayCo2Controller.text);
-          data.dayCo2Deadband = double.parse(dayDeadbandCo2Controller.text);
-          data.dayLightTimeOn = dayLightOnHourController.text.isNotEmpty ? "${dayLightOnHourController.text}"
-               ":${dayLightOnMinuteController.text}" : "";
-          data.dayLightTimeOff = dayLightOffHourController.text.isNotEmpty ? "${dayLightOffHourController.text}"
-              ":${dayLightOffMinuteController.text}" : "";
-          data.nightTargetTemperature = double.parse(nightTemperatureController.text);
-          data.nightTemperatureDeadband = double.parse(nightDeadbandTemperatureController.text);
-          data.nightTargetRelativeHumidity = double.parse(nightRhController.text);
-          data.nightHumidityDeadband = double.parse(nightDeadbandHumidityController.text);
-          data.nightTargetCo2 = double.parse(nightCo2Controller.text);
-          data.nightCo2Deadband = double.parse(nightDeadbandCo2Controller.text);
-          data.nightLightTimeOn = nightLightOnHourController.text.isNotEmpty ? "${nightLightOnHourController.text}"
-              ":${nightLightOnMinuteController.text}" : "";
-          data.nightLightTimeOff = nightLightOffHourController.text.isNotEmpty ? "${nightLightOffHourController.text}"
-              ":${nightLightOffMinuteController.text}" : "";
-          data.applied = false;
-
-          if ( irrigationList.isNotEmpty ) {
-            AppConst().debug("select irrigation id => ${irrigationValue.id}");
-            data.irrigationControlId = irrigationId.value;
-          }
-
-          if ( fertigationList1.isNotEmpty ) {
-            data.fertigationControlId01 = fertigationId1.value;
-          }
-
-          if ( fertigationList2.isNotEmpty ) {
-            data.fertigationControlId02 = fertigationId2.value;
-          }
 
           await createGrowSheet(createGrowSheet: data)
               .whenComplete(() {
             Get.back();
-            getGrowSheetData(id: growControllerId.value);
+            getGrowSheetData();
           });
 
         } else {
 
-
+          await updateGrowSheet( createGrowSheet: data ).whenComplete(() {
+            Get.back();
+            getGrowSheetData();
+          });
         }
 
         strainNameController.clear();

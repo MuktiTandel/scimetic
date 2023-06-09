@@ -93,7 +93,7 @@ class HumidityController extends GetxController {
 
     if ( token.isNotEmpty ) {
 
-      isGetData.value = false;
+      progressDialog(true, Get.context!);
 
       try {
 
@@ -117,8 +117,9 @@ class HumidityController extends GetxController {
             switchList.addAll(apiService.switchList);
           }
           AppConst().debug('switch list length => ${switchList.length}');
-          isGetData.value = true;
         });
+
+        progressDialog(false, Get.context!);
 
         if ( apiResponse!.statusCode == 200 ) {
 

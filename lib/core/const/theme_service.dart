@@ -8,13 +8,13 @@ class ThemeService {
   final _box = GetStorage();
   final _key = 'isThemeMode';
 
-  ThemeMode get theme => _loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark;
+  ThemeMode get theme => _loadThemeFromBox() ? ThemeMode.dark : ThemeMode.light;
 
   bool _loadThemeFromBox() => _box.read(_key) ?? false;
   _saveThemeToBox(bool isDarkMode) => _box.write(_key, isDarkMode);
 
   void switchTheme(){
-    Get.changeThemeMode(_loadThemeFromBox() ? ThemeMode.dark : ThemeMode.light);
+    Get.changeThemeMode(_loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark);
     _saveThemeToBox(!_loadThemeFromBox());
   }
 }

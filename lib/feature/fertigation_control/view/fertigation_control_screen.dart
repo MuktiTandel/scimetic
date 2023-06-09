@@ -436,7 +436,8 @@ class FertigationControlScreen extends StatelessWidget {
               commonPopup(
                 deleteTap: (){},
                 applyTap: (){},
-                isApply: controller.isApply
+                isApply: controller.isApply,
+                editTap: (){}
               ),
               SizedBox(width: 10.w,),
               Obx(() => GestureDetector(

@@ -91,7 +91,10 @@ class HumidityControlScreen extends StatelessWidget {
                               onChange: (value) {
                                 controller.dayHumiditySwitch.value =
                                     value;
-                              }),),
+                              },
+                            isEdit: false.obs,
+                              ),
+                          ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -118,7 +121,9 @@ class HumidityControlScreen extends StatelessWidget {
                                     .removeWhere((element)
                                 => (element.contains(value)));
 
-                              }),
+                              },
+                            isEdit: false.obs,
+                              ),
                         ],
                       ),
                     ),
@@ -178,6 +183,7 @@ class HumidityControlScreen extends StatelessWidget {
                                     value;
                               },
                               isFilled: true,
+                              isEdit: false.obs,
                             ),),
                             SizedBox(
                               height: 10.h,
@@ -206,7 +212,9 @@ class HumidityControlScreen extends StatelessWidget {
 
                                   controller.nightDehumidificationRelayList
                                       .removeWhere((element) => (element.contains(value)));
-                                }),
+                                },
+                              isEdit: false.obs,
+                                ),
                           ],
                         ),
                       ),
@@ -270,7 +278,10 @@ class HumidityControlScreen extends StatelessWidget {
                               onChange: (value) {
                                 controller.dayDehumidificationSwitch
                                     .value = value;
-                              }),),
+                              },
+                            isEdit: false.obs,
+                              ),
+                          ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -300,7 +311,9 @@ class HumidityControlScreen extends StatelessWidget {
                                     .removeWhere((element) =>
                                 (element.contains(value)));
 
-                              }),
+                              },
+                            isEdit: false.obs,
+                              ),
                         ],
                       ),
                     ),
@@ -366,6 +379,7 @@ class HumidityControlScreen extends StatelessWidget {
 
                               },
                               isFilled: true,
+                              isEdit: false.obs,
                             ),),
                             SizedBox(
                               height: 10.h,
@@ -392,7 +406,9 @@ class HumidityControlScreen extends StatelessWidget {
                                 onChange: (value) {
                                   controller.nightDehumidificationRelay
                                       .value = value;
-                                }),
+                                },
+                              isEdit: false.obs,
+                                ),
                           ],
                         ),
                       ),

@@ -61,6 +61,7 @@ class FertigationControlScreen extends StatelessWidget {
                   onChange: (value) {
                     controller.placeHolderValue.value = value;
                   },
+                  isEdit: false.obs,
                 ),
               ],
             ),

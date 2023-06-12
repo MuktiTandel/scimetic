@@ -52,7 +52,16 @@ class GrowSheetsScreen extends StatelessWidget {
                     color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                   ),
                 ),
-                onchange: (value) {},
+                onchange: (value) {
+                  if (value.isNotEmpty) {
+                    controller.growSheetDataList.value = controller.growSheetDataList
+                        .where((element) => element.name!.contains(value))
+                        .toList();
+                  } else {
+                    controller.growSheetDataList.clear();
+                    controller.growSheetDataList.addAll(controller.mainList);
+                  }
+                },
               ),
             ),
           ),

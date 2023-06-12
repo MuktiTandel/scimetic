@@ -37,7 +37,7 @@ class IrrigationControlScreen extends StatelessWidget {
                   height: 40.h,
                   child: CustomTextField(
                     controller: controller.searchController,
-                    isFilled: false,
+                    isFilled: true,
                     borderRadius: 8,
                     hintText: AppStrings.search,
                     contentPadding: EdgeInsets.only(left: 10.w),
@@ -50,17 +50,6 @@ class IrrigationControlScreen extends StatelessWidget {
                     ),
                     onchange: (value) {},
                   ),
-                ),
-                SizedBox(height: 10.h,),
-                CustomDropDown(
-                  hintText: AppStrings.placeholder,
-                  itemList: controller.placeHolderList,
-                  value: controller.placeHolderValue.value,
-                  isFilled: false,
-                  width: 330.w,
-                  onChange: (value) {
-                    controller.placeHolderValue.value = value;
-                  },
                 ),
               ],
             ),

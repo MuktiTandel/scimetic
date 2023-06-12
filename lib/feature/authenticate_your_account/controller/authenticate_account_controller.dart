@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/routes/app_pages.dart';

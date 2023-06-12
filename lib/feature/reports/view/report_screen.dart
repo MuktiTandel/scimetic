@@ -88,7 +88,8 @@ class ReportScreen extends StatelessWidget {
                           value: controller.chooseSensor.value,
                           onChange: (value){
                             controller.chooseSensor.value = value;
-                          }
+                          },
+                        isEdit: false.obs,
                       ),
                       SizedBox(height: 15.h,),
                       CustomText(

@@ -184,15 +184,13 @@ class GrowSheetController extends GetxController {
 
         } else {
 
-          if ( apiResponse!.statusCode == 403 ) {
-
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
+
         }
 
       } catch (e) {

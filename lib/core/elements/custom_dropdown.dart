@@ -15,7 +15,8 @@ class CustomDropDown extends StatelessWidget {
     required this.onChange,
     this.isFilled,
     this.width,
-    this.yValue
+    this.yValue,
+    required this.isEdit
   }) : super(key: key);
 
   final String hintText;
@@ -25,6 +26,7 @@ class CustomDropDown extends StatelessWidget {
   final bool? isFilled;
   final double? width;
   final double? yValue;
+  final RxBool isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class CustomDropDown extends StatelessWidget {
         dropdownWidth: width ?? 310.w,
         buttonPadding: EdgeInsets.only(left: 10.w),
         isExpanded: true,
+        value: isEdit.value == true ? value : null,
         decoration: InputDecoration(
           isDense: true,
             contentPadding: EdgeInsets.only(right: 10.w, top: 12.w, bottom: 12.w,),

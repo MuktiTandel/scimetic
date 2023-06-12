@@ -15,7 +15,7 @@ class GrowSheetLabelerModel {
 
   factory GrowSheetLabelerModel.fromJson(Map<String, dynamic> json) => GrowSheetLabelerModel(
     message: json["message"] ?? "",
-    growsheetLabeler: GrowsheetLabeler.fromJson(json["growsheetLabeler"]),
+    growsheetLabeler: json["growsheetLabeler"] != null ? GrowsheetLabeler.fromJson(json["growsheetLabeler"]) : GrowsheetLabeler(),
   );
 
   Map<String, dynamic> toJson() => {

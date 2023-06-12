@@ -91,6 +91,8 @@ dependencies:
   # for pick country code
   intl_phone_field: ^3.1.0
 
+  encrypt: ^5.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

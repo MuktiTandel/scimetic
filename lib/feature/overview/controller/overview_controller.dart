@@ -232,7 +232,11 @@ class OverviewController extends GetxController {
           if ( growSheetData.growsheets!.isNotEmpty ) {
             getGrowSheetLabelerData(id: growSheetId.value).whenComplete(() {
 
-              selectStage.value = growSheetLabelerModel.growsheetLabeler!.stage ?? AppStrings.germination;
+              if ( growSheetLabelerModel.growsheetLabeler != null ) {
+                selectStage.value =
+                    growSheetLabelerModel.growsheetLabeler!.stage ??
+                        AppStrings.germination;
+              }
 
               if ( selectStage.value.contains(AppStrings.flowering) ) {
 
@@ -271,22 +275,28 @@ class OverviewController extends GetxController {
 
               }
 
-              if ( growSheetLabelerModel.growsheetLabeler!.plantedDate!.isNotEmpty ) {
+              if ( growSheetLabelerModel.growsheetLabeler != null ) {
+                if (growSheetLabelerModel.growsheetLabeler!.plantedDate!
+                    .isNotEmpty) {
+                  DateTime plantedDate = DateFormat("dd.MM.yyyy").parse(
+                      growSheetLabelerModel.growsheetLabeler!.plantedDate!);
 
-                DateTime plantedDate = DateFormat("dd.MM.yyyy").parse(growSheetLabelerModel.growsheetLabeler!.plantedDate!);
+                  AppConst().debug('planted date => $plantedDate');
 
-                AppConst().debug('planted date => $plantedDate');
-
-                plantedDateValue.value = "${plantedDate.day}.${plantedDate.month}.${plantedDate.year}";
-
+                  plantedDateValue.value =
+                  "${plantedDate.day}.${plantedDate.month}.${plantedDate.year}";
+                }
               }
 
-              if ( growSheetLabelerModel.growsheetLabeler!.harvestDate!.isNotEmpty ) {
+              if ( growSheetLabelerModel.growsheetLabeler != null ) {
+                if (growSheetLabelerModel.growsheetLabeler!.harvestDate!
+                    .isNotEmpty) {
+                  DateTime harvestDate = DateFormat("dd.MM.yyyy").parse(
+                      growSheetLabelerModel.growsheetLabeler!.harvestDate!);
 
-                DateTime harvestDate = DateFormat("dd.MM.yyyy").parse(growSheetLabelerModel.growsheetLabeler!.harvestDate!);
-
-                harvestDateValue.value = "${harvestDate.day}.${harvestDate.month}.${harvestDate.year}";
-
+                  harvestDateValue.value =
+                  "${harvestDate.day}.${harvestDate.month}.${harvestDate.year}";
+                }
               }
             });
           }

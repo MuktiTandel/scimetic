@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/access_setting/controller/access_setting_controller.dart';
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/circulation_control/controller/circulation_control_controller.dart';
 import 'package:scimetic/feature/co2_control/controller/co2_controller.dart';
@@ -57,6 +58,8 @@ class HomeScreen extends StatelessWidget {
    final co2Controller = Get.put(Co2Controller());
 
    final lightningController = Get.put(LightningController());
+
+   final accessSettingController = Get.put(AccessSettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -860,7 +863,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.lock,
               title: AppStrings.accessSettings,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -888,6 +891,8 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(12);
                 Get.back();
+                await accessSettingController.getUserList();
+                accessSettingController.roleValue.value = "";
               },
             isSelect: controller.isAccessSetting
           ),

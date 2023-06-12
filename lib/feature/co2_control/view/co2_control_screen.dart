@@ -37,13 +37,14 @@ class Co2ControlScreen extends StatelessWidget {
                             () => controller.isValid.value == true
                             ? const SizedBox.shrink()
                             : Padding(
-                          padding: EdgeInsets.only(top: 10.h,left: 15.w, right: 15.w),
-                          child: commonErrorWidget(
-                              onTap: () {
-                                controller.isValid.value = true;
-                              },
-                              errorMessage:
-                              controller.errorMessage.value),
+                              padding: EdgeInsets.only(top: 10.h,left: 15.w, right: 15.w),
+                              child: commonErrorWidget(
+                                  onTap: () {
+                                    controller.isValid.value = true;
+                                  },
+                                  errorMessage:
+                                  controller.errorMessage.value
+                              ),
                         ),
                       ),
                       Padding(
@@ -151,7 +152,9 @@ class Co2ControlScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.dayLightningSwitch.value = value;
-                                }),
+                                },
+                              isEdit: false.obs,
+                                ),
                             SizedBox(
                               height: 10.h,
                             ),
@@ -174,7 +177,9 @@ class Co2ControlScreen extends StatelessWidget {
                                   isFilled: true,
                                   onChange: (value) {
                                     controller.dayLightningRelay.value = value;
-                                  }),
+                                  },
+                                    isEdit: false.obs,
+                                  ),
                             )
                           ],
                         ),
@@ -299,6 +304,7 @@ class Co2ControlScreen extends StatelessWidget {
                                   controller.nightLightningSwitch.value = value;
                                 },
                                 isFilled: true,
+                                isEdit: false.obs,
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -324,7 +330,9 @@ class Co2ControlScreen extends StatelessWidget {
                                     onChange: (value) {
                                       controller.nightLightningRelay.value =
                                           value;
-                                    }),
+                                    },
+                                      isEdit: false.obs,
+                                    ),
                               )
                             ],
                           ),

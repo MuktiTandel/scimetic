@@ -24,6 +24,8 @@ class FertigationController extends GetxController {
 
   RxBool isApply = false.obs;
 
+  RxBool isEdit = false.obs;
+
   List<String> placeHolderList = [
     AppStrings.placeholder
   ];

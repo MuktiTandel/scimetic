@@ -11,15 +11,12 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
-import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/feature/temperature_control/controller/temperature_controller.dart';
 
 class TemperatureControllerScreen extends StatelessWidget {
    TemperatureControllerScreen({Key? key}) : super(key: key);
 
    final controller = Get.put(TemperatureController());
-
-   ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +67,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.dayCoolingValue.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                           SizedBox(height: 10.h,),
                           CustomText(
@@ -87,7 +85,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.dayCoolingRelaySelection.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                         ],
                       ),
@@ -123,7 +122,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.nightCoolingSwitch.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(
@@ -140,7 +140,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.nightCoolingRelay.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                           ],
                         ),
@@ -191,7 +192,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.dayCoolingValue.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                           SizedBox(height: 10.h,),
                           CustomText(
@@ -208,7 +210,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.dayCoolingRelaySelection.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                         ],
                       ),
@@ -245,7 +248,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.dayCoolingValue.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(
@@ -262,7 +266,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.dayCoolingRelaySelection.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                           ],
                         ),
@@ -319,7 +324,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.extractorFanDaySwitch.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                           SizedBox(height: 10.h,),
                           CustomText(
@@ -336,7 +342,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.extractorFanDayRelay.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                         ],
                       ),
@@ -380,7 +387,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.extractorFanNightSwitch.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(
@@ -397,7 +405,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.extractorFanNightRelay.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                           ],
                         ),
@@ -454,7 +463,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.wetWallDaySwitch.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                           SizedBox(height: 10.h,),
                           CustomText(
@@ -471,7 +481,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
                                 controller.wetWalDayRelay.value = value;
-                              }
+                              },
+                            isEdit: false.obs,
                           ),
                         ],
                       ),
@@ -515,7 +526,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 isFilled: Get.isDarkMode ? true : false,
                                 onChange: (value) {
                                   controller.wetWallNightSwitch.value = value;
-                                }
+                                },
+                              isEdit: false.obs,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(
@@ -530,6 +542,7 @@ class TemperatureControllerScreen extends StatelessWidget {
                                 itemList: controller.wetWalNightRelayList,
                                 value: controller.wetWalNightRelay.value,
                                 isFilled: Get.isDarkMode ? true : false,
+                                isEdit: false.obs,
                                 onChange: (value) {
                                   controller.wetWalNightRelay.value = value;
                                 }

@@ -109,6 +109,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                 );
               }
             },
+            isEdit: false.obs,
           ),
         ),
         Expanded(

@@ -77,7 +77,8 @@ class ControlTabScreen extends StatelessWidget {
                           isFilled: Get.isDarkMode ? true : false,
                           onChange: (value) {
                             controller.blackOutSwitch.value = value;
-                          }
+                          },
+                        isEdit: false.obs,
                       ),
                       SizedBox(
                         height: 10.h,
@@ -96,7 +97,8 @@ class ControlTabScreen extends StatelessWidget {
                           isFilled: Get.isDarkMode ? true : false,
                           onChange: (value) {
                             controller.blackOutRelay.value = value;
-                          }
+                          },
+                        isEdit: false.obs,
                       ),
                     ],
                   ),
@@ -171,7 +173,8 @@ class ControlTabScreen extends StatelessWidget {
                                   isFilled: true,
                                   onChange: (value) {
                                     controller.uVScreenSwitch.value = value;
-                                  }
+                                  },
+                                isEdit: false.obs,
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -190,7 +193,8 @@ class ControlTabScreen extends StatelessWidget {
                                   isFilled: true,
                                   onChange: (value) {
                                     controller.uvScreenRelay.value = value;
-                                  }
+                                  },
+                                isEdit: false.obs,
                               ),
                             ],
                           ),

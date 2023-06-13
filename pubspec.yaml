@@ -91,7 +91,14 @@ dependencies:
   # for pick country code
   intl_phone_field: ^3.1.0
 
+  # for password encryption
   encrypt: ^5.0.1
+
+  # for image pic
+  image_picker: ^0.8.8
+
+  # for dotted border
+  dotted_border: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:

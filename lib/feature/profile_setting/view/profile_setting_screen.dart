@@ -6,6 +6,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
+import 'package:scimetic/core/elements/common_image_picker_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
@@ -45,20 +46,49 @@ class ProfileSettingScreen extends StatelessWidget {
                 SizedBox(height: 8.h,),
                 Row(
                   children: [
-                    CircleAvatar(
-                      maxRadius: 34.h,
-                      backgroundColor: AppColors.lightBorder,
-                      child: Container(
-                        height: 66.h,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            AppImages.group1,
-                            height: 43.h,
-                            width: 43.w,
+                    GestureDetector(
+                      onTap: (){
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return commonImagePickerWidget(
+                                  cameraTap: (){
+                                    Get.back();
+                                    controller.getFromCamera();
+                                  },
+                                  galleryTap: (){
+                                    Get.back();
+                                    controller.getFromGallery();
+                                  }
+                              );
+                            }
+                        );
+                      },
+                      child: CircleAvatar(
+                        maxRadius: 34.h,
+                        backgroundColor: AppColors.lightBorder,
+                        child: Container(
+                          height: 66.h,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white
+                          ),
+                          child: Center(
+                            child: Obx(() =>  controller.isPick.value == false
+                                ? Image.asset(
+                              AppImages.logo,
+                              height: 43.h,
+                              width: 43.w,
+                            ) : ClipOval(
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(39),
+                                child: Image.file(
+                                  controller.imageFile!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                            ),
                           ),
                         ),
                       ),
@@ -194,40 +224,6 @@ class ProfileSettingScreen extends StatelessWidget {
                   onChanged: (phone) {
                   },
                 ),
-                SizedBox(height: 15.h,),
-                CustomText(
-                  text: AppStrings.organizationName,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  fontSize: 12.h,
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(height: 5.h,),
-                CustomTextField(
-                  controller: controller.organizationNameController,
-                  borderRadius: 8,
-                  hintText: AppStrings.organizationName,
-                  hintTextSize: 12.sp,
-                  focusBorderColor: AppColors.buttonColor,
-                  isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
-                ),
-                SizedBox(height: 15.h,),
-                CustomText(
-                  text: AppStrings.organizationKey,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  fontSize: 12.h,
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(height: 5.h,),
-                CustomTextField(
-                  controller: controller.organizationKeyController,
-                  borderRadius: 8,
-                  hintText: AppStrings.organizationKey,
-                  hintTextSize: 12.sp,
-                  focusBorderColor: AppColors.buttonColor,
-                  isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
-                ),
                 SizedBox(height: 20.h,),
                 CustomText(
                   text: AppStrings.securitySettings,
@@ -267,7 +263,9 @@ class ProfileSettingScreen extends StatelessWidget {
                         width: 100.w,
                         height: 30.h,
                         fontSize: 14.sp,
-                        onTap: (){},
+                        onTap: (){
+                          controller.updateProfile();
+                        },
                         buttonText: AppStrings.save
                     )
                   ],

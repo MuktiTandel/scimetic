@@ -121,5 +121,7 @@ class AppImages {
   static const String unSelectedBox = 'assets/images/unSelectedBox.png';
   static const String selectedBox = 'assets/images/selectedBox.png';
   static const String applied = 'assets/images/applied.png';
+  static const String camera = 'assets/images/camera.png';
+  static const String gallery = 'assets/images/gallery.png';
 
 }

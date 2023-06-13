@@ -12,6 +12,7 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/organizations/model/company_model.dart';
@@ -81,6 +82,7 @@ class OrganizationScreen extends StatelessWidget {
                               onTap: () async {
                                 controller.isSelect.value = true;
                                 dashBoardController.companyName.value = data.name ?? "";
+                                controller.storeData.setData(StoreData.companyId, data.id);
                                 await dashBoardController.getDataList();
                               },
                               name: data.name ?? "",

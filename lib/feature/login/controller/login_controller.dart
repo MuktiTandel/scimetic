@@ -16,6 +16,7 @@ import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/login/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/login/model/login_response_model.dart';
+import 'package:scimetic/feature/profile_setting/controller/profile_setting_controller.dart';
 
 class LoginController extends GetxController {
 
@@ -67,6 +68,12 @@ class LoginController extends GetxController {
         storeData.setData(StoreData.accessToken, loginResponseModel.accessToken);
 
         storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
+
+        storeData.setData(StoreData.userName, loginResponseModel.user!.name);
+
+        storeData.setData(StoreData.userEmail, loginResponseModel.user!.email);
+
+        storeData.setData(StoreData.userId, loginResponseModel.user!.id);
 
         showSnack(
             width: 200.w,

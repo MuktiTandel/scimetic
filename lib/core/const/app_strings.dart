@@ -384,6 +384,10 @@ class AppStrings {
   static const String companyOwner = "Company Owner";
   static const String companyAdmin = "Company Admin";
   static const String cropTechnician = "Crop Technician";
+  static const String selectImages = "Select Images";
+  static const String camera = "Camera";
+  static const String gallery = "Gallery";
+  static const String timeActivate = "Time Activate";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

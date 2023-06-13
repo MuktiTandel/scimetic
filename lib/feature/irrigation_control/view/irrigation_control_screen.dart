@@ -12,7 +12,6 @@ import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/common_popup.dart';
 import 'package:scimetic/core/elements/common_time_textfield.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
-import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/feature/irrigation_control/controller/irrigation_controller.dart';
@@ -123,7 +122,7 @@ class IrrigationControlScreen extends StatelessWidget {
                                             Row(
                                               children: [
                                                 commonTimeTextField(
-                                                    controller: controller.dayTimeOnHourController,
+                                                    controller: controller.dayHourController,
                                                     hintText: AppStrings.hh,
                                                     onChanged: (value){}
                                                 ),
@@ -136,41 +135,7 @@ class IrrigationControlScreen extends StatelessWidget {
                                                 ),
                                                 SizedBox(width: 5.w,),
                                                 commonTimeTextField(
-                                                    controller: controller.dayTimeOnMinuteController,
-                                                    hintText: AppStrings.mm,
-                                                    onChanged: (value) {}
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 15.w,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              text: AppStrings.timeOFF,
-                                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                              fontSize: 12.h,
-                                            ),
-                                            SizedBox(height: 5.h,),
-                                            Row(
-                                              children: [
-                                                commonTimeTextField(
-                                                    controller: controller.dayTimeOffHourController,
-                                                    hintText: AppStrings.hh,
-                                                    onChanged: (value){}
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                CustomText(
-                                                  text: ":",
-                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                commonTimeTextField(
-                                                    controller: controller.dayTimeOffMinuteController,
+                                                    controller: controller.dayMinuteController,
                                                     hintText: AppStrings.mm,
                                                     onChanged: (value) {}
                                                 )
@@ -207,87 +172,10 @@ class IrrigationControlScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.lightBlue,
                                         ),
+                                        SizedBox(height: 10.h,),
                                       ],
                                     ),
                                     SizedBox(height: 10.h,),
-                                    Row(
-                                      children: [
-                                        CustomText(
-                                          text: "#1",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 22.sp,
-                                          color: AppColors.buttonColor,
-                                        ),
-                                        SizedBox(width: 20.w,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              text: AppStrings.timeON,
-                                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                              fontSize: 12.h,
-                                            ),
-                                            SizedBox(height: 5.h,),
-                                            Row(
-                                              children: [
-                                                commonTimeTextField(
-                                                    controller: controller.nightTimeOnHourController,
-                                                    hintText: AppStrings.hh,
-                                                    onChanged: (value){}
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                CustomText(
-                                                  text: ":",
-                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                commonTimeTextField(
-                                                    controller: controller.nightTimeOnMinuteController,
-                                                    hintText: AppStrings.mm,
-                                                    onChanged: (value) {}
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(width: 15.w,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              text: AppStrings.timeOFF,
-                                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                              fontSize: 12.h,
-                                            ),
-                                            SizedBox(height: 5.h,),
-                                            Row(
-                                              children: [
-                                                commonTimeTextField(
-                                                    controller: controller.nightTimeOffHourController,
-                                                    hintText: AppStrings.hh,
-                                                    onChanged: (value){}
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                CustomText(
-                                                  text: ":",
-                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                commonTimeTextField(
-                                                    controller: controller.nightTimeOffMinuteController,
-                                                    hintText: AppStrings.mm,
-                                                    onChanged: (value) {}
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
                                   ],
                                 ),
                               ),
@@ -533,6 +421,56 @@ class IrrigationControlScreen extends StatelessWidget {
           ],
         ),
         SizedBox(height: 5.h,)
+      ],
+    );
+  }
+
+  Widget commonHourTimeWidget({
+    required int count,
+    required TextEditingController hourController,
+    required TextEditingController minuteController}) {
+    return Row(
+      children: [
+        CustomText(
+          text: "#$count",
+          fontWeight: FontWeight.w500,
+          fontSize: 22.sp,
+          color: AppColors.buttonColor,
+        ),
+        SizedBox(width: 20.w,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: AppStrings.timeActivate,
+              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+              fontSize: 12.h,
+            ),
+            SizedBox(height: 5.h,),
+            Row(
+              children: [
+                commonTimeTextField(
+                    controller: hourController,
+                    hintText: AppStrings.hh,
+                    onChanged: (value){}
+                ),
+                SizedBox(width: 5.w,),
+                CustomText(
+                  text: ":",
+                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                SizedBox(width: 5.w,),
+                commonTimeTextField(
+                    controller: minuteController,
+                    hintText: AppStrings.mm,
+                    onChanged: (value) {}
+                )
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }

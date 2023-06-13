@@ -6,17 +6,11 @@ class IrrigationController extends GetxController {
 
   final TextEditingController searchController = TextEditingController();
 
-  final TextEditingController dayTimeOnHourController = TextEditingController();
-  final TextEditingController dayTimeOnMinuteController = TextEditingController();
+  final TextEditingController dayHourController = TextEditingController();
+  final TextEditingController dayMinuteController = TextEditingController();
 
-  final TextEditingController dayTimeOffHourController = TextEditingController();
-  final TextEditingController dayTimeOffMinuteController = TextEditingController();
-
-  final TextEditingController nightTimeOnHourController = TextEditingController();
-  final TextEditingController nightTimeOnMinuteController = TextEditingController();
-
-  final TextEditingController nightTimeOffHourController = TextEditingController();
-  final TextEditingController nightTimeOffMinuteController = TextEditingController();
+  final TextEditingController nightHourController = TextEditingController();
+  final TextEditingController nightMinuteController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController tagController = TextEditingController();

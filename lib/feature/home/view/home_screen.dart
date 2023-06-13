@@ -23,6 +23,8 @@ import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
 import 'package:scimetic/feature/lightning_control/controller/lightning_controller.dart';
+import 'package:scimetic/feature/notification_setting/controller/notification_setting_controller.dart';
+import 'package:scimetic/feature/organization_settings/controller/organization_setting_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -60,6 +62,10 @@ class HomeScreen extends StatelessWidget {
    final lightningController = Get.put(LightningController());
 
    final accessSettingController = Get.put(AccessSettingController());
+
+   final organizationSettingController = Get.put(OrganizationSettingController());
+
+   final notificationSettingController = Get.put(NotificationSettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -900,7 +906,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.briefcase,
               title: AppStrings.organisationSettings,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -928,6 +934,7 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(13);
                 Get.back();
+                await organizationSettingController.getCompanyDetails();
               },
             isSelect: controller.isOrganisationSettings
           ),
@@ -970,7 +977,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.notification,
               title: AppStrings.notifications,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -998,6 +1005,7 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(15);
                 Get.back();
+                await notificationSettingController.getNotificationData();
               },
             isSelect: controller.isNotifications
           ),

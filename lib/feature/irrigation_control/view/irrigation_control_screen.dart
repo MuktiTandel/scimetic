@@ -9,11 +9,14 @@ import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
+import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/common_popup.dart';
+import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/common_time_textfield.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
+import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/irrigation_control/controller/irrigation_controller.dart';
 
 class IrrigationControlScreen extends StatelessWidget {
@@ -53,322 +56,423 @@ class IrrigationControlScreen extends StatelessWidget {
               ],
             ),
           ),
-          ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: 1,
-              shrinkWrap: true,
-              itemBuilder: ( BuildContext context, int index ) {
-                return listWidget();
-              }
-          ),
-          SizedBox(height: 10.h,),
-          Padding(
-            padding:  EdgeInsets.only(right: 15.w),
-            child: CustomButton(
-              height: 30.h,
-              width: 85.w,
-              onTap: (){
-                Get.dialog(
-                    CommonDialogWidget(
-                        title: AppStrings.addNewSchedules,
+          Expanded(
+            child: ScrollConfiguration(
+              behavior: AppBehavior(),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Obx(() => controller.isGetData.value == true
+                        ? ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: 1,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: ( BuildContext context, int index ) {
+                          return listWidget();
+                        }
+                    )
+                        : const Center(
+                            child: CircularProgressIndicator(
+                            color: AppColors.buttonColor,
+                    ),)),
+                    SizedBox(height: 10.h,),
+                    Padding(
+                      padding:  EdgeInsets.only(right: 15.w),
+                      child: CustomButton(
+                        height: 30.h,
+                        width: 85.w,
                         onTap: (){
-                          Get.back();
-                        },
-                        widget: SizedBox(
-                          width: 350.w,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:  EdgeInsets.symmetric(horizontal: 15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                          Get.dialog(
+                              CommonDialogWidget(
+                                  title: AppStrings.addNewSchedules,
+                                  onTap: (){
+                                    controller.listHeight.value = 80.0;
+                                    controller.dayMinuteList.clear();
+                                    controller.dayMinuteList.add(TextEditingController());
+                                    controller.dayHourList.clear();
+                                    controller.dayHourList.add(TextEditingController());
+                                    controller.nightMinuteList.clear();
+                                    controller.nightMinuteList.add(TextEditingController());
+                                    controller.nightHourList.clear();
+                                    controller.nightHourList.add(TextEditingController());
+                                    controller.day100TemperatureController.clear();
+                                    controller.day100DurationController.clear();
+                                    controller.day0TemperatureController.clear();
+                                    controller.day0DurationController.clear();
+                                    for (var element in controller.dayHourList) {
+                                      element.clear();
+                                    }
+                                    for (var element in controller.dayMinuteList) {
+                                      element.clear();
+                                    }
+                                    controller.night100TemperatureController.clear();
+                                    controller.night100DurationController.clear();
+                                    controller.night0TemperatureController.clear();
+                                    controller.night0DurationController.clear();
+                                    for (var element in controller.nightHourList) {
+                                      element.clear();
+                                    }
+                                    for (var element in controller.nightMinuteList) {
+                                      element.clear();
+                                    }
+                                    Get.back();
+                                  },
+                                  widget: SizedBox(
+                                    width: 350.w,
+                                    child: Column(
                                       children: [
-                                        Image.asset(
-                                          AppImages.fillSun,
-                                          height: 20.h,
-                                          width: 20.w,
-                                          color: AppColors.lightBlue,
-                                        ),
-                                        SizedBox(width: 10.w,),
-                                        CustomText(
-                                            text: AppStrings.dayIrrigationMode,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.lightBlue,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10.h,),
-                                    Row(
-                                      children: [
-                                        CustomText(
-                                          text: "#1",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 22.sp,
-                                          color: AppColors.buttonColor,
-                                        ),
-                                        SizedBox(width: 20.w,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            CustomText(
-                                              text: AppStrings.timeON,
-                                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                              fontSize: 12.h,
-                                            ),
-                                            SizedBox(height: 5.h,),
-                                            Row(
-                                              children: [
-                                                commonTimeTextField(
-                                                    controller: controller.dayHourController,
-                                                    hintText: AppStrings.hh,
-                                                    onChanged: (value){}
+                                        Padding(
+                                          padding:  EdgeInsets.symmetric(horizontal: 15.w),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Obx(() => controller.isValid.value == true ? const SizedBox.shrink() : Column(
+                                                children: [
+                                                  commonErrorWidget(
+                                                      onTap: (){
+                                                        controller.isValid.value = true;
+                                                      },
+                                                      errorMessage: controller.errorMessage.value
+                                                  ),
+                                                  SizedBox(height: 10.h,)
+                                                ],
+                                              )),
+                                              Row(
+                                                children: [
+                                                  Image.asset(
+                                                    AppImages.fillSun,
+                                                    height: 20.h,
+                                                    width: 20.w,
+                                                    color: AppColors.lightBlue,
+                                                  ),
+                                                  SizedBox(width: 10.w,),
+                                                  CustomText(
+                                                    text: AppStrings.dayIrrigationMode,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.lightBlue,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              commonTexField(
+                                                  title: AppStrings.temperature100,
+                                                  controller: controller.day100TemperatureController,
+                                                  suffixText: "°C",
+                                                  hintText: AppStrings.temperature,
+                                                  onChanged: (value) {}
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              customTextField(
+                                                  title: AppStrings.duration,
+                                                  controller: controller.day100DurationController,
+                                                  hintText: AppStrings.duration
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              commonTexField(
+                                                  title: AppStrings.temperature0,
+                                                  controller: controller.day0TemperatureController,
+                                                  suffixText: "°C",
+                                                  hintText: AppStrings.temperature,
+                                                  onChanged: (value) {}
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              customTextField(
+                                                  title: AppStrings.duration,
+                                                  controller: controller.day0DurationController,
+                                                  hintText: AppStrings.duration
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              Obx(() => SizedBox(
+                                                height: controller.listHeight.value,
+                                                child: ListView.builder(
+                                                    itemCount: controller.dayHourList.length,
+                                                    padding: EdgeInsets.zero,
+                                                    shrinkWrap: true,
+                                                    physics: const NeverScrollableScrollPhysics(),
+                                                    itemBuilder: (BuildContext context, int index ) {
+                                                      return commonHourTimeWidget(
+                                                          count: index + 1,
+                                                          hourController: controller.dayHourList[index],
+                                                          minuteController: controller.dayMinuteList[index]
+                                                      );
+                                                    }
                                                 ),
-                                                SizedBox(width: 5.w,),
-                                                CustomText(
-                                                  text: ":",
-                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                SizedBox(width: 5.w,),
-                                                commonTimeTextField(
-                                                    controller: controller.dayMinuteController,
-                                                    hintText: AppStrings.mm,
-                                                    onChanged: (value) {}
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10.h,),
-                              Container(
-                                color: AppColors.lightAppbar,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15.w,
-                                    vertical: 10.h
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AppImages.fillMoon,
-                                          height: 20.h,
-                                          width: 20.w,
-                                          color: AppColors.lightBlue,
-                                        ),
-                                        SizedBox(width: 10.w,),
-                                        CustomText(
-                                          text: AppStrings.nightIrrigationMode,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.lightBlue,
+                                              ))
+                                            ],
+                                          ),
                                         ),
                                         SizedBox(height: 10.h,),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10.h,),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10.h,),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      text: AppStrings.name,
-                                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(height: 5.h,),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: CustomTextField(
-                                        controller: controller.nameController,
-                                        borderRadius: 8,
-                                        contentPadding: EdgeInsets.only(left: 10.w),
-                                        hintText: AppStrings.name,
-                                        hintTextSize: 12.sp,
-                                        focusBorderColor: AppColors.buttonColor,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onchange: (value){},
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h,),
-                                    CustomText(
-                                      text: AppStrings.tag,
-                                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(height: 5.h,),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: CustomTextField(
-                                        controller: controller.tagController,
-                                        borderRadius: 8,
-                                        contentPadding: EdgeInsets.only(left: 10.w),
-                                        hintText: AppStrings.tag,
-                                        hintTextSize: 12.sp,
-                                        focusBorderColor: AppColors.buttonColor,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onchange: (value){},
-                                      ),
-                                    ),
-                                    SizedBox(height: 10.h,),
-                                    CustomText(
-                                      text: AppStrings.description,
-                                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(height: 5.h,),
-                                    commonDescriptionTextField(
-                                        controller: controller.descriptionController,
-                                        descriptionLength: controller.descriptionLength
-                                    ),
-                                    SizedBox(height: 20.h,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: OutLineButton(
-                                            onTap: (){
-                                              Get.back();
-                                            },
+                                        Container(
+                                          color: AppColors.lightAppbar,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.w,
+                                              vertical: 10.h
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Image.asset(
+                                                    AppImages.fillMoon,
+                                                    height: 20.h,
+                                                    width: 20.w,
+                                                    color: AppColors.lightBlue,
+                                                  ),
+                                                  SizedBox(width: 10.w,),
+                                                  CustomText(
+                                                    text: AppStrings.nightIrrigationMode,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: AppColors.lightBlue,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              commonTexField(
+                                                  title: AppStrings.temperature100,
+                                                  controller: controller.day100TemperatureController,
+                                                  suffixText: "°C",
+                                                  hintText: AppStrings.temperature,
+                                                  onChanged: (value) {},
+                                                  isFilled: true
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              customTextField(
+                                                  title: AppStrings.duration,
+                                                  controller: controller.day100DurationController,
+                                                  hintText: AppStrings.duration
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              commonTexField(
+                                                  title: AppStrings.temperature0,
+                                                  controller: controller.day0TemperatureController,
+                                                  suffixText: "°C",
+                                                  hintText: AppStrings.temperature,
+                                                  onChanged: (value) {},
+                                                  isFilled: true
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              customTextField(
+                                                title: AppStrings.duration,
+                                                controller: controller.day0DurationController,
+                                                hintText: AppStrings.duration,
+                                              ),
+                                              SizedBox(height: 10.h,),
+                                              Obx(() => SizedBox(
+                                                height: controller.listHeight.value,
+                                                child: ListView.builder(
+                                                    itemCount: controller.dayHourList.length,
+                                                    padding: EdgeInsets.zero,
+                                                    shrinkWrap: true,
+                                                    physics: const NeverScrollableScrollPhysics(),
+                                                    itemBuilder: (BuildContext context, int index ) {
+                                                      return commonHourTimeWidget(
+                                                          count: index + 1,
+                                                          hourController: controller.dayHourList[index],
+                                                          minuteController: controller.dayMinuteList[index]
+                                                      );
+                                                    }
+                                                ),
+                                              ))
+                                            ],
                                           ),
                                         ),
-                                        SizedBox(width: 10.w,),
-                                        Expanded(
-                                          child: CustomButton(
-                                            onTap: (){
-                                              Get.back();
-                                            },
-                                            buttonText: AppStrings.save,
-                                            width: 100.w,
-                                            height: 40.h,
-                                            fontSize: 15.sp,
+                                        SizedBox(height: 10.h,),
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 15.w),
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: CustomButton(
+                                                height: 30.h,
+                                                width: 130.w,
+                                                onTap: (){
+                                                  controller.listHeight.value = controller.listHeight.value + 95.0;
+                                                  controller.dayHourList.add(TextEditingController());
+                                                  controller.dayMinuteList.add(TextEditingController());
+                                                  controller.nightHourList.add(TextEditingController());
+                                                  controller.nightMinuteList.add(TextEditingController());
+                                                },
+                                                buttonText: AppStrings.addSchedule
+                                            ),
                                           ),
+                                        ),
+                                        SizedBox(height: 10.h,),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                customTextField(
+                                                    title: AppStrings.name,
+                                                    controller: controller.nameController,
+                                                    hintText: AppStrings.name
+                                                ),
+                                                SizedBox(height: 10.h,),
+                                                customTextField(
+                                                    title: AppStrings.tag,
+                                                    controller: controller.tagController,
+                                                    hintText: AppStrings.tag
+                                                ),
+                                                SizedBox(height: 10.h,),
+                                                CustomText(
+                                                  text: AppStrings.description,
+                                                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                                                  fontSize: 12.h,
+                                                ),
+                                                SizedBox(height: 5.h,),
+                                                commonDescriptionTextField(
+                                                    controller: controller.descriptionController,
+                                                    descriptionLength: controller.descriptionLength
+                                                ),
+                                                SizedBox(height: 20.h,),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: OutLineButton(
+                                                        onTap: (){
+                                                          Get.back();
+                                                        },
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10.w,),
+                                                    Expanded(
+                                                      child: CustomButton(
+                                                        onTap: (){
+                                                          controller.onSave();
+                                                        },
+                                                        buttonText: AppStrings.save,
+                                                        width: 100.w,
+                                                        height: 40.h,
+                                                        fontSize: 15.sp,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(height: 20.h,)
+                                              ],
+                                            )
                                         )
                                       ],
                                     ),
-                                    SizedBox(height: 20.h,)
-                                  ],
-                                )
+                                  )
+                              )
+                          );
+                        },
+                        buttonText: AppStrings.add,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                AppImages.add,
+                                height: 12.h,
+                                width: 12.w,
+                              ),
+                              SizedBox(width: 10.w,),
+                              const Text(
+                                  AppStrings.add
                               )
                             ],
                           ),
-                        )
-                    )
-                );
-              },
-              buttonText: AppStrings.add,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      AppImages.add,
-                      height: 12.h,
-                      width: 12.w,
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 10.w,),
-                    const Text(
-                        AppStrings.add
-                    )
+                    SizedBox(height: 20.h,)
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
   Widget listWidget() {
-    return Container(
-      color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      children: [
+        Container(
+          color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+          child: Column(
             children: [
-              CustomText(
-                text: AppStrings.scheduleName,
-                color: AppColors.buttonColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 14.sp,
+              Row(
+                children: [
+                  CustomText(
+                    text: AppStrings.scheduleName,
+                    color: AppColors.buttonColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                  ),
+                  Expanded(child: SizedBox(width: 10.w,)),
+                  commonPopup(
+                    deleteTap: (){},
+                    applyTap: (){},
+                    isApply: controller.isApply,
+                    editTap: (){}
+                  ),
+                  SizedBox(width: 10.w,),
+                  Obx(() => GestureDetector(
+                    onTap: (){
+                      controller.isSelect.value = !controller.isSelect.value;
+                    },
+                    child: Image.asset(
+                      controller.isSelect.value == false
+                          ? AppImages.downArrow : AppImages.upArrow,
+                      height: 22.h,
+                      width: 22.w,
+                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    ),
+                  ))
+                ],
               ),
-              Expanded(child: SizedBox(width: 10.w,)),
-              commonPopup(
-                deleteTap: (){},
-                applyTap: (){},
-                isApply: controller.isApply,
-                editTap: (){}
+              SizedBox(height: 5.h,),
+              Row(
+                children: [
+                  Image.asset(
+                    AppImages.tag,
+                    height: 15.h,
+                    width: 15.w,
+                    color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  ),
+                  SizedBox(width: 10.w,),
+                  CustomText(
+                    text: AppStrings.seedling,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  )
+                ],
               ),
-              SizedBox(width: 10.w,),
-              Obx(() => GestureDetector(
-                onTap: (){
-                  controller.isSelect.value = !controller.isSelect.value;
-                },
-                child: Image.asset(
-                  controller.isSelect.value == false
-                      ? AppImages.downArrow : AppImages.upArrow,
-                  height: 22.h,
-                  width: 22.w,
-                  color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                ),
-              ))
-            ],
-          ),
-          SizedBox(height: 5.h,),
-          Row(
-            children: [
-              Image.asset(
-                AppImages.tag,
-                height: 15.h,
-                width: 15.w,
-                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+              SizedBox(height: 5.h,),
+              Text(
+                AppStrings.tODesc,
+                style: TextStyleDecoration.body1,
               ),
-              SizedBox(width: 10.w,),
-              CustomText(
-                text: AppStrings.seedling,
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
-                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+              Obx(() => controller.isSelect.value == true
+                  ? SizedBox(height: 10.h,)
+                  : const SizedBox.shrink()),
+              Obx(() => controller.isSelect.value == true ? Row(
+                children: [
+                  Expanded(
+                    child: commonTimeWidget(title: AppStrings.day),
+                  ),
+                  SizedBox(width: 10.w,),
+                  Expanded(
+                    child: commonTimeWidget(title: AppStrings.night),
+                  ),
+                ],
+              ) : const SizedBox.shrink()
               )
             ],
           ),
-          SizedBox(height: 5.h,),
-          Text(
-            AppStrings.tODesc,
-            style: TextStyleDecoration.body1,
-          ),
-          Obx(() => controller.isSelect.value == true
-              ? SizedBox(height: 10.h,)
-              : const SizedBox.shrink()),
-          Obx(() => controller.isSelect.value == true ? Row(
-            children: [
-              Expanded(
-                child: commonTimeWidget(title: AppStrings.day),
-              ),
-              SizedBox(width: 10.w,),
-              Expanded(
-                child: commonTimeWidget(title: AppStrings.night),
-              ),
-            ],
-          ) : const SizedBox.shrink()
-          )
-        ],
-      ),
+        ),
+        SizedBox(height: 10.h,)
+      ],
     );
   }
 
@@ -425,52 +529,103 @@ class IrrigationControlScreen extends StatelessWidget {
     );
   }
 
+  Widget customTextField({
+    required String title,
+    required TextEditingController controller,
+    required String hintText}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          text: title,
+          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+          fontSize: 12.h,
+        ),
+        SizedBox(height: 5.h,),
+        SizedBox(
+          height: 40.h,
+          child: CustomTextField(
+            controller: controller,
+            borderRadius: 8,
+            textInputType: TextInputType.number,
+            contentPadding: EdgeInsets.only(left: 10.w),
+            hintText: hintText,
+            hintTextSize: 12.sp,
+            focusBorderColor: AppColors.buttonColor,
+            isFilled: true,
+            onchange: (value){},
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget commonHourTimeWidget({
     required int count,
     required TextEditingController hourController,
     required TextEditingController minuteController}) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        CustomText(
-          text: "#$count",
-          fontWeight: FontWeight.w500,
-          fontSize: 22.sp,
-          color: AppColors.buttonColor,
-        ),
-        SizedBox(width: 20.w,),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
             CustomText(
-              text: AppStrings.timeActivate,
-              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-              fontSize: 12.h,
+              text: "#$count",
+              fontWeight: FontWeight.w500,
+              fontSize: 22.sp,
+              color: AppColors.buttonColor,
             ),
-            SizedBox(height: 5.h,),
-            Row(
+            SizedBox(width: 20.w,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                commonTimeTextField(
-                    controller: hourController,
-                    hintText: AppStrings.hh,
-                    onChanged: (value){}
-                ),
-                SizedBox(width: 5.w,),
                 CustomText(
-                  text: ":",
+                  text: AppStrings.timeActivate,
                   color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 12.h,
                 ),
-                SizedBox(width: 5.w,),
-                commonTimeTextField(
-                    controller: minuteController,
-                    hintText: AppStrings.mm,
-                    onChanged: (value) {}
-                )
+                SizedBox(height: 5.h,),
+                Row(
+                  children: [
+                    commonTimeTextField(
+                        controller: hourController,
+                        hintText: AppStrings.hh,
+                        onChanged: (value){
+                          if ( value.isNotEmpty ) {
+                            if (int.parse(value) > 23) {
+                              hourController.text = "23";
+                            }
+                          }
+                        },
+                        isField: true
+                    ),
+                    SizedBox(width: 5.w,),
+                    CustomText(
+                      text: ":",
+                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    SizedBox(width: 5.w,),
+                    commonTimeTextField(
+                        controller: minuteController,
+                        hintText: AppStrings.mm,
+                        onChanged: (value) {
+                          if ( value.isNotEmpty ) {
+                            if (int.parse(value) > 59) {
+                              minuteController.text = "59";
+                            }
+                          }
+                        },
+                        isField: true
+                    )
+                  ],
+                ),
               ],
             ),
           ],
         ),
+        SizedBox(height: 10.h,)
       ],
     );
   }

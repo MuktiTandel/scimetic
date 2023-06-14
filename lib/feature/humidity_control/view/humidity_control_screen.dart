@@ -152,6 +152,7 @@ class HumidityControlScreen extends StatelessWidget {
                                 controller: controller.nightHumidityRHController,
                                 suffixText: "%",
                                 hintText: "RH",
+                                isFilled: true,
                                 onChanged: (value) {}
                             ),
                             SizedBox(height: 10.h,),
@@ -160,7 +161,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 controller: controller.nightHumidityRHDeadbandController,
                                 suffixText: "%",
                                 hintText: "RH",
-                                onChanged: (value) {}
+                                onChanged: (value) {},
+                              isFilled: true,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(
@@ -342,7 +344,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 controller: controller.nightDehumidityRHController,
                                 suffixText: "%",
                                 hintText: "RH",
-                                onChanged: (value) {}
+                                onChanged: (value) {},
+                              isFilled: true,
                             ),
                             SizedBox(height: 10.h,),
                             commonTexField(
@@ -350,7 +353,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 controller: controller.nightDehumidityRHDeadbandController,
                                 suffixText: "%",
                                 hintText: "RH",
-                                onChanged: (value) {}
+                                onChanged: (value) {},
+                              isFilled: true,
                             ),
                             SizedBox(height: 10.h,),
                             CustomText(

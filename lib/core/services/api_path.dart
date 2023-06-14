@@ -27,5 +27,6 @@ class ApiPath {
   static const accessUser = "/access/user";
   static const user = "/user";
   static const notificationSettings = "/user/notification_settings";
+  static const irrigationControl = "/irrigation_control";
 
 }

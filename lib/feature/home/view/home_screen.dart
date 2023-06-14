@@ -22,6 +22,7 @@ import 'package:scimetic/feature/device_settings/controller/device_settings_cont
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
+import 'package:scimetic/feature/irrigation_control/controller/irrigation_controller.dart';
 import 'package:scimetic/feature/lightning_control/controller/lightning_controller.dart';
 import 'package:scimetic/feature/notification_setting/controller/notification_setting_controller.dart';
 import 'package:scimetic/feature/organization_settings/controller/organization_setting_controller.dart';
@@ -66,6 +67,8 @@ class HomeScreen extends StatelessWidget {
    final organizationSettingController = Get.put(OrganizationSettingController());
 
    final notificationSettingController = Get.put(NotificationSettingController());
+
+   final irrigationController = Get.put(IrrigationController());
 
   @override
   Widget build(BuildContext context) {
@@ -799,7 +802,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.wateringCan,
               title: AppStrings.irrigation,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -826,7 +829,17 @@ class HomeScreen extends StatelessWidget {
                 dashboardController.isOverViewTitle.value = false;
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(10);
+                irrigationController.listHeight.value = 80.0;
+                irrigationController.dayMinuteList.clear();
+                irrigationController.dayMinuteList.add(TextEditingController());
+                irrigationController.dayHourList.clear();
+                irrigationController.dayHourList.add(TextEditingController());
+                irrigationController.nightMinuteList.clear();
+                irrigationController.nightMinuteList.add(TextEditingController());
+                irrigationController.nightHourList.clear();
+                irrigationController.nightHourList.add(TextEditingController());
                 Get.back();
+                await irrigationController.getIrrigationControlData();
               },
             isSelect: controller.isIrrigation
           ),

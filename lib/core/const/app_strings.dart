@@ -388,6 +388,10 @@ class AppStrings {
   static const String camera = "Camera";
   static const String gallery = "Gallery";
   static const String timeActivate = "Time Activate";
+  static const String temperature100 = "100% Temperature";
+  static const String duration = "Duration";
+  static const String temperature0 = "0% Temperature";
+  static const String addSchedule = "Add Schedule";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

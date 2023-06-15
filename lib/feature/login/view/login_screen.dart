@@ -7,7 +7,6 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/common_view_screen.dart';
-import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/login/controller/login_controller.dart';

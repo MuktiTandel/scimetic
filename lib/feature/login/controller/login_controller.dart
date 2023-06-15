@@ -16,7 +16,6 @@ import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/login/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/login/model/login_response_model.dart';
-import 'package:scimetic/feature/profile_setting/controller/profile_setting_controller.dart';
 
 class LoginController extends GetxController {
 

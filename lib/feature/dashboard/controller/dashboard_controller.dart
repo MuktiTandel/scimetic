@@ -54,7 +54,9 @@ class DashboardController extends GetxController {
 
   StoreData storeData = StoreData();
 
-  RxList dataList = [].obs;
+  RxList dataList = [GrowController(
+    name: "test"
+  )].obs;
 
   List<GrowController> mainList = [];
 
@@ -77,8 +79,9 @@ class DashboardController extends GetxController {
     roleId.value = storeData.getInt(StoreData.roleId)!;
 
     if ( roleId.value != 1 ) {
-      getDataList();
+       getDataList();
     }
+
   }
 
   Future getDataList() async {
@@ -322,7 +325,7 @@ class DashboardController extends GetxController {
           await createGrowSpace(growspaceModel: growspaceModel)
               .whenComplete(() {
             Get.back();
-            getDataList();
+             getDataList();
           });
 
         } else {

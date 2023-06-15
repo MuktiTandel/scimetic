@@ -26,8 +26,22 @@ class FertigationController extends GetxController {
 
   RxBool isEdit = false.obs;
 
-  List<String> placeHolderList = [
-    AppStrings.placeholder
+  RxBool isCheckAll = false.obs;
+
+  List<RxBool> showList = [];
+
+  List<RxBool> selectList = [
+    false.obs
   ];
+
+  List<TextEditingController> dayIngredientList = [TextEditingController()];
+
+  List<TextEditingController> dayQuantityList = [TextEditingController()];
+
+  List<TextEditingController> nightIngredientList = [TextEditingController()];
+
+  List<TextEditingController> nightQuantityList = [TextEditingController()];
+
+  RxDouble listHeight = 90.0.obs;
 
 }

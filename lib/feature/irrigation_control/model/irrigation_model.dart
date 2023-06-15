@@ -31,7 +31,7 @@ class IrrigationModel {
   int? day0Duration;
   int? night0Temperature;
   int? night0Duration;
-  List<Schedule>? schedules;
+  List<Schedule1>? schedules;
 
   factory IrrigationModel.fromJson(Map<String, dynamic> json) => IrrigationModel(
     tag: json["tag"] ?? "",
@@ -46,7 +46,7 @@ class IrrigationModel {
     night0Temperature: json["night0Temperature"] ?? 0,
     night0Duration: json["night0Duration"] ?? 0,
     schedules: json["schedules"] != null
-        ? List<Schedule>.from(json["schedules"].map((x) => Schedule.fromJson(x)))
+        ? List<Schedule1>.from(json["schedules"].map((x) => Schedule1.fromJson(x)))
         : [],
   );
 
@@ -66,8 +66,8 @@ class IrrigationModel {
   };
 }
 
-class Schedule {
-  Schedule({
+class Schedule1 {
+  Schedule1({
     this.dayTimeActivate,
     this.nightTimeActivate,
   });
@@ -75,7 +75,7 @@ class Schedule {
   String? dayTimeActivate;
   String? nightTimeActivate;
 
-  factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
+  factory Schedule1.fromJson(Map<String, dynamic> json) => Schedule1(
     dayTimeActivate: json["dayTimeActivate"] ?? "",
     nightTimeActivate: json["nightTimeActivate"] ?? "",
   );

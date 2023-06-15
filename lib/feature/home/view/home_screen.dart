@@ -195,7 +195,7 @@ class HomeScreen extends StatelessWidget {
                                   controller.unSelectModule();
                                    overviewController.isGraphScreen.value = false;
                                   Get.back();
-                                   dashboardController.getDataList();
+                                  dashboardController.getDataList();
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,

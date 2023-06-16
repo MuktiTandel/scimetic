@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
@@ -34,6 +35,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 child: CustomTextField(
                   controller: controller.emailController,
                   hintText: AppStrings.eYROUsername,
+                  focusBorderColor: AppColors.buttonColor,
                   onchange: (val) {},
                 ),
               ),

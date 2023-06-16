@@ -19,6 +19,7 @@ import 'package:scimetic/feature/co2_control/controller/co2_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
+import 'package:scimetic/feature/fertigation_control/controller/fertigation_controller.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
@@ -70,6 +71,8 @@ class HomeScreen extends StatelessWidget {
 
    final irrigationController = Get.put(IrrigationController());
 
+   final fertigationController = Get.put(FertigationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +105,10 @@ class HomeScreen extends StatelessWidget {
           : IndexedStack(
         index: controller.moduleIndex.value,
         children: controller.moduleList,
-      )) : (dashboardController.isOverView.value == false
+      )) /*(organizationController.isSelect.value == false ? OrganizationScreen() : IndexedStack(
+        index: controller.moduleIndex.value,
+        children: controller.moduleList,
+      ))*/ : (dashboardController.isOverView.value == false
           ? const DashboardScreen()
           : controller.isModuleView.value == false
           ? const OverviewScreen()
@@ -196,6 +202,10 @@ class HomeScreen extends StatelessWidget {
                                    overviewController.isGraphScreen.value = false;
                                   Get.back();
                                   dashboardController.getDataList();
+                                  // this will b after remove
+                                  // dashboardController.isOverView.value = true;
+                                  // dashboardController.isSelect.value = true;
+                                  // controller.isModuleView.value = true;
                                 },
                                 image: AppImages.dashboard,
                                 title: AppStrings.dashboard,
@@ -847,7 +857,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.fertigation,
               title: AppStrings.fertigation,
-              onTap: (){
+              onTap: () async {
                 if ( dashboardController.isOverView.value == true ) {
                   controller.isModuleView.value = true;
                 }
@@ -875,6 +885,7 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(11);
                 Get.back();
+                await fertigationController.getFertigationControlData();
               },
             isSelect: controller.isFertigation
           ),

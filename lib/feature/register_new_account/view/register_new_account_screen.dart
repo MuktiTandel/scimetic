@@ -46,6 +46,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.nameController,
                 hintText: AppStrings.eYFName,
                 onchange: (val) {},
+                focusBorderColor: AppColors.buttonColor,
               ),
             ),
             SizedBox(
@@ -62,6 +63,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                   controller: controller.emailController,
                 hintText: AppStrings.eYROUsername,
                 onchange: (val) {},
+                focusBorderColor: AppColors.buttonColor,
               ),
             ),
             SizedBox(
@@ -78,6 +80,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.cPasswordController,
                 hintText: AppStrings.eYPassword,
                 isObscure: !controller.isCPassword.value,
+                focusBorderColor: AppColors.buttonColor,
                 suffixWidget: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: (){
@@ -116,6 +119,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.rPasswordController,
                 hintText: AppStrings.eYPassword,
                 isObscure: !controller.isRPassword.value,
+                focusBorderColor: AppColors.buttonColor,
                 suffixWidget: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: (){

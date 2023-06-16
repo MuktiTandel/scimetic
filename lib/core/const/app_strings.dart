@@ -393,6 +393,8 @@ class AppStrings {
   static const String temperature0 = "0% Temperature";
   static const String addSchedule = "Add Schedule";
   static const String addFormula = "Add Formula";
+  static const String dayFertigationMode = "Day Fertigation Mode";
+  static const String nightFertigationMode = "Night Fertigation Mode";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

@@ -45,6 +45,7 @@ class LoginScreen extends StatelessWidget {
                 child: CustomTextField(
                   controller: controller.emailController,
                   hintText: AppStrings.eYROUsername,
+                  focusBorderColor: AppColors.buttonColor,
                   onchange: (val) {},
                 ),
               ),
@@ -77,6 +78,7 @@ class LoginScreen extends StatelessWidget {
                   controller: controller.passwordController,
                   hintText: AppStrings.eYPassword,
                   isObscure: !controller.isObscure.value,
+                  focusBorderColor: AppColors.buttonColor,
                   suffixWidget: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: (){

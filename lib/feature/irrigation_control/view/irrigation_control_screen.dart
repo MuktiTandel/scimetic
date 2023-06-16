@@ -67,10 +67,12 @@ class IrrigationControlScreen extends StatelessWidget {
                           controller.isCheckAll.value =
                               !controller.isCheckAll.value;
                           if (controller.isCheckAll.value == true) {
+                            controller.isSelect.value = true;
                             for (var element in controller.selectList) {
                               element.value = true;
                             }
                           } else {
+                            controller.isSelect.value = false;
                             for (var element in controller.selectList) {
                               element.value = false;
                             }
@@ -105,10 +107,10 @@ class IrrigationControlScreen extends StatelessWidget {
                     SizedBox(
                       width: 10.w,
                     ),
-                    Obx(() => controller.isCheckAll.value == true || controller.isSelect.value == true
+                    Obx(() => controller.isCheckAll.value == true ||
+                            controller.isSelect.value == true
                         ? GestureDetector(
-                            onTap: () async {
-                            },
+                            onTap: () async {},
                             child: Row(
                               children: [
                                 Image.asset(
@@ -151,7 +153,9 @@ class IrrigationControlScreen extends StatelessWidget {
                               return listWidget(
                                   data: controller.irrigationList[index],
                                   isShow: controller.showList[index],
-                                  isSelect: controller.selectList[index]);
+                                  isSelect: controller.selectList[index],
+                                  isApplied: controller.appliedList[index]
+                              );
                             })
                         : const Center(
                             child: CircularProgressIndicator(
@@ -568,136 +572,174 @@ class IrrigationControlScreen extends StatelessWidget {
   Widget listWidget(
       {required IrrigationControl data,
       required RxBool isShow,
-      required RxBool isSelect}) {
+      required RxBool isSelect,
+      required RxBool isApplied}) {
     return Column(
       children: [
-        Container(
-          color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        Stack(
+          children: [
+            Container(
+              color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(
-                    () => GestureDetector(
-                      onTap: () {
-                        isSelect.value = !isSelect.value;
-                        controller.isSelect.value = !controller.isSelect.value;
-                      },
-                      child: isSelect.value == false
-                          ? Image.asset(
-                              AppImages.unSelectedBox,
-                              height: 18.h,
-                              width: 18.w,
+                  Row(
+                    children: [
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () {
+                            isSelect.value = !isSelect.value;
+                            for (var element in controller.selectList) {
+                              if (element.value == true) {
+                                controller.isSelect.value = true;
+                              } else {
+                                controller.isSelect.value = false;
+                              }
+                            }
+                          },
+                          child: isSelect.value == false
+                              ? Image.asset(
+                                  AppImages.unSelectedBox,
+                                  height: 18.h,
+                                  width: 18.w,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText
+                                      : AppColors.lightText,
+                                )
+                              : Image.asset(
+                                  AppImages.selectedBox,
+                                  height: 18.h,
+                                  width: 18.w,
+                                ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      CustomText(
+                        text: data.name ?? "",
+                        color: AppColors.buttonColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.sp,
+                      ),
+                      Expanded(
+                          child: SizedBox(
+                        width: 10.w,
+                      )),
+                      commonPopup(
+                          deleteTap: () {},
+                          applyTap: () async{
+                            controller.isApply.value =
+                            !controller.isApply.value;
+
+                            bool isApply = await controller.toggleApply(
+                                applied: controller.isApply.value,
+                                id: data.id ?? 0);
+
+                            if (isApply == true) {
+                              if (isApplied.value == true) {
+                                isApplied.value = false;
+                              } else {
+                                isApplied.value = true;
+                              }
+                            }
+                          },
+                          isApply: controller.isApply,
+                          editTap: () {}),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Obx(() => GestureDetector(
+                            onTap: () {
+                              isShow.value = !isShow.value;
+                            },
+                            child: Image.asset(
+                              isShow.value == false
+                                  ? AppImages.downArrow
+                                  : AppImages.upArrow,
+                              height: 22.h,
+                              width: 22.w,
                               color: Get.isDarkMode
                                   ? AppColors.darkText
                                   : AppColors.lightText,
-                            )
-                          : Image.asset(
-                              AppImages.selectedBox,
-                              height: 18.h,
-                              width: 18.w,
                             ),
+                          ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Row(
+                    children: [
+                      Image.asset(
+                        AppImages.tag,
+                        height: 15.h,
+                        width: 15.w,
+                        color: Get.isDarkMode
+                            ? Colors.white
+                            : AppColors.subTitleColor,
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      CustomText(
+                        text: data.tag ?? "",
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Get.isDarkMode
+                            ? Colors.white
+                            : AppColors.subTitleColor,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    data.description ?? "",
+                    style: TextStyleDecoration.body1,
+                  ),
+                  Obx(() => isShow.value == true
+                      ? SizedBox(
+                          height: 10.h,
+                        )
+                      : const SizedBox.shrink()),
+                  Obx(() => isShow.value == true
+                      ? Row(
+                          children: [
+                            Expanded(
+                              child: commonTimeWidget(
+                                  title: AppStrings.day,
+                                  scheduleData: data.schedules ?? [],
+                                  isDay: true),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Expanded(
+                              child: commonTimeWidget(
+                                  title: AppStrings.night,
+                                  scheduleData: data.schedules ?? [],
+                                  isDay: false),
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink())
+                ],
+              ),
+            ),
+            Obx(() => isApplied.value == true
+                ? Positioned(
+                    right: 50.w,
+                    child: Image.asset(
+                      AppImages.applied,
+                      height: 22.h,
+                      width: 100.w,
                     ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  CustomText(
-                    text: data.name ?? "",
-                    color: AppColors.buttonColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14.sp,
-                  ),
-                  Expanded(
-                      child: SizedBox(
-                    width: 10.w,
-                  )),
-                  commonPopup(
-                      deleteTap: () {},
-                      applyTap: () {},
-                      isApply: controller.isApply,
-                      editTap: () {}),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Obx(() => GestureDetector(
-                        onTap: () {
-                          isShow.value = !isShow.value;
-                        },
-                        child: Image.asset(
-                          isShow.value == false
-                              ? AppImages.downArrow
-                              : AppImages.upArrow,
-                          height: 22.h,
-                          width: 22.w,
-                          color: Get.isDarkMode
-                              ? AppColors.darkText
-                              : AppColors.lightText,
-                        ),
-                      ))
-                ],
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Row(
-                children: [
-                  Image.asset(
-                    AppImages.tag,
-                    height: 15.h,
-                    width: 15.w,
-                    color:
-                        Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  CustomText(
-                    text: data.tag ?? "",
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   )
-                ],
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Text(
-                data.description ?? "",
-                style: TextStyleDecoration.body1,
-              ),
-              Obx(() => isShow.value == true
-                  ? SizedBox(
-                      height: 10.h,
-                    )
-                  : const SizedBox.shrink()),
-              Obx(() => isShow.value == true
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: commonTimeWidget(
-                              title: AppStrings.day,
-                              scheduleData: data.schedules ?? [],
-                              isDay: true),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(
-                          child: commonTimeWidget(
-                              title: AppStrings.night,
-                              scheduleData: data.schedules ?? [],
-                              isDay: false),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink())
-            ],
-          ),
+                : const SizedBox.shrink())
+          ],
         ),
         SizedBox(
           height: 10.h,

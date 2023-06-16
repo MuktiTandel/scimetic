@@ -7,6 +7,7 @@ import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:http/http.dart' as http;
+import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/check_net_connectivity.dart';
@@ -32,8 +33,6 @@ class IrrigationController extends GetxController {
   final TextEditingController night0DurationController = TextEditingController();
 
   RxInt descriptionLength = 0.obs;
-
-  RxString placeHolderValue = AppStrings.placeholder.obs;
 
   RxBool isApply = false.obs;
 
@@ -81,9 +80,11 @@ class IrrigationController extends GetxController {
 
   RxBool isNightMinute = false.obs;
 
-  List<int> fertigationControlIds = [];
+  List<int> irrigationControlIds = [];
 
   RxList irrigationList = [].obs;
+
+  List<IrrigationControl> mainList = [];
 
   IrrigationControlModel irrigationControlModel = IrrigationControlModel();
 
@@ -92,6 +93,8 @@ class IrrigationController extends GetxController {
   List<RxBool> selectList = [];
 
   RxBool isSelect = false.obs;
+
+  List<RxBool> appliedList = [];
 
   Future getIrrigationControlData() async {
 
@@ -104,6 +107,8 @@ class IrrigationController extends GetxController {
       isGetData.value = false;
 
       irrigationList.clear();
+
+      mainList.clear();
 
       try {
 
@@ -129,6 +134,7 @@ class IrrigationController extends GetxController {
 
           if ( irrigationControlModel.irrigationControls!.isNotEmpty ) {
             irrigationList.addAll(irrigationControlModel.irrigationControls!);
+            mainList.addAll(irrigationControlModel.irrigationControls!);
           }
 
           if ( irrigationList.isNotEmpty ) {
@@ -136,6 +142,19 @@ class IrrigationController extends GetxController {
             showList = List.generate(irrigationList.length, (index) => false.obs );
 
             selectList = List.generate(irrigationList.length, (index) => false.obs);
+
+            appliedList =
+                List.generate(irrigationList.length, (index) => false.obs);
+
+            if (appliedList.isNotEmpty) {
+              for (int i = 0; i < irrigationList.length; i++) {
+                IrrigationControl data = irrigationList[i];
+
+                if (data.applied == true) {
+                  appliedList[i].value = true;
+                }
+              }
+            }
 
           }
 
@@ -241,7 +260,7 @@ class IrrigationController extends GetxController {
                 "Content-Type" : "application/json"
               },
               parameter: {
-                "fertigationControlIds" : fertigationControlIds
+                "irrigationControlIds" : irrigationControlIds
               }
           );
 
@@ -276,6 +295,62 @@ class IrrigationController extends GetxController {
       );
     }
 
+  }
+
+  Future toggleApply({required bool applied, required int id}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+
+      progressDialog(true, Get.context!);
+
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.irrigationControl}/$id/toggle_apply",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: {
+              "applied": applied
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        progressDialog(false, Get.context!);
+
+        if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
+          return true;
+        } else {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
   }
 
   void onSave() async {

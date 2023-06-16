@@ -35,6 +35,7 @@ class NewPasswordScreen extends StatelessWidget {
                   controller: controller.passwordController,
                   hintText: AppStrings.eYPassword,
                   isObscure: !controller.isPassword.value,
+                  focusBorderColor: AppColors.buttonColor,
                   suffixWidget: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: (){
@@ -73,6 +74,7 @@ class NewPasswordScreen extends StatelessWidget {
                   controller: controller.repeatPasswordController,
                   hintText: AppStrings.eYPassword,
                   isObscure: !controller.isRepeatPassword.value,
+                  focusBorderColor: AppColors.buttonColor,
                   suffixWidget: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: (){

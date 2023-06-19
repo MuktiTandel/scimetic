@@ -16,21 +16,27 @@ import 'package:scimetic/feature/irrigation_control/model/irrigation_control_mod
 import 'package:scimetic/feature/irrigation_control/model/irrigation_model.dart';
 
 class IrrigationController extends GetxController {
-
   final TextEditingController searchController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController tagController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  final TextEditingController day100TemperatureController = TextEditingController();
-  final TextEditingController day100DurationController = TextEditingController();
-  final TextEditingController night100TemperatureController = TextEditingController();
-  final TextEditingController night100DurationController = TextEditingController();
-  final TextEditingController day0TemperatureController = TextEditingController();
+  final TextEditingController day100TemperatureController =
+      TextEditingController();
+  final TextEditingController day100DurationController =
+      TextEditingController();
+  final TextEditingController night100TemperatureController =
+      TextEditingController();
+  final TextEditingController night100DurationController =
+      TextEditingController();
+  final TextEditingController day0TemperatureController =
+      TextEditingController();
   final TextEditingController day0DurationController = TextEditingController();
-  final TextEditingController night0TemperatureController = TextEditingController();
-  final TextEditingController night0DurationController = TextEditingController();
+  final TextEditingController night0TemperatureController =
+      TextEditingController();
+  final TextEditingController night0DurationController =
+      TextEditingController();
 
   RxInt descriptionLength = 0.obs;
 
@@ -40,21 +46,13 @@ class IrrigationController extends GetxController {
 
   List<Schedule1> scheduleList = [];
 
-  List<TextEditingController> dayHourList = [
-    TextEditingController()
-  ];
+  List<TextEditingController> dayHourList = [TextEditingController()];
 
-  List<TextEditingController> dayMinuteList = [
-    TextEditingController()
-  ];
+  List<TextEditingController> dayMinuteList = [TextEditingController()];
 
-  List<TextEditingController> nightHourList = [
-    TextEditingController()
-  ];
+  List<TextEditingController> nightHourList = [TextEditingController()];
 
-  List<TextEditingController> nightMinuteList = [
-    TextEditingController()
-  ];
+  List<TextEditingController> nightMinuteList = [TextEditingController()];
 
   String token = "";
 
@@ -96,14 +94,18 @@ class IrrigationController extends GetxController {
 
   List<RxBool> appliedList = [];
 
-  Future getIrrigationControlData() async {
+  List<bool> checkList = [];
 
-    token =  storeData.getString(StoreData.accessToken)!;
+  RxBool isEdit = false.obs;
+
+  RxInt irrigationId = 0.obs;
+
+  Future getIrrigationControlData() async {
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       isGetData.value = false;
 
       irrigationList.clear();
@@ -111,16 +113,15 @@ class IrrigationController extends GetxController {
       mainList.clear();
 
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.irrigationControl}/${id.value}',
             requestType: HTTPRequestType.GET,
             headers: {
-              "Authorization" : 'Bearer $token',
-            }
-        );
+              "Authorization": 'Bearer $token',
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
@@ -128,20 +129,20 @@ class IrrigationController extends GetxController {
 
         isGetData.value = true;
 
-        if ( apiResponse!.statusCode == 200 ) {
-
+        if (apiResponse!.statusCode == 200) {
           irrigationControlModel = IrrigationControlModel.fromJson(data);
 
-          if ( irrigationControlModel.irrigationControls!.isNotEmpty ) {
+          if (irrigationControlModel.irrigationControls!.isNotEmpty) {
             irrigationList.addAll(irrigationControlModel.irrigationControls!);
             mainList.addAll(irrigationControlModel.irrigationControls!);
           }
 
-          if ( irrigationList.isNotEmpty ) {
+          if (irrigationList.isNotEmpty) {
+            showList =
+                List.generate(irrigationList.length, (index) => false.obs);
 
-            showList = List.generate(irrigationList.length, (index) => false.obs );
-
-            selectList = List.generate(irrigationList.length, (index) => false.obs);
+            selectList =
+                List.generate(irrigationList.length, (index) => false.obs);
 
             appliedList =
                 List.generate(irrigationList.length, (index) => false.obs);
@@ -155,58 +156,43 @@ class IrrigationController extends GetxController {
                 }
               }
             }
-
           }
 
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
-  Future addIrrigationControlData({required IrrigationModel irrigationModel}) async {
-
-    token =  storeData.getString(StoreData.accessToken)!;
+  Future addIrrigationControlData(
+      {required IrrigationModel irrigationModel}) async {
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       isGetData.value = false;
 
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.irrigationControl}/${id.value}',
             requestType: HTTPRequestType.POST,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
-          parameter: irrigationModel.toJson()
-        );
+            parameter: irrigationModel.toJson());
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
@@ -214,40 +200,25 @@ class IrrigationController extends GetxController {
 
         isGetData.value = true;
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
   Future deleteIrrigationControl() async {
-
     bool isConnected = await checkNetConnectivity();
 
-    if ( isConnected == true ) {
-
+    if (isConnected == true) {
       token = storeData.getString(StoreData.accessToken)!;
 
       if (token.isNotEmpty) {
@@ -257,29 +228,24 @@ class IrrigationController extends GetxController {
               requestType: HTTPRequestType.DELETE,
               headers: {
                 "Authorization": 'Bearer $token',
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
               },
               parameter: {
-                "irrigationControlIds" : irrigationControlIds
-              }
-          );
+                "irrigationControlIds": irrigationControlIds
+              });
 
           apiResponse =
-          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+              await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
           AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
           dynamic data = jsonDecode(apiResponse!.body);
 
           if (apiResponse!.statusCode == 200) {
-
             return true;
           } else {
             if (apiResponse!.statusCode == 403) {
-              showSnack(
-                  width: 200.w,
-                  title: data["message"]
-              );
+              showSnack(width: 200.w, title: data["message"]);
             }
 
             return false;
@@ -289,37 +255,31 @@ class IrrigationController extends GetxController {
         }
       }
     } else {
-      showSnack(
-          title: AppStrings.noInternetConnection,
-          width: 200.w
-      );
+      showSnack(title: AppStrings.noInternetConnection, width: 200.w);
     }
-
   }
 
   Future toggleApply({required bool applied, required int id}) async {
+    token = storeData.getString(StoreData.accessToken)!;
 
-    token =  storeData.getString(StoreData.accessToken)!;
-
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       progressDialog(true, Get.context!);
 
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
-            url: "${ApiPath.baseUrl}${ApiPath.irrigationControl}/$id/toggle_apply",
+            url:
+                "${ApiPath.baseUrl}${ApiPath.irrigationControl}/$id/toggle_apply",
             requestType: HTTPRequestType.PUT,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
             parameter: {
               "applied": applied
-            }
-        );
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
@@ -327,34 +287,64 @@ class IrrigationController extends GetxController {
 
         progressDialog(false, Get.context!);
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
         } else {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
+      }
+    }
+  }
 
+  Future updateFertigationControl(
+      {required IrrigationModel irrigationModel}) async {
+    token = storeData.getString(StoreData.accessToken)!;
+
+    if (token.isNotEmpty) {
+      isGetData.value = false;
+
+      try {
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url:
+                '${ApiPath.baseUrl}${ApiPath.irrigationControl}/${irrigationId.value}',
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
+            },
+            parameter: irrigationModel.toJson());
+
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        isGetData.value = true;
+
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
+
+          return true;
+        } else {
+          showSnack(width: 200.w, title: data["message"]);
+
+          return false;
+        }
+      } catch (e) {
+        AppConst().debug(e.toString());
       }
     }
   }
 
   void onSave() async {
-
     isValid.value = true;
 
     isDayHour.value = false;
@@ -363,128 +353,102 @@ class IrrigationController extends GetxController {
     isNightMinute.value = false;
 
     for (var element in dayMinuteList) {
-      if ( element.text.isEmpty ) {
+      if (element.text.isEmpty) {
         isDayMinute.value = true;
       }
     }
 
     for (var element in dayHourList) {
-      if ( element.text.isEmpty ) {
+      if (element.text.isEmpty) {
         isDayHour.value = true;
       }
     }
 
     for (var element in nightHourList) {
-      if ( element.text.isEmpty ) {
+      if (element.text.isEmpty) {
         isNightHour.value = true;
       }
     }
 
     for (var element in nightMinuteList) {
-      if ( element.text.isEmpty ) {
+      if (element.text.isEmpty) {
         isNightMinute.value = true;
       }
     }
 
-    if ( day100TemperatureController.text.isEmpty ) {
-
+    if (day100TemperatureController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( day100DurationController.text.isEmpty ) {
-
+    } else if (day100DurationController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( day0TemperatureController.text.isEmpty ) {
-
+    } else if (day0TemperatureController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( day0DurationController.text.isEmpty ) {
-
+    } else if (day0DurationController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( isDayHour.value == true ) {
-
+    } else if (isDayHour.value == true) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( isDayMinute.value == true ) {
-
+    } else if (isDayMinute.value == true) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( night100TemperatureController.text.isEmpty ) {
-
+    } else if (night100TemperatureController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( night100DurationController.text.isEmpty ) {
-
+    } else if (night100DurationController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( night0TemperatureController.text.isEmpty ) {
-
+    } else if (night0TemperatureController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( night0DurationController.text.isEmpty ) {
-
+    } else if (night0DurationController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( isNightHour.value == true ) {
-
+    } else if (isNightHour.value == true) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( isNightMinute.value == true ) {
-
+    } else if (isNightMinute.value == true) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nameController.text.isEmpty ) {
-
+    } else if (nameController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( tagController.text.isEmpty ) {
-
+    } else if (tagController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( descriptionController.text.isEmpty ) {
-
+    } else if (descriptionController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
     } else {
-
       bool isConnected = await checkNetConnectivity();
 
-      if ( isConnected == true ) {
-
+      if (isConnected == true) {
         IrrigationModel irrigationModel = IrrigationModel();
 
-        irrigationModel.day100Temperature = int.parse(day100TemperatureController.text);
-        irrigationModel.day100Duration = int.parse(day100DurationController.text);
-        irrigationModel.day0Temperature = int.parse(day0TemperatureController.text);
+        irrigationModel.day100Temperature =
+            int.parse(day100TemperatureController.text);
+        irrigationModel.day100Duration =
+            int.parse(day100DurationController.text);
+        irrigationModel.day0Temperature =
+            int.parse(day0TemperatureController.text);
         irrigationModel.day0Duration = int.parse(day0DurationController.text);
-        irrigationModel.night100Temperature = int.parse(night100TemperatureController.text);
-        irrigationModel.night100Duration = int.parse(night100DurationController.text);
-        irrigationModel.night0Temperature = int.parse(night0TemperatureController.text);
-        irrigationModel.night0Duration = int.parse(night0DurationController.text);
+        irrigationModel.night100Temperature =
+            int.parse(night100TemperatureController.text);
+        irrigationModel.night100Duration =
+            int.parse(night100DurationController.text);
+        irrigationModel.night0Temperature =
+            int.parse(night0TemperatureController.text);
+        irrigationModel.night0Duration =
+            int.parse(night0DurationController.text);
         irrigationModel.name = nameController.text;
         irrigationModel.tag = tagController.text;
         irrigationModel.description = descriptionController.text;
 
         Schedule1 schedule = Schedule1();
 
-        for ( int i = 0; i < dayHourList.length; i++ ) {
-
+        for (int i = 0; i < dayHourList.length; i++) {
           String dayHour = dayHourList[i].text;
           String dayMinute = dayMinuteList[i].text;
           String nightHour = nightHourList[i].text;
@@ -494,25 +458,29 @@ class IrrigationController extends GetxController {
           schedule.nightTimeActivate = "$nightHour:$nightMinute";
 
           scheduleList.add(schedule);
-
         }
 
         irrigationModel.schedules = scheduleList;
 
         AppConst().debug('name => ${irrigationModel.name}');
 
-        await addIrrigationControlData(irrigationModel: irrigationModel).whenComplete(() async {
-          Get.back();
-          await getIrrigationControlData();
-        });
-
+        if (isEdit.value == false) {
+          await addIrrigationControlData(irrigationModel: irrigationModel)
+              .whenComplete(() async {
+            Get.back();
+            await getIrrigationControlData();
+          });
+        } else {
+          await updateFertigationControl(irrigationModel: irrigationModel)
+              .whenComplete(() async {
+                isEdit.value = false;
+                listHeight.value = 80.0;
+            Get.back();
+            await getIrrigationControlData();
+          });
+        }
       } else {
-
-        showSnack(
-            title: AppStrings.noInternetConnection,
-            width: 200.w
-        );
-
+        showSnack(title: AppStrings.noInternetConnection, width: 200.w);
       }
 
       day100TemperatureController.clear();
@@ -538,11 +506,6 @@ class IrrigationController extends GetxController {
       nameController.clear();
       tagController.clear();
       descriptionController.clear();
-
     }
-
-
-
   }
-
 }

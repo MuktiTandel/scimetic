@@ -395,6 +395,7 @@ class AppStrings {
   static const String addFormula = "Add Formula";
   static const String dayFertigationMode = "Day Fertigation Mode";
   static const String nightFertigationMode = "Night Fertigation Mode";
+  static const String wetWallControl = "Wet Wall Control";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

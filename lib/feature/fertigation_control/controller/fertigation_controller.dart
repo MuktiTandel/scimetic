@@ -43,7 +43,7 @@ class FertigationController extends GetxController {
 
   List<RxBool> showList = [];
 
-  List<RxBool> selectList = [false.obs];
+  List<RxBool> selectList = [];
 
   List<TextEditingController> dayIngredientList = [TextEditingController()];
 
@@ -90,6 +90,8 @@ class FertigationController extends GetxController {
   List<RxBool> appliedList = [];
 
   RxInt fertigationId = 0.obs;
+
+  List<bool> checkList = [];
 
   Future getFertigationControlData() async {
     token = storeData.getString(StoreData.accessToken)!;

@@ -29,5 +29,6 @@ class ApiPath {
   static const notificationSettings = "/user/notification_settings";
   static const irrigationControl = "/ctrl/irrigation_control";
   static const fertigationControl = "/ctrl/fertigation_control";
+  static const wetWallControl = "/ctrl/wet_wall_control";
 
 }

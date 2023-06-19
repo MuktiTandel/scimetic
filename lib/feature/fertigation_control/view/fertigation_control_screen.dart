@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
@@ -77,6 +78,7 @@ class FertigationControlScreen extends StatelessWidget {
                               !controller.isCheckAll.value;
                           controller.fertigationControlIds.clear();
                           if (controller.isCheckAll.value == true) {
+                            controller.isSelect.value = true;
                             for (var element in controller.selectList) {
                               element.value = true;
                             }
@@ -84,6 +86,7 @@ class FertigationControlScreen extends StatelessWidget {
                               controller.fertigationControlIds.add(element.id);
                             }
                           } else {
+                            controller.isSelect.value = false;
                             controller.fertigationControlIds.clear();
                             for (var element in controller.selectList) {
                               element.value = false;
@@ -259,12 +262,16 @@ class FertigationControlScreen extends StatelessWidget {
                         () => GestureDetector(
                           onTap: () {
                             isSelect.value = !isSelect.value;
+                            controller.checkList.clear();
                             for (var element in controller.selectList) {
                               if ( element.value == true ) {
-                                controller.isSelect.value = true;
-                              } else {
-                                controller.isSelect.value = false;
+                                controller.checkList.add(element.value);
                               }
+                            }
+                            if ( controller.checkList.isNotEmpty ) {
+                              controller.isSelect.value = true;
+                            } else {
+                              controller.isSelect.value = false;
                             }
                           },
                           child: isSelect.value == false

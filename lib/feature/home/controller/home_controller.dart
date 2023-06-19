@@ -23,6 +23,7 @@ import 'package:scimetic/feature/profile_setting/view/profile_setting_screen.dar
 import 'package:scimetic/feature/reports/view/report_screen.dart';
 import 'package:scimetic/feature/temperature_control/view/temperature_controller_screen.dart';
 import 'package:scimetic/feature/to_do/view/todo_screen.dart';
+import 'package:scimetic/feature/wet_wall_control/view/wet_wall_control_screen.dart';
 
 class HomeController extends GetxController {
 
@@ -57,6 +58,7 @@ class HomeController extends GetxController {
   RxBool isNotifications = false.obs;
   RxBool isCirculationControl = false.obs;
   RxBool isControlTab = false.obs;
+  RxBool isWetWallControl = false.obs;
 
   RxBool isLogOut = false.obs;
 
@@ -134,6 +136,8 @@ class HomeController extends GetxController {
         return AppStrings.circulationControl;
       } else if ( moduleIndex.value == 17 ) {
         return AppStrings.screenControl;
+      } else if ( moduleIndex.value == 18 ) {
+        return AppStrings.wetWallControl;
       }
     }
   }
@@ -153,6 +157,7 @@ class HomeController extends GetxController {
     isNotifications.value = false;
     isCirculationControl.value = false;
     isControlTab.value = false;
+    isWetWallControl.value = false;
   }
 
   void unSelectModule() {
@@ -183,6 +188,7 @@ class HomeController extends GetxController {
     NotificationSettingScreen(),
     CirculationControlScreen(),
     ControlTabScreen(),
+    WetWallControlScreen(),
   ];
 
 }

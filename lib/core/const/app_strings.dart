@@ -75,7 +75,10 @@ class AppStrings {
   static const String messages = " messages";
   static const String new_ = "New";
   static const String h = "h";
-  static const String hours = "24h";
+  static const String hours24 = "24h";
+  static const String hours1 = "1h";
+  static const String hours6 = "6h";
+  static const String hours12 = "12h";
   static const String workGroupChat = "Work group chat";
   static const String alisaSimmons = "Alisa Simmons";
   static const String lightning = "Lightning";
@@ -102,8 +105,8 @@ class AppStrings {
   static const String theGenealogy = "The Genealogy";
   static const String stage = "Stage";
   static const String flowering = "Flowering";
-  static const String planted = "Planted";
-  static const String estimatedHarvestTime = "Estimated harvest time";
+  static const String plantedDate = "Planted Date";
+  static const String harvestDate = "Harvest Date";
   static const String barcode = "Barcode";
   static const String progress = "progress";
   static const String deviceOverview = "Device overview";
@@ -396,6 +399,8 @@ class AppStrings {
   static const String dayFertigationMode = "Day Fertigation Mode";
   static const String nightFertigationMode = "Night Fertigation Mode";
   static const String wetWallControl = "Wet Wall Control";
+  static const String extractorControl = "Extractor Control";
+  static const String extractorFanControl = "Extractor Fan Control";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

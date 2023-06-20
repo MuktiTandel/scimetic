@@ -32,7 +32,7 @@ class GraphScreen extends StatelessWidget {
         child: CommonAppbar(
           drawerTap: (){
             Get.back();
-            overviewController.getHourData(
+            overviewController.get24HourData(
                 id: overviewController.id.value,
                 identifier: dashboardController.selectItem.value
             );
@@ -65,7 +65,7 @@ class GraphScreen extends StatelessWidget {
                   value1: controller.value_(),
                   isHour: controller.isHour.value,
                   hourSelect: (){
-                    overviewController.getHourData(
+                    overviewController.get24HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );

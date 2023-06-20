@@ -25,64 +25,67 @@ class Co2ControlScreen extends StatelessWidget {
       backgroundColor: context.theme.scaffoldBackgroundColor,
       body: Obx(() => controller.isGetData.value == true
           ? ScrollConfiguration(
-          behavior: AppBehavior(),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                  child: Column(
-                    children: [
-                      Obx(
+              behavior: AppBehavior(),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      color:
+                          Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                      child: Column(
+                        children: [
+                          Obx(
                             () => controller.isValid.value == true
-                            ? const SizedBox.shrink()
-                            : Padding(
-                              padding: EdgeInsets.only(top: 10.h,left: 15.w, right: 15.w),
-                              child: commonErrorWidget(
-                                  onTap: () {
-                                    controller.isValid.value = true;
-                                  },
-                                  errorMessage:
-                                  controller.errorMessage.value
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(15.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            commonImageText(
-                                image: AppImages.fillSun,
-                                title: AppStrings.dayLightningMode,
-                                color: AppColors.lightBlue),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Row(
+                                ? const SizedBox.shrink()
+                                : Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 10.h, left: 15.w, right: 15.w),
+                                    child: commonErrorWidget(
+                                        onTap: () {
+                                          controller.isValid.value = true;
+                                        },
+                                        errorMessage:
+                                            controller.errorMessage.value),
+                                  ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(15.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                    child: commonTexField(
-                                        title: AppStrings.minimum,
-                                        controller: controller.dayMinimumTarget,
-                                        suffixText: "ppm",
-                                        hintText: AppStrings.cO2,
-                                        onChanged: (value) {})),
+                                commonImageText(
+                                    image: AppImages.fillSun,
+                                    title: AppStrings.dayLightningMode,
+                                    color: AppColors.lightBlue),
                                 SizedBox(
-                                  width: 10.w,
+                                  height: 10.h,
                                 ),
-                                Expanded(
-                                    child: commonTexField(
-                                        title: AppStrings.maximum,
-                                        controller: controller.dayMaximumTarget,
-                                        suffixText: "ppm",
-                                        hintText: AppStrings.cO2,
-                                        onChanged: (value) {})),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                Expanded(
-                                    child: Column(
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: commonTexField(
+                                            title: AppStrings.minimum,
+                                            controller:
+                                                controller.dayMinimumTarget,
+                                            suffixText: "ppm",
+                                            hintText: AppStrings.cO2,
+                                            onChanged: (value) {})),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Expanded(
+                                        child: commonTexField(
+                                            title: AppStrings.maximum,
+                                            controller:
+                                                controller.dayMaximumTarget,
+                                            suffixText: "ppm",
+                                            hintText: AppStrings.cO2,
+                                            onChanged: (value) {})),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Expanded(
+                                        child: Column(
                                       children: [
                                         Text(
                                           AppStrings.highCO2Protection,
@@ -102,14 +105,15 @@ class Co2ControlScreen extends StatelessWidget {
                                           height: 40.h,
                                           child: CustomTextField(
                                             controller:
-                                            controller.dayHighProtection,
+                                                controller.dayHighProtection,
                                             borderRadius: 8,
                                             textInputType: TextInputType.number,
                                             contentPadding:
-                                            EdgeInsets.only(left: 10.w),
+                                                EdgeInsets.only(left: 10.w),
                                             hintText: AppStrings.cO2,
                                             hintTextSize: 12.sp,
-                                            isFilled: Get.isDarkMode ? true : false,
+                                            isFilled:
+                                                Get.isDarkMode ? true : false,
                                             suffixWidget: Padding(
                                               padding: EdgeInsets.only(
                                                   top: 10.h,
@@ -129,109 +133,110 @@ class Co2ControlScreen extends StatelessWidget {
                                         )
                                       ],
                                     ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            CustomText(
-                              text: AppStrings.switchSelection,
-                              color: Get.isDarkMode
-                                  ? AppColors.darkText
-                                  : AppColors.lightText,
-                              fontSize: 12.h,
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            CustomDropDown(
-                                width: 330.w,
-                                hintText: AppStrings.chooseSwitch,
-                                itemList: controller.switchList,
-                                value: controller.dayLightningSwitch.value,
-                                isFilled: Get.isDarkMode ? true : false,
-                                onChange: (value) {
-                                  controller.dayLightningSwitch.value = value;
-                                },
-                              isEdit: false.obs,
+                                  ],
                                 ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            CustomText(
-                              text: AppStrings.relaySelection,
-                              color: Get.isDarkMode
-                                  ? AppColors.darkText
-                                  : AppColors.lightText,
-                              fontSize: 12.h,
-                            ),
-                            SizedBox(
-                              height: 5.h,
-                            ),
-                            Obx(
-                                  () => CustomDropDown(
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                CustomText(
+                                  text: AppStrings.switchSelection,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText
+                                      : AppColors.lightText,
+                                  fontSize: 12.h,
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                CustomDropDown(
                                   width: 330.w,
-                                  hintText: AppStrings.chooseRelay,
-                                  itemList: controller.dayLightningRelayList,
-                                  value: controller.dayLightningRelay.value,
-                                  isFilled: true,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value: controller.dayLightningSwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
                                   onChange: (value) {
-                                    controller.dayLightningRelay.value = value;
+                                    controller.dayLightningSwitch.value = value;
                                   },
+                                  isEdit: false.obs,
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                CustomText(
+                                  text: AppStrings.relaySelection,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText
+                                      : AppColors.lightText,
+                                  fontSize: 12.h,
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Obx(
+                                  () => CustomDropDown(
+                                    width: 330.w,
+                                    hintText: AppStrings.chooseRelay,
+                                    itemList: controller.dayLightningRelayList,
+                                    value: controller.dayLightningRelay.value,
+                                    isFilled: true,
+                                    onChange: (value) {
+                                      controller.dayLightningRelay.value =
+                                          value;
+                                    },
                                     isEdit: false.obs,
                                   ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10.w),
-                        child: Container(
-                          padding: EdgeInsets.all(10.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Get.isDarkMode
-                                ? AppColors.darkAppbar
-                                : AppColors.lightAppbar,
+                                )
+                              ],
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              commonImageText(
-                                  image: AppImages.fillMoon,
-                                  title: AppStrings.nightLightningMode,
-                                  color: AppColors.lightBlue),
-                              SizedBox(
-                                height: 10.h,
+                          Padding(
+                            padding: EdgeInsets.all(10.w),
+                            child: Container(
+                              padding: EdgeInsets.all(10.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Get.isDarkMode
+                                    ? AppColors.darkAppbar
+                                    : AppColors.lightAppbar,
                               ),
-                              Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                      child: commonTexField(
-                                          title: AppStrings.minimum,
-                                          controller:
-                                          controller.nightMinimumTarget,
-                                          suffixText: "ppm",
-                                          hintText: AppStrings.cO2,
-                                          onChanged: (value) {},
-                                          isFilled: true)),
+                                  commonImageText(
+                                      image: AppImages.fillMoon,
+                                      title: AppStrings.nightLightningMode,
+                                      color: AppColors.lightBlue),
                                   SizedBox(
-                                    width: 10.w,
+                                    height: 10.h,
                                   ),
-                                  Expanded(
-                                      child: commonTexField(
-                                          title: AppStrings.maximum,
-                                          controller:
-                                          controller.nightMaximumTarget,
-                                          suffixText: "ppm",
-                                          hintText: AppStrings.cO2,
-                                          onChanged: (value) {},
-                                          isFilled: true)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Expanded(
-                                      child: Column(
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: commonTexField(
+                                              title: AppStrings.minimum,
+                                              controller:
+                                                  controller.nightMinimumTarget,
+                                              suffixText: "ppm",
+                                              hintText: AppStrings.cO2,
+                                              onChanged: (value) {},
+                                              isFilled: true)),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Expanded(
+                                          child: commonTexField(
+                                              title: AppStrings.maximum,
+                                              controller:
+                                                  controller.nightMaximumTarget,
+                                              suffixText: "ppm",
+                                              hintText: AppStrings.cO2,
+                                              onChanged: (value) {},
+                                              isFilled: true)),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Expanded(
+                                          child: Column(
                                         children: [
                                           Text(
                                             AppStrings.highCO2Protection,
@@ -250,17 +255,18 @@ class Co2ControlScreen extends StatelessWidget {
                                           SizedBox(
                                             height: 40.h,
                                             child: CustomTextField(
-                                              controller:
-                                              controller.nightHighProtection,
+                                              controller: controller
+                                                  .nightHighProtection,
                                               borderRadius: 8,
-                                              textInputType: TextInputType.number,
+                                              textInputType:
+                                                  TextInputType.number,
                                               contentPadding:
-                                              EdgeInsets.only(left: 10.w),
+                                                  EdgeInsets.only(left: 10.w),
                                               hintText: AppStrings.cO2,
                                               hintTextSize: 12.sp,
                                               isFilled: true,
                                               focusBorderColor:
-                                              AppColors.buttonColor,
+                                                  AppColors.buttonColor,
                                               suffixWidget: Padding(
                                                 padding: EdgeInsets.only(
                                                     top: 10.h,
@@ -280,88 +286,91 @@ class Co2ControlScreen extends StatelessWidget {
                                           )
                                         ],
                                       ))
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              CustomText(
-                                text: AppStrings.switchSelection,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
-                                fontSize: 12.h,
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              CustomDropDown(
-                                width: 320.w,
-                                hintText: AppStrings.chooseSwitch,
-                                itemList: controller.switchList,
-                                value: controller.nightLightningSwitch.value,
-                                onChange: (value) {
-                                  controller.nightLightningSwitch.value = value;
-                                },
-                                isFilled: true,
-                                isEdit: false.obs,
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              CustomText(
-                                text: AppStrings.relaySelection,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
-                                fontSize: 12.h,
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Obx(
-                                    () => CustomDropDown(
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  CustomText(
+                                    text: AppStrings.switchSelection,
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkText
+                                        : AppColors.lightText,
+                                    fontSize: 12.h,
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  CustomDropDown(
                                     width: 320.w,
-                                    hintText: AppStrings.chooseRelay,
-                                    itemList:
-                                    controller.nightLightningRelayList,
-                                    value: controller.nightLightningRelay.value,
-                                    isFilled: true,
+                                    hintText: AppStrings.chooseSwitch,
+                                    itemList: controller.switchList,
+                                    value:
+                                        controller.nightLightningSwitch.value,
                                     onChange: (value) {
-                                      controller.nightLightningRelay.value =
+                                      controller.nightLightningSwitch.value =
                                           value;
                                     },
+                                    isFilled: true,
+                                    isEdit: false.obs,
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  CustomText(
+                                    text: AppStrings.relaySelection,
+                                    color: Get.isDarkMode
+                                        ? AppColors.darkText
+                                        : AppColors.lightText,
+                                    fontSize: 12.h,
+                                  ),
+                                  SizedBox(
+                                    height: 5.h,
+                                  ),
+                                  Obx(
+                                    () => CustomDropDown(
+                                      width: 320.w,
+                                      hintText: AppStrings.chooseRelay,
+                                      itemList:
+                                          controller.nightLightningRelayList,
+                                      value:
+                                          controller.nightLightningRelay.value,
+                                      isFilled: true,
+                                      onChange: (value) {
+                                        controller.nightLightningRelay.value =
+                                            value;
+                                      },
                                       isEdit: false.obs,
                                     ),
-                              )
-                            ],
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: EdgeInsets.all(15.w),
+                            child: CustomButton(
+                              onTap: () {
+                                controller.onSave();
+                              },
+                              buttonText: AppStrings.save,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(15.w),
-                        child: CustomButton(
-                          onTap: () {
-                            controller.onSave();
-                          },
-                          buttonText: AppStrings.save,
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ))
+              ))
           : const Center(
-        child: CircularProgressIndicator(
-          color: AppColors.buttonColor,
-        ),
-      )),
+              child: CircularProgressIndicator(
+                color: AppColors.buttonColor,
+              ),
+            )),
     );
   }
 }

@@ -72,6 +72,8 @@ class DashboardController extends GetxController {
 
   RxInt roleId = 0.obs;
 
+  RxBool isUser = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -266,6 +268,62 @@ class DashboardController extends GetxController {
         AppConst().debug(e.toString());
 
       }
+    }
+
+  }
+
+  Future deleteGrowController({required int id}) async {
+
+    bool isConnected = await checkNetConnectivity();
+
+    if ( isConnected == true ) {
+
+      token = storeData.getString(StoreData.accessToken)!;
+
+      if (token.isNotEmpty) {
+        try {
+          APIRequestInfo apiRequestInfo = APIRequestInfo(
+              url: "${ApiPath.baseUrl}${ApiPath.growController}/$id",
+              requestType: HTTPRequestType.DELETE,
+              headers: {
+                "Authorization": 'Bearer $token',
+              }
+          );
+
+          apiResponse =
+          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+          AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+          dynamic data = jsonDecode(apiResponse!.body);
+
+          if (apiResponse!.statusCode == 200) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
+            return true;
+          } else {
+
+              showSnack(
+                  width: 200.w,
+                  title: data["message"]
+              );
+
+
+            return false;
+          }
+        } catch (e) {
+          AppConst().debug(e.toString());
+        }
+      }
+    } else {
+      showSnack(
+          title: AppStrings.noInternetConnection,
+          width: 200.w
+      );
     }
 
   }

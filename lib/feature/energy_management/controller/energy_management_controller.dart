@@ -10,6 +10,10 @@ class EnergyManagementController extends GetxController {
   RxBool isTemWeek = false.obs;
   RxBool isTemMonth = false.obs;
 
+  RxBool is12Hour = true.obs;
+  RxBool is1Hour = true.obs;
+  RxBool is6Hour = true.obs;
+
   RxBool isElectricalHour = true.obs;
   RxBool isElectricalWeek = false.obs;
   RxBool isElectricalMonth = false.obs;

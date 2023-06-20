@@ -47,6 +47,10 @@ class OrganizationController extends GetxController {
 
   RxInt roleId = 0.obs;
 
+  RxBool isGrowSpaces = false.obs;
+
+  RxBool isUser = false.obs;
+
   Future getDataList() async {
 
     bool isConnected = await checkNetConnectivity();
@@ -281,14 +285,18 @@ class OrganizationController extends GetxController {
 
           if (apiResponse!.statusCode == 200) {
 
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
             return true;
           } else {
-            if (apiResponse!.statusCode == 403) {
+
               showSnack(
                   width: 200.w,
                   title: data["message"]
               );
-            }
 
             return false;
           }

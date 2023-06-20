@@ -13,7 +13,11 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/access_setting/controller/access_setting_controller.dart';
+import 'package:scimetic/feature/access_setting/view/access_setting_screen.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/organizations/model/company_model.dart';
 
@@ -24,9 +28,14 @@ class OrganizationScreen extends StatelessWidget {
 
    final dashBoardController = Get.put(DashboardController());
 
+   final accessSettingController = Get.put(AccessSettingController());
+
+   final homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => controller.isGrowSpaces.value == false
+        ? Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
       body: Column(
         children: [
@@ -97,18 +106,18 @@ class OrganizationScreen extends StatelessWidget {
                               controllersOffline: data.controllers!.offline ?? 0,
                               sensorOffline: data.sensors!.offline ?? 0,
                               sensorOnline: data.sensors!.online ?? 0,
-                            onDelete: () async {
+                              onDelete: () async {
                                 await controller.deleteOrganization(id: data.id!).whenComplete(() async {
                                   await controller.getDataList();
                                 });
-                            }
+                              }
                           );
                         }
                     )
                         : const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.buttonColor,
-                          ),
+                      child: CircularProgressIndicator(
+                        color: AppColors.buttonColor,
+                      ),
                     )),
                     SizedBox(height: 10.h,),
                     Padding(
@@ -371,7 +380,9 @@ class OrganizationScreen extends StatelessWidget {
           )
         ],
       ),
-    );
+    )
+        : controller.isUser.value == true
+        ? AccessSettingScreen() : const DashboardScreen());
   }
 
   Widget listWidget({
@@ -437,6 +448,10 @@ class OrganizationScreen extends StatelessWidget {
                           PopupMenuItem<int>(
                               padding: EdgeInsets.zero,
                               value: 0,
+                              onTap: (){
+                                controller.isGrowSpaces.value = true;
+                                controller.isUser.value = false;
+                              },
                               child: Column(
                                 children: [
                                   Padding(
@@ -473,6 +488,13 @@ class OrganizationScreen extends StatelessWidget {
                           PopupMenuItem<int>(
                               padding: EdgeInsets.zero,
                               value: 0,
+                              onTap: () async {
+                                homeController.isOrganization.value = false;
+                                controller.isUser.value = true;
+                                controller.isGrowSpaces.value = true;
+                                await accessSettingController.getUserList();
+                                accessSettingController.roleValue.value = "";
+                              },
                               child: Column(
                                 children: [
                                   Padding(

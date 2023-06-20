@@ -12,12 +12,12 @@ import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
-import 'package:scimetic/feature/wet_wall_control/controller/wet_wall_control_controller.dart';
+import 'package:scimetic/feature/extractor_control/controller/extractor_control_controller.dart';
 
-class WetWallControlScreen extends StatelessWidget {
-  WetWallControlScreen({Key? key}) : super(key: key);
+class ExtractorControlScreen extends StatelessWidget {
+  ExtractorControlScreen({Key? key}) : super(key: key);
 
-  final controller = Get.put(WetWallControlController());
+  final controller = Get.put(ExtractorControlController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +42,18 @@ class WetWallControlScreen extends StatelessWidget {
                       width: 5.w,
                     ),
                     Obx(
-                      () => GestureDetector(
+                          () => GestureDetector(
                         onTap: () {
                           controller.isAuto.value = !controller.isAuto.value;
                         },
                         child: Image.asset(
                           controller.isAuto.value == false
                               ? Get.isDarkMode
-                                  ? AppImages.darkSelectedToggle
-                                  : AppImages.lightSelectToggle
+                              ? AppImages.darkSelectedToggle
+                              : AppImages.lightSelectToggle
                               : Get.isDarkMode
-                                  ? AppImages.darkUnselectToggle
-                                  : AppImages.lightUnselectToggle,
+                              ? AppImages.darkUnselectToggle
+                              : AppImages.lightUnselectToggle,
                           height: 30.h,
                           width: 30.w,
                         ),
@@ -63,14 +63,14 @@ class WetWallControlScreen extends StatelessWidget {
                       width: 5.w,
                     ),
                     Obx(
-                      () => CustomText(
+                          () => CustomText(
                         text: controller.isAuto.value ? AppStrings.off : AppStrings.on,
                         fontSize: 14.sp,
                         color: controller.isAuto.value
                             ? AppColors.lightText
                             : Get.isDarkMode
-                                ? AppColors.darkText
-                                : AppColors.subTitleColor,
+                            ? AppColors.darkText
+                            : AppColors.subTitleColor,
                         fontWeight: FontWeight.w500,
                       ),
                     )

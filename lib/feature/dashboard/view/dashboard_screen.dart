@@ -16,6 +16,8 @@ import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/edit_delete_popup.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/access_setting/controller/access_setting_controller.dart';
+import 'package:scimetic/feature/access_setting/view/access_setting_screen.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
@@ -29,14 +31,15 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final controller = Get.put(DashboardController());
 
-   final controller = Get.put(DashboardController());
+  final overViewController = Get.put(OverviewController());
 
-   final overViewController = Get.put(OverviewController());
+  final homeController = Get.put(HomeController());
 
-   final homeController = Get.put(HomeController());
+  final accessSettingController = Get.put(AccessSettingController());
 
-   @override
+  @override
   void initState() {
     super.initState();
     homeController.isOrganization.value = false;
@@ -45,12 +48,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => controller.isUser.value == false
+        ? Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
       body: Column(
         children: [
           Padding(
-            padding:  EdgeInsets.all(15.w),
+            padding: EdgeInsets.all(15.w),
             child: SizedBox(
               height: 40.h,
               child: CustomTextField(
@@ -61,10 +65,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 focusBorderColor: AppColors.buttonColor,
                 contentPadding: EdgeInsets.only(left: 10.w),
                 suffixWidget: Padding(
-                  padding:  EdgeInsets.all(13.w),
+                  padding: EdgeInsets.all(13.w),
                   child: Image.asset(
                     AppImages.search,
-                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    color: Get.isDarkMode
+                        ? AppColors.darkText
+                        : AppColors.lightText,
                   ),
                 ),
                 onchange: (value) {
@@ -80,6 +86,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 10.h),
+            child: Row(
+              children: [
+                Expanded(
+                  child: selectWidget(
+                      onTap: () async {
+                        controller.isUser.value = true;
+                        homeController.isDashboard.value = false;
+                        await accessSettingController.getUserList();
+                        accessSettingController.roleValue.value = "";
+                      },
+                      image: AppImages.manageUser,
+                      title: AppStrings.manageUsers),
+                ),
+                SizedBox(
+                  width: 15.w,
+                ),
+                Expanded(
+                  child: selectWidget(
+                      onTap: () {},
+                      image: AppImages.suspend,
+                      title: AppStrings.suspend),
+                ),
+                SizedBox(
+                  width: 15.w,
+                ),
+                Expanded(
+                  child: selectWidget(
+                      onTap: () {},
+                      image: AppImages.delete,
+                      title: AppStrings.delete,
+                      color: AppColors.red
+                  ),
+                )
+              ],
+            ),
+          ),
           Expanded(
             child: ScrollConfiguration(
               behavior: AppBehavior(),
@@ -87,116 +131,148 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Obx(() =>  controller.isGetData.value == false ? const Center(
-                     child: CircularProgressIndicator(
-                       color: AppColors.buttonColor,
-                     ),
-                   ) : ListView.builder(
-                       padding: EdgeInsets.zero,
-                       shrinkWrap: true,
-                       physics: const NeverScrollableScrollPhysics(),
-                       itemCount: controller.dataList.length,
-                       itemBuilder: (BuildContext context, int index) {
+                    Obx(
+                          () => controller.isGetData.value == false
+                          ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.buttonColor,
+                        ),
+                      )
+                          : ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.dataList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            GrowController data =
+                            controller.dataList[index];
 
-                         GrowController data = controller.dataList[index];
+                            return listWidget(
+                                onTap: () {
+                                  controller.isOverView.value = true;
+                                  controller.isSelect.value = true;
+                                  controller.isOverViewTitle.value = true;
+                                  controller.id.value = data.id!;
+                                  overViewController.is24Hour.value = true;
+                                  overViewController.isWeek.value = false;
+                                  overViewController.isMonth.value = false;
+                                  overViewController.id.value = data.id!;
+                                  overViewController.isGetData.value =
+                                  false;
+                                  overViewController.isGraphScreen.value =
+                                  true;
+                                  controller.selectItem.value =
+                                      data.identifier ?? "";
+                                  if (controller.dataList.isNotEmpty) {
+                                    controller.itemList.clear();
+                                    for (var element
+                                    in controller.dataList) {
+                                      controller.itemList
+                                          .add(element.identifier!);
+                                    }
+                                    AppConst().debug(
+                                        'item list length => ${controller.itemList.length}');
+                                  }
+                                  overViewController
+                                      .getClimateData(
+                                      identifier: data.identifier!,
+                                      range: "24h")
+                                      .whenComplete(() {
+                                    overViewController
+                                        .getGrowSheetData(id: data.id!)
+                                        .whenComplete(() {
+                                      overViewController
+                                          .getDeviceData(id: data.id!)
+                                          .whenComplete(() {
+                                        overViewController.isGetData.value =
+                                        true;
+                                      });
+                                    });
+                                  });
+                                  controller.storeData
+                                      .setData(StoreData.id, data.id!);
+                                  controller.storeData.setData(
+                                      StoreData.identifier,
+                                      data.identifier!);
+                                },
+                                context: context,
+                                title: data.name ?? "",
+                                desc: data.description ?? "",
+                                editTap: () {
+                                  controller.id.value = data.id!;
+                                  controller.isEdit.value = true;
+                                  controller.growspaceNameController.text =
+                                  data.name!;
+                                  controller.locationController.text =
+                                  "${data.latitude.toString()},${data.longitude.toString()}";
+                                  controller.serialNumberController.text =
+                                  data.identifier!;
+                                  controller.descriptionController.text =
+                                  data.description!;
 
-                         return listWidget(
-                             onTap: (){
-                               controller.isOverView.value = true;
-                               controller.isSelect.value = true;
-                               controller.isOverViewTitle.value = true;
-                               controller.id.value = data.id!;
-                               overViewController.isHour.value = true;
-                               overViewController.isWeek.value = false;
-                               overViewController.isMonth.value = false;
-                               overViewController.id.value = data.id!;
-                               overViewController.isGetData.value = false;
-                               overViewController.isGraphScreen.value = true;
-                               controller.selectItem.value = data.identifier ?? "";
-                               if ( controller.dataList.isNotEmpty ) {
-                                 controller.itemList.clear();
-                                 for (var element in controller.dataList) {
-                                   controller.itemList.add(element.identifier!);
-                                 }
-                                 AppConst().debug('item list length => ${controller.itemList.length}');
-                               }
-                               overViewController.getClimateData(identifier: data.identifier!, range: "24h").whenComplete(() {
-                                 overViewController.getGrowSheetData(id: data.id!).whenComplete(() {
-                                   overViewController.getDeviceData(id: data.id!).whenComplete(() {
-                                     overViewController.isGetData.value = true;
-                                   });
-                                 });
-                               });
-                               controller.storeData.setData(StoreData.id, data.id!);
-                               controller.storeData.setData(StoreData.identifier, data.identifier!);
-                             },
-                             context: context,
-                             title: data.name ?? "",
-                             desc: data.description ?? "",
-                             editTap: (){
+                                  if (data.dayStart!.isNotEmpty) {
+                                    final dayStart = data.dayStart!;
 
-                             controller.id.value = data.id!;
-                               controller.isEdit.value = true;
-                               controller.growspaceNameController.text = data.name!;
-                               controller.locationController.text = "${data.latitude
-                                   .toString()},${data.longitude.toString()}";
-                               controller.serialNumberController.text = data.identifier!;
-                               controller.descriptionController.text = data.description!;
+                                    AppConst().debug(dayStart);
 
-                               if ( data.dayStart!.isNotEmpty ) {
-                                 final dayStart = data.dayStart!;
+                                    final split = dayStart.split(":");
 
-                                 AppConst().debug(dayStart);
+                                    final Map<int, String> values = {
+                                      for (int i = 0; i < split.length; i++)
+                                        i: split[i]
+                                    };
 
-                                 final split = dayStart.split(":");
+                                    AppConst().debug('${values[0]}');
 
-                                 final Map<int, String> values = {
-                                   for (int i = 0; i < split.length; i++)
-                                     i: split[i]
-                                 };
+                                    controller.dayHourController.text =
+                                    values[0]!;
+                                    controller.dayMinuteController.text =
+                                    values[1]!;
+                                  }
 
-                                 AppConst().debug('${values[0]}');
+                                  if (data.nightStart!.isNotEmpty) {
+                                    final nightStart = data.nightStart!;
 
-                                 controller.dayHourController.text = values[0]!;
-                                 controller.dayMinuteController.text = values[1]!;
-                               }
+                                    final split1 = nightStart.split(":");
 
-                               if ( data.nightStart!.isNotEmpty ) {
-                                 final nightStart = data.nightStart!;
+                                    final Map<int, String> values1 = {
+                                      for (int i = 0;
+                                      i < split1.length;
+                                      i++)
+                                        i: split1[i]
+                                    };
 
-                                 final split1 = nightStart.split(":");
+                                    controller.nightHourController.text =
+                                    values1[0]!;
+                                    controller.nightMinuteController.text =
+                                    values1[1]!;
+                                  }
 
-                                 final Map<int, String> values1 = {
-                                   for (int i = 0; i < split1.length; i++)
-                                     i: split1[i]
-                                 };
-
-                                 controller.nightHourController.text = values1[0]!;
-                                 controller.nightMinuteController.text = values1[1]!;
-                               }
-
-                               Future.delayed(const Duration(microseconds: 5000), (){
-                                 Get.dialog(
-                                  dialog()
-                                 );
-                               });
-                           },
-                           temperature: data.climate!.temperature ?? 0.0,
-                           co2: data.climate!.co2 ?? 0.0,
-                           humidity: data.climate!.humidity ?? 0.0,
-                           vpd: data.climate!.vpd ?? 0.0
-                         );
-                       }),),
-                    SizedBox(height: 10.h,),
+                                  Future.delayed(
+                                      const Duration(microseconds: 5000),
+                                          () {
+                                        Get.dialog(dialog());
+                                      });
+                                },
+                                temperature:
+                                data.climate!.temperature ?? 0.0,
+                                co2: data.climate!.co2 ?? 0.0,
+                                humidity: data.climate!.humidity ?? 0.0,
+                                vpd: data.climate!.vpd ?? 0.0,
+                              id: data.id ?? 0
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
                     Padding(
-                      padding:  EdgeInsets.only(right: 18.w),
+                      padding: EdgeInsets.only(right: 18.w),
                       child: CustomButton(
                         height: 30.h,
                         width: 85.w,
-                        onTap: (){
-                          Get.dialog(
-                            dialog()
-                          );
+                        onTap: () {
+                          Get.dialog(dialog());
                         },
                         buttonText: AppStrings.add,
                         child: Center(
@@ -208,16 +284,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 height: 12.h,
                                 width: 12.w,
                               ),
-                              SizedBox(width: 10.w,),
-                              const Text(
-                                  AppStrings.add
-                              )
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              const Text(AppStrings.add)
                             ],
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.h,)
+                    SizedBox(
+                      height: 20.h,
+                    )
                   ],
                 ),
               ),
@@ -225,26 +303,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
+    )
+        : AccessSettingScreen()
     );
   }
 
-  Widget listWidget({
-    required VoidCallback onTap,
-    required BuildContext context,
-    required String title,
-    required String desc,
-    required VoidCallback editTap,
-    required double temperature,
-    required double humidity,
-    required double co2,
-    required double vpd
-  }) {
-
-     String temperatureValue = temperature != 0 ? temperature.toString() : "-";
-     String humidityValue = humidity != 0.0 ? humidity.toString() : "-";
-     String co2Value = co2 != 0 ? co2.toString() : "-";
-     String vpdValue = vpd != 0.0 ? vpd.toString() : "-";
-
+  Widget listWidget(
+      {required VoidCallback onTap,
+      required BuildContext context,
+      required String title,
+      required String desc,
+      required VoidCallback editTap,
+      required double temperature,
+      required double humidity,
+      required double co2,
+      required double vpd,
+        required int id
+      }) {
+    String temperatureValue = temperature != 0 ? temperature.toString() : "-";
+    String humidityValue = humidity != 0.0 ? humidity.toString() : "-";
+    String co2Value = co2 != 0 ? co2.toString() : "-";
+    String vpdValue = vpd != 0.0 ? vpd.toString() : "-";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -264,44 +343,73 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       style: TextStyleDecoration.headline5,
                     ),
                   ),
-                  SizedBox(width: 10.w,),
-                  editDeletePopup(editTap: editTap)
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  editDeletePopup(
+                      editTap: editTap,
+                    deleteTap: () async {
+                        await controller.deleteGrowController(id: id).whenComplete(() async {
+                          await controller.getDataList();
+                        });
+                    }
+                  )
                 ],
               ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: (){
+                onTap: () {
                   onTap();
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 5.h,),
+                    SizedBox(
+                      height: 5.h,
+                    ),
                     Text(
                       desc,
                       style: TextStyleDecoration.body1,
                     ),
-                    SizedBox(height: 10.h,),
+                    SizedBox(
+                      height: 10.h,
+                    ),
                     Row(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            featureWidget(title: AppStrings.temperature, value: "$temperatureValue° С"),
-                            SizedBox(height: 15.h,),
-                            featureWidget(title: AppStrings.cO2, value: "$co2Value ppm"),
+                            featureWidget(
+                                title: AppStrings.temperature,
+                                value: "$temperatureValue° С"),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            featureWidget(
+                                title: AppStrings.cO2, value: "$co2Value ppm"),
                           ],
                         ),
-                        Expanded(child: SizedBox(width: 10.w,)),
+                        Expanded(
+                            child: SizedBox(
+                          width: 10.w,
+                        )),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            featureWidget(title: AppStrings.humidity, value: "$humidityValue %"),
-                            SizedBox(height: 15.h,),
-                            featureWidget(title: AppStrings.vpd, value: "$vpdValue kPa"),
+                            featureWidget(
+                                title: AppStrings.humidity,
+                                value: "$humidityValue %"),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            featureWidget(
+                                title: AppStrings.vpd, value: "$vpdValue kPa"),
                           ],
                         ),
-                        Expanded(child: SizedBox(width: 10.w,)),
+                        Expanded(
+                            child: SizedBox(
+                          width: 10.w,
+                        )),
                       ],
                     ),
                   ],
@@ -310,7 +418,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-        SizedBox(height: 15.h,)
+        SizedBox(
+          height: 15.h,
+        )
       ],
     );
   }
@@ -332,9 +442,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget dialog() {
-    return  CommonDialogWidget(
+    return CommonDialogWidget(
         title: AppStrings.newGrowspace,
-        onTap: (){
+        onTap: () {
           controller.growspaceNameController.clear();
           controller.serialNumberController.clear();
           controller.descriptionController.clear();
@@ -353,20 +463,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Obx(() => controller.isValid.value == true
                   ? const SizedBox.shrink()
                   : commonErrorWidget(
-                  onTap: (){
-                    controller.isValid.value = true;
-                  },
-                  errorMessage: controller.errorMessage.value
-              )
+                      onTap: () {
+                        controller.isValid.value = true;
+                      },
+                      errorMessage: controller.errorMessage.value)),
+              SizedBox(
+                height: 10.h,
               ),
-              SizedBox(height: 10.h,),
               CustomText(
                 text: AppStrings.growsheetName,
                 fontWeight: FontWeight.w500,
-                color: Get.isDarkMode
-                    ? AppColors.darkText : AppColors.lightText,
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
               ),
-              SizedBox(height: 6.h,),
+              SizedBox(
+                height: 6.h,
+              ),
               SizedBox(
                 height: 38.h,
                 child: CustomTextField(
@@ -376,17 +488,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   borderRadius: 8,
                   focusBorderColor: AppColors.buttonColor,
                   contentPadding: EdgeInsets.only(left: 10.w),
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
               ),
-              SizedBox(height: 15.h,),
+              SizedBox(
+                height: 15.h,
+              ),
               CustomText(
                 text: AppStrings.location,
                 fontWeight: FontWeight.w500,
-                color: Get.isDarkMode
-                    ? AppColors.darkText : AppColors.lightText,
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
               ),
-              SizedBox(height: 6.h,),
+              SizedBox(
+                height: 6.h,
+              ),
               SizedBox(
                 height: 38.h,
                 child: CustomTextField(
@@ -396,13 +512,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   borderRadius: 8,
                   contentPadding: EdgeInsets.only(left: 10.w),
                   prefixWidget: Padding(
-                    padding: EdgeInsets.only( top: 10.h, bottom: 10.h),
+                    padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
                     child: Image.asset(
                       AppImages.location,
                       height: 10.h,
                       width: 10.w,
                       color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightText,
+                          ? AppColors.darkText
+                          : AppColors.lightText,
                     ),
                   ),
                   suffixWidget: Padding(
@@ -414,97 +531,111 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   focusBorderColor: AppColors.buttonColor,
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
               ),
-              SizedBox(height: 15.h,),
+              SizedBox(
+                height: 15.h,
+              ),
               CustomText(
                 text: AppStrings.serialNumber,
                 fontWeight: FontWeight.w500,
-                color: Get.isDarkMode
-                    ? AppColors.darkText : AppColors.lightText,
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
               ),
-              SizedBox(height: 6.h,),
+              SizedBox(
+                height: 6.h,
+              ),
               SizedBox(
                 height: 38.h,
                 child: Obx(() => CustomTextField(
-                  controller: controller.serialNumberController,
-                  isFilled: false,
-                  hintText: AppStrings.serialNumber,
-                  borderRadius: 8,
-                  focusBorderColor: AppColors.buttonColor,
-                  contentPadding: EdgeInsets.only(left: 10.w),
-                  suffixWidget: Padding(
-                    padding: EdgeInsets.all(10.w),
-                    child: Image.asset(
-                      AppImages.done,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText
-                          : controller.isNotEmpty.value == true
-                          ? AppColors.buttonColor : AppColors.lightText,
-                    ),
-                  ),
-                  onchange: (value){
-                    if ( value.isNotEmpty ) {
-                      controller.isNotEmpty.value = true;
-                    }
-                  },
-                )),
+                      controller: controller.serialNumberController,
+                      isFilled: false,
+                      hintText: AppStrings.serialNumber,
+                      borderRadius: 8,
+                      focusBorderColor: AppColors.buttonColor,
+                      contentPadding: EdgeInsets.only(left: 10.w),
+                      suffixWidget: Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Image.asset(
+                          AppImages.done,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : controller.isNotEmpty.value == true
+                                  ? AppColors.buttonColor
+                                  : AppColors.lightText,
+                        ),
+                      ),
+                      onchange: (value) {
+                        if (value.isNotEmpty) {
+                          controller.isNotEmpty.value = true;
+                        }
+                      },
+                    )),
               ),
-              SizedBox(height: 15.w,),
+              SizedBox(
+                height: 15.w,
+              ),
               CustomText(
                 text: AppStrings.description,
                 fontWeight: FontWeight.w500,
-                color: Get.isDarkMode
-                    ? AppColors.darkText : AppColors.lightText,
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
               ),
-              SizedBox(height: 6.h,),
+              SizedBox(
+                height: 6.h,
+              ),
               Obx(() => SizedBox(
                   height: 100.h,
                   child: TextFormField(
                     controller: controller.descriptionController,
                     maxLength: 80,
                     maxLines: 50,
-                    cursorColor: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                    style:  TextStyle(
+                    cursorColor: Get.isDarkMode
+                        ? AppColors.darkText
+                        : AppColors.lightText,
+                    style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 15.sp,
-                        color: Get.isDarkMode ? Colors.white : Colors.black
-                    ),
+                        color: Get.isDarkMode ? Colors.white : Colors.black),
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
-                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightBorder,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                            color: AppColors.buttonColor
-                        ),
+                        borderSide:
+                            const BorderSide(color: AppColors.buttonColor),
                       ),
                       hintText: AppStrings.addDescription,
                       contentPadding: EdgeInsets.all(10.w),
-                      hintStyle:  TextStyle(
-                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      hintStyle: TextStyle(
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightText,
                           fontSize: 14.sp,
-                          fontFamily: "Poppins"
-                      ),
+                          fontFamily: "Poppins"),
                       counterText: "${controller.descriptionLength.value}/80",
                       counterStyle: TextStyle(
-                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightIcon,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightIcon,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          fontFamily: "Poppins"
-                      ),
+                          fontFamily: "Poppins"),
                     ),
-                    onChanged: (value){
+                    onChanged: (value) {
                       controller.descriptionLength.value = value.length;
                     },
-                  )
-              )),
-              SizedBox(height: 15.h,),
+                  ))),
+              SizedBox(
+                height: 15.h,
+              ),
               Row(
                 children: [
                   Column(
@@ -514,23 +645,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: AppStrings.dayStart,
                         fontWeight: FontWeight.w500,
                         color: Get.isDarkMode
-                            ? AppColors.darkText : AppColors.lightText,
+                            ? AppColors.darkText
+                            : AppColors.lightText,
                       ),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       Row(
                         children: [
                           commonTimeTextField(
                               controller: controller.dayHourController,
                               hintText: AppStrings.hh,
                               onChanged: (value) {
-                                if ( value.isNotEmpty ) {
+                                if (value.isNotEmpty) {
                                   if (int.parse(value) > 23) {
                                     controller.dayHourController.text = "23";
                                   }
                                 }
-                              }
+                              }),
+                          SizedBox(
+                            width: 6.w,
                           ),
-                          SizedBox(width: 6.w,),
                           CustomText(
                             text: ":",
                             fontSize: 15.sp,
@@ -539,23 +674,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ? AppColors.darkText
                                 : AppColors.subTitleColor,
                           ),
-                          SizedBox(width: 6.w,),
+                          SizedBox(
+                            width: 6.w,
+                          ),
                           commonTimeTextField(
                               controller: controller.dayMinuteController,
                               hintText: AppStrings.mm,
                               onChanged: (value) {
-                                if ( value.isNotEmpty ) {
+                                if (value.isNotEmpty) {
                                   if (int.parse(value) > 59) {
                                     controller.dayMinuteController.text = "59";
                                   }
                                 }
-                              }
-                          ),
+                              }),
                         ],
                       )
                     ],
                   ),
-                  SizedBox(width: 15.w,),
+                  SizedBox(
+                    width: 15.w,
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -563,23 +701,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         text: AppStrings.nightStart,
                         fontWeight: FontWeight.w500,
                         color: Get.isDarkMode
-                            ? AppColors.darkText : AppColors.lightText,
+                            ? AppColors.darkText
+                            : AppColors.lightText,
                       ),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       Row(
                         children: [
                           commonTimeTextField(
                               controller: controller.nightHourController,
                               hintText: AppStrings.hh,
                               onChanged: (value) {
-                                if ( value.isNotEmpty ) {
+                                if (value.isNotEmpty) {
                                   if (int.parse(value) > 23) {
                                     controller.nightHourController.text = "23";
                                   }
                                 }
-                              }
+                              }),
+                          SizedBox(
+                            width: 6.w,
                           ),
-                          SizedBox(width: 6.w,),
                           CustomText(
                             text: ":",
                             fontSize: 15.sp,
@@ -588,27 +730,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ? AppColors.darkText
                                 : AppColors.subTitleColor,
                           ),
-                          SizedBox(width: 6.w,),
+                          SizedBox(
+                            width: 6.w,
+                          ),
                           commonTimeTextField(
                               controller: controller.nightMinuteController,
                               hintText: AppStrings.mm,
                               onChanged: (value) {
-                                if ( value.isNotEmpty ) {
+                                if (value.isNotEmpty) {
                                   if (int.parse(value) > 59) {
-                                    controller.nightMinuteController.text = "59";
+                                    controller.nightMinuteController.text =
+                                        "59";
                                   }
                                 }
-                              }
-                          ),
+                              }),
                         ],
                       )
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(
+                height: 20.h,
+              ),
               CustomButton(
-                onTap: (){
+                onTap: () {
                   controller.onSave();
                 },
                 buttonText: AppStrings.save,
@@ -618,5 +764,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ));
+  }
+
+  Widget selectWidget(
+      {required VoidCallback onTap,
+      required String image,
+      required String title,
+      Color? color}) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        height: 80.h,
+        padding: EdgeInsets.all(10.w),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: context.theme.cardColor),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              image,
+              height: 15.h,
+              width: 15.w,
+              color: color ??
+                  (Get.isDarkMode ? Colors.white : AppColors.lightGray1),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            CustomText(
+              text: title,
+              fontSize: 13.sp,
+              color: color ??
+                  (Get.isDarkMode ? Colors.white : AppColors.lightGray1),
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

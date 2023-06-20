@@ -323,7 +323,8 @@ class AccessSettingScreen extends StatelessWidget {
                                 child: SizedBox(
                               width: 10.w,
                             )),
-                            editDeletePopup(editTap: () {
+                            editDeletePopup(
+                                editTap: () {
                               controller.isEdit.value = true;
 
                               controller.userId.value = data.id ?? 0;
@@ -350,7 +351,9 @@ class AccessSettingScreen extends StatelessWidget {
                               Future.delayed(const Duration(seconds: 1), () {
                                 Get.dialog(dialogWidget());
                               });
-                            })
+                            },
+                              deleteTap: (){}
+                            )
                           ],
                         ),
                         CustomText(

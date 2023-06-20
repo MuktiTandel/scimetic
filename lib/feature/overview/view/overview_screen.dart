@@ -92,8 +92,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
                   controller.id.value = element.id!;
                 }
               }
-              if ( controller.isHour.value == true ) {
-                controller.getHourData(
+              if ( controller.is24Hour.value == true ) {
+                controller.get24HourData(
                     id: controller.id.value,
                     identifier: dashboardController.selectItem.value
                 );
@@ -130,18 +130,66 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             image: AppImages.menu_,
                             value: controller.temperatureValue.value.toStringAsFixed(2).toString(),
                             value1: "°C",
-                            isHour: controller.isHour.value,
+                            is1Hour: controller.is1Hour.value,
+                            is6Hour: controller.is6Hour.value,
+                            is12Hour: controller.is12Hour.value,
+                            is24Hour: controller.is24Hour.value,
                             isWeek: controller.isWeek.value,
                             isMonth: controller.isMonth.value,
-                            hourSelect: () {
-                              controller.getHourData(
+                            hour1Select: (){
+                              controller.get1HourData(
                                   id: controller.id.value,
                                   identifier: dashboardController.selectItem.value
                               );
-                              if ( controller.isHour.value == false ) {
-                                controller.isHour.value = true;
+                              if ( controller.is1Hour.value == false ) {
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = true;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour6Select: (){
+                              controller.get6HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is6Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = true;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour12Select: (){
+                              controller.get12HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is12Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = true;
+                              }
+                            },
+                            hour24Select: () {
+                              controller.get24HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is24Hour.value == false ) {
+                                controller.is24Hour.value = true;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             weekSelect: (){
@@ -150,9 +198,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isWeek.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = true;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             monthSelect: (){
@@ -161,9 +212,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isMonth.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = true;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             graph: Obx(() => controller.isClimateData.value == true
@@ -190,7 +244,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             image: AppImages.fillSettings,
                             value: controller.humidityValue.value.toStringAsFixed(2).toString(),
                             value1: "%",
-                            isHour: controller.isHour.value,
+                            is1Hour: controller.is1Hour.value,
+                            is6Hour: controller.is6Hour.value,
+                            is12Hour: controller.is12Hour.value,
+                            is24Hour: controller.is24Hour.value,
                             isWeek: controller.isWeek.value,
                             isMonth: controller.isMonth.value,
                             graph: Obx(() => controller.isClimateData.value == true
@@ -202,15 +259,60 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               format: "kW",
                             )
                                 : SizedBox(height: 150.h,)),
-                            hourSelect: () {
-                              if ( controller.isHour.value == false ) {
-                                controller.getHourData(
+                            hour1Select: (){
+                              controller.get1HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is1Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = true;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour6Select: (){
+                              controller.get6HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is6Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = true;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour12Select: (){
+                              controller.get12HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is12Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = true;
+                              }
+                            },
+                            hour24Select: () {
+                              if ( controller.is24Hour.value == false ) {
+                                controller.get24HourData(
                                     id: controller.id.value,
                                     identifier: dashboardController.selectItem.value
                                 );
-                                controller.isHour.value = true;
+                                controller.is24Hour.value = true;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             weekSelect: (){
@@ -219,9 +321,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isWeek.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = true;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             monthSelect: (){
@@ -230,9 +335,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isMonth.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = true;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             color: AppColors.lightBlue,
@@ -250,7 +358,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             image: AppImages.horizontalMenu,
                             value: controller.co2Value.value.toString(),
                             value1: AppStrings.ppm,
-                            isHour: controller.isHour.value,
+                            is1Hour: controller.is1Hour.value,
+                            is6Hour: controller.is6Hour.value,
+                            is12Hour: controller.is12Hour.value,
+                            is24Hour: controller.is24Hour.value,
                             isWeek: controller.isWeek.value,
                             isMonth: controller.isMonth.value,
                             graph: Obx(() => controller.isClimateData.value == true
@@ -261,15 +372,60 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               dataList: controller.co2DataList,
                               format: " ppm",
                             ) : SizedBox(height: 150.h,)),
-                            hourSelect: () {
-                              controller.getHourData(
+                            hour1Select: (){
+                              controller.get1HourData(
                                   id: controller.id.value,
                                   identifier: dashboardController.selectItem.value
                               );
-                              if ( controller.isHour.value == false ) {
-                                controller.isHour.value = true;
+                              if ( controller.is1Hour.value == false ) {
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = true;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour6Select: (){
+                              controller.get6HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is6Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = true;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour12Select: (){
+                              controller.get12HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is12Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = true;
+                              }
+                            },
+                            hour24Select: () {
+                              controller.get24HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is24Hour.value == false ) {
+                                controller.is24Hour.value = true;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             weekSelect: (){
@@ -278,9 +434,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isWeek.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = true;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             monthSelect: (){
@@ -289,9 +448,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isMonth.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = true;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             color: AppColors.lightGreen1,
@@ -309,7 +471,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             image: AppImages.menu_,
                             value: controller.lightningValue.value.toString(),
                             value1: AppStrings.molM2day,
-                            isHour: controller.isHour.value,
+                            is1Hour: controller.is1Hour.value,
+                            is6Hour: controller.is6Hour.value,
+                            is12Hour: controller.is12Hour.value,
+                            is24Hour: controller.is24Hour.value,
                             isWeek: controller.isWeek.value,
                             isMonth: controller.isMonth.value,
                             graph: Obx(() => controller.isClimateData.value == true
@@ -321,15 +486,60 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               format: " mol/m2day",
                             )
                                 : SizedBox(height: 150.h,)),
-                            hourSelect: (){
-                              if ( controller.isHour.value == false ) {
-                                controller.getHourData(
+                            hour1Select: (){
+                              controller.get1HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is1Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = true;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour6Select: (){
+                              controller.get6HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is6Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = true;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour12Select: (){
+                              controller.get12HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is12Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = true;
+                              }
+                            },
+                            hour24Select: (){
+                              if ( controller.is24Hour.value == false ) {
+                                controller.get24HourData(
                                     id: controller.id.value,
                                     identifier: dashboardController.selectItem.value
                                 );
-                                controller.isHour.value = true;
+                                controller.is24Hour.value = true;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             weekSelect: (){
@@ -338,9 +548,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isWeek.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = true;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             monthSelect: (){
@@ -349,9 +562,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isMonth.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = true;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             color: AppColors.pink,
@@ -369,7 +585,10 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             image: AppImages.horizontalMenu,
                             value: controller.vpdValue.value.toString(),
                             value1: AppStrings.kPa,
-                            isHour: controller.isHour.value,
+                            is1Hour: controller.is1Hour.value,
+                            is6Hour: controller.is6Hour.value,
+                            is12Hour: controller.is12Hour.value,
+                            is24Hour: controller.is24Hour.value,
                             isWeek: controller.isWeek.value,
                             isMonth: controller.isMonth.value,
                             graph: Obx(() => controller.isClimateData.value == true
@@ -381,15 +600,60 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               format: " kPa",
                             )
                                 : SizedBox(height: 150.h,)),
-                            hourSelect: (){
-                              controller.getHourData(
+                            hour1Select: (){
+                              controller.get1HourData(
                                   id: controller.id.value,
                                   identifier: dashboardController.selectItem.value
                               );
-                              if ( controller.isHour.value == false ) {
-                                controller.isHour.value = true;
+                              if ( controller.is1Hour.value == false ) {
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = true;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour6Select: (){
+                              controller.get6HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is6Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = true;
+                                controller.is12Hour.value = false;
+                              }
+                            },
+                            hour12Select: (){
+                              controller.get12HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is12Hour.value == false ) {
+                                controller.is24Hour.value = false;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = true;
+                              }
+                            },
+                            hour24Select: (){
+                              controller.get24HourData(
+                                  id: controller.id.value,
+                                  identifier: dashboardController.selectItem.value
+                              );
+                              if ( controller.is24Hour.value == false ) {
+                                controller.is24Hour.value = true;
+                                controller.isWeek.value = false;
+                                controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             weekSelect: (){
@@ -398,9 +662,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isWeek.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = true;
                                 controller.isMonth.value = false;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             monthSelect: (){
@@ -409,9 +676,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                   identifier: dashboardController.selectItem.value
                               );
                               if ( controller.isMonth.value == false ) {
-                                controller.isHour.value = false;
+                                controller.is24Hour.value = false;
                                 controller.isWeek.value = false;
                                 controller.isMonth.value = true;
+                                controller.is1Hour.value = false;
+                                controller.is6Hour.value = false;
+                                controller.is12Hour.value = false;
                               }
                             },
                             color: AppColors.lightBlue2,

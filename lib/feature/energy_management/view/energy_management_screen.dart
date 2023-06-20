@@ -37,10 +37,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     image: AppImages.menu_,
                     value: "24",
                     value1: "°C",
-                    isHour: controller.isTemHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isTemHour.value,
                     isWeek: controller.isTemWeek.value,
                     isMonth: controller.isTemMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isTemHour.value == false ) {
                         controller.isTemHour.value = true;
                         controller.isTemWeek.value = false;
@@ -101,10 +107,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     title1: AppStrings.phase1,
                     title2: AppStrings.phase2,
                     title3: AppStrings.phase3,
-                    isHour: controller.isElectricalHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isElectricalHour.value,
                     isWeek: controller.isElectricalWeek.value,
                     isMonth: controller.isElectricalMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isElectricalHour.value == false ) {
                         controller.isElectricalHour.value = true;
                         controller.isElectricalWeek.value = false;
@@ -165,10 +177,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     title1: "L-N, V",
                     title2: "L-L, V",
                     title3: "A",
-                    isHour: controller.isVoltageHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isVoltageHour.value,
                     isWeek: controller.isVoltageWeek.value,
                     isMonth: controller.isVoltageMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isVoltageHour.value == false ) {
                         controller.isVoltageHour.value = true;
                         controller.isVoltageWeek.value = false;

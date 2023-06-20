@@ -79,7 +79,7 @@ Widget graphWidget({
               Row(
                 children: [
                   hwmSelectWidget(
-                      title: AppStrings.hours,
+                      title: AppStrings.hours24,
                       width: 34.w,
                       isSelected: isHour,
                       onTap: (){

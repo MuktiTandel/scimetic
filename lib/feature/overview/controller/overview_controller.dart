@@ -580,7 +580,7 @@ class OverviewController extends GetxController {
         temperatureDataList.add(temperatureData);
         temperatureDataList.sort((a, b) => a.x.compareTo(b.x));
         for (var element in temperatureDataList) {
-          AppConst().debug('temperature value => ${element.x}');
+          AppConst().debug('temperature value => ${element.x} ${element.y}');
         }
         HourData humidityData = HourData(element.time!, element.humidity!);
         humidityDataList.add(humidityData);

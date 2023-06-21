@@ -64,42 +64,42 @@ class DeviceSettingsScreen extends StatelessWidget {
                   )
                 ],
               ),),
-              SizedBox(height: 10.h,),
-              Padding(
-                padding:  EdgeInsets.only(right: 10.w),
-                child: CustomButton(
-                  height: 30.h,
-                  width: 85.w,
-                    onTap: (){
-                    controller.isEdit.value = false;
-                    Get.dialog(
-                      dialogWidget(
-                        sensorDeviceData: SensorDevice(),
-                        valvesDeviceData: SensorDevice(),
-                        switchDeviceData: SwitchDevice(),
-                        id: 0
-                      )
-                    );
-                    },
-                    buttonText: AppStrings.add,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          AppImages.add,
-                          height: 12.h,
-                          width: 12.w,
-                        ),
-                        SizedBox(width: 10.w,),
-                        const Text(
-                            AppStrings.add
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              // SizedBox(height: 10.h,),
+              // Padding(
+              //   padding:  EdgeInsets.only(right: 10.w),
+              //   child: CustomButton(
+              //     height: 30.h,
+              //     width: 85.w,
+              //       onTap: (){
+              //       controller.isEdit.value = false;
+              //       Get.dialog(
+              //         dialogWidget(
+              //           sensorDeviceData: SensorDevice(),
+              //           valvesDeviceData: SensorDevice(),
+              //           switchDeviceData: SwitchDevice(),
+              //           id: 0
+              //         )
+              //       );
+              //       },
+              //       buttonText: AppStrings.add,
+              //     child: Center(
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           SvgPicture.asset(
+              //             AppImages.add,
+              //             height: 12.h,
+              //             width: 12.w,
+              //           ),
+              //           SizedBox(width: 10.w,),
+              //           const Text(
+              //               AppStrings.add
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

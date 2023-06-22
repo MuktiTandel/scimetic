@@ -13,8 +13,6 @@ import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
-import 'package:scimetic/feature/overview/element/month_graph.dart';
-import 'package:scimetic/feature/overview/element/week_graph.dart';
 import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/overview/model/climate_model.dart';
 import 'package:scimetic/feature/device_settings/Model/device_model.dart';
@@ -84,91 +82,6 @@ class OverviewController extends GetxController {
   List vpdYValueList = [];
   List<HourData> vpdDataList = [];
 
-  RxDouble minTemperatureHourY = 0.0.obs;
-  RxDouble maxTemperatureHourY = 0.0.obs;
-
-  RxDouble minTemperatureWeekY = 0.0.obs;
-  RxDouble maxTemperatureWeekY = 0.0.obs;
-
-  RxDouble minTemperatureMonthY = 0.0.obs;
-  RxDouble maxTemperatureMonthY = 0.0.obs;
-
-  RxDouble minHumidityHourY = 0.0.obs;
-  RxDouble maxHumidityHourY = 0.0.obs;
-
-  RxDouble minHumidityWeekY = 0.0.obs;
-  RxDouble maxHumidityWeekY = 0.0.obs;
-
-  RxDouble minHumidityMonthY = 0.0.obs;
-  RxDouble maxHumidityMonthY = 0.0.obs;
-
-  RxDouble minCo2HourY = 0.0.obs;
-  RxDouble maxCo2HourY = 0.0.obs;
-
-  RxDouble minCo2WeekY = 0.0.obs;
-  RxDouble maxCo2WeekY = 0.0.obs;
-
-  RxDouble minCo2MonthY = 0.0.obs;
-  RxDouble maxCo2MonthY = 0.0.obs;
-
-  RxDouble minLightningHourY = 0.0.obs;
-  RxDouble maxLightningHourY = 0.0.obs;
-
-  RxDouble minLightningWeekY = 0.0.obs;
-  RxDouble maxLightningWeekY = 0.0.obs;
-
-  RxDouble minLightningMonthY = 0.0.obs;
-  RxDouble maxLightningMonthY = 0.0.obs;
-
-  RxDouble minVpdHourY = 0.0.obs;
-  RxDouble maxVpdHourY = 0.0.obs;
-
-  RxDouble minVpdWeekY = 0.0.obs;
-  RxDouble maxVpdWeekY = 0.0.obs;
-
-  RxDouble minVpdMonthY = 0.0.obs;
-  RxDouble maxVpdMonthY = 0.0.obs;
-
-  List<double> temperatureHourYList = [];
-  List<double> temperatureWeekYList = [];
-  List<double> temperatureMonthYList = [];
-
-  List<double> humidityHourYList = [];
-  List<double> humidityWeekYList = [];
-  List<double> humidityMonthYList = [];
-
-  List<double> co2HourYList = [];
-  List<double> co2WeekYList = [];
-  List<double> co2MonthYList = [];
-
-  List<double> lightningHourYList = [];
-  List<double> lightningWeekYList = [];
-  List<double> lightningMonthYList = [];
-
-  List<double> vpdHourYList = [];
-  List<double> vpdWeekYList = [];
-  List<double> vpdMonthYList = [];
-
-  List<HourData> temperatureHourDataList = [];
-  List<HourData> temperatureWeekDataList = [];
-  List<MonthData> temperatureMonthDataList = [];
-
-  List<WeekData> electricalWeekDataList = [];
-  List<MonthData> electricalMonthDataList = [];
-  List<HourData> electricalHourDataList = [];
-
-  List<HourData> co2HourDataList = [];
-  List<WeekData> co2WeekDataList = [];
-  List<MonthData> co2MonthDataList = [];
-
-  List<HourData> lightningHourDataList = [];
-  List<WeekData> lightningWeekDataList = [];
-  List<MonthData> lightningMonthDataList = [];
-
-  List<HourData> vpdHourDataList = [];
-  List<WeekData> vpdWeekDataList = [];
-  List<MonthData> vpdMonthDataList = [];
-
   String token = "";
 
   StoreData storeData = StoreData();
@@ -201,12 +114,16 @@ class OverviewController extends GetxController {
   List<ClimateData> climateDataList = [];
 
   final TextEditingController barcodeController = TextEditingController();
+  final TextEditingController plantController = TextEditingController();
+  final TextEditingController genealogyController = TextEditingController();
 
   RxBool isGraphScreen = false.obs;
 
   RxDouble rangeValue1 = 0.0.obs;
   RxDouble rangeValue2 = 0.0.obs;
   RxDouble rangeValue3 = 0.0.obs;
+  RxDouble rangeValue4 = 0.0.obs;
+  RxInt progressValue = 0.obs;
 
   Future getGrowSheetData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -478,6 +395,19 @@ class OverviewController extends GetxController {
     }
   }
 
+  Future addGrowSheetLabeler() async {
+    GrowsheetLabeler growSheetLabeler = GrowsheetLabeler();
+
+    growSheetLabeler.typeOfPlant = plantController.text;
+    growSheetLabeler.genealogy = genealogyController.text;
+    growSheetLabeler.stage = selectStage.value;
+    growSheetLabeler.plantedDate = plantedDateValue.value;
+    growSheetLabeler.harvestDate = harvestDateValue.value;
+    growSheetLabeler.barcode = barcodeController.text.isNotEmpty ? int.parse(barcodeController.text) : 0;
+
+    await updateGrowSheetLabelerData(id: growSheetId.value, growsheetLabeler: growsheetLabeler);
+  }
+
   Future get1HourData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -656,297 +586,6 @@ class OverviewController extends GetxController {
     }
   }
 
-  void getHourGraphData() {
-    if (is24Hour.value == true) {
-      temperatureHourDataList.clear();
-      electricalHourDataList.clear();
-      co2HourDataList.clear();
-      lightningHourDataList.clear();
-      vpdHourDataList.clear();
-      temperatureHourYList.clear();
-      humidityHourYList.clear();
-      co2HourYList.clear();
-      lightningHourYList.clear();
-      vpdHourYList.clear();
-      for (var element in climateDataList) {
-        temperatureValue.value = climateDataList.last.temperature ?? 0.0;
-        humidityValue.value = climateDataList.last.humidity ?? 0.0;
-        co2Value.value = climateDataList.last.co2 ?? 0.0;
-        lightningValue.value = climateDataList.last.mol!.toDouble();
-        vpdValue.value = climateDataList.last.vpd ?? 0.0;
-        HourData temperatureData =
-            HourData(element.time!, element.temperature!);
-        temperatureHourDataList.add(temperatureData);
-        temperatureHourDataList.sort((a, b) => a.x.compareTo(b.x));
-        HourData humidityData = HourData(element.time!, element.humidity!);
-        electricalHourDataList.add(humidityData);
-        electricalHourDataList.sort((a, b) => a.x.compareTo(b.x));
-        HourData co2Data = HourData(element.time!, element.co2!);
-        co2HourDataList.add(co2Data);
-        co2HourDataList.sort((a, b) => a.x.compareTo(b.x));
-        HourData vpdData = HourData(element.time!, element.vpd!);
-        vpdHourDataList.add(vpdData);
-        vpdHourDataList.sort((a, b) => a.x.compareTo(b.x));
-        HourData lightningData =
-            HourData(element.time!, element.mol!.toDouble());
-        lightningHourDataList.add(lightningData);
-        lightningHourDataList.sort((a, b) => a.x.compareTo(b.x));
-      }
-    }
-    if (temperatureHourDataList.isNotEmpty) {
-      for (var element in temperatureHourDataList) {
-        temperatureHourYList.add(element.y);
-      }
-      if (temperatureHourYList.isNotEmpty) {
-        AppConst().debug("${temperatureHourYList.cast<double>().reduce(min)}");
-        AppConst().debug("${temperatureHourYList.cast<double>().reduce(max)}");
-        minTemperatureHourY.value =
-            temperatureHourYList.cast<double>().reduce(min);
-        maxTemperatureHourY.value =
-            temperatureHourYList.cast<double>().reduce(max);
-      }
-    }
-    if (electricalHourDataList.isNotEmpty) {
-      for (var element in electricalHourDataList) {
-        humidityHourYList.add(element.y);
-      }
-      if (humidityHourYList.isNotEmpty) {
-        minHumidityHourY.value = humidityHourYList.cast<double>().reduce(min);
-        maxHumidityHourY.value = humidityHourYList.cast<double>().reduce(max);
-        AppConst().debug("humidity hour min y${minHumidityHourY.value}");
-        AppConst().debug("humidity hour max y ${maxHumidityHourY.value}");
-      }
-    }
-    if (co2HourDataList.isNotEmpty) {
-      for (var element in co2HourDataList) {
-        co2HourYList.add(element.y);
-      }
-      if (co2HourYList.isNotEmpty) {
-        minCo2HourY.value = co2HourYList.cast<double>().reduce(min);
-        maxCo2HourY.value = co2HourYList.cast<double>().reduce(max);
-        AppConst().debug("co2 hour min y${minCo2HourY.value}");
-        AppConst().debug("co2 hour max y ${maxCo2HourY.value}");
-      }
-    }
-    if (vpdHourDataList.isNotEmpty) {
-      for (var element in vpdHourDataList) {
-        vpdHourYList.add(element.y);
-      }
-      if (vpdHourYList.isNotEmpty) {
-        minVpdHourY.value = vpdHourYList.cast<double>().reduce(min);
-        maxVpdHourY.value = vpdHourYList.cast<double>().reduce(max);
-        AppConst().debug("vpd hour min y${minVpdHourY.value}");
-        AppConst().debug("vpd hour max y ${maxVpdHourY.value}");
-      }
-    }
-    if (lightningHourDataList.isNotEmpty) {
-      for (var element in lightningHourDataList) {
-        lightningHourYList.add(element.y);
-      }
-      if (lightningHourYList.isNotEmpty) {
-        minLightningHourY.value = lightningHourYList.cast<double>().reduce(min);
-        maxLightningHourY.value = lightningHourYList.cast<double>().reduce(max);
-        AppConst().debug("lightning hour min y${minLightningHourY.value}");
-        AppConst().debug("lightning hour max y ${maxLightningHourY.value}");
-      }
-    }
-  }
-
-  void getWeekGraphData() {
-    if (isWeek.value == true) {
-      temperatureWeekDataList.clear();
-      electricalWeekDataList.clear();
-      co2WeekDataList.clear();
-      lightningWeekDataList.clear();
-      vpdWeekDataList.clear();
-      temperatureWeekYList.clear();
-      humidityWeekYList.clear();
-      co2WeekYList.clear();
-      lightningWeekYList.clear();
-      vpdWeekYList.clear();
-      for (var element in climateDataList) {
-        temperatureValue.value = climateDataList.last.temperature ?? 0.0;
-        humidityValue.value = climateDataList.last.humidity ?? 0.0;
-        co2Value.value = climateDataList.last.co2 ?? 0.0;
-        lightningValue.value = climateDataList.last.mol!.toDouble();
-        vpdValue.value = climateDataList.last.vpd ?? 0.0;
-        HourData temperatureData =
-            HourData(element.time!, element.temperature!);
-        temperatureWeekDataList.add(temperatureData);
-        temperatureWeekDataList.sort((a, b) => a.x.compareTo(b.x));
-        WeekData humidityData = WeekData(element.time!, element.humidity!);
-        electricalWeekDataList.add(humidityData);
-        electricalWeekDataList.sort((a, b) => a.x.compareTo(b.x));
-        WeekData co2Data = WeekData(element.time!, element.co2!);
-        co2WeekDataList.add(co2Data);
-        co2WeekDataList.sort((a, b) => a.x.compareTo(b.x));
-        WeekData vpdData = WeekData(element.time!, element.vpd!);
-        vpdWeekDataList.add(vpdData);
-        vpdWeekDataList.sort((a, b) => a.x.compareTo(b.x));
-        WeekData lightningData =
-            WeekData(element.time!, element.mol!.toDouble());
-        lightningWeekDataList.add(lightningData);
-        lightningWeekDataList.sort((a, b) => a.x.compareTo(b.x));
-      }
-    }
-    if (temperatureWeekDataList.isNotEmpty) {
-      for (var element in temperatureWeekDataList) {
-        temperatureWeekYList.add(element.y);
-      }
-      if (temperatureWeekYList.isNotEmpty) {
-        minTemperatureWeekY.value =
-            temperatureWeekYList.cast<double>().reduce(min);
-        maxTemperatureWeekY.value =
-            temperatureWeekYList.cast<double>().reduce(max);
-        AppConst().debug("temperature week min y${minTemperatureWeekY.value}");
-        AppConst().debug("temperature week max y ${maxTemperatureWeekY.value}");
-      }
-    }
-    if (electricalWeekDataList.isNotEmpty) {
-      for (var element in electricalWeekDataList) {
-        humidityWeekYList.add(element.y);
-      }
-      if (humidityWeekYList.isNotEmpty) {
-        minHumidityWeekY.value = humidityWeekYList.cast<double>().reduce(min);
-        maxHumidityWeekY.value = humidityWeekYList.cast<double>().reduce(max);
-        AppConst().debug("humidity week min y${minHumidityWeekY.value}");
-        AppConst().debug("humidity week max y ${maxHumidityWeekY.value}");
-      }
-    }
-    if (co2WeekDataList.isNotEmpty) {
-      for (var element in co2WeekDataList) {
-        co2WeekYList.add(element.y);
-      }
-      if (co2WeekYList.isNotEmpty) {
-        minCo2WeekY.value = co2WeekYList.cast<double>().reduce(min);
-        maxCo2WeekY.value = co2WeekYList.cast<double>().reduce(max);
-        AppConst().debug("co2 week min y${minCo2WeekY.value}");
-        AppConst().debug("co2 week max y ${maxCo2WeekY.value}");
-      }
-    }
-    if (vpdWeekDataList.isNotEmpty) {
-      for (var element in vpdWeekDataList) {
-        vpdWeekYList.add(element.y);
-      }
-      if (vpdWeekYList.isNotEmpty) {
-        minVpdWeekY.value = vpdWeekYList.cast<double>().reduce(min);
-        maxVpdWeekY.value = vpdWeekYList.cast<double>().reduce(max);
-        AppConst().debug("vpd week min y${minVpdWeekY.value}");
-        AppConst().debug("vpd week max y ${maxVpdWeekY.value}");
-      }
-    }
-    if (lightningWeekDataList.isNotEmpty) {
-      for (var element in lightningWeekDataList) {
-        lightningWeekYList.add(element.y);
-      }
-      if (lightningWeekYList.isNotEmpty) {
-        minLightningWeekY.value = lightningWeekYList.cast<double>().reduce(min);
-        maxLightningWeekY.value = lightningWeekYList.cast<double>().reduce(max);
-        AppConst().debug("lightning week min y${minLightningWeekY.value}");
-        AppConst().debug("lightning week max y ${maxLightningWeekY.value}");
-      }
-    }
-  }
-
-  void getMonthGraphData() {
-    if (isMonth.value == true) {
-      temperatureMonthDataList.clear();
-      electricalMonthDataList.clear();
-      co2MonthDataList.clear();
-      lightningMonthDataList.clear();
-      vpdMonthDataList.clear();
-      temperatureMonthYList.clear();
-      humidityMonthYList.clear();
-      co2MonthYList.clear();
-      lightningMonthYList.clear();
-      vpdMonthYList.clear();
-      for (var element in climateDataList) {
-        temperatureValue.value = climateDataList.last.temperature ?? 0.0;
-        humidityValue.value = climateDataList.last.humidity ?? 0.0;
-        co2Value.value = climateDataList.last.co2 ?? 0.0;
-        lightningValue.value = climateDataList.last.mol!.toDouble();
-        vpdValue.value = climateDataList.last.vpd ?? 0.0;
-        MonthData temperatureData =
-            MonthData(element.time!, element.temperature!);
-        temperatureMonthDataList.add(temperatureData);
-        temperatureMonthDataList.sort((a, b) => a.x.compareTo(b.x));
-        MonthData humidityData = MonthData(element.time!, element.humidity!);
-        electricalMonthDataList.add(humidityData);
-        electricalMonthDataList.sort((a, b) => a.x.compareTo(b.x));
-        MonthData co2Data = MonthData(element.time!, element.co2!);
-        co2MonthDataList.add(co2Data);
-        co2MonthDataList.sort((a, b) => a.x.compareTo(b.x));
-        MonthData vpdData = MonthData(element.time!, element.vpd!);
-        vpdMonthDataList.add(vpdData);
-        vpdMonthDataList.sort((a, b) => a.x.compareTo(b.x));
-        MonthData lightningData =
-            MonthData(element.time!, element.mol!.toDouble());
-        lightningMonthDataList.add(lightningData);
-        lightningMonthDataList.sort((a, b) => a.x.compareTo(b.x));
-      }
-    }
-    if (temperatureMonthDataList.isNotEmpty) {
-      for (var element in temperatureMonthDataList) {
-        temperatureMonthYList.add(element.y);
-      }
-      if (temperatureMonthYList.isNotEmpty) {
-        minTemperatureMonthY.value =
-            temperatureMonthYList.cast<double>().reduce(min);
-        maxTemperatureMonthY.value =
-            temperatureMonthYList.cast<double>().reduce(max);
-        AppConst()
-            .debug("temperature Month min y${minTemperatureMonthY.value}");
-        AppConst()
-            .debug("temperature Month max y ${maxTemperatureMonthY.value}");
-      }
-    }
-    if (electricalMonthDataList.isNotEmpty) {
-      for (var element in electricalMonthDataList) {
-        humidityMonthYList.add(element.y);
-      }
-      if (humidityMonthYList.isNotEmpty) {
-        minHumidityMonthY.value = humidityMonthYList.cast<double>().reduce(min);
-        maxHumidityMonthY.value = humidityMonthYList.cast<double>().reduce(max);
-        AppConst().debug("humidity Month min y${minHumidityMonthY.value}");
-        AppConst().debug("humidity Month max y ${maxHumidityMonthY.value}");
-      }
-    }
-    if (co2MonthDataList.isNotEmpty) {
-      for (var element in co2MonthDataList) {
-        co2MonthYList.add(element.y);
-      }
-      if (co2MonthYList.isNotEmpty) {
-        minCo2MonthY.value = co2MonthYList.cast<double>().reduce(min);
-        maxCo2MonthY.value = co2MonthYList.cast<double>().reduce(max);
-        AppConst().debug("co2 Month min y${minCo2MonthY.value}");
-        AppConst().debug("co2 Month max y ${maxCo2MonthY.value}");
-      }
-    }
-    if (vpdMonthDataList.isNotEmpty) {
-      for (var element in vpdMonthDataList) {
-        vpdMonthYList.add(element.y);
-      }
-      if (vpdMonthYList.isNotEmpty) {
-        minVpdMonthY.value = vpdMonthYList.cast<double>().reduce(min);
-        maxVpdMonthY.value = vpdMonthYList.cast<double>().reduce(max);
-        AppConst().debug("vpd Month min y${minVpdMonthY.value}");
-        AppConst().debug("vpd Month max y ${maxVpdMonthY.value}");
-      }
-    }
-    if (lightningMonthDataList.isNotEmpty) {
-      for (var element in lightningMonthDataList) {
-        lightningMonthYList.add(element.y);
-      }
-      if (lightningMonthYList.isNotEmpty) {
-        minLightningMonthY.value =
-            lightningMonthYList.cast<double>().reduce(min);
-        maxLightningMonthY.value =
-            lightningMonthYList.cast<double>().reduce(max);
-        AppConst().debug("lightning month min y${minLightningMonthY.value}");
-        AppConst().debug("lightning month max y ${maxLightningMonthY.value}");
-      }
-    }
-  }
 }
 
 class ChartSampleData {

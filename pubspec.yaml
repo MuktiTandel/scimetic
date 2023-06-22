@@ -100,6 +100,9 @@ dependencies:
   # for dotted border
   dotted_border: ^2.0.0+3
 
+  # for generate pdf
+  pdf:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

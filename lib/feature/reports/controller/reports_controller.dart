@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kd_api_call/kd_api_call.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_dialog.dart';
@@ -73,11 +77,13 @@ class ReportController extends GetxController {
 
   List<Co2Data> co2FilterDataList = [];
 
-  List<VpdData> vdpFilterDataList = [];
+  List<VpdData> vpdFilterDataList = [];
 
   List<HumidityData> humidityFilterDataList = [];
 
   List<ChartSampleData> chartDataList = [];
+
+  RxString format = "".obs;
 
   Future getReportData() async {
     isGetData.value = false;
@@ -95,6 +101,8 @@ class ReportController extends GetxController {
       co2DataList.clear();
       humidityDataList.clear();
       vpdDataList.clear();
+
+      chartDataList.clear();
 
       final differance = endDateController.selectedDate!
           .difference(startDateController.selectedDate!)
@@ -122,20 +130,18 @@ class ReportController extends GetxController {
         progressDialog(false, Get.context!);
 
         if (apiResponse!.statusCode == 200) {
-          isGetData.value = true;
-
           if (chooseSensor.contains("temperature")) {
             reportTemperatureData = ReportTemperatureData.fromJson(data);
+
+            format.value = "°C";
 
             if (reportTemperatureData.climateData!.isNotEmpty) {
               temperatureDataList.addAll(reportTemperatureData.climateData!);
             }
-
-            if (temperatureDataList.isNotEmpty) {
-              temperatureFilterList();
-            }
           } else if (chooseSensor.contains("co2")) {
             reportCo2Data = ReportCo2Data.fromJson(data);
+
+            format.value = "CO₂";
 
             if (reportCo2Data.climateData!.isNotEmpty) {
               co2DataList.addAll(reportCo2Data.climateData!);
@@ -143,11 +149,15 @@ class ReportController extends GetxController {
           } else if (chooseSensor.contains("humidity")) {
             reportHumidityData = ReportHumidityData.fromJson(data);
 
+            format.value = "%rh";
+
             if (reportHumidityData.climateData!.isNotEmpty) {
               humidityDataList.addAll(reportHumidityData.climateData!);
             }
           } else if (chooseSensor.contains("vpd")) {
             reportVpdData = ReportVpdData.fromJson(data);
+
+            format.value = "kPa";
 
             if (reportVpdData.climateData!.isNotEmpty) {
               vpdDataList.addAll(reportVpdData.climateData!);
@@ -177,6 +187,18 @@ class ReportController extends GetxController {
               1.0;
 
           AppConst().debug('max value => ${maxValue.value}');
+
+          if (temperatureDataList.isNotEmpty) {
+            temperatureFilterList();
+          } else if (co2DataList.isNotEmpty) {
+            co2FilterList();
+          } else if (humidityDataList.isNotEmpty) {
+            humidityFilterList();
+          } else {
+            vpdFilterList();
+          }
+
+          isGetData.value = true;
 
           showSnack(width: 200.w, title: data["message"]);
 
@@ -222,8 +244,7 @@ class ReportController extends GetxController {
   }
 
   void temperatureFilterList() {
-
-    if ( temperatureDataList.isNotEmpty ) {
+    if (temperatureDataList.isNotEmpty) {
       temperatureFilterDataList.clear();
 
       double highValue = 0.0;
@@ -231,56 +252,297 @@ class ReportController extends GetxController {
       double lowValue = 0.0;
 
       DateTime dateTime =
-      DateFormat("yyyy-MM-dd hh:mm").parse(temperatureDataList.first.date!);
+          DateFormat("yyyy-MM-dd hh:mm").parse(temperatureDataList.first.date!);
 
       AppConst().debug('hour => ${dateTime.hour}');
 
       List yValueList = [];
 
-      for (var element in temperatureDataList) {
-        AppConst().debug('date => ${element.date}');
-        DateTime dateTime1 = DateFormat("yyyy-MM-dd hh:mm").parse(
-            element.date!);
-        if (dateTime1.hour == dateTime.hour) {
-          AppConst().debug('date time 1 => $dateTime');
-          temperatureFilterDataList.add(element);
+      try {
+        for (var element in temperatureDataList) {
+          DateTime dateTime1 =
+              DateFormat("yyyy-MM-dd hh:mm").parse(element.date!);
+          if (dateTime1.hour == dateTime.hour) {
+            AppConst().debug('date time 1 => $dateTime');
+            temperatureFilterDataList.add(element);
+          }
         }
-      }
 
-      if (temperatureFilterDataList.isNotEmpty) {
-        for (var element in temperatureFilterDataList) {
-          yValueList.add(element.temperature);
-          temperatureDataList.removeWhere((element1) =>
-          (element1.temperature == element.temperature));
+        if (temperatureFilterDataList.isNotEmpty) {
+          for (var element in temperatureFilterDataList) {
+            yValueList.add(element.temperature);
+            temperatureDataList.removeWhere(
+                (element1) => (element1.temperature == element.temperature));
+          }
         }
+
+        if (yValueList.isNotEmpty) {
+          highValue = yValueList
+              .reduce((value, element) => value > element ? value : element);
+          lowValue = yValueList
+              .reduce((value, element) => value < element ? value : element);
+        }
+
+        AppConst().debug(
+            'temperature data list length => ${temperatureDataList.length}');
+
+        AppConst().debug('high value => $highValue');
+        AppConst().debug('low value => $lowValue');
+
+        ChartSampleData chartSampleData = ChartSampleData();
+
+        chartSampleData.x = dateTime;
+        chartSampleData.high = highValue;
+        chartSampleData.low = lowValue;
+        chartSampleData.pointColor =
+            chartDataList.length.isEven ? AppColors.red : AppColors.buttonColor;
+        // chartSampleData.open = lowValue;
+        // chartSampleData.close = highValue;
+
+        chartDataList.add(chartSampleData);
+
+        AppConst()
+            .debug('filter List length => ${temperatureFilterDataList.length}');
+
+        AppConst()
+            .debug('chart sample data list length => ${chartDataList.length}');
+      } catch (e) {
+        AppConst().debug("$e");
       }
-
-      if (yValueList.isNotEmpty) {
-        highValue = yValueList
-            .reduce((value, element) => value > element ? value : element);
-        lowValue = yValueList
-            .reduce((value, element) => value < element ? value : element);
-      }
-
-      AppConst().debug(
-          'temperature data list length => ${temperatureDataList.length}');
-
-      AppConst().debug('high value => $highValue');
-      AppConst().debug('high value => $lowValue');
-
-      ChartSampleData chartSampleData = ChartSampleData();
-
-      chartSampleData.x = dateTime;
-      chartSampleData.high = highValue;
-      chartSampleData.low = lowValue;
-
-      chartDataList.add(chartSampleData);
-
-      AppConst()
-          .debug('filter List length => ${temperatureFilterDataList.length}');
 
       temperatureFilterList();
     }
+  }
+
+  void co2FilterList() {
+    if (co2DataList.isNotEmpty) {
+      co2FilterDataList.clear();
+
+      double highValue = 0.0;
+
+      double lowValue = 0.0;
+
+      DateTime dateTime =
+          DateFormat("yyyy-MM-dd hh:mm").parse(co2DataList.first.date!);
+
+      AppConst().debug('hour => ${dateTime.hour}');
+
+      List yValueList = [];
+
+      try {
+        for (var element in co2DataList) {
+          DateTime dateTime1 =
+              DateFormat("yyyy-MM-dd hh:mm").parse(element.date!);
+          if (dateTime1.hour == dateTime.hour) {
+            AppConst().debug('date time 1 => $dateTime');
+            co2FilterDataList.add(element);
+          }
+        }
+
+        if (co2FilterDataList.isNotEmpty) {
+          for (var element in co2FilterDataList) {
+            yValueList.add(element.co2);
+            co2DataList
+                .removeWhere((element1) => (element1.co2 == element.co2));
+          }
+        }
+
+        if (yValueList.isNotEmpty) {
+          highValue = yValueList
+              .reduce((value, element) => value > element ? value : element);
+          lowValue = yValueList
+              .reduce((value, element) => value < element ? value : element);
+        }
+
+        AppConst().debug('co2 data list length => ${co2DataList.length}');
+
+        AppConst().debug('high value => $highValue');
+        AppConst().debug('low value => $lowValue');
+
+        ChartSampleData chartSampleData = ChartSampleData();
+
+        chartSampleData.x = dateTime;
+        chartSampleData.high = highValue;
+        chartSampleData.low = lowValue;
+        chartSampleData.pointColor =
+            chartDataList.length.isEven ? AppColors.red : AppColors.buttonColor;
+        // chartSampleData.open = lowValue;
+        // chartSampleData.close = highValue;
+
+        chartDataList.add(chartSampleData);
+
+        AppConst().debug('filter List length => ${co2FilterDataList.length}');
+
+        AppConst()
+            .debug('chart sample data list length => ${chartDataList.length}');
+      } catch (e) {
+        AppConst().debug("$e");
+      }
+
+      co2FilterList();
+    }
+  }
+
+  void humidityFilterList() {
+    if (humidityDataList.isNotEmpty) {
+      humidityFilterDataList.clear();
+
+      double highValue = 0.0;
+
+      double lowValue = 0.0;
+
+      DateTime dateTime =
+          DateFormat("yyyy-MM-dd hh:mm").parse(humidityDataList.first.date!);
+
+      AppConst().debug('hour => ${dateTime.hour}');
+
+      List yValueList = [];
+
+      try {
+        for (var element in humidityDataList) {
+          DateTime dateTime1 =
+              DateFormat("yyyy-MM-dd hh:mm").parse(element.date!);
+          if (dateTime1.hour == dateTime.hour) {
+            AppConst().debug('date time 1 => $dateTime');
+            humidityFilterDataList.add(element);
+          }
+        }
+
+        if (humidityFilterDataList.isNotEmpty) {
+          for (var element in humidityFilterDataList) {
+            yValueList.add(element.humidity);
+            humidityDataList.removeWhere(
+                (element1) => (element1.humidity == element.humidity));
+          }
+        }
+
+        if (yValueList.isNotEmpty) {
+          highValue = yValueList
+              .reduce((value, element) => value > element ? value : element);
+          lowValue = yValueList
+              .reduce((value, element) => value < element ? value : element);
+        }
+
+        AppConst().debug('co2 data list length => ${humidityDataList.length}');
+
+        AppConst().debug('high value => $highValue');
+        AppConst().debug('low value => $lowValue');
+
+        ChartSampleData chartSampleData = ChartSampleData();
+
+        chartSampleData.x = dateTime;
+        chartSampleData.high = highValue;
+        chartSampleData.low = lowValue;
+        chartSampleData.pointColor =
+            chartDataList.length.isEven ? AppColors.red : AppColors.buttonColor;
+        // chartSampleData.open = lowValue;
+        // chartSampleData.close = highValue;
+
+        chartDataList.add(chartSampleData);
+
+        AppConst()
+            .debug('filter List length => ${humidityFilterDataList.length}');
+
+        AppConst()
+            .debug('chart sample data list length => ${chartDataList.length}');
+      } catch (e) {
+        AppConst().debug("$e");
+      }
+
+      humidityFilterList();
+    }
+  }
+
+  void vpdFilterList() {
+    if (vpdDataList.isNotEmpty) {
+      vpdFilterDataList.clear();
+
+      double highValue = 0.0;
+
+      double lowValue = 0.0;
+
+      DateTime dateTime =
+          DateFormat("yyyy-MM-dd hh:mm").parse(vpdDataList.first.date!);
+
+      AppConst().debug('hour => ${dateTime.hour}');
+
+      List yValueList = [];
+
+      try {
+        for (var element in vpdDataList) {
+          DateTime dateTime1 =
+              DateFormat("yyyy-MM-dd hh:mm").parse(element.date!);
+          if (dateTime1.hour == dateTime.hour) {
+            AppConst().debug('date time 1 => $dateTime');
+            vpdFilterDataList.add(element);
+          }
+        }
+
+        if (vpdFilterDataList.isNotEmpty) {
+          for (var element in vpdFilterDataList) {
+            yValueList.add(element.vpd);
+            vpdDataList
+                .removeWhere((element1) => (element1.vpd == element.vpd));
+          }
+        }
+
+        if (yValueList.isNotEmpty) {
+          highValue = yValueList
+              .reduce((value, element) => value > element ? value : element);
+          lowValue = yValueList
+              .reduce((value, element) => value < element ? value : element);
+        }
+
+        AppConst().debug('vpd data list length => ${vpdDataList.length}');
+
+        AppConst().debug('high value => $highValue');
+        AppConst().debug('low value => $lowValue');
+
+        ChartSampleData chartSampleData = ChartSampleData();
+
+        chartSampleData.x = dateTime;
+        chartSampleData.high = highValue;
+        chartSampleData.low = lowValue;
+        chartSampleData.pointColor =
+            chartDataList.length.isEven ? AppColors.red : AppColors.buttonColor;
+        // chartSampleData.open = lowValue;
+        // chartSampleData.close = highValue;
+
+        chartDataList.add(chartSampleData);
+
+        AppConst().debug('filter List length => ${vpdFilterDataList.length}');
+
+        AppConst()
+            .debug('chart sample data list length => ${chartDataList.length}');
+      } catch (e) {
+        AppConst().debug("$e");
+      }
+
+      vpdFilterList();
+    }
+  }
+
+  Future<Uint8List> makePdf() async {
+    final pdf = pw.Document();
+    pdf.addPage(pw.Page(
+      pageFormat: PdfPageFormat.a4,
+      build: (pw.Context context) {
+        return pw.Column(
+          children: [
+            pw.Container(
+              height: 40.h,
+              color: const PdfColor.fromInt(0xFFF9F9F9),
+              padding: pw.EdgeInsets.all(20.w),
+              child: pw.Row(
+                children: [
+                ]
+              )
+            )
+          ]
+        );
+      }
+    ));
+    return pdf.save();
   }
 }
 
@@ -322,7 +584,7 @@ class ChartSampleData {
   final num? thirdSeriesYValue;
 
   /// Holds point color of the datapoint
-  final Color? pointColor;
+  Color? pointColor;
 
   /// Holds size of the datapoint
   final num? size;

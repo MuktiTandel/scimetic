@@ -77,15 +77,19 @@ class ProfileSettingController extends GetxController {
   /// Get from gallery
   getFromGallery() async {
 
-    isPick.value = false;
+    try {
+      isPick.value = false;
 
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
+      if (image != null) {
 
-      isPick.value = true;
+            isPick.value = true;
 
-      imageFile = File(image.path);
+            imageFile = File(image.path);
+          }
+    } catch (e) {
+      AppConst().debug('$e');
     }
 
   }

@@ -101,8 +101,8 @@ class AppStrings {
   static const String friday = "Fr";
   static const String saturday = "Sa";
   static const String sunday = "Su";
-  static const String theTypeOfPlant = "The type of plant";
-  static const String theGenealogy = "The Genealogy";
+  static const String theTypeOfPlant = "Type of plant";
+  static const String theGenealogy = "Genealogy";
   static const String stage = "Stage";
   static const String flowering = "Flowering";
   static const String plantedDate = "Planted Date";
@@ -401,6 +401,7 @@ class AppStrings {
   static const String wetWallControl = "Wet Wall Control";
   static const String extractorControl = "Extractor Control";
   static const String extractorFanControl = "Extractor Fan Control";
+  static const String batchLabel = "Batch Label";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

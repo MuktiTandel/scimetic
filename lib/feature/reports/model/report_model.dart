@@ -96,11 +96,11 @@ class VpdData {
     this.date,
   });
 
-  int? vpd;
+  double? vpd;
   String? date;
 
   factory VpdData.fromJson(Map<String, dynamic> json) => VpdData(
-    vpd: json["vpd"] ?? 0,
+    vpd: json["vpd"] != null ? json["vpd"].toDouble() : 0.0,
     date: json["date"] ?? "",
   );
 

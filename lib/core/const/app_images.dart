@@ -124,5 +124,6 @@ class AppImages {
   static const String camera = 'assets/images/camera.png';
   static const String gallery = 'assets/images/gallery.png';
   static const String delete = 'assets/images/delete.png';
+  static const String logo1 = 'assets/images/logo1.svg';
 
 }

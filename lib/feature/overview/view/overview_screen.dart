@@ -979,7 +979,21 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             plantedDate: controller.plantedDate,
                             plantedDateValue: controller.plantedDateValue,
                             harvestDateValue: controller.harvestDateValue,
-                            controller: controller.barcodeController
+                            controller: controller.barcodeController,
+                          plantController: controller.plantController,
+                          genealogyController: controller.genealogyController,
+                          rangeValue1: controller.rangeValue1,
+                          rangeValue2: controller.rangeValue2,
+                          rangeValue3: controller.rangeValue3,
+                          rangeValue4: controller.rangeValue4,
+                          progressValue: controller.progressValue,
+                          onTap: (){
+                              Future.delayed(const Duration(seconds: 2), (){
+                                controller.addGrowSheetLabeler();
+                              });
+                          },
+                          plantedTap: (){},
+                          harvestTap: (){}
                         ),
                         SizedBox(height: 10.h,),
                         deviceOverviewWidget(

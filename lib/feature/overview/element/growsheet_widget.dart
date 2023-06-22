@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
@@ -9,18 +10,29 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-Widget growSheetWidget(
-    {required BuildContext context,
-    required RxString selectStage,
-    required RxBool isGermination,
-    required RxBool isSeedling,
-    required RxBool isVegetative,
-    required RxBool isFlowering,
-    required DateRangePickerController plantedDate,
-    required DateRangePickerController harvestDate,
-    required RxString plantedDateValue,
-    required RxString harvestDateValue,
-    required TextEditingController controller}) {
+Widget growSheetWidget({
+  required BuildContext context,
+  required RxString selectStage,
+  required RxBool isGermination,
+  required RxBool isSeedling,
+  required RxBool isVegetative,
+  required RxBool isFlowering,
+  required DateRangePickerController plantedDate,
+  required DateRangePickerController harvestDate,
+  required RxString plantedDateValue,
+  required RxString harvestDateValue,
+  required TextEditingController controller,
+  required TextEditingController plantController,
+  required TextEditingController genealogyController,
+  required RxDouble rangeValue1,
+  required RxDouble rangeValue2,
+  required RxDouble rangeValue3,
+  required RxDouble rangeValue4,
+  required RxInt progressValue,
+  required VoidCallback onTap,
+  required VoidCallback harvestTap,
+  required VoidCallback plantedTap
+}) {
   return Obx(() => Container(
         width: Get.width,
         color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
@@ -31,7 +43,7 @@ Widget growSheetWidget(
               child: Row(
                 children: [
                   CustomText(
-                    text: AppStrings.growsheet,
+                    text: AppStrings.batchLabel,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Get.isDarkMode ? Colors.white : Colors.black,
@@ -62,20 +74,82 @@ Widget growSheetWidget(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
-                    text: AppStrings.theTypeOfPlant,
-                    fontSize: 20.sp,
-                    color: AppColors.buttonColor,
-                    fontWeight: FontWeight.w600,
+                  SizedBox(
+                    height: 40.h,
+                    child: TextFormField(
+                      controller: plantController,
+                      cursorColor: Get.isDarkMode
+                          ? AppColors.darkText
+                          : AppColors.lightText,
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 15.sp,
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: AppColors.buttonColor),
+                          ),
+                          hintText: AppStrings.theTypeOfPlant,
+                          filled: true,
+                          fillColor: Get.isDarkMode
+                              ? AppColors.darkAppbar
+                              : Colors.white,
+                          contentPadding: EdgeInsets.only(left: 10.w),
+                          hintStyle: TextStyle(
+                            color: Get.isDarkMode
+                                ? AppColors.darkText
+                                : AppColors.lightBlack.withOpacity(0.5),
+                            fontSize: 14.sp,
+                            fontFamily: "Poppins",
+                          )),
+                      onChanged: (value) {
+                        onTap();
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
-                  CustomText(
-                    text: AppStrings.theGenealogy,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  SizedBox(
+                    height: 40.h,
+                    child: TextFormField(
+                      controller: genealogyController,
+                      cursorColor: Get.isDarkMode
+                          ? AppColors.darkText
+                          : AppColors.lightText,
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 15.sp,
+                        color: Get.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                const BorderSide(color: AppColors.buttonColor),
+                          ),
+                          hintText: AppStrings.theGenealogy,
+                          filled: true,
+                          fillColor: Get.isDarkMode
+                              ? AppColors.darkAppbar
+                              : Colors.white,
+                          contentPadding: EdgeInsets.only(left: 10.w),
+                          hintStyle: TextStyle(
+                            color: Get.isDarkMode
+                                ? AppColors.gray
+                                : AppColors.lightText.withOpacity(0.5),
+                            fontSize: 14.sp,
+                            fontFamily: "Poppins",
+                          )),
+                      onChanged: (value) {
+                        onTap();
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -300,7 +374,11 @@ Widget growSheetWidget(
                                       builder: (BuildContext context) {
                                         return picDate(
                                             date: plantedDate,
-                                            dateValue: plantedDateValue);
+                                            dateValue: plantedDateValue,
+                                          onTap: (){
+                                              plantedTap();
+                                          }
+                                        );
                                       });
                                 },
                                 child: CustomText(
@@ -346,7 +424,11 @@ Widget growSheetWidget(
                                       builder: (BuildContext context) {
                                         return picDate(
                                             date: harvestDate,
-                                            dateValue: harvestDateValue);
+                                            dateValue: harvestDateValue,
+                                          onTap: (){
+                                              harvestTap();
+                                          }
+                                        );
                                       });
                                 },
                                 child: CustomText(
@@ -402,12 +484,10 @@ Widget growSheetWidget(
                                     ),
                                     decoration: InputDecoration(
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            color: Colors.transparent
-                                          )
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Colors.transparent)),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -429,6 +509,9 @@ Widget growSheetWidget(
                                           fontSize: 14.sp,
                                           fontFamily: "Poppins",
                                         )),
+                                    onChanged: (value) {
+                                      onTap();
+                                    },
                                   ),
                                 ),
                               )
@@ -438,79 +521,84 @@ Widget growSheetWidget(
                       ),
                     ),
                   ),
-                  SfRadialGauge(
-                    axes: [
-                      RadialAxis(
-                        minimum: 0,
-                        maximum: 100,
-                        showLabels: false,
-                        showTicks: false,
-                        startAngle: -15,
-                        endAngle: 350,
-                        radiusFactor: 0.80,
-                        canScaleToFit: true,
-                        axisLineStyle: AxisLineStyle(
-                          thickness: 0.25,
-                          color: Get.isDarkMode
-                              ? AppColors.darkBlue
-                              : AppColors.lightAppbar,
-                          thicknessUnit: GaugeSizeUnit.factor,
-                          cornerStyle: CornerStyle.startCurve,
-                        ),
-                        pointers: const <GaugePointer>[
-                          RangePointer(
-                            value: 0,
-                            width: 0.25,
-                            sizeUnit: GaugeSizeUnit.factor,
-                            color: AppColors.pink,
-                            cornerStyle: CornerStyle.bothCurve,
-                          ),
-                          RangePointer(
-                              value: 0,
-                              width: 0.25,
-                              sizeUnit: GaugeSizeUnit.factor,
-                              color: AppColors.lightGreen3,
-                              cornerStyle: CornerStyle.bothCurve
-                          ),
-                          RangePointer(
-                              value: 0,
-                              width: 0.25,
-                              color: AppColors.purple,
-                              sizeUnit: GaugeSizeUnit.factor,
-                              cornerStyle: CornerStyle.bothCurve
-                          ),
-                        ],
-                        annotations: [
-                          GaugeAnnotation(
-                              widget: Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 30.w),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    text: "0%",
-                                    fontSize: 35.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Get.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  CustomText(
-                                    text: AppStrings.progress,
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkText
-                                        : AppColors.lightGray1,
-                                    fontSize: 20.sp,
-                                  )
-                                ],
-                              ),
+                  Obx(() => SfRadialGauge(
+                        axes: [
+                          RadialAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            showLabels: false,
+                            showTicks: false,
+                            startAngle: -15,
+                            endAngle: 350,
+                            radiusFactor: 0.80,
+                            canScaleToFit: true,
+                            axisLineStyle: AxisLineStyle(
+                              thickness: 0.25,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkBlue
+                                  : AppColors.lightAppbar,
+                              thicknessUnit: GaugeSizeUnit.factor,
+                              cornerStyle: CornerStyle.startCurve,
                             ),
-                          ))
+                            pointers: <GaugePointer>[
+                              RangePointer(
+                                value: rangeValue1.value,
+                                width: 0.25,
+                                sizeUnit: GaugeSizeUnit.factor,
+                                color: AppColors.gray,
+                                cornerStyle: CornerStyle.bothCurve,
+                              ),
+                              RangePointer(
+                                value: rangeValue2.value,
+                                width: 0.25,
+                                sizeUnit: GaugeSizeUnit.factor,
+                                color: AppColors.pink,
+                                cornerStyle: CornerStyle.bothCurve,
+                              ),
+                              RangePointer(
+                                  value: rangeValue3.value,
+                                  width: 0.25,
+                                  sizeUnit: GaugeSizeUnit.factor,
+                                  color: AppColors.lightGreen3,
+                                  cornerStyle: CornerStyle.bothCurve),
+                              RangePointer(
+                                  value: rangeValue4.value,
+                                  width: 0.25,
+                                  color: AppColors.purple,
+                                  sizeUnit: GaugeSizeUnit.factor,
+                                  cornerStyle: CornerStyle.bothCurve),
+                            ],
+                            annotations: [
+                              GaugeAnnotation(
+                                  widget: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 30.w),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CustomText(
+                                        text: "${progressValue.value}%",
+                                        fontSize: 35.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Get.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      CustomText(
+                                        text: AppStrings.progress,
+                                        color: Get.isDarkMode
+                                            ? AppColors.darkText
+                                            : AppColors.lightGray1,
+                                        fontSize: 20.sp,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ))
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  )
+                      ))
                 ],
               ),
             )
@@ -520,7 +608,7 @@ Widget growSheetWidget(
 }
 
 Widget picDate(
-    {required DateRangePickerController date, required RxString dateValue}) {
+    {required DateRangePickerController date, required RxString dateValue, required VoidCallback onTap}) {
   return AlertDialog(
     contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
     backgroundColor: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
@@ -548,8 +636,9 @@ Widget picDate(
             onSubmit: (context) {
               Get.back();
               AppConst().debug('Select date => ${date.selectedDate}');
-              dateValue.value =
-                  "${date.selectedDate!.day}.${date.selectedDate!.month}.${date.selectedDate!.year}";
+              final DateFormat formatter = DateFormat('dd.MM.yyyy');
+              dateValue.value = formatter.format(date.selectedDate!);
+              onTap();
             },
             onCancel: () {
               Get.back();

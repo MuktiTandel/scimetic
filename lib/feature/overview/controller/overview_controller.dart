@@ -396,16 +396,18 @@ class OverviewController extends GetxController {
   }
 
   Future addGrowSheetLabeler() async {
+
     GrowsheetLabeler growSheetLabeler = GrowsheetLabeler();
 
-    growSheetLabeler.typeOfPlant = plantController.text;
-    growSheetLabeler.genealogy = genealogyController.text;
-    growSheetLabeler.stage = selectStage.value;
-    growSheetLabeler.plantedDate = plantedDateValue.value;
-    growSheetLabeler.harvestDate = harvestDateValue.value;
+    growSheetLabeler.typeOfPlant = plantController.text.isNotEmpty ? plantController.text : "";
+    growSheetLabeler.genealogy = genealogyController.text.isNotEmpty ? genealogyController.text : "";
+    growSheetLabeler.stage = selectStage.value.isNotEmpty ? selectStage.value : "";
+    growSheetLabeler.plantedDate = plantedDateValue.value.isNotEmpty ? plantedDateValue.value : "";
+    growSheetLabeler.harvestDate = harvestDateValue.value.isNotEmpty ? harvestDateValue.value : "";
     growSheetLabeler.barcode = barcodeController.text.isNotEmpty ? int.parse(barcodeController.text) : 0;
 
-    await updateGrowSheetLabelerData(id: growSheetId.value, growsheetLabeler: growsheetLabeler);
+    await updateGrowSheetLabelerData(id: growSheetId.value, growsheetLabeler: growSheetLabeler);
+
   }
 
   Future get1HourData({required int id, required String identifier}) async {

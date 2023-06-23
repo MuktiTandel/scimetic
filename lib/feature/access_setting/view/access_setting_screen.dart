@@ -106,6 +106,7 @@ class AccessSettingScreen extends StatelessWidget {
                     }
                   },
                   isEdit: false.obs,
+                  isEnable: false,
                 ),
                 SizedBox(
                   height: 10.h,
@@ -582,6 +583,7 @@ class AccessSettingScreen extends StatelessWidget {
                   }
                 },
                 isEdit: controller.isEdit,
+                isEnable: false,
               ),
               SizedBox(
                 height: 10.h,

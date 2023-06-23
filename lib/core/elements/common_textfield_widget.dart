@@ -12,6 +12,7 @@ Widget commonTexField({
   required String hintText,
   required ValueChanged<String>? onChanged,
   bool? isFilled,
+  bool? isReadOnly,
    double? contentPadding
 }) {
   return Column(
@@ -32,6 +33,7 @@ Widget commonTexField({
           contentPadding: EdgeInsets.only(left: 10.w),
           hintText: hintText,
           hintTextSize: 12.sp,
+          readOnly: isReadOnly ?? false,
           focusBorderColor: AppColors.buttonColor,
           isFilled: isFilled ?? Get.isDarkMode ? true : false,
           suffixWidget: Padding(

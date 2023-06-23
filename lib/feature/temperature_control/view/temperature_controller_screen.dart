@@ -22,709 +22,785 @@ class TemperatureControllerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: context.theme.scaffoldBackgroundColor,
-        body: Obx(
-          () => controller.isGetData.value == true
-              ? ScrollConfiguration(
-                  behavior: AppBehavior(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Get.isDarkMode
-                              ? AppColors.darkTheme
-                              : Colors.white,
+        body: ScrollConfiguration(
+          behavior: AppBehavior(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      commonEnableTitleWidget(
+                          title: AppStrings.cooling,
+                          isSelect: controller.isCoolingEnable,
+                        onTap: () async {
+                            await controller.addTemperatureControlData();
+                        }
+                      ),
+                      Divider(
+                        thickness: 1.w,
+                        color: Get.isDarkMode
+                            ? AppColors.darkText
+                            : AppColors.lightBorder,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            commonImageText(
+                                image: AppImages.fillSun,
+                                title: AppStrings.dayCoolingMode,
+                                color: AppColors.lightBlue),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.switchSelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                  width: 330.w,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value: controller.dayCoolingSwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.dayCoolingSwitch.value = value;
+                                  },
+                                  isEdit: controller.isEdit,
+                                  isEnable: !controller.isCoolingEnable.value,
+                                )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                width: 330.w,
+                                hintText: AppStrings.chooseRelay,
+                                itemList: controller.dayCoolingRelayList,
+                                value:
+                                    controller.dayCoolingRelaySelection.value,
+                                isFilled: Get.isDarkMode ? true : false,
+                                onChange: (value) {
+                                  controller.dayCoolingRelaySelection.value =
+                                      value;
+                                    if ( value.contains("Relay 1")) {
+                                      controller.dayCoolingRelaySelection.value = 'Relay_1';
+                                    } else if ( value.contains("Relay 2")) {
+                                      controller.dayCoolingRelaySelection.value = 'Relay_2';
+                                    } else if ( value.contains("Relay 3")) {
+                                      controller.dayCoolingRelaySelection.value = 'Relay_3';
+                                    } else {
+                                      controller.dayCoolingRelaySelection.value = 'Relay_4';
+                                    }
+                                },
+                                isEdit: controller.isEdit,
+                                isEnable: !controller.isCoolingEnable.value,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Get.isDarkMode
+                                ? AppColors.darkAppbar
+                                : AppColors.lightAppbar,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              commonEnableTitleWidget(
-                                  title: AppStrings.cooling,
-                                  isSelect: controller.isCoolingEnable),
-                              Divider(
-                                thickness: 1.w,
+                              commonImageText(
+                                  image: AppImages.fillMoon,
+                                  title: AppStrings.nightCoolingMode,
+                                  color: AppColors.lightBlue),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.switchSelection,
                                 color: Get.isDarkMode
                                     ? AppColors.darkText
-                                    : AppColors.lightBorder,
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    commonImageText(
-                                        image: AppImages.fillSun,
-                                        title: AppStrings.dayCoolingMode,
-                                        color: AppColors.lightBlue),
-                                    SizedBox(
-                                      height: 8.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.switchSelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.switchList,
-                                      value: controller.dayCoolingValue.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.dayCoolingValue.value =
-                                            value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.relaySelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseRelay,
-                                      itemList: controller.dayCoolingRelayList,
-                                      value: controller
-                                          .dayCoolingRelaySelection.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.dayCoolingRelaySelection
-                                            .value = value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                  ],
-                                ),
+                              SizedBox(
+                                height: 5.h,
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(10.w),
-                                child: Container(
-                                  padding: EdgeInsets.all(10.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkAppbar
-                                        : AppColors.lightAppbar,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      commonImageText(
-                                          image: AppImages.fillMoon,
-                                          title: AppStrings.nightCoolingMode,
-                                          color: AppColors.lightBlue),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.switchSelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value:
-                                            controller.nightCoolingSwitch.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.nightCoolingSwitch.value =
-                                              value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.relaySelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseRelay,
-                                        itemList:
-                                            controller.nightCoolingRelayList,
-                                        value:
-                                            controller.nightCoolingRelay.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.nightCoolingRelay.value =
-                                              value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseSwitch,
+                                    itemList: controller.switchList,
+                                    value: controller.nightCoolingSwitch.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.nightCoolingSwitch.value =
+                                          value;
+                                    },
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isCoolingEnable.value,
+                                  )),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.relaySelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseRelay,
+                                    itemList: controller.nightCoolingRelayList,
+                                    value: controller.nightCoolingRelay.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.nightCoolingRelay.value =
+                                          value;
+                                      if ( value.contains("Relay 1")) {
+                                        controller.nightCoolingRelay.value = 'Relay_1';
+                                      } else if ( value.contains("Relay 2")) {
+                                        controller.nightCoolingRelay.value = 'Relay_2';
+                                      } else if ( value.contains("Relay 3")) {
+                                        controller.nightCoolingRelay.value = 'Relay_3';
+                                      } else {
+                                        controller.nightCoolingRelay.value = 'Relay_4';
+                                      }
+                                    },
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isCoolingEnable.value,
+                                  )),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Container(
-                          color: Get.isDarkMode
-                              ? AppColors.darkTheme
-                              : Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              commonEnableTitleWidget(
-                                  title: AppStrings.heating,
-                                  isSelect: controller.isHeatingEnable),
-                              Divider(
-                                thickness: 1.w,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightBorder,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    commonImageText(
-                                        image: AppImages.fillSun,
-                                        title: AppStrings.dayHeatingMode,
-                                        color: AppColors.orange),
-                                    SizedBox(
-                                      height: 8.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.switchSelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.switchList,
-                                      value: controller.dayCoolingValue.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.dayCoolingValue.value =
-                                            value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.relaySelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseRelay,
-                                      itemList: controller.dayCoolingRelayList,
-                                      value: controller
-                                          .dayCoolingRelaySelection.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.dayCoolingRelaySelection
-                                            .value = value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.w),
-                                child: Container(
-                                  padding: EdgeInsets.all(10.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkAppbar
-                                        : AppColors.lightAppbar,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      commonImageText(
-                                          image: AppImages.fillMoon,
-                                          title: AppStrings.nightHeatingMode,
-                                          color: AppColors.orange),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.switchSelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller.dayCoolingValue.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.dayCoolingValue.value =
-                                              value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.relaySelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseRelay,
-                                        itemList:
-                                            controller.dayCoolingRelayList,
-                                        value: controller
-                                            .dayCoolingRelaySelection.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.dayCoolingRelaySelection
-                                              .value = value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Container(
-                          color: Get.isDarkMode
-                              ? AppColors.darkTheme
-                              : Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              commonTitleWidget(
-                                  title: AppStrings.extractorFan,
-                                  isSelect: controller.isExtractorFanOn),
-                              Divider(
-                                thickness: 1.w,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightBorder,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    commonImageText(
-                                        image: AppImages.fillSun,
-                                        title: AppStrings.dayMode,
-                                        color: AppColors.lightBlue),
-                                    SizedBox(
-                                      height: 8.h,
-                                    ),
-                                    commonTexField(
-                                        title: AppStrings.temperature,
-                                        controller:
-                                            controller.extractorDayTemperature,
-                                        suffixText: "°C",
-                                        hintText: AppStrings.temperature,
-                                        onChanged: (value) {}),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.switchSelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.switchList,
-                                      value: controller
-                                          .extractorFanDaySwitch.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.extractorFanDaySwitch.value =
-                                            value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.relaySelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseRelay,
-                                      itemList:
-                                          controller.extractorFanDayRelayList,
-                                      value:
-                                          controller.extractorFanDayRelay.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.extractorFanDayRelay.value =
-                                            value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.w),
-                                child: Container(
-                                  padding: EdgeInsets.all(10.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkAppbar
-                                        : AppColors.lightAppbar,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      commonImageText(
-                                          image: AppImages.fillMoon,
-                                          title: AppStrings.nightMode,
-                                          color: AppColors.lightBlue),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      commonTexField(
-                                          title: AppStrings.temperature,
-                                          controller: controller
-                                              .extractorNightTemperature,
-                                          suffixText: "°C",
-                                          hintText: AppStrings.temperature,
-                                          onChanged: (value) {}),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.switchSelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller
-                                            .extractorFanNightSwitch.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.extractorFanNightSwitch
-                                              .value = value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.relaySelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseRelay,
-                                        itemList: controller
-                                            .extractorFanNightRelayList,
-                                        value: controller
-                                            .extractorFanNightRelay.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.extractorFanNightRelay
-                                              .value = value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Container(
-                          color: Get.isDarkMode
-                              ? AppColors.darkTheme
-                              : Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              commonTitleWidget(
-                                  title: AppStrings.wetWall,
-                                  isSelect: controller.isWetWallOn),
-                              Divider(
-                                thickness: 1.w,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightBorder,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(15.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    commonImageText(
-                                        image: AppImages.fillSun,
-                                        title: AppStrings.dayMode,
-                                        color: AppColors.lightBlue),
-                                    SizedBox(
-                                      height: 8.h,
-                                    ),
-                                    commonTexField(
-                                        title: AppStrings.temperature,
-                                        controller:
-                                            controller.wetWallDayTemperature,
-                                        suffixText: "°C",
-                                        hintText: AppStrings.temperature,
-                                        onChanged: (value) {}),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.switchSelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.switchList,
-                                      value: controller.wetWallDaySwitch.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.wetWallDaySwitch.value =
-                                            value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    CustomText(
-                                      text: AppStrings.relaySelection,
-                                      color: Get.isDarkMode
-                                          ? AppColors.darkText
-                                          : AppColors.lightText,
-                                      fontSize: 12.h,
-                                    ),
-                                    SizedBox(
-                                      height: 5.h,
-                                    ),
-                                    CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseRelay,
-                                      itemList: controller.wetWalDayRelayList,
-                                      value: controller.wetWalDayRelay.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.wetWalDayRelay.value = value;
-                                      },
-                                      isEdit: false.obs,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10.w),
-                                child: Container(
-                                  padding: EdgeInsets.all(10.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Get.isDarkMode
-                                        ? AppColors.darkAppbar
-                                        : AppColors.lightAppbar,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      commonImageText(
-                                          image: AppImages.fillMoon,
-                                          title: AppStrings.nightMode,
-                                          color: AppColors.lightBlue),
-                                      SizedBox(
-                                        height: 8.h,
-                                      ),
-                                      commonTexField(
-                                          title: AppStrings.temperature,
-                                          controller: controller
-                                              .wetWallNightTemperature,
-                                          suffixText: "°C",
-                                          hintText: AppStrings.temperature,
-                                          onChanged: (value) {}),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.switchSelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                        width: 320.w,
-                                        hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value:
-                                            controller.wetWallNightSwitch.value,
-                                        isFilled: Get.isDarkMode ? true : false,
-                                        onChange: (value) {
-                                          controller.wetWallNightSwitch.value =
-                                              value;
-                                        },
-                                        isEdit: false.obs,
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.relaySelection,
-                                        color: Get.isDarkMode
-                                            ? AppColors.darkText
-                                            : AppColors.lightText,
-                                        fontSize: 12.h,
-                                      ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      CustomDropDown(
-                                          width: 320.w,
-                                          hintText: AppStrings.chooseRelay,
-                                          itemList:
-                                              controller.wetWalNightRelayList,
-                                          value:
-                                              controller.wetWalNightRelay.value,
-                                          isFilled:
-                                              Get.isDarkMode ? true : false,
-                                          isEdit: false.obs,
-                                          onChange: (value) {
-                                            controller.wetWalNightRelay.value =
-                                                value;
-                                          }),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(15.w),
-                          child: CustomButton(
-                            onTap: () {},
-                            buttonText: AppStrings.save,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              : const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.buttonColor,
+                      )
+                    ],
                   ),
                 ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      commonEnableTitleWidget(
+                          title: AppStrings.heating,
+                          isSelect: controller.isHeatingEnable,
+                        onTap: () async {
+                            await controller.addTemperatureControlData();
+                        }
+                      ),
+                      Divider(
+                        thickness: 1.w,
+                        color: Get.isDarkMode
+                            ? AppColors.darkText
+                            : AppColors.lightBorder,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            commonImageText(
+                                image: AppImages.fillSun,
+                                title: AppStrings.dayHeatingMode,
+                                color: AppColors.orange),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.switchSelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                  width: 330.w,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value: controller.dayHeatingSwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.dayHeatingSwitch.value = value;
+                                  },
+                                  isEdit: controller.isEdit,
+                                  isEnable: !controller.isHeatingEnable.value,
+                                )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                width: 330.w,
+                                hintText: AppStrings.chooseRelay,
+                                itemList: controller.dayHeatingRelayList,
+                                value: controller.dayHeatingRelay.value,
+                                isFilled: Get.isDarkMode ? true : false,
+                                onChange: (value) {
+                                  controller.dayHeatingRelay.value = value;
+                                  if ( value.contains("Relay 1")) {
+                                    controller.dayHeatingRelay.value = 'Relay_1';
+                                  } else if ( value.contains("Relay 2")) {
+                                    controller.dayHeatingRelay.value = 'Relay_2';
+                                  } else if ( value.contains("Relay 3")) {
+                                    controller.dayHeatingRelay.value = 'Relay_3';
+                                  } else {
+                                    controller.dayHeatingRelay.value = 'Relay_4';
+                                  }
+                                },
+                                isEdit: controller.isEdit,
+                                isEnable: !controller.isHeatingEnable.value,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Get.isDarkMode
+                                ? AppColors.darkAppbar
+                                : AppColors.lightAppbar,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              commonImageText(
+                                  image: AppImages.fillMoon,
+                                  title: AppStrings.nightHeatingMode,
+                                  color: AppColors.orange),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.switchSelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseSwitch,
+                                    itemList: controller.switchList,
+                                    value: controller.nightHeatingSwitch.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.nightHeatingSwitch.value =
+                                          value;
+                                    },
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isHeatingEnable.value,
+                                  )),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.relaySelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseRelay,
+                                    itemList: controller.nightHeatingRelayList,
+                                    value: controller.nightHeatingRelay.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.nightHeatingRelay.value =
+                                          value;
+                                      if ( value.contains("Relay 1")) {
+                                        controller.nightHeatingRelay.value = 'Relay_1';
+                                      } else if ( value.contains("Relay 2")) {
+                                        controller.nightHeatingRelay.value = 'Relay_2';
+                                      } else if ( value.contains("Relay 3")) {
+                                        controller.nightHeatingRelay.value = 'Relay_3';
+                                      } else {
+                                        controller.nightHeatingRelay.value = 'Relay_4';
+                                      }
+                                    },
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isHeatingEnable.value,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      commonTitleWidget(
+                          title: AppStrings.extractorFan,
+                          isSelect: controller.isExtractorFanOn),
+                      Divider(
+                        thickness: 1.w,
+                        color: Get.isDarkMode
+                            ? AppColors.darkText
+                            : AppColors.lightBorder,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            commonImageText(
+                                image: AppImages.fillSun,
+                                title: AppStrings.dayMode,
+                                color: AppColors.lightBlue),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Obx(() => commonTexField(
+                                title: AppStrings.temperature,
+                                controller: controller.extractorDayTemperature,
+                                suffixText: "°C",
+                                hintText: AppStrings.temperature,
+                                onChanged: (value) {},
+                                isReadOnly: !controller.isExtractorFanOn.value
+                            ),),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.switchSelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                  width: 330.w,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value: controller.extractorFanDaySwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.extractorFanDaySwitch.value =
+                                        value;
+                                  },
+                                  isEdit: controller.isEdit.value == false
+                                      ? false.obs
+                                      : true.obs,
+                              isEnable: !controller.isExtractorFanOn.value,
+                                )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                  width: 330.w,
+                                  hintText: AppStrings.chooseRelay,
+                                  itemList: controller.dayExtractorRelayList,
+                                  value: controller.extractorFanDayRelay.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.extractorFanDayRelay.value =
+                                        value;
+                                    if ( value.contains("Relay 1")) {
+                                      controller.extractorFanDayRelay.value = 'Relay_1';
+                                    } else if ( value.contains("Relay 2")) {
+                                      controller.extractorFanDayRelay.value = 'Relay_2';
+                                    } else if ( value.contains("Relay 3")) {
+                                      controller.extractorFanDayRelay.value = 'Relay_3';
+                                    } else {
+                                      controller.extractorFanDayRelay.value = 'Relay_4';
+                                    }
+                                  },
+                                  isEdit: controller.isEdit,
+                              isEnable: !controller.isExtractorFanOn.value,
+                                )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Get.isDarkMode
+                                ? AppColors.darkAppbar
+                                : AppColors.lightAppbar,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              commonImageText(
+                                  image: AppImages.fillMoon,
+                                  title: AppStrings.nightMode,
+                                  color: AppColors.lightBlue),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Obx(() => commonTexField(
+                                  title: AppStrings.temperature,
+                                  controller:
+                                  controller.extractorNightTemperature,
+                                  suffixText: "°C",
+                                  hintText: AppStrings.temperature,
+                                  onChanged: (value) {},
+                                  isReadOnly: !controller.isExtractorFanOn.value
+                              ),),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.switchSelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(
+                                () => CustomDropDown(
+                                  width: 320.w,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value:
+                                      controller.extractorFanNightSwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.extractorFanNightSwitch.value =
+                                        value;
+                                  },
+                                  isEdit: controller.isEdit.value == false
+                                      ? false.obs
+                                      : true.obs,
+                                  isEnable: !controller.isExtractorFanOn.value,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.relaySelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseRelay,
+                                    itemList:
+                                        controller.nightExtractorRelayList,
+                                    value:
+                                        controller.extractorFanNightRelay.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.extractorFanNightRelay.value =
+                                          value;
+                                      if ( value.contains("Relay 1")) {
+                                        controller.extractorFanNightRelay.value = 'Relay_1';
+                                      } else if ( value.contains("Relay 2")) {
+                                        controller.extractorFanNightRelay.value = 'Relay_2';
+                                      } else if ( value.contains("Relay 3")) {
+                                        controller.extractorFanNightRelay.value = 'Relay_3';
+                                      } else {
+                                        controller.extractorFanNightRelay.value = 'Relay_4';
+                                      }
+                                    },
+                                    isEdit: controller.isEdit,
+                                isEnable: !controller.isExtractorFanOn.value,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      commonTitleWidget(
+                          title: AppStrings.wetWall,
+                          isSelect: controller.isWetWallOn),
+                      Divider(
+                        thickness: 1.w,
+                        color: Get.isDarkMode
+                            ? AppColors.darkText
+                            : AppColors.lightBorder,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            commonImageText(
+                                image: AppImages.fillSun,
+                                title: AppStrings.dayMode,
+                                color: AppColors.lightBlue),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Obx(() => commonTexField(
+                                title: AppStrings.temperature,
+                                controller: controller.wetWallDayTemperature,
+                                suffixText: "°C",
+                                hintText: AppStrings.temperature,
+                                onChanged: (value) {},
+                                isReadOnly: controller.isWetWallOn.value
+                            )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.switchSelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                  width: 330.w,
+                                  hintText: AppStrings.chooseSwitch,
+                                  itemList: controller.switchList,
+                                  value: controller.wetWallDaySwitch.value,
+                                  isFilled: Get.isDarkMode ? true : false,
+                                  onChange: (value) {
+                                    controller.wetWallDaySwitch.value = value;
+                                  },
+                                  isEdit: controller.isEdit,
+                              isEnable: !controller.isWetWallOn.value,
+                                )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(() => CustomDropDown(
+                                width: 330.w,
+                                hintText: AppStrings.chooseRelay,
+                                itemList: controller.dayWetWallRelayList,
+                                value: controller.wetWalDayRelay.value,
+                                isFilled: Get.isDarkMode ? true : false,
+                                onChange: (value) {
+                                  controller.wetWalDayRelay.value = value;
+                                  if ( value.contains("Relay 1")) {
+                                    controller.wetWalDayRelay.value = 'Relay_1';
+                                  } else if ( value.contains("Relay 2")) {
+                                    controller.wetWalDayRelay.value = 'Relay_2';
+                                  } else if ( value.contains("Relay 3")) {
+                                    controller.wetWalDayRelay.value = 'Relay_3';
+                                  } else {
+                                    controller.wetWalDayRelay.value = 'Relay_4';
+                                  }
+                                },
+                                isEdit: controller.isEdit,
+                              isEnable: !controller.isWetWallOn.value,
+                            )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Get.isDarkMode
+                                ? AppColors.darkAppbar
+                                : AppColors.lightAppbar,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              commonImageText(
+                                  image: AppImages.fillMoon,
+                                  title: AppStrings.nightMode,
+                                  color: AppColors.lightBlue),
+                              SizedBox(
+                                height: 8.h,
+                              ),
+                              Obx(() => commonTexField(
+                                  title: AppStrings.temperature,
+                                  controller:
+                                  controller.wetWallNightTemperature,
+                                  suffixText: "°C",
+                                  hintText: AppStrings.temperature,
+                                  onChanged: (value) {},
+                                  isReadOnly: controller.isWetWallOn.value
+                              ),),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.switchSelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(() => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseSwitch,
+                                    itemList: controller.switchList,
+                                    value: controller.wetWallNightSwitch.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    onChange: (value) {
+                                      controller.wetWallNightSwitch.value =
+                                          value;
+                                    },
+                                    isEdit: controller.isEdit,
+                                isEnable: !controller.isWetWallOn.value,
+                                  )),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              CustomText(
+                                text: AppStrings.relaySelection,
+                                color: Get.isDarkMode
+                                    ? AppColors.darkText
+                                    : AppColors.lightText,
+                                fontSize: 12.h,
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Obx(
+                                () => CustomDropDown(
+                                    width: 320.w,
+                                    hintText: AppStrings.chooseRelay,
+                                    itemList: controller.nightWetWallRelayList,
+                                    value: controller.wetWalNightRelay.value,
+                                    isFilled: Get.isDarkMode ? true : false,
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isWetWallOn.value,
+                                    onChange: (value) {
+                                      controller.wetWalNightRelay.value = value;
+                                      if ( value.contains("Relay 1")) {
+                                        controller.wetWalNightRelay.value = 'Relay_1';
+                                      } else if ( value.contains("Relay 2")) {
+                                        controller.wetWalNightRelay.value = 'Relay_2';
+                                      } else if ( value.contains("Relay 3")) {
+                                        controller.wetWalNightRelay.value = 'Relay_3';
+                                      } else {
+                                        controller.wetWalNightRelay.value = 'Relay_4';
+                                      }
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(15.w),
+                  child: CustomButton(
+                    onTap: () {},
+                    buttonText: AppStrings.save,
+                    fontSize: 16.sp,
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
+            ),
+          ),
         ));
   }
 
@@ -754,9 +830,9 @@ class TemperatureControllerScreen extends StatelessWidget {
           ),
           Obx(
             () => GestureDetector(
-              onTap: () {
-                isSelect.value =
-                    !isSelect.value;
+              onTap: () async {
+                isSelect.value = !isSelect.value;
+                await controller.addTemperatureControlData();
               },
               child: Image.asset(
                 isSelect.value == false
@@ -776,9 +852,7 @@ class TemperatureControllerScreen extends StatelessWidget {
           ),
           Obx(
             () => CustomText(
-              text: isSelect.value
-                  ? AppStrings.off
-                  : AppStrings.on,
+              text: isSelect.value ? AppStrings.off : AppStrings.on,
               fontSize: 14.sp,
               color: isSelect.value
                   ? AppColors.lightText

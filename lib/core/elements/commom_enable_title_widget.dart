@@ -10,6 +10,7 @@ Widget commonEnableTitleWidget({
   required String title,
   required RxBool isSelect,
   Color? titleColor,
+  required VoidCallback onTap
 }) {
   return Padding(
     padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h),
@@ -30,8 +31,9 @@ Widget commonEnableTitleWidget({
         ),),
         SizedBox(width: 10.w,),
         Obx(() => GestureDetector(
-          onTap: (){
+          onTap: () async {
             isSelect.value = !isSelect.value;
+            onTap();
           },
           child: Image.asset(
             isSelect.value == false

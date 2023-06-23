@@ -150,6 +150,7 @@ class WetWallControlScreen extends StatelessWidget {
                                 controller.daySwitch.value = value;
                               },
                               isEdit: false.obs,
+                              isEnable: false,
                             ),
                           ),
                           SizedBox(
@@ -175,6 +176,7 @@ class WetWallControlScreen extends StatelessWidget {
                               controller.dayRelay.value = value;
                             },
                             isEdit: false.obs,
+                            isEnable: false,
                           )
                         ],
                       ),
@@ -244,6 +246,7 @@ class WetWallControlScreen extends StatelessWidget {
                                   controller.nightSwitch.value = value;
                                 },
                                 isEdit: false.obs,
+                                isEnable: false,
                               ),
                             ),
                             SizedBox(
@@ -269,6 +272,7 @@ class WetWallControlScreen extends StatelessWidget {
                                 controller.nightRelay.value = value;
                               },
                               isEdit: false.obs,
+                              isEnable: false,
                             )
                           ],
                         ),

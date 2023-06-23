@@ -112,6 +112,7 @@ class ReportScreen extends StatelessWidget {
                           }
                         },
                         isEdit: false.obs,
+                        isEnable: false,
                       ),
                       SizedBox(
                         height: 15.h,

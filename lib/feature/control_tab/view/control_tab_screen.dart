@@ -31,7 +31,8 @@ class ControlTabScreen extends StatelessWidget {
                 commonEnableTitleWidget(
                     title: AppStrings.blackOutScreenSetting,
                     isSelect: controller.isBlackOutEnable,
-                  titleColor: AppColors.lightBlue
+                  titleColor: AppColors.lightBlue,
+                  onTap: (){}
                 ),
                 Padding(
                     padding: EdgeInsets.all(15.w),
@@ -79,6 +80,7 @@ class ControlTabScreen extends StatelessWidget {
                             controller.blackOutSwitch.value = value;
                           },
                         isEdit: false.obs,
+                        isEnable: false,
                       ),
                       SizedBox(
                         height: 10.h,
@@ -99,6 +101,7 @@ class ControlTabScreen extends StatelessWidget {
                             controller.blackOutRelay.value = value;
                           },
                         isEdit: false.obs,
+                        isEnable: false,
                       ),
                     ],
                   ),
@@ -115,7 +118,8 @@ class ControlTabScreen extends StatelessWidget {
                         commonEnableTitleWidget(
                             title: AppStrings.uVScreen,
                             isSelect: controller.isUvScreenEnable,
-                          titleColor: AppColors.lightBlue
+                          titleColor: AppColors.lightBlue,
+                          onTap: (){}
                         ),
                         Padding(
                             padding: EdgeInsets.all(15.w),
@@ -175,6 +179,7 @@ class ControlTabScreen extends StatelessWidget {
                                     controller.uVScreenSwitch.value = value;
                                   },
                                 isEdit: false.obs,
+                                isEnable: false,
                               ),
                               SizedBox(
                                 height: 10.h,
@@ -195,6 +200,7 @@ class ControlTabScreen extends StatelessWidget {
                                     controller.uvScreenRelay.value = value;
                                   },
                                 isEdit: false.obs,
+                                isEnable: false,
                               ),
                             ],
                           ),

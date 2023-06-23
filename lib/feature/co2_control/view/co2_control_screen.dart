@@ -158,6 +158,7 @@ class Co2ControlScreen extends StatelessWidget {
                                     controller.dayLightningSwitch.value = value;
                                   },
                                   isEdit: false.obs,
+                                  isEnable: false,
                                 ),
                                 SizedBox(
                                   height: 10.h,
@@ -184,6 +185,7 @@ class Co2ControlScreen extends StatelessWidget {
                                           value;
                                     },
                                     isEdit: false.obs,
+                                    isEnable: false,
                                   ),
                                 )
                               ],
@@ -313,6 +315,7 @@ class Co2ControlScreen extends StatelessWidget {
                                     },
                                     isFilled: true,
                                     isEdit: false.obs,
+                                    isEnable: false,
                                   ),
                                   SizedBox(
                                     height: 10.h,
@@ -341,6 +344,7 @@ class Co2ControlScreen extends StatelessWidget {
                                             value;
                                       },
                                       isEdit: false.obs,
+                                      isEnable: false,
                                     ),
                                   )
                                 ],

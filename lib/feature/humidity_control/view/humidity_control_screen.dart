@@ -93,6 +93,7 @@ class HumidityControlScreen extends StatelessWidget {
                                     value;
                               },
                             isEdit: false.obs,
+                            isEnable: false,
                               ),
                           ),
                           SizedBox(
@@ -123,6 +124,7 @@ class HumidityControlScreen extends StatelessWidget {
 
                               },
                             isEdit: false.obs,
+                            isEnable: false,
                               ),
                         ],
                       ),
@@ -186,6 +188,7 @@ class HumidityControlScreen extends StatelessWidget {
                               },
                               isFilled: true,
                               isEdit: false.obs,
+                              isEnable: false,
                             ),),
                             SizedBox(
                               height: 10.h,
@@ -216,6 +219,7 @@ class HumidityControlScreen extends StatelessWidget {
                                       .removeWhere((element) => (element.contains(value)));
                                 },
                               isEdit: false.obs,
+                              isEnable: false,
                                 ),
                           ],
                         ),
@@ -282,6 +286,7 @@ class HumidityControlScreen extends StatelessWidget {
                                     .value = value;
                               },
                             isEdit: false.obs,
+                            isEnable: false,
                               ),
                           ),
                           SizedBox(
@@ -315,6 +320,7 @@ class HumidityControlScreen extends StatelessWidget {
 
                               },
                             isEdit: false.obs,
+                            isEnable: false,
                               ),
                         ],
                       ),
@@ -384,6 +390,7 @@ class HumidityControlScreen extends StatelessWidget {
                               },
                               isFilled: true,
                               isEdit: false.obs,
+                              isEnable: false,
                             ),),
                             SizedBox(
                               height: 10.h,
@@ -412,6 +419,7 @@ class HumidityControlScreen extends StatelessWidget {
                                       .value = value;
                                 },
                               isEdit: false.obs,
+                              isEnable: false,
                                 ),
                           ],
                         ),

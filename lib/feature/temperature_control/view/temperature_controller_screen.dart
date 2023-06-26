@@ -790,7 +790,9 @@ class TemperatureControllerScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(15.w),
                   child: CustomButton(
-                    onTap: () {},
+                    onTap: () async {
+                      await controller.addTemperatureControlData();
+                    },
                     buttonText: AppStrings.save,
                     fontSize: 16.sp,
                   ),

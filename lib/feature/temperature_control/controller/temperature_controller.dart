@@ -11,7 +11,6 @@ import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/core/utils/store_data.dart';
-import 'package:scimetic/feature/extractor_control/controller/extractor_control_controller.dart';
 import 'package:scimetic/feature/temperature_control/model/temperature_controller_model.dart';
 
 class TemperatureController extends GetxController {
@@ -360,6 +359,8 @@ class TemperatureController extends GetxController {
       temperatureControl.heatingAuto = isHeatingEnable.value;
       temperatureControl.extractorFanAuto = isExtractorFanOn.value;
       temperatureControl.wetWallAuto = isWetWallOn.value;
+      temperatureControl.createdAt = DateTime.now();
+      temperatureControl.updatedAt = DateTime.now();
 
       try {
         progressDialog(true, Get.context!);

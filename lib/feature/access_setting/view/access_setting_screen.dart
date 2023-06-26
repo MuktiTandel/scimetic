@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
@@ -14,6 +15,7 @@ import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/edit_delete_popup.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/access_setting/controller/access_setting_controller.dart';
+import 'package:scimetic/feature/access_setting/element/password_decrypt.dart';
 import 'package:scimetic/feature/access_setting/model/user_model.dart';
 
 class AccessSettingScreen extends StatelessWidget {
@@ -217,33 +219,35 @@ class AccessSettingScreen extends StatelessWidget {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 15.w),
-                      child: CustomButton(
-                        height: 30.h,
-                        width: 85.w,
-                        onTap: () {
-                          Get.dialog(dialogWidget());
-                        },
-                        buttonText: AppStrings.add,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                AppImages.add,
-                                height: 12.h,
-                                width: 12.w,
+                    Obx(() => controller.isShow.value == true
+                        ? Padding(
+                            padding: EdgeInsets.only(right: 15.w),
+                            child: CustomButton(
+                              height: 30.h,
+                              width: 85.w,
+                              onTap: () {
+                                Get.dialog(dialogWidget());
+                              },
+                              buttonText: AppStrings.add,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppImages.add,
+                                      height: 12.h,
+                                      width: 12.w,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    const Text(AppStrings.add)
+                                  ],
+                                ),
                               ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              const Text(AppStrings.add)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                            ),
+                          )
+                        : const SizedBox.shrink()),
                     SizedBox(
                       height: 20.h,
                     )
@@ -259,12 +263,15 @@ class AccessSettingScreen extends StatelessWidget {
 
   Widget listWidget(
       {required RxBool isSelect, required User data, required RxBool isShow}) {
-
     // AccessSettingController.encryptAES("Password@123");
     //
     // AccessSettingController.decryptAES(data.password!);
     //
     // controller.getPassword(data.password!);
+
+    AppConst().debug(Encryption.instance.decrypt(data.password!));
+
+    controller.keyController.text = Encryption.instance.decrypt(data.password!);
 
     return Column(
       children: [
@@ -279,7 +286,17 @@ class AccessSettingScreen extends StatelessWidget {
                     () => GestureDetector(
                       onTap: () {
                         isSelect.value = !isSelect.value;
-                        controller.isSelect.value = false;
+                        controller.checkList.clear();
+                        for (var element in controller.selectList) {
+                          if ( element.value == true ) {
+                            controller.checkList.add(element.value);
+                          }
+                        }
+                        if ( controller.checkList.isNotEmpty ) {
+                          controller.isSelect.value = true;
+                        } else {
+                          controller.isSelect.value = false;
+                        }
                       },
                       child: isSelect.value == false
                           ? Image.asset(
@@ -324,37 +341,39 @@ class AccessSettingScreen extends StatelessWidget {
                                 child: SizedBox(
                               width: 10.w,
                             )),
-                            editDeletePopup(
-                                editTap: () {
-                              controller.isEdit.value = true;
+                            Obx(() => controller.isShow.value == true
+                                ? editDeletePopup(
+                                    editTap: () {
+                                      controller.isEdit.value = true;
 
-                              controller.userId.value = data.id ?? 0;
+                                      controller.userId.value = data.id ?? 0;
 
-                              String? firstName;
-                              String? lastName;
+                                      String? firstName;
+                                      String? lastName;
 
-                              if (data.name!.contains(' ')) {
-                                var name = data.name!.split(" ");
+                                      if (data.name!.contains(' ')) {
+                                        var name = data.name!.split(" ");
 
-                                firstName = name[0];
-                                lastName = name[1];
-                              }
+                                        firstName = name[0];
+                                        lastName = name[1];
+                                      }
 
-                              controller.firstNameController.text =
-                                  firstName ?? "";
-                              controller.lastNameController.text =
-                                  lastName ?? "";
-                              controller.emailController.text =
-                                  data.email ?? "";
-                              controller.roleValue.value =
-                                  data.role!.name ?? "";
+                                      controller.firstNameController.text =
+                                          firstName ?? "";
+                                      controller.lastNameController.text =
+                                          lastName ?? "";
+                                      controller.emailController.text =
+                                          data.email ?? "";
+                                      controller.roleValue.value =
+                                          data.role!.name ?? "";
 
-                              Future.delayed(const Duration(seconds: 1), () {
-                                Get.dialog(dialogWidget());
-                              });
-                            },
-                              deleteTap: (){}
-                            )
+                                      Future.delayed(const Duration(seconds: 1),
+                                          () {
+                                        Get.dialog(dialogWidget());
+                                      });
+                                    },
+                                    deleteTap: () {})
+                                : const SizedBox.shrink())
                           ],
                         ),
                         CustomText(
@@ -572,13 +591,13 @@ class AccessSettingScreen extends StatelessWidget {
                 width: 300.w,
                 onChange: (value) {
                   controller.roleValue.value = value;
-                  if ( value.contains(AppStrings.superAdmin) ) {
+                  if (value.contains(AppStrings.superAdmin)) {
                     controller.roleCode.value = "super_admin";
-                  } else if ( value.contains(AppStrings.companyOwner) ) {
+                  } else if (value.contains(AppStrings.companyOwner)) {
                     controller.roleCode.value = "company_owner";
-                  } else if ( value.contains(AppStrings.companyAdmin) ) {
+                  } else if (value.contains(AppStrings.companyAdmin)) {
                     controller.roleCode.value = "company_admin";
-                  } else if ( value.contains(AppStrings.cropTechnician) ) {
+                  } else if (value.contains(AppStrings.cropTechnician)) {
                     controller.roleCode.value = "crop_technician";
                   }
                 },

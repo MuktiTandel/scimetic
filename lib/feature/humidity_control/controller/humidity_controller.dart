@@ -93,6 +93,8 @@ class HumidityController extends GetxController {
 
     if ( token.isNotEmpty ) {
 
+      isGetData.value = false;
+
       progressDialog(true, Get.context!);
 
       try {
@@ -120,6 +122,8 @@ class HumidityController extends GetxController {
         });
 
         progressDialog(false, Get.context!);
+
+        isGetData.value = true;
 
         if ( apiResponse!.statusCode == 200 ) {
 

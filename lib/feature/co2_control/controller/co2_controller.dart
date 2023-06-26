@@ -80,7 +80,7 @@ class Co2Controller extends GetxController {
 
       isGetData.value = false;
 
-      // progressDialog(false, Get.context!);
+      progressDialog(true, Get.context!);
 
       try {
 
@@ -106,7 +106,7 @@ class Co2Controller extends GetxController {
           AppConst().debug('switch list length => ${switchList.length}');
         });
 
-        // progressDialog(false, Get.context!);
+         progressDialog(false, Get.context!);
 
         isGetData.value = true;
 

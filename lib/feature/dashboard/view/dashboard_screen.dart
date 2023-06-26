@@ -23,14 +23,9 @@ import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class DashboardScreen extends StatelessWidget {
+   DashboardScreen({Key? key}) : super(key: key);
 
-  @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
   final controller = Get.put(DashboardController());
 
   final overViewController = Get.put(OverviewController());
@@ -38,13 +33,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final homeController = Get.put(HomeController());
 
   final accessSettingController = Get.put(AccessSettingController());
-
-  @override
-  void initState() {
-    super.initState();
-    homeController.isOrganization.value = false;
-    homeController.isDashboard.value = true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +87,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         accessSettingController.roleValue.value = "";
                       },
                       image: AppImages.manageUser,
-                      title: AppStrings.manageUsers),
+                      title: AppStrings.manageUsers,
+                    context: context
+                  ),
                 ),
                 SizedBox(
                   width: 15.w,
@@ -108,7 +98,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: selectWidget(
                       onTap: () {},
                       image: AppImages.suspend,
-                      title: AppStrings.suspend),
+                      title: AppStrings.suspend,
+                      context: context
+                  ),
                 ),
                 SizedBox(
                   width: 15.w,
@@ -118,7 +110,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () {},
                       image: AppImages.delete,
                       title: AppStrings.delete,
-                      color: AppColors.red
+                      color: AppColors.red,
+                      context: context
                   ),
                 )
               ],
@@ -770,6 +763,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       {required VoidCallback onTap,
       required String image,
       required String title,
+        required BuildContext context,
       Color? color}) {
     return GestureDetector(
       onTap: () {

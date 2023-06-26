@@ -73,6 +73,12 @@ class AccessSettingController extends GetxController {
 
   RxInt userId = 0.obs;
 
+  RxBool isShow = false.obs;
+
+  RxInt getId = 0.obs;
+
+  List<bool> checkList = [];
+
   static encryptAES(plainText) {
     print('encrypt');
     final key = encrypt.Key.fromUtf8('my 32 length key................');
@@ -109,6 +115,18 @@ class AccessSettingController extends GetxController {
 
   Future getUserList() async {
     token = storeData.getString(StoreData.accessToken)!;
+
+    getId.value = storeData.getInt(StoreData.roleId)!;
+
+    if ( getId.value == 2 ) {
+      chooseRoleList.removeAt(0);
+    }
+
+    AppConst().debug("user id => ${getId.value}");
+
+    if ( getId.value == 1 || getId.value == 2 ) {
+      isShow.value = true;
+    }
 
     if (token.isNotEmpty) {
       userList.clear();

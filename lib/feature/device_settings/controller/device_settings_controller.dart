@@ -77,6 +77,8 @@ class DeviceSettingsController extends GetxController {
 
         dynamic data = jsonDecode(apiResponse!.body);
 
+        isGetData.value = true;
+
         if ( apiResponse!.statusCode == 200 ) {
 
           deviceModel = DeviceModel.fromJson(data);
@@ -110,8 +112,6 @@ class DeviceSettingsController extends GetxController {
             selectSwitchDevice.clear();
             selectSwitchDevice = List.generate(switchDeviceList.length, (index) => false.obs);
           }
-
-          isGetData.value = true;
 
           return true;
         } else {

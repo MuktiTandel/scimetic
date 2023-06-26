@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
+import 'package:scimetic/feature/overview/model/state_model.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({Key? key}) : super(key: key);
@@ -1122,9 +1125,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       controller.progressValue.value = 100;
                                     }
                                   },
-                                  harvestTap: () {
+                                  harvestTap: () async {
+
+                                    controller.rangeValue4.value = 0.0;
+                                    controller.rangeValue3.value = 0.0;
+                                    controller.rangeValue2.value = 0.0;
+                                    controller.rangeValue1.value = 0.0;
+
                                     if (controller
-                                        .plantedDateValue.isNotEmpty &&
+                                            .plantedDateValue.isNotEmpty &&
                                         controller
                                             .harvestDateValue.isNotEmpty) {
                                       controller.rangeValue1.value = 100;
@@ -1133,6 +1142,33 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       controller.rangeValue4.value = 45;
                                       controller.progressValue.value = 100;
                                     }
+
+                                    controller.totalPeriod.value = controller
+                                            .harvestDate.selectedDate!
+                                            .difference(controller
+                                                .harvestDate.selectedDate!)
+                                            .inDays +
+                                        1;
+
+                                    controller.currentDay.value = DateTime.now()
+                                            .difference(controller
+                                                .harvestDate.selectedDate!)
+                                            .inDays +
+                                        1;
+
+                                    AppConst().debug("total period => ${controller.totalPeriod.value}");
+                                    AppConst().debug("current days => ${controller.currentDay.value}");
+
+                                    controller.rangeValue4.value = (1 / 16) * controller.totalPeriod.value * 100;
+                                    controller.rangeValue3.value = (2 / 16) * controller.totalPeriod.value * 100;
+                                    controller.rangeValue2.value = (4 / 16) * controller.totalPeriod.value * 100;
+                                    controller.rangeValue1.value = (9 / 16) * controller.totalPeriod.value * 100;
+
+                                    AppConst().debug('range value 4 => ${controller.rangeValue4.value}');
+                                    AppConst().debug('range value 3 => ${controller.rangeValue3.value}');
+                                    AppConst().debug('range value 2 => ${controller.rangeValue2.value}');
+                                    AppConst().debug('range value 1 => ${controller.rangeValue1.value}');
+
                                   }),
                               SizedBox(
                                 height: 10.h,

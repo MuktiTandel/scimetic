@@ -18,6 +18,7 @@ import 'package:scimetic/feature/overview/model/climate_model.dart';
 import 'package:scimetic/feature/device_settings/Model/device_model.dart';
 import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 import 'package:scimetic/feature/overview/model/growsheet_labeler_model.dart';
+import 'package:scimetic/feature/overview/model/state_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class OverviewController extends GetxController {
@@ -124,6 +125,9 @@ class OverviewController extends GetxController {
   RxDouble rangeValue3 = 0.0.obs;
   RxDouble rangeValue4 = 0.0.obs;
   RxInt progressValue = 0.obs;
+
+  RxInt currentDay = 0.obs;
+  RxInt totalPeriod = 0.obs;
 
   Future getGrowSheetData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -586,6 +590,35 @@ class OverviewController extends GetxController {
         }
       }
     }
+  }
+
+  graphData() async{
+    StageData stageData = StageData();
+
+    Map dataClone = stageData.toJson();
+
+    final weightages = {
+      'germination': (1 / 16) * totalPeriod.value,
+      'seedling': (2 / 16) * totalPeriod.value,
+      'vegetative': (4 / 16) * totalPeriod.value,
+      'flowering': (9 / 16) * totalPeriod.value
+    };
+
+    dynamic remainingDays = currentDay.value;
+
+    weightages.forEach((key, value) {
+      AppConst().debug('stage value => ${value}');
+      if (remainingDays > 0 ) {
+        // dataClone[0] = value[1] - remainingDays > 0 ? remainingDays : value[1];
+        // remainingDays = remainingDays - value[1];
+      }
+    });
+
+    dataClone.forEach((key, value) {
+      AppConst().debug("$key : $value");
+    });
+
+    return dataClone;
   }
 
 }

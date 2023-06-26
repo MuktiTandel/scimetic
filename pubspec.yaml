@@ -100,6 +100,8 @@ dependencies:
   # for dotted border
   dotted_border: ^2.0.0+3
 
+  crypto: ^3.0.3
+
   # for generate pdf
   pdf:
 

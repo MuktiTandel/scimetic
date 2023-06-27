@@ -259,8 +259,6 @@ class OverviewController extends GetxController {
         if (apiResponse!.statusCode == 200) {
           climateData = ClimateModel.fromJson(data);
 
-          AppConst().debug('grow sheet data => ${climateData.growspace}');
-
           if (climateData.climateData!.isNotEmpty) {
             climateDataList.addAll(climateData.climateData!);
             if (climateDataList.isNotEmpty) {
@@ -607,7 +605,7 @@ class OverviewController extends GetxController {
     dynamic remainingDays = currentDay.value;
 
     weightages.forEach((key, value) {
-      AppConst().debug('stage value => ${value}');
+      AppConst().debug('stage value => $value');
       if (remainingDays > 0 ) {
         // dataClone[0] = value[1] - remainingDays > 0 ? remainingDays : value[1];
         // remainingDays = remainingDays - value[1];

@@ -269,9 +269,18 @@ class AccessSettingScreen extends StatelessWidget {
     //
     // controller.getPassword(data.password!);
 
-    AppConst().debug(Encryption.instance.decrypt(data.password!));
+    // const encryptionKey = 'scimeticEncryptedKey';
 
-    controller.keyController.text = Encryption.instance.decrypt(data.password!);
+    String encryptedString = 'U2FsdGVkX190MUODKzac4/DW4UkVaolbvH3jShbRvag=';
+    String key = 'scimeticEncryptedKey';
+
+    // String decryptedString = decryptString(encryptedString, key);
+
+    // print('Decrypted string: $decryptedString');
+
+    // AppConst().debug('password => ${Encryption.instance.decrypt(data.password!).toString()}');
+
+    // controller.keyController.text = Encryption.instance.decrypt(data.password!).toString();
 
     return Column(
       children: [

@@ -116,6 +116,10 @@ class GrowSheetController extends GetxController {
 
   RxInt id = 0.obs;
 
+  RxBool isIrrigationEnable = false.obs;
+  RxBool isFertigationEnable1 = false.obs;
+  RxBool isFertigationEnable2 = false.obs;
+
   Future getGrowSheetData() async {
 
     isGetData.value = false;
@@ -231,8 +235,9 @@ class GrowSheetController extends GetxController {
 
              isIrrigation.value = false;
 
+             irrigationList.clear();
+
              for (var element in optionModel.irrigationControls!) {
-               irrigationList.clear();
                irrigationList.add(element);
                isIrrigation.value = true;
              }
@@ -241,10 +246,10 @@ class GrowSheetController extends GetxController {
            }
 
            if ( optionModel.fertigationControls!.isNotEmpty ) {
+             fertigationList2.clear();
+             fertigationList1.clear();
 
              for (var element in optionModel.fertigationControls!) {
-               fertigationList2.clear();
-               fertigationList1.clear();
                fertigationList1.add(element);
                fertigationList2.add(element);
              }

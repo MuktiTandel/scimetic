@@ -528,8 +528,8 @@ Widget growSheetWidget({
                             maximum: 100,
                             showLabels: false,
                             showTicks: false,
-                            startAngle: -92,
-                            endAngle: 350,
+                            startAngle: -20,
+                            endAngle: 340,
                             radiusFactor: 0.80,
                             canScaleToFit: true,
                             axisLineStyle: AxisLineStyle(
@@ -538,7 +538,7 @@ Widget growSheetWidget({
                                   ? AppColors.darkBlue
                                   : AppColors.lightAppbar,
                               thicknessUnit: GaugeSizeUnit.factor,
-                              cornerStyle: CornerStyle.startCurve,
+                              cornerStyle: CornerStyle.bothFlat,
                             ),
                             pointers: <GaugePointer>[
                               RangePointer(

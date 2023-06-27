@@ -9,7 +9,10 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class GraphController extends GetxController {
 
-  RxBool isHour = true.obs;
+  RxBool is24Hour = true.obs;
+  RxBool is1Hour = false.obs;
+  RxBool is6Hour = false.obs;
+  RxBool is12Hour = false.obs;
   RxBool isWeek = false.obs;
   RxBool isMonth = false.obs;
 

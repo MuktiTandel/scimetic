@@ -12,12 +12,18 @@ Widget graphWidget({
   required String value,
   required Color color,
   required String value1,
-  required bool isHour,
-  required VoidCallback hourSelect,
+  required bool is24Hour,
+  required VoidCallback hour24Select,
   required bool isWeek,
   required VoidCallback weekSelect,
   required bool isMonth,
   required VoidCallback monthSelect,
+  required bool is1Hour,
+  required VoidCallback hour1Select,
+  required bool is6Hour,
+  required VoidCallback hour6Select,
+  required bool is12Hour,
+  required VoidCallback hour12Select,
   required Widget graph
 }) {
   return Container(
@@ -79,11 +85,38 @@ Widget graphWidget({
               Row(
                 children: [
                   hwmSelectWidget(
+                      title: AppStrings.hours1,
+                      width: 34.w,
+                      isSelected: is1Hour,
+                      onTap: (){
+                        hour1Select();
+                      }
+                  ),
+                  SizedBox(width: 10.w,),
+                  hwmSelectWidget(
+                      title: AppStrings.hours6,
+                      width: 34.w,
+                      isSelected: is6Hour,
+                      onTap: (){
+                        hour6Select();
+                      }
+                  ),
+                  SizedBox(width: 10.w,),
+                  hwmSelectWidget(
+                      title: AppStrings.hours12,
+                      width: 34.w,
+                      isSelected: is12Hour,
+                      onTap: (){
+                        hour12Select();
+                      }
+                  ),
+                  SizedBox(width: 10.w,),
+                  hwmSelectWidget(
                       title: AppStrings.hours24,
                       width: 34.w,
-                      isSelected: isHour,
+                      isSelected: is24Hour,
                       onTap: (){
-                        hourSelect();
+                        hour24Select();
                       }
                   ),
                   SizedBox(width: 10.w,),

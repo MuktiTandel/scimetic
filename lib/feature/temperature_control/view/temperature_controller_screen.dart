@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
-import 'package:scimetic/core/elements/commom_enable_title_widget.dart';
+import 'package:scimetic/core/elements/common_enable_title_widget.dart';
 import 'package:scimetic/core/elements/common_imagetext_widget.dart';
 import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';

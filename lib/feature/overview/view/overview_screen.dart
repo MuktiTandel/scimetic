@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,7 +17,6 @@ import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
-import 'package:scimetic/feature/overview/model/state_model.dart';
 
 class OverviewScreen extends StatefulWidget {
   const OverviewScreen({Key? key}) : super(key: key);

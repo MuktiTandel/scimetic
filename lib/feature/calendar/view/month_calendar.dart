@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/feature/calendar/model/event_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MonthCalendar extends StatefulWidget {
-   const MonthCalendar({Key? key}) : super(key: key);
+    MonthCalendar({
+     Key? key,
+     required this.eventList
+   }) : super(key: key);
+
+   List<Event> eventList;
 
   @override
   State<MonthCalendar> createState() => _MonthCalendarState();
@@ -114,44 +120,26 @@ class _MonthCalendarState extends State<MonthCalendar> {
 
     final List<_Meeting> meetings = <_Meeting>[];
 
-    meetings.add(_Meeting(
-        AppStrings.taskDesc,
-        '',
-        '',
-        null,
-        DateTime(2023,05,11,12,30),
-        DateTime(2023,05,11,1,30),
-        AppColors.orange,
-        false,
-        '',
-        '',
-        ''));
+    for ( int i = 0; i < widget.eventList.length; i++ ) {
 
-    meetings.add(_Meeting(
-        AppStrings.taskDesc,
-        '',
-        '',
-        null,
-        DateTime(2023,05,15,12,30),
-        DateTime(2023,05,15,1,30),
-        AppColors.orange,
-        false,
-        '',
-        '',
-        ''));
+      Event data = widget.eventList[i];
 
-    meetings.add(_Meeting(
-        AppStrings.taskDesc,
-        '',
-        '',
-        null,
-        DateTime(2023,05,15,2,30),
-        DateTime(2023,05,15,3,30),
-        AppColors.blue,
-        false,
-        '',
-        '',
-        ''));
+      meetings.add(
+          _Meeting(
+              data.description ?? "",
+              '',
+              '',
+              null,
+              data.createdAt!.toLocal(),
+              DateFormat("dd.MM.yyyy").parse(data.dueDate!),
+              i.isEven ? AppColors.orange : AppColors.blue,
+              false,
+              '',
+              '',
+              '')
+      );
+    }
+
     return meetings;
   }
 }

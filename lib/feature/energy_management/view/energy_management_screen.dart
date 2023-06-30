@@ -37,10 +37,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     image: AppImages.menu_,
                     value: "24",
                     value1: "°C",
-                    isHour: controller.isTemHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isTemHour.value,
                     isWeek: controller.isTemWeek.value,
                     isMonth: controller.isTemMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isTemHour.value == false ) {
                         controller.isTemHour.value = true;
                         controller.isTemWeek.value = false;
@@ -101,10 +107,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     title1: AppStrings.phase1,
                     title2: AppStrings.phase2,
                     title3: AppStrings.phase3,
-                    isHour: controller.isElectricalHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isElectricalHour.value,
                     isWeek: controller.isElectricalWeek.value,
                     isMonth: controller.isElectricalMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isElectricalHour.value == false ) {
                         controller.isElectricalHour.value = true;
                         controller.isElectricalWeek.value = false;
@@ -165,10 +177,16 @@ class EnergyManagementScreen extends StatelessWidget {
                     title1: "L-N, V",
                     title2: "L-L, V",
                     title3: "A",
-                    isHour: controller.isVoltageHour.value,
+                    is1Hour: controller.is1Hour.value,
+                    is6Hour: controller.is6Hour.value,
+                    is12Hour: controller.is12Hour.value,
+                    is24Hour: controller.isVoltageHour.value,
                     isWeek: controller.isVoltageWeek.value,
                     isMonth: controller.isVoltageMonth.value,
-                    hourSelect: () {
+                    hour1Select: (){},
+                    hour6Select: (){},
+                    hour12Select: (){},
+                    hour24Select: () {
                       if ( controller.isVoltageHour.value == false ) {
                         controller.isVoltageHour.value = true;
                         controller.isVoltageWeek.value = false;
@@ -313,7 +331,7 @@ class EnergyManagementScreen extends StatelessWidget {
                                                           "80",
                                                         style: TextStyle(
                                                           color: AppColors.orange,
-                                                          fontSize: 38.sp,
+                                                          fontSize: 32.sp,
                                                           fontWeight: FontWeight.bold,
                                                           fontFamily: "Roboto"
                                                         ),
@@ -355,11 +373,15 @@ class EnergyManagementScreen extends StatelessWidget {
                               children: [
                                 Column(
                                   children: [
-                                    CustomText(
-                                        text: AppStrings.averageConsumption,
-                                      fontSize: 13.sp,
-                                      color: AppColors.subTitleColor.withOpacity(0.5),
-                                      fontWeight: FontWeight.w500,
+                                    Text(
+                                        AppStrings.averageConsumption,
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 13.sp,
+                                        color: AppColors.subTitleColor.withOpacity(0.5),
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Poppins"
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 25.h,
@@ -387,21 +409,25 @@ class EnergyManagementScreen extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                SizedBox(width: 10.w,),
+                                SizedBox(width: 4.w,),
                                 DottedLine(
                                   direction: Axis.vertical,
                                   lineLength: 42.h,
                                   lineThickness: 0.3.w,
                                   dashGapLength: 3.h,
                                 ),
-                                SizedBox(width: 10.w,),
+                                SizedBox(width: 4.w,),
                                 Column(
                                   children: [
-                                    CustomText(
-                                      text: AppStrings.currentConsumption,
-                                      fontSize: 13.sp,
-                                      color: AppColors.subTitleColor.withOpacity(0.5),
-                                      fontWeight: FontWeight.w500,
+                                    Text(
+                                      AppStrings.currentConsumption,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 13.sp,
+                                          color: AppColors.subTitleColor.withOpacity(0.5),
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins"
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 25.h,

@@ -35,7 +35,9 @@ class OrganizationController extends GetxController {
 
   CompanyResponseModel companyResponseModel = CompanyResponseModel();
 
-  List<Company> dataList = [];
+  RxList dataList = [].obs;
+
+  List<Company> mainList = [];
 
   RxBool isGetData = false.obs;
 
@@ -43,14 +45,23 @@ class OrganizationController extends GetxController {
 
   RxString errorMessage = "".obs;
 
+  RxInt roleId = 0.obs;
+
+  RxBool isGrowSpaces = false.obs;
+
+  RxBool isUser = false.obs;
+
   Future getDataList() async {
 
     bool isConnected = await checkNetConnectivity();
 
     if ( isConnected == true ) {
+
       isGetData.value = false;
 
       dataList.clear();
+
+      mainList.clear();
 
       token = storeData.getString(StoreData.accessToken)!;
 
@@ -78,18 +89,23 @@ class OrganizationController extends GetxController {
             AppConst().debug('companies => ${companyResponseModel.companies!.length}');
 
             if (companyResponseModel.companies!.isNotEmpty) {
+              mainList.addAll(companyResponseModel.companies!);
               dataList.addAll(companyResponseModel.companies!);
               isGetData.value = true;
             }
 
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
             return true;
           } else {
-            if (apiResponse!.statusCode == 403) {
+
               showSnack(
                   width: 200.w,
                   title: data["message"]
               );
-            }
 
             return false;
           }
@@ -269,14 +285,18 @@ class OrganizationController extends GetxController {
 
           if (apiResponse!.statusCode == 200) {
 
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
             return true;
           } else {
-            if (apiResponse!.statusCode == 403) {
+
               showSnack(
                   width: 200.w,
                   title: data["message"]
               );
-            }
 
             return false;
           }
@@ -296,6 +316,11 @@ class OrganizationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getDataList();
+
+    roleId.value = storeData.getInt(StoreData.roleId)!;
+
+    if ( roleId.value == 1 ) {
+      getDataList();
+    }
   }
 }

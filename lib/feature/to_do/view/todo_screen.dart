@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,12 +11,14 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
+import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
-import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/select_widget.dart';
+import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
+import 'package:scimetic/feature/to_do/model/company_user_model.dart';
 import 'package:scimetic/feature/to_do/model/todo_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -82,7 +85,11 @@ class TodoScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Obx(() => ListView.builder(
+                    Obx(() => controller.isGetData.value == false ? const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.buttonColor,
+                      ),
+                    ) : ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
@@ -95,26 +102,47 @@ class TodoScreen extends StatelessWidget {
 
                           Todo todo = Todo();
 
-                          String growSpaceId = "";
+                          String growSpaceId = AppStrings.assignGrowSpace;
 
                           String date = "";
+
+                          String startDate = "";
 
                           if ( controller.isTodo.value == true ) {
 
                             todo = controller.todoList[index];
-                            growSpaceId = controller.todoIdentifierList[index];
+
+                            if ( controller.todoIdentifierList.length > index ) {
+                              growSpaceId =
+                              controller.todoIdentifierList[index];
+                            }
+
                             DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.todoList[index].dueDate!);
                             date = DateFormat("dd.MM.yyyy").format(parseDate);
 
                           } else if ( controller.isProgress.value == true ) {
 
                             todo = controller.inProgressList[index];
-                            growSpaceId = controller.inProgressIdentifierList[index];
+
+                            if ( controller.inProgressIdentifierList.length > index ) {
+                              growSpaceId =
+                              controller.inProgressIdentifierList[index];
+                            }
+
+                            DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.inProgressList[index].dueDate!);
+                            date = DateFormat("dd.MM.yyyy").format(parseDate);
 
                           } else if ( controller.isCompleted.value == true ) {
 
                             todo = controller.completedList[index];
-                            growSpaceId = controller.completedIdentifierList[index];
+
+                            if ( controller.completedIdentifierList.length > index ) {
+                              growSpaceId =
+                              controller.completedIdentifierList[index];
+                            }
+
+                            DateTime start = DateFormat("dd.MM.yyyy").parse(controller.completedList[index].dueDate!);
+                            startDate = DateFormat("dd.MM.yyyy").format(start);
 
                           }
 
@@ -123,13 +151,98 @@ class TodoScreen extends StatelessWidget {
                             desc: todo.description ?? "",
                             date: date,
                             tag: todo.tag ?? "",
-                            growSpace: growSpaceId
+                            growSpace: growSpaceId,
+                            startDate: startDate,
+                            endDate: todo.completedAt ?? "",
+                            isInProgress: controller.isProgress.value,
+                            onDelete: () async {
+                                controller.deleteTodo(id: todo.id!).whenComplete(() async{
+                                  await controller.getTodoList();
+                                });
+                            },
+                            onTodoEdit: (){
+
+                                controller.isEdit.value = true;
+
+                                controller.editTodo = todo;
+
+                                String date = "";
+
+                                DateTime parseDate = DateFormat("dd.MM.yyyy").parse(todo.dueDate!);
+                                date = DateFormat("dd.MM.yyyy").format(parseDate);
+
+                              controller.dateTimeController.text = date;
+                              controller.descriptionController.text = todo.description ?? "";
+                              controller.tagController.text = todo.tag ?? "";
+                              controller.growSpaceId.value = todo.growspaceId ?? 0;
+                              controller.assignedTo.value = todo.assignedTo ?? 0;
+
+                              for (var element in controller.userNameList) {
+                                if ( element.id == controller.assignedTo.value) {
+                                  controller.selectValue = element;
+                                }
+                              }
+
+                              for (var element in controller.growSpaceList) {
+                                if ( element.id == controller.growSpaceId.value ) {
+                                  controller.selectGrowSpace = element;
+                                }
+                              }
+
+                              Future.delayed(const Duration(seconds: 0), (){
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return commonDialog(context: context);
+                                    }
+                                );
+                              });
+                            },
+                            onInProgressEdit: (){
+
+                              controller.isEdit.value = true;
+
+                              controller.editTodo = todo;
+
+                              String date = "";
+
+                              DateTime parseDate = DateFormat("dd.MM.yyyy").parse(todo.dueDate!);
+                              date = DateFormat("dd.MM.yyyy").format(parseDate);
+
+                              controller.dateTimeController.text = date;
+                              controller.descriptionController.text = todo.description ?? "";
+                              controller.growSpaceId.value = todo.growspaceId ?? 0;
+                              controller.assignedTo.value = todo.assignedTo ?? 0;
+
+                              for (var element in controller.userNameList) {
+                                if ( element.id == controller.assignedTo.value) {
+                                  controller.selectValue = element;
+                                }
+                              }
+
+                              for (var element in controller.growSpaceList) {
+                                if ( element.id == controller.growSpaceId.value ) {
+                                  controller.selectGrowSpace = element;
+                                }
+                              }
+
+                              Future.delayed(const Duration(seconds: 0), (){
+                                Get.dialog(
+                                    commonDialog(context: context)
+                                );
+                              });
+                            },
+                            data: todo
                           );
                         }
                     )),
                     SizedBox(height: 10.h,),
                     Obx(() =>  controller.isCompleted.value == false ? CustomButton(
                      onTap: (){
+                       controller.isEdit.value = false;
+                       controller.descriptionController.clear();
+                       controller.tagController.clear();
+                       controller.dateTimeController.clear();
                        Get.dialog(
                          commonDialog(context: context)
                        );
@@ -170,7 +283,14 @@ class TodoScreen extends StatelessWidget {
     required String desc,
     required String date,
     required String tag,
-    required String growSpace
+    required String growSpace,
+    required String startDate,
+    required String endDate,
+    required bool isInProgress,
+    required VoidCallback onDelete,
+    required VoidCallback onTodoEdit,
+    required VoidCallback onInProgressEdit,
+    required Todo data
   }) {
     return Column(
       children: [
@@ -186,12 +306,12 @@ class TodoScreen extends StatelessWidget {
               Row(
                 children: [
                   CustomText(
-                    text: AppStrings.taskName,
-                    color: AppColors.buttonColor,
+                    text: desc,
+                    color: Get.isDarkMode ? Colors.white : AppColors.lightText,
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   ),
-                  Expanded(child: SizedBox(width: 10.w,)),
+                  Expanded(child: SizedBox(width: 20.w,)),
                   controller.isCompleted.value == false
                       ? controller.isProgress.value == false
                       ? PopupMenuButton<int>(
@@ -199,7 +319,7 @@ class TodoScreen extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         constraints: BoxConstraints(
-                            maxWidth: 205.w,
+                            maxWidth: 220.w,
                             maxHeight: 148.h
                         ),
                         shape: RoundedRectangleBorder(
@@ -213,9 +333,18 @@ class TodoScreen extends StatelessWidget {
                         ),
                         onSelected: (item) {},
                         itemBuilder: (context) => [
-                      PopupMenuItem<int>(
+                        PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
+                          onTap: () async {
+
+                            data.stage = "inProgress";
+
+                            await controller.updateTodo(todo: data).whenComplete(() async {
+                              await controller.getTodoList();
+                            });
+
+                          },
                           child: Column(
                             children: [
                               Padding(
@@ -223,7 +352,7 @@ class TodoScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      AppImages.progressClock,
+                                      AppImages.forward,
                                       height: 25.h,
                                       width: 25.w,
                                       color: Get.isDarkMode
@@ -231,7 +360,7 @@ class TodoScreen extends StatelessWidget {
                                     ),
                                     SizedBox(width: 10.w,),
                                     CustomText(
-                                      text: AppStrings.moveToInProgress,
+                                      text: AppStrings.moveForward,
                                       fontSize: 15.sp,
                                       color: Get.isDarkMode
                                           ? AppColors.darkText : AppColors.lightGray1,
@@ -249,9 +378,16 @@ class TodoScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      PopupMenuItem<int>(
+                        PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
+                          onTap: () async{
+                            data.stage = "completed";
+
+                            await controller.updateTodo(todo: data).whenComplete(() async {
+                              await controller.getTodoList();
+                            });
+                          },
                           child: Column(
                             children: [
                               Padding(
@@ -283,18 +419,11 @@ class TodoScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      PopupMenuItem<int>(
+                        PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
                           onTap: (){
-                            Future.delayed(const Duration(seconds: 0), (){
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return commonDialog(context: context);
-                                  }
-                              );
-                            });
+                            onTodoEdit();
                           },
                           child: Column(
                             children: [
@@ -329,9 +458,12 @@ class TodoScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      PopupMenuItem<int>(
+                        PopupMenuItem<int>(
                           value: 1,
                           padding: EdgeInsets.zero,
+                          onTap: (){
+                            onDelete();
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
                             child: Row(
@@ -355,27 +487,77 @@ class TodoScreen extends StatelessWidget {
                     ],
                   )
                       : PopupMenuButton<int>(
-                    offset: Offset(0, 17.h),
-                    padding: EdgeInsets.zero,
-                    color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                    constraints: BoxConstraints(
-                        maxWidth: 205.w,
-                        maxHeight: 110.h
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Image.asset(
-                      AppImages.menu,
-                      height: 14.h,
-                      width: 8.w,
-                      color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                    ),
-                    onSelected: (item) {},
-                    itemBuilder: (context) => [
-                      PopupMenuItem<int>(
+                       offset: Offset(0, 17.h),
+                       padding: EdgeInsets.zero,
+                       color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                       constraints: BoxConstraints(
+                           maxWidth: 205.w,
+                           maxHeight: 150.h
+                       ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Image.asset(
+                          AppImages.menu,
+                          height: 14.h,
+                          width: 8.w,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        onSelected: (item) {},
+                        itemBuilder: (context) => [
+                          PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
+                          onTap: () async {
+                            data.stage = "toDo";
+
+                            await controller.updateTodo(todo: data).whenComplete(() async {
+                              await controller.getTodoList();
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      AppImages.backward,
+                                      height: 25.h,
+                                      width: 25.w,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                    ),
+                                    SizedBox(width: 10.w,),
+                                    CustomText(
+                                      text: AppStrings.moveBackward,
+                                      fontSize: 15.sp,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Get.isDarkMode
+                                    ? AppColors.darkBlue1
+                                    : AppColors.lightGray2,
+                                thickness: 1.w,
+                              )
+                            ],
+                          )
+                      ),
+                          PopupMenuItem<int>(
+                          padding: EdgeInsets.zero,
+                          value: 0,
+                          onTap: () async {
+                            data.stage = "completed";
+
+                            await controller.updateTodo(todo: data).whenComplete(() async {
+                              await controller.getTodoList();
+                            });
+                          },
                           child: Column(
                             children: [
                               Padding(
@@ -407,15 +589,11 @@ class TodoScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      PopupMenuItem<int>(
+                          PopupMenuItem<int>(
                           padding: EdgeInsets.zero,
                           value: 0,
                           onTap: (){
-                            Future.delayed(const Duration(seconds: 0), (){
-                              Get.dialog(
-                                  commonDialog(context: context)
-                              );
-                            });
+                            onInProgressEdit();
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,9 +629,12 @@ class TodoScreen extends StatelessWidget {
                             ],
                           )
                       ),
-                      PopupMenuItem<int>(
+                          PopupMenuItem<int>(
                           value: 1,
                           padding: EdgeInsets.zero,
+                          onTap: (){
+                            onDelete();
+                          },
                           child: Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
                             child: Row(
@@ -474,17 +655,110 @@ class TodoScreen extends StatelessWidget {
                             ),
                           )
                       ),
-                    ],
+                        ],
                   )
-                      : const SizedBox.shrink(),
+                      : PopupMenuButton<int>(
+                        offset: Offset(0, 17.h),
+                        padding: EdgeInsets.zero,
+                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        constraints: BoxConstraints(
+                            maxWidth: 205.w,
+                            maxHeight: 80.h
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Image.asset(
+                          AppImages.menu,
+                          height: 14.h,
+                          width: 8.w,
+                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        onSelected: (item) {},
+                        itemBuilder: (context) => [
+                          PopupMenuItem<int>(
+                          padding: EdgeInsets.zero,
+                          value: 0,
+                          onTap: () async {
+                            data.stage = "toDo";
+
+                            await controller.updateTodo(todo: data).whenComplete(() async {
+                              await controller.getTodoList();
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      AppImages.backward,
+                                      height: 25.h,
+                                      width: 25.w,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                    ),
+                                    SizedBox(width: 10.w,),
+                                    CustomText(
+                                      text: AppStrings.moveToTodo,
+                                      fontSize: 15.sp,
+                                      color: Get.isDarkMode
+                                          ? AppColors.darkText : AppColors.lightGray1,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Get.isDarkMode
+                                    ? AppColors.darkBlue1
+                                    : AppColors.lightGray2,
+                                thickness: 1.w,
+                              )
+                            ],
+                          )
+                      ),
+                          PopupMenuItem<int>(
+                          value: 1,
+                          padding: EdgeInsets.zero,
+                              onTap: () async {
+
+                                data.stage = "inProgress";
+
+                                await controller.updateTodo(todo: data).whenComplete(() async {
+                                  await controller.getTodoList();
+                                });
+
+                              },
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AppImages.backward,
+                                  height: 25.h,
+                                  width: 25.w,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText : AppColors.lightGray1,
+                                ),
+                                SizedBox(width: 10.w,),
+                                CustomText(
+                                  text: AppStrings.moveToInProgress,
+                                  fontSize: 15.sp,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText : AppColors.lightGray1,
+                                  fontWeight: FontWeight.w500,
+                                )
+                              ],
+                            ),
+                          )
+                      ),
+                    ],
+                  ),
                 ],
               ),
               SizedBox(height: 12.h,),
-              CustomText(
-                text: desc,
-                color: Get.isDarkMode ? Colors.white : AppColors.lightText,
-              ),
-              SizedBox(height: 10.h,),
               Row(
                 children: [
                   isCompleted == false ? Row(
@@ -513,7 +787,7 @@ class TodoScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 10.w,),
                       CustomText(
-                        text: '20.04.2023',
+                        text: startDate,
                         color: AppColors.buttonColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 13.sp,
@@ -527,7 +801,7 @@ class TodoScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 10.w,),
                       CustomText(
-                        text: '20.04.2023',
+                        text: endDate,
                         color: AppColors.buttonColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 13.sp,
@@ -543,7 +817,7 @@ class TodoScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 5.h,),
-              Row(
+              isInProgress == false ? Row(
                 children: [
                   Image.asset(
                     AppImages.label,
@@ -559,7 +833,7 @@ class TodoScreen extends StatelessWidget {
                     fontSize: 13.sp,
                   ),
                 ],
-              ),
+              ) : const SizedBox.shrink(),
               SizedBox(height: 10.h,),
               CustomText(
                   text: AppStrings.growspaces,
@@ -629,27 +903,19 @@ class TodoScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                      text: AppStrings.taskName,
-                      fontWeight: FontWeight.w500,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightText,
+                    Obx(() => controller.isValid.value == true
+                        ? const SizedBox.shrink()
+                        : commonErrorWidget(
+                        onTap: (){
+                          controller.isValid.value = true;
+                        },
+                        errorMessage: controller.errorMessage.value
+                    )
                     ),
-                    SizedBox(height: 6.h,),
-                    SizedBox(
-                      height: 38.h,
-                      width: 310.w,
-                      child: CustomTextField(
-                        controller: controller.taskNameController,
-                        isFilled: false,
-                        hintText: AppStrings.taskName,
-                        focusBorderColor: AppColors.buttonColor,
-                        borderRadius: 8,
-                        contentPadding: EdgeInsets.only(left: 10.w),
-                        onchange: (value){},
-                      ),
+                    Obx(() => controller.isValid.value == false
+                        ? SizedBox(height: 10.h,)
+                        : const SizedBox.shrink()
                     ),
-                    SizedBox(height: 10.h,),
                     CustomText(
                       text: AppStrings.description,
                       fontWeight: FontWeight.w500,
@@ -738,7 +1004,7 @@ class TodoScreen extends StatelessWidget {
                                               Get.back();
                                               AppConst().debug('Select date => ${controller.date.selectedDate}');
                                               controller.dateTimeController.text = "${controller.date.selectedDate!.day}"
-                                                  "/${controller.date.selectedDate!.month}/${controller.date.selectedDate!.year}";
+                                                  ".${controller.date.selectedDate!.month}.${controller.date.selectedDate!.year}";
                                             },
                                             onCancel: (){
                                               Get.back();
@@ -803,34 +1069,42 @@ class TodoScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10.h,),
-                    CustomText(
-                      text: AppStrings.addTag,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14.sp,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightText,
-                    ),
-                    SizedBox(height: 6.h,),
-                    SizedBox(
-                      height: 40.h,
-                      child: CustomTextField(
-                        controller: controller.tagController,
-                        isFilled: false,
-                        borderRadius: 8,
-                        hintText: AppStrings.tagName,
-                        focusBorderColor: AppColors.buttonColor,
-                        contentPadding: EdgeInsets.only(left: 10.w),
-                        suffixWidget: Padding(
-                          padding:  EdgeInsets.all(13.w),
-                          child: Image.asset(
-                            AppImages.label,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    Obx(() => controller.isProgress.value == false
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: AppStrings.addTag,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText : AppColors.lightText,
+                        ),
+                        SizedBox(height: 6.h,),
+                        SizedBox(
+                          height: 40.h,
+                          child: CustomTextField(
+                            controller: controller.tagController,
+                            isFilled: false,
+                            borderRadius: 8,
+                            hintText: AppStrings.tagName,
+                            focusBorderColor: AppColors.buttonColor,
+                            contentPadding: EdgeInsets.only(left: 10.w),
+                            suffixWidget: Padding(
+                              padding:  EdgeInsets.all(13.w),
+                              child: Image.asset(
+                                AppImages.label,
+                                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                              ),
+                            ),
+                            onchange: (value) {},
                           ),
                         ),
-                        onchange: (value) {},
-                      ),
+                        SizedBox(height: 10.h,),
+                      ],
+                    )
+                        : const SizedBox.shrink()
                     ),
-                    SizedBox(height: 10.h,),
                     CustomText(
                       text: AppStrings.assignedTo,
                       fontWeight: FontWeight.w500,
@@ -839,23 +1113,135 @@ class TodoScreen extends StatelessWidget {
                           ? AppColors.darkText : AppColors.lightText,
                     ),
                     SizedBox(height: 6.h,),
-                    CustomDropDown(
-                      width: 290.w,
-                      yValue: 0,
-                      hintText: AppStrings.selectAssignName,
-                      itemList: controller.userNameList,
-                      value: controller.userNameList.first,
-                      onChange: (value) {
-                        controller.selectValue.value = value;
+                    Obx(() => DropdownButtonFormField2<User>(
+                      value: controller.isEdit.value == true ? controller.selectValue : null,
+                      itemHeight: 40.h,
+                      dropdownMaxHeight: 150.h,
+                      dropdownWidth: 290.w,
+                      buttonPadding: EdgeInsets.only(left: 10.w),
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(right: 10.w, top: 12.w, bottom: 12.w,),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightBorder,)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightBorder,)
+                        ),
+                        filled: Get.isDarkMode ? true : false,
+                        fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
+                      ),
+                      hint: CustomText(
+                        text: AppStrings.assignToUser,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      ),
+                      icon: Image.asset(
+                        AppImages.down,
+                        height: 20.h,
+                        width: 20.w,
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      ),
+                      offset: const Offset(0, -20),
+                      dropdownDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white
+                      ),
+                      items: controller.userNameList.map((e) {
+                        return DropdownMenuItem(
+                            value: e,
+                            child: CustomText(
+                              text: e.name!,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            )
+                        );
+                      }).toList(),
+                      onChanged: ( User? value) {
+                        controller.selectValue = value!;
+                        controller.assignedTo.value = value.id!;
+                        AppConst().debug('select value => ${value.id} ${value.name}');
                       },
+                    ),),
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: AppStrings.growspaces,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                      color: Get.isDarkMode
+                          ? AppColors.darkText : AppColors.lightText,
                     ),
+                    SizedBox(height: 6.h,),
+                    Obx(() => DropdownButtonFormField2<GrowController>(
+                      value: controller.isEdit.value == true ? controller.selectGrowSpace : null,
+                      itemHeight: 40.h,
+                      dropdownMaxHeight: 150.h,
+                      dropdownWidth: 290.w,
+                      buttonPadding: EdgeInsets.only(left: 10.w),
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.only(right: 10.w, top: 12.w, bottom: 12.w,),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightBorder,)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: Get.isDarkMode
+                                ? AppColors.darkText : AppColors.lightBorder,)
+                        ),
+                        filled: Get.isDarkMode ? true : false,
+                        fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
+                      ),
+                      hint: CustomText(
+                        text: AppStrings.assignGrowSpace,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      ),
+                      icon: Image.asset(
+                        AppImages.down,
+                        height: 20.h,
+                        width: 20.w,
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      ),
+                      offset:  Offset(0, 30.h),
+                      dropdownDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white
+                      ),
+                      items: controller.growSpaceList.map((e) {
+                        return DropdownMenuItem(
+                            value: e,
+                            child: CustomText(
+                              text: e.identifier!,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            )
+                        );
+                      }).toList(),
+                      onChanged: ( GrowController? value) {
+                        controller.selectGrowSpace = value!;
+                        controller.growSpaceId.value = value.id!;
+                        AppConst().debug('select value => ${value.id} ${value.name}');
+                      },
+                    ),),
                     SizedBox(height: 10.h,),
                     Row(
                       children: [
                         Expanded(
                           child: OutLineButton(
                             onTap: (){
-                              controller.taskNameController.clear();
                               controller.descriptionController.clear();
                               controller.dateTimeController.clear();
                               controller.tagController.clear();
@@ -869,11 +1255,7 @@ class TodoScreen extends StatelessWidget {
                         Expanded(
                           child: CustomButton(
                             onTap: (){
-                              controller.taskNameController.clear();
-                              controller.descriptionController.clear();
-                              controller.dateTimeController.clear();
-                              controller.tagController.clear();
-                              Get.back();
+                              controller.onSave();
                             },
                             buttonText: AppStrings.save,
                             width: 100.w,

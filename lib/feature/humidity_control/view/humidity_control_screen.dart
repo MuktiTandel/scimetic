@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/common_imagetext_widget.dart';
-import 'package:scimetic/core/elements/common_status_widget.dart';
 import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
@@ -14,9 +14,9 @@ import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
 
 class HumidityControlScreen extends StatelessWidget {
-   HumidityControlScreen({Key? key}) : super(key: key);
+  HumidityControlScreen({Key? key}) : super(key: key);
 
-   final controller = Get.put(HumidityController());
+  final controller = Get.put(HumidityController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,164 +27,112 @@ class HumidityControlScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              commonStatusWidget(isOn: controller.isOn),
+              Obx(
+                () => controller.isValid.value == true
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: EdgeInsets.all(15.w),
+                        child: commonErrorWidget(
+                            onTap: () {
+                              controller.isValid.value = true;
+                            },
+                            errorMessage: controller.errorMessage.value),
+                      ),
+              ),
+              Obx(
+                () => controller.isValid.value == false
+                    ? SizedBox(
+                        height: 10.h,
+                      )
+                    : const SizedBox.shrink(),
+              ),
               Container(
                 color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                 child: Column(
                   children: [
                     Padding(
-                      padding:  EdgeInsets.all(15.w),
+                      padding: EdgeInsets.all(15.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           commonImageText(
                               image: AppImages.fillSun,
                               title: AppStrings.dayHumidityMode,
-                              color: AppColors.lightBlue
+                              color: AppColors.lightBlue),
+                          SizedBox(
+                            height: 10.h,
                           ),
-                          SizedBox(height: 10.h,),
                           commonTexField(
                               title: AppStrings.setTargetRelativeHumidity,
-                              controller: controller.dayHumidityTarget,
+                              controller: controller.dayHumidityRHController,
                               suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value) {},
-                            contentPadding: 20.w
+                              hintText: "RH",
+                              onChanged: (value) {}),
+                          SizedBox(
+                            height: 10.h,
                           ),
-                          SizedBox(height: 10.h,),
                           commonTexField(
                               title: AppStrings.deadband,
-                              controller: controller.dayHumidityDeadband,
+                              controller:
+                                  controller.dayHumidityRHDeadbandController,
                               suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value){},
-                              contentPadding: 20.w
+                              hintText: "RH",
+                              onChanged: (value) {}),
+                          SizedBox(
+                            height: 10.h,
                           ),
-                          SizedBox(height: 10.h,),
                           CustomText(
                             text: AppStrings.switchSelection,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText
+                                : AppColors.lightText,
                             fontSize: 12.h,
                           ),
-                          SizedBox(height: 5.h,),
-                          CustomDropDown(
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Obx(
+                            () => CustomDropDown(
+                              width: 330.w,
                               hintText: AppStrings.chooseSwitch,
-                              itemList: controller.dayHumidityList,
-                              value: controller.dayHumidityValue.value,
+                              itemList: controller.isGetData.value == true ? controller.switchList : [],
+                              value: controller.dayHumiditySwitch.value,
                               isFilled: Get.isDarkMode ? true : false,
                               onChange: (value) {
-                                controller.dayHumidityValue.value = value;
-                              }
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.all(10.w),
-                      child: Container(
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            commonImageText(
-                                image: AppImages.fillMoon,
-                                title: AppStrings.nightHumidityMode,
-                                color: AppColors.lightBlue
-                            ),
-                            SizedBox(height: 8.h,),
-                            commonTexField(
-                                title: AppStrings.setTargetRelativeHumidity,
-                                controller: controller.nightHumidityTarget,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
-                            SizedBox(height: 10.h,),
-                            commonTexField(
-                                title: AppStrings.deadband,
-                                controller: controller.nightHumidityDeadband,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
-                            ),
-                            SizedBox(height: 10.h,),
-                            CustomText(
-                              text: AppStrings.switchSelection,
-                              color: Get.isDarkMode
-                                  ? AppColors.darkText : AppColors.lightText,
-                              fontSize: 12.h,
-                            ),
-                            SizedBox(height: 5.h,),
-                            CustomDropDown(
-                              hintText: AppStrings.chooseSwitch,
-                              itemList: controller.nightHumidityList,
-                              value: controller.nightHumidityValue.value,
-                              onChange: (value) {
-                                controller.nightHumidityValue.value = value;
+                                controller.dayHumiditySwitch.value = value;
                               },
-                              isFilled: Get.isDarkMode ? true : false,
+                              isEdit: false.obs,
+                              isEnable: false,
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 10.h,),
-              Container(
-                color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.all(15.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          commonImageText(
-                              image: AppImages.fillSun,
-                              title: AppStrings.dayDehumidificationMode,
-                              color: AppColors.lightGray1
                           ),
-                          SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.setTargetRelativeHumidity,
-                              controller: controller.dayDehumidificationTarget,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value) {},
-                              contentPadding: 20.w
+                          SizedBox(
+                            height: 10.h,
                           ),
-                          SizedBox(height: 10.h,),
-                          commonTexField(
-                              title: AppStrings.deadband,
-                              controller: controller.dayDehumidificationDeadband,
-                              suffixText: "%",
-                              hintText: AppStrings.rH,
-                              onChanged: (value){},
-                              contentPadding: 20.w
-                          ),
-                          SizedBox(height: 10.h,),
                           CustomText(
-                            text: AppStrings.switchSelection,
-                            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                            text: AppStrings.relaySelection,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText
+                                : AppColors.lightText,
                             fontSize: 12.h,
                           ),
-                          SizedBox(height: 5.h,),
+                          SizedBox(
+                            height: 5.h,
+                          ),
                           CustomDropDown(
-                              hintText: AppStrings.chooseSwitch,
-                              itemList: controller.dayDehumidificationList,
-                              value: controller.dayDehumidificationValue.value,
-                              isFilled: Get.isDarkMode ? true : false,
-                              onChange: (value) {
-                                controller.dayDehumidificationValue.value = value;
-                              }
+                            width: 330.w,
+                            hintText: AppStrings.chooseRelay,
+                            itemList: controller.dayHumidityRelayList,
+                            value: controller.dayHumidityRelay.value,
+                            isFilled: true,
+                            onChange: (value) {
+                              controller.dayHumidityRelay.value = value;
+
+                              controller.dayDehumidificationRelayList
+                                  .removeWhere(
+                                      (element) => (element.contains(value)));
+                            },
+                            isEdit: false.obs,
+                            isEnable: false,
                           ),
                         ],
                       ),
@@ -195,7 +143,9 @@ class HumidityControlScreen extends StatelessWidget {
                         padding: EdgeInsets.all(10.w),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Get.isDarkMode ? AppColors.darkAppbar : AppColors.lightAppbar,
+                          color: Get.isDarkMode
+                              ? AppColors.darkAppbar
+                              : AppColors.lightAppbar,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,42 +153,288 @@ class HumidityControlScreen extends StatelessWidget {
                             commonImageText(
                                 image: AppImages.fillMoon,
                                 title: AppStrings.nightHumidityMode,
-                                color: AppColors.lightGray1
+                                color: AppColors.lightBlue),
+                            SizedBox(
+                              height: 10.h,
                             ),
-                            SizedBox(height: 8.h,),
                             commonTexField(
                                 title: AppStrings.setTargetRelativeHumidity,
-                                controller: controller.nightDehumidificationTarget,
+                                controller:
+                                    controller.nightHumidityRHController,
                                 suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
+                                hintText: "RH",
+                                isFilled: true,
+                                onChanged: (value) {}),
+                            SizedBox(
+                              height: 10.h,
                             ),
-                            SizedBox(height: 10.h,),
                             commonTexField(
-                                title: AppStrings.deadband,
-                                controller: controller.nightDehumidificationDeadband,
-                                suffixText: "%",
-                                hintText: AppStrings.rH,
-                                onChanged: (value) {},
-                                contentPadding: 20.w
+                              title: AppStrings.deadband,
+                              controller:
+                                  controller.nightHumidityRHDeadbandController,
+                              suffixText: "%",
+                              hintText: "RH",
+                              onChanged: (value) {},
+                              isFilled: true,
                             ),
-                            SizedBox(height: 10.h,),
+                            SizedBox(
+                              height: 10.h,
+                            ),
                             CustomText(
                               text: AppStrings.switchSelection,
                               color: Get.isDarkMode
-                                  ? AppColors.darkText : AppColors.lightText,
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
                               fontSize: 12.h,
                             ),
-                            SizedBox(height: 5.h,),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                width: 320.w,
+                                hintText: AppStrings.chooseSwitch,
+                                itemList: controller.isGetData.value == true ? controller.switchList : [],
+                                value: controller.nightHumiditySwitch.value,
+                                onChange: (value) {
+                                  controller.nightHumiditySwitch.value = value;
+                                },
+                                isFilled: true,
+                                isEdit: false.obs,
+                                isEnable: false,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
                             CustomDropDown(
-                              hintText: AppStrings.chooseSwitch,
-                              itemList: controller.nightDehumidificationList,
-                              value: controller.nightDehumidificationValue.value,
+                              width: 320.w,
+                              hintText: AppStrings.chooseRelay,
+                              itemList: controller.nightHumidityRelayList,
+                              value: controller.nightHumidityRelay.value,
+                              isFilled: true,
                               onChange: (value) {
-                                controller.nightDehumidificationValue.value = value;
+                                controller.nightHumidityRelay.value = value;
+
+                                controller.nightDehumidificationRelayList
+                                    .removeWhere(
+                                        (element) => (element.contains(value)));
                               },
+                              isEdit: false.obs,
+                              isEnable: false,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(15.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          commonImageText(
+                              image: AppImages.fillSun,
+                              title: AppStrings.dayDehumidificationMode,
+                              color: AppColors.lightGray1),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          commonTexField(
+                              title: AppStrings.setTargetRelativeHumidity,
+                              controller: controller.dayDehumidityRHController,
+                              suffixText: "%",
+                              hintText: "RH",
+                              onChanged: (value) {}),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          commonTexField(
+                              title: AppStrings.deadband,
+                              controller:
+                                  controller.dayDehumidityRHDeadbandController,
+                              suffixText: "%",
+                              hintText: "RH",
+                              onChanged: (value) {}),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          CustomText(
+                            text: AppStrings.switchSelection,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText
+                                : AppColors.lightText,
+                            fontSize: 12.h,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Obx(
+                            () => CustomDropDown(
+                              width: 330.w,
+                              hintText: AppStrings.chooseSwitch,
+                              itemList: controller.isGetData.value == true ? controller.switchList : [],
+                              value: controller.dayDehumidificationSwitch.value,
                               isFilled: Get.isDarkMode ? true : false,
+                              onChange: (value) {
+                                controller.dayDehumidificationSwitch.value =
+                                    value;
+                              },
+                              isEdit: false.obs,
+                              isEnable: false,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          CustomText(
+                            text: AppStrings.relaySelection,
+                            color: Get.isDarkMode
+                                ? AppColors.darkText
+                                : AppColors.lightText,
+                            fontSize: 12.h,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          CustomDropDown(
+                            width: 330.w,
+                            hintText: AppStrings.chooseRelay,
+                            itemList: controller.dayDehumidificationRelayList,
+                            value: controller.dayDehumidificationRelay.value,
+                            isFilled: true,
+                            onChange: (value) {
+                              controller.dayDehumidificationRelay.value = value;
+
+                              controller.dayHumidityRelayList.removeWhere(
+                                  (element) => (element.contains(value)));
+                            },
+                            isEdit: false.obs,
+                            isEnable: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.w),
+                      child: Container(
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Get.isDarkMode
+                              ? AppColors.darkAppbar
+                              : AppColors.lightAppbar,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            commonImageText(
+                                image: AppImages.fillMoon,
+                                title: AppStrings.nightHumidityMode,
+                                color: AppColors.lightGray1),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            commonTexField(
+                              title: AppStrings.setTargetRelativeHumidity,
+                              controller:
+                                  controller.nightDehumidityRHController,
+                              suffixText: "%",
+                              hintText: "RH",
+                              onChanged: (value) {},
+                              isFilled: true,
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            commonTexField(
+                              title: AppStrings.deadband,
+                              controller: controller
+                                  .nightDehumidityRHDeadbandController,
+                              suffixText: "%",
+                              hintText: "RH",
+                              onChanged: (value) {},
+                              isFilled: true,
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.switchSelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                width: 320.w,
+                                hintText: AppStrings.chooseSwitch,
+                                itemList: controller.isGetData.value == true ? controller.switchList : [],
+                                value: controller
+                                    .nightDehumidificationSwitch.value,
+                                onChange: (value) {
+                                  controller.nightDehumidificationSwitch.value =
+                                      value;
+
+                                  controller.nightHumidityRelayList.removeWhere(
+                                      (element) => (element.contains(value)));
+                                },
+                                isFilled: true,
+                                isEdit: false.obs,
+                                isEnable: false,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            CustomText(
+                              text: AppStrings.relaySelection,
+                              color: Get.isDarkMode
+                                  ? AppColors.darkText
+                                  : AppColors.lightText,
+                              fontSize: 12.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            CustomDropDown(
+                              width: 320.w,
+                              yValue: 0,
+                              hintText: AppStrings.chooseRelay,
+                              itemList:
+                                  controller.nightDehumidificationRelayList,
+                              value:
+                                  controller.nightDehumidificationRelay.value,
+                              isFilled: true,
+                              onChange: (value) {
+                                controller.nightDehumidificationRelay.value =
+                                    value;
+                              },
+                              isEdit: false.obs,
+                              isEnable: false,
                             ),
                           ],
                         ),
@@ -251,20 +447,15 @@ class HumidityControlScreen extends StatelessWidget {
                 padding: EdgeInsets.all(15.w),
                 child: CustomButton(
                   onTap: () {
-                    controller.nightDehumidificationDeadband.clear();
-                    controller.nightDehumidificationTarget.clear();
-                    controller.dayDehumidificationDeadband.clear();
-                    controller.dayDehumidificationTarget.clear();
-                    controller.nightHumidityDeadband.clear();
-                    controller.nightHumidityTarget.clear();
-                    controller.dayHumidityDeadband.clear();
-                    controller.dayHumidityTarget.clear();
+                    controller.onSave();
                   },
                   buttonText: AppStrings.save,
                   fontSize: 16.sp,
                 ),
               ),
-              SizedBox(height: 30.h,),
+              SizedBox(
+                height: 30.h,
+              ),
             ],
           ),
         ),

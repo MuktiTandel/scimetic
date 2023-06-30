@@ -7,7 +7,8 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
 Widget editDeletePopup({
-  required VoidCallback editTap
+  required VoidCallback editTap,
+  required VoidCallback deleteTap
 }) {
   return PopupMenuButton<int>(
     offset: Offset(0, 17.h),
@@ -70,6 +71,9 @@ Widget editDeletePopup({
       PopupMenuItem<int>(
           value: 1,
           padding: EdgeInsets.zero,
+          onTap: (){
+            deleteTap();
+          },
           child: Padding(
             padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 6.h),
             child: Row(

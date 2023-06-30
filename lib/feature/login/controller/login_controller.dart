@@ -34,6 +34,8 @@ class LoginController extends GetxController {
 
   StoreData storeData = StoreData();
 
+  RxBool isCall = false.obs;
+
   Future loginUser(LoginModel loginModel) async {
 
     try {
@@ -64,16 +66,27 @@ class LoginController extends GetxController {
 
         storeData.setData(StoreData.accessToken, loginResponseModel.accessToken);
 
-        return true;
-      } else {
+        storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
 
-        if ( apiResponse!.statusCode == 403 || apiResponse!.statusCode == 404 ) {
+        storeData.setData(StoreData.userName, loginResponseModel.user!.name);
+
+        storeData.setData(StoreData.userEmail, loginResponseModel.user!.email);
+
+        storeData.setData(StoreData.userId, loginResponseModel.user!.id);
+
+        showSnack(
+            width: 200.w,
+            title: data["message"]
+        );
+
+        return true;
+
+      } else {
 
           showSnack(
               width: 200.w,
               title: data["message"]
           );
-        }
 
         return false;
       }
@@ -121,6 +134,7 @@ class LoginController extends GetxController {
       bool isConnected = await checkNetConnectivity();
 
       if (isConnected == true) {
+
         progressDialog(true, Get.context!);
 
         isValid.value = true;
@@ -130,13 +144,15 @@ class LoginController extends GetxController {
             password: passwordController.text
         );
 
-        bool isCall = await loginUser(loginModel).whenComplete(() {
+        isCall.value = await loginUser(loginModel).whenComplete(() {
           progressDialog(false, Get.context!);
         });
 
-        if (isCall) {
+        if (isCall.value == true ) {
           Get.offAllNamed(AppPages.HOME);
+          storeData.setData(StoreData.email, emailController.text);
         }
+
       } else {
 
         showSnack(

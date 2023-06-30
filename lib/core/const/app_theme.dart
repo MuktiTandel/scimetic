@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
 

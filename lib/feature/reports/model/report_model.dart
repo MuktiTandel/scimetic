@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-ReportData reportDataFromJson(String str) => ReportData.fromJson(json.decode(str));
+ReportTemperatureData reportDataFromJson(String str) => ReportTemperatureData.fromJson(json.decode(str));
 
-String reportDataToJson(ReportData data) => json.encode(data.toJson());
+String reportDataToJson(ReportTemperatureData data) => json.encode(data.toJson());
 
-class ReportData {
-  ReportData({
+class ReportTemperatureData {
+  ReportTemperatureData({
     this.climateData,
     this.length,
   });
 
-  List? climateData;
+  List<TemperatureData>? climateData;
   int? length;
 
-  factory ReportData.fromJson(Map<String, dynamic> json) => ReportData(
-    climateData: json["climateData"] ?? [],
+  factory ReportTemperatureData.fromJson(Map<String, dynamic> json) => ReportTemperatureData(
+    climateData: json["climateData"] != null ? List<TemperatureData>.from(json["climateData"].map((x) => TemperatureData.fromJson(x))) : [],
     length: json["length"] ?? 0,
   );
 
@@ -24,17 +24,83 @@ class ReportData {
   };
 }
 
+class ReportCo2Data {
+
+  ReportCo2Data({
+    this.climateData,
+    this.length,
+  });
+
+  List<Co2Data>? climateData;
+  int? length;
+
+  factory ReportCo2Data.fromJson(Map<String, dynamic> json) => ReportCo2Data(
+    climateData: json["climateData"] != null ? List<Co2Data>.from(json["climateData"].map((x) => Co2Data.fromJson(x))) : [],
+    length: json["length"] ?? 0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "climateData": List<dynamic>.from(climateData!.map((x) => x.toJson())),
+    "length": length,
+  };
+
+}
+
+class ReportHumidityData {
+
+  ReportHumidityData({
+    this.climateData,
+    this.length,
+  });
+
+  List<HumidityData>? climateData;
+  int? length;
+
+  factory ReportHumidityData.fromJson(Map<String, dynamic> json) => ReportHumidityData(
+    climateData: json["climateData"] != null ? List<HumidityData>.from(json["climateData"].map((x) => HumidityData.fromJson(x))) : [],
+    length: json["length"] ?? 0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "climateData": List<dynamic>.from(climateData!.map((x) => x.toJson())),
+    "length": length,
+  };
+
+}
+
+class ReportVpdData {
+
+  ReportVpdData({
+    this.climateData,
+    this.length,
+  });
+
+  List<VpdData>? climateData;
+  int? length;
+
+  factory ReportVpdData.fromJson(Map<String, dynamic> json) => ReportVpdData(
+    climateData: json["climateData"] != null ? List<VpdData>.from(json["climateData"].map((x) => VpdData.fromJson(x))) : [],
+    length: json["length"] ?? 0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "climateData": List<dynamic>.from(climateData!.map((x) => x.toJson())),
+    "length": length,
+  };
+
+}
+
 class VpdData {
   VpdData({
     this.vpd,
     this.date,
   });
 
-  int? vpd;
+  double? vpd;
   String? date;
 
   factory VpdData.fromJson(Map<String, dynamic> json) => VpdData(
-    vpd: json["vpd"] ?? 0,
+    vpd: json["vpd"] != null ? json["vpd"].toDouble() : 0.0,
     date: json["date"] ?? "",
   );
 

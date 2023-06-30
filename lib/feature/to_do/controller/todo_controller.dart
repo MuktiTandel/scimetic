@@ -8,8 +8,10 @@ import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
+import 'package:scimetic/core/utils/check_net_connectivity.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 import 'package:scimetic/feature/to_do/model/company_user_model.dart';
 import 'package:scimetic/feature/to_do/model/todo_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -32,11 +34,13 @@ class TodoController extends GetxController {
 
   RxInt descriptionLength = 0.obs;
 
-  RxString selectValue = AppStrings.selectAssignName.obs;
+  User selectValue = User();
 
-  List<String> userNameList = [
-    AppStrings.selectAssignName,
-  ];
+  List<User> userNameList = [];
+
+  List<GrowController> growSpaceList = [];
+
+  GrowController selectGrowSpace = GrowController();
 
   RxBool isValid = true.obs;
 
@@ -50,6 +54,10 @@ class TodoController extends GetxController {
 
   http.Response? apiResponse;
 
+  RxInt assignedTo = 0.obs;
+
+  RxInt growSpaceId = 0.obs;
+
   List<Todo> todoList = [];
   List<Todo> inProgressList = [];
   List<Todo> completedList = [];
@@ -62,7 +70,19 @@ class TodoController extends GetxController {
 
   CompanyUserModel companyUserModel = CompanyUserModel();
 
+  RxBool isEdit = false.obs;
+  
+  Todo editTodo = Todo();
+
   Future getTodoList() async {
+
+    growSpaceList.clear();
+
+    growSpaceList.addAll(dashBoardController.mainList);
+
+    if ( growSpaceList.isNotEmpty ) {
+      growSpaceId.value = growSpaceList.first.id!;
+    }
 
     isGetData.value = false;
 
@@ -110,6 +130,7 @@ class TodoController extends GetxController {
           AppConst().debug("completed list length => ${completedList.length}");
 
           if ( todoList.isNotEmpty ) {
+            todoIdentifierList.clear();
             for (var element in todoList) {
               for (var element1 in dashBoardController.dataList) {
                 if ( element1.id == element.growspaceId ) {
@@ -120,6 +141,7 @@ class TodoController extends GetxController {
           }
 
           if ( inProgressList.isNotEmpty ) {
+            inProgressIdentifierList.clear();
             for (var element in inProgressList) {
               for (var element1 in dashBoardController.dataList) {
                 if ( element1.id == element.growspaceId ) {
@@ -130,6 +152,7 @@ class TodoController extends GetxController {
           }
 
           if ( completedList.isNotEmpty ) {
+            completedIdentifierList.clear();
             for (var element in completedList) {
               for (var element1 in dashBoardController.dataList) {
                 if ( element1.id == element.growspaceId ) {
@@ -143,16 +166,22 @@ class TodoController extends GetxController {
           AppConst().debug("inProgress identifier list length => ${inProgressIdentifierList.length}");
           AppConst().debug("completed identifier list length => ${completedIdentifierList.length}");
 
+          isGetData.value = true;
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
+
         } else {
 
-          if ( apiResponse!.statusCode == 403 ) {
 
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }
@@ -196,11 +225,15 @@ class TodoController extends GetxController {
            userNameList.clear();
 
            for (var element in companyUserModel.users!) {
-             userNameList.add(element.name!);
+             userNameList.add(element);
            }
 
            AppConst().debug('user list length => ${userNameList.length}');
 
+         }
+
+         if ( userNameList.isNotEmpty ) {
+           assignedTo.value = userNameList.first.id!;
          }
 
           return true;
@@ -224,6 +257,228 @@ class TodoController extends GetxController {
 
       }
     }
+  }
+
+  Future createTask({required Todo todo}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: ApiPath.baseUrl + ApiPath.todo,
+            requestType: HTTPRequestType.POST,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: {
+              "dueDate" : todo.dueDate,
+              "tag" : todo.tag,
+              "assignedTo" : todo.assignedTo,
+              "description" : todo.description,
+              "stage" : todo.stage,
+              "growspaceId" : todo.growspaceId
+            }
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+  }
+
+  Future deleteTodo({required int id}) async {
+
+    bool isConnected = await checkNetConnectivity();
+
+    if ( isConnected == true ) {
+
+      token = storeData.getString(StoreData.accessToken)!;
+
+      if (token.isNotEmpty) {
+        try {
+          APIRequestInfo apiRequestInfo = APIRequestInfo(
+              url: "${ApiPath.baseUrl}${ApiPath.todo}/$id",
+              requestType: HTTPRequestType.DELETE,
+              headers: {
+                "Authorization": 'Bearer $token',
+              },
+          );
+
+          apiResponse =
+          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+          AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+          dynamic data = jsonDecode(apiResponse!.body);
+
+          if (apiResponse!.statusCode == 200) {
+
+            return true;
+          } else {
+            if (apiResponse!.statusCode == 403) {
+              showSnack(
+                  width: 200.w,
+                  title: data["message"]
+              );
+            }
+
+            return false;
+          }
+        } catch (e) {
+          AppConst().debug(e.toString());
+        }
+      }
+    } else {
+      showSnack(
+          title: AppStrings.noInternetConnection,
+          width: 200.w
+      );
+    }
+
+
+  }
+
+  Future updateTodo({required Todo todo}) async {
+
+    token =  storeData.getString(StoreData.accessToken)!;
+
+    if ( token.isNotEmpty ) {
+      try {
+
+        APIRequestInfo apiRequestInfo = APIRequestInfo(
+            url: "${ApiPath.baseUrl}${ApiPath.todo}/${todo.id}",
+            requestType: HTTPRequestType.PUT,
+            headers: {
+              "Authorization" : 'Bearer $token',
+              "Content-Type" : "application/json"
+            },
+            parameter: todo.toJson()
+        );
+
+        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+        AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+        dynamic data = jsonDecode(apiResponse!.body);
+
+        if ( apiResponse!.statusCode == 200 ) {
+          return true;
+        } else {
+
+          if ( apiResponse!.statusCode == 403 ) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+          }
+
+          return false;
+        }
+
+      } catch (e) {
+
+        AppConst().debug(e.toString());
+
+      }
+    }
+
+  }
+
+  void onSave() async {
+
+    isValid.value = true;
+
+    if ( descriptionController.text.isEmpty ) {
+
+      isValid.value = false;
+      errorMessage.value = AppStrings.allFieldRequired;
+
+    } else if ( dateTimeController.text.isEmpty ) {
+
+      isValid.value = false;
+      errorMessage.value = AppStrings.allFieldRequired;
+
+    } else if ( tagController.text.isEmpty && isTodo.value == true) {
+
+      isValid.value = false;
+      errorMessage.value = AppStrings.allFieldRequired;
+
+    } else {
+      
+      if ( isEdit.value == false ) {
+        Todo data = Todo();
+
+        data.dueDate = dateTimeController.text;
+        data.tag = tagController.text;
+        data.assignedTo = assignedTo.value;
+        data.description = descriptionController.text;
+        data.growspaceId = growSpaceId.value;
+
+        if (isTodo.value == true) {
+          data.stage = "toDo";
+        } else if (isProgress.value == true) {
+          data.stage = "inProgress";
+        } else {
+          data.stage = "completed";
+        }
+
+        await createTask(todo: data).whenComplete(() async {
+          Get.back();
+          await getTodoList();
+        });
+        
+      } else {
+        
+        Todo data = editTodo;
+        
+        data.description = descriptionController.text;
+        data.dueDate = dateTimeController.text;
+        if ( isTodo.value == true ) {
+          data.tag = tagController.text;
+        }
+        data.assignedTo = assignedTo.value;
+        data.growspaceId = growSpaceId.value;
+        
+        await updateTodo(todo: data).whenComplete(() async {
+          isEdit.value = false;
+          Get.back();
+          await getTodoList();
+        });
+      }
+
+      descriptionController.clear();
+      tagController.clear();
+      dateTimeController.clear();
+
+    }
+
   }
 
 }

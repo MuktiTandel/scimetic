@@ -19,7 +19,7 @@ void showSnack({required String title, required double width}) {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25)
         ),
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Colors.grey.shade200,
         width: width,
     )
   );

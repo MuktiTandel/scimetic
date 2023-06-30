@@ -30,6 +30,7 @@ class CalendarScreen extends StatelessWidget {
 
   Widget personalCalendar() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: EdgeInsets.all(10.w),
@@ -98,11 +99,17 @@ class CalendarScreen extends StatelessWidget {
           ),
         ),
         Obx(() => controller.isDay.value == true
-            ? DayCalendar()
+            ? DayCalendar(
+          dayEventList: controller.dayEventList,
+        )
             : controller.isWeek.value == true
-            ?  WeekCalendar()
+            ?  WeekCalendar(
+          weekEventList: controller.dayEventList,
+        )
             : controller.isMonth.value == true
-            ?  MonthCalendar() : YearCalendar())
+            ?  MonthCalendar(
+          eventList: controller.eventList,
+        ) : YearCalendar())
       ],
     );
   }

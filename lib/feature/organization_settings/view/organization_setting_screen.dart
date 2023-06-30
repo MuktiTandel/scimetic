@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
+import 'package:scimetic/core/elements/common_image_picker_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
@@ -45,20 +47,49 @@ class OrganizationSettingScreen extends StatelessWidget {
                 SizedBox(height: 8.h,),
                 Row(
                   children: [
-                    CircleAvatar(
-                      maxRadius: 34.h,
-                      backgroundColor: AppColors.lightBorder,
-                      child: Container(
-                        height: 66.h,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white
-                        ),
-                        child: Center(
-                          child: Image.asset(
+                    GestureDetector(
+                      onTap: (){
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return commonImagePickerWidget(
+                                cameraTap: (){
+                                  Get.back();
+                                  controller.getFromCamera();
+                                },
+                                galleryTap: (){
+                                  Get.back();
+                                  controller.getFromGallery();
+                                }
+                              );
+                            }
+                        );
+                      },
+                      child: CircleAvatar(
+                        maxRadius: 34.h,
+                        backgroundColor: AppColors.lightBorder,
+                        child: Container(
+                          height: 66.h,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white
+                          ),
+                          child: Center(
+                            child: Obx(() =>  controller.isPick.value == false
+                                ? Image.asset(
                               AppImages.logo,
-                            height: 43.h,
-                            width: 43.w,
+                              height: 43.h,
+                              width: 43.w,
+                            ) : ClipOval(
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(39),
+                                child: Image.file(
+                                  controller.imageFile!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                            ),
                           ),
                         ),
                       ),
@@ -77,7 +108,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                     SizedBox(width: 10.w,),
                     OutLineButton(
                       height: 30.h,
-                      width: 90.w,
+                      width: 100.w,
                       onTap: (){},
                       color: AppColors.red,
                       buttonText: AppStrings.remove,

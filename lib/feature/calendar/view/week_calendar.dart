@@ -6,7 +6,12 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class WeekCalendar extends StatelessWidget {
-  const WeekCalendar({Key? key}) : super(key: key);
+   WeekCalendar({
+    Key? key,
+    required this.weekEventList
+  }) : super(key: key);
+
+  List<TimeRegion> weekEventList;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class WeekCalendar extends StatelessWidget {
         todayHighlightColor: Colors.transparent,
         cellBorderColor: Get.isDarkMode
             ? AppColors.darkText : AppColors.lightGray3,
-        specialRegions: _getTimeRegions(),
+        specialRegions: weekEventList,
         timeRegionBuilder: (BuildContext context, TimeRegionDetails timeRegionDetails ) {
           return Padding(
             padding:  EdgeInsets.all(5.w),

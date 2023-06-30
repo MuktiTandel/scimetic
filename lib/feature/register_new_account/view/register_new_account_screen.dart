@@ -5,8 +5,8 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
+import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/common_view_screen.dart';
-import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/register_new_account/controller/register_new_account_controller.dart';
@@ -26,32 +26,15 @@ class RegisterNewAccountScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-           // controller.isValid.value == false ? Container(
-           //   width: Get.width,
-           //    padding: EdgeInsets.all(15.w),
-           //    decoration: BoxDecoration(
-           //      borderRadius: BorderRadius.circular(10),
-           //      border: Border.all(
-           //        color: AppColors.lightRed,
-           //        width: 1.w
-           //      )
-           //    ),
-           //    child: Column(
-           //      children: [
-           //        Row(
-           //          children: [
-           //            CustomText(
-           //                text: AppStrings.error,
-           //              color: AppColors.subTitleColor,
-           //              fontWeight: FontWeight.w500,
-           //              fontSize: 14.sp,
-           //            ),
-           //          ],
-           //        )
-           //      ],
-           //    ),
-           //  ) : const SizedBox.shrink(),
-           //  SizedBox(height: 10.h,),
+            Obx(() => controller.isValid.value == true
+                ? const SizedBox.shrink()
+                : commonErrorWidget(
+                onTap: (){
+                  controller.isValid.value = true;
+                },
+                errorMessage: controller.errorMessage.value),),
+            Obx(() => controller.isValid.value == false
+                ? SizedBox(height: 10.h,) : const SizedBox.shrink(),),
             Text(
               AppStrings.fullName,
               style: TextStyleDecoration.headline1,
@@ -63,6 +46,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.nameController,
                 hintText: AppStrings.eYFName,
                 onchange: (val) {},
+                focusBorderColor: AppColors.buttonColor,
               ),
             ),
             SizedBox(
@@ -79,6 +63,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                   controller: controller.emailController,
                 hintText: AppStrings.eYROUsername,
                 onchange: (val) {},
+                focusBorderColor: AppColors.buttonColor,
               ),
             ),
             SizedBox(
@@ -95,6 +80,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.cPasswordController,
                 hintText: AppStrings.eYPassword,
                 isObscure: !controller.isCPassword.value,
+                focusBorderColor: AppColors.buttonColor,
                 suffixWidget: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: (){
@@ -133,6 +119,7 @@ class RegisterNewAccountScreen extends StatelessWidget {
                 controller: controller.rPasswordController,
                 hintText: AppStrings.eYPassword,
                 isObscure: !controller.isRPassword.value,
+                focusBorderColor: AppColors.buttonColor,
                 suffixWidget: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: (){
@@ -183,7 +170,8 @@ class RegisterNewAccountScreen extends StatelessWidget {
       ),
       buttonText: AppStrings.register,
       buttonTap: (){
-        controller.trySubmit();
+        FocusScope.of(context).unfocus();
+        controller.onRegister();
       },
       isSubtitle: true,
       isEmail: false,

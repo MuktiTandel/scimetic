@@ -32,6 +32,10 @@ class DashboardController extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  RxString companyName = AppStrings.dashboard.obs;
+
+  final TextEditingController searchController = TextEditingController();
+
   final TextEditingController growspaceNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController serialNumberController = TextEditingController();
@@ -50,7 +54,11 @@ class DashboardController extends GetxController {
 
   StoreData storeData = StoreData();
 
-  List<GrowController> dataList = [];
+  RxList dataList = [GrowController(
+    name: "test"
+  )].obs;
+
+  List<GrowController> mainList = [];
 
   RxBool isGetData = false.obs;
 
@@ -62,11 +70,29 @@ class DashboardController extends GetxController {
 
   RxInt id = 0.obs;
 
+  RxInt roleId = 0.obs;
+
+  RxBool isUser = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    roleId.value = storeData.getInt(StoreData.roleId)!;
+
+    if ( roleId.value != 1 ) {
+       getDataList();
+    }
+
+  }
+
   Future getDataList() async {
 
     isGetData.value = false;
 
     dataList.clear();
+
+    mainList.clear();
 
     token =  storeData.getString(StoreData.accessToken)!;
 
@@ -87,25 +113,30 @@ class DashboardController extends GetxController {
 
         dynamic data = jsonDecode(apiResponse!.body);
 
+        isGetData.value = true;
+
         if ( apiResponse!.statusCode == 200 ) {
 
           growModel = GrowModel.fromJson(data);
 
           if ( growModel.growControllers!.isNotEmpty ) {
             dataList.addAll(growModel.growControllers!);
-            isGetData.value = true;
+            mainList.addAll(growModel.growControllers!);
           }
 
-          return true;
-        } else {
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
 
-          if ( apiResponse!.statusCode == 403 ) {
+          return true;
+
+        } else {
 
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }
@@ -149,7 +180,14 @@ class DashboardController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
+
         } else {
 
           if ( apiResponse!.statusCode == 403 ) {
@@ -205,6 +243,12 @@ class DashboardController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if ( apiResponse!.statusCode == 200 ) {
+
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
         } else {
 
@@ -224,6 +268,62 @@ class DashboardController extends GetxController {
         AppConst().debug(e.toString());
 
       }
+    }
+
+  }
+
+  Future deleteGrowController({required int id}) async {
+
+    bool isConnected = await checkNetConnectivity();
+
+    if ( isConnected == true ) {
+
+      token = storeData.getString(StoreData.accessToken)!;
+
+      if (token.isNotEmpty) {
+        try {
+          APIRequestInfo apiRequestInfo = APIRequestInfo(
+              url: "${ApiPath.baseUrl}${ApiPath.growController}/$id",
+              requestType: HTTPRequestType.DELETE,
+              headers: {
+                "Authorization": 'Bearer $token',
+              }
+          );
+
+          apiResponse =
+          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+
+          AppConst().debug("Api response => ${apiResponse!.statusCode}");
+
+          dynamic data = jsonDecode(apiResponse!.body);
+
+          if (apiResponse!.statusCode == 200) {
+
+            showSnack(
+                width: 200.w,
+                title: data["message"]
+            );
+
+            return true;
+          } else {
+
+              showSnack(
+                  width: 200.w,
+                  title: data["message"]
+              );
+
+
+            return false;
+          }
+        } catch (e) {
+          AppConst().debug(e.toString());
+        }
+      }
+    } else {
+      showSnack(
+          title: AppStrings.noInternetConnection,
+          width: 200.w
+      );
     }
 
   }
@@ -283,7 +383,7 @@ class DashboardController extends GetxController {
           await createGrowSpace(growspaceModel: growspaceModel)
               .whenComplete(() {
             Get.back();
-            getDataList();
+             getDataList();
           });
 
         } else {

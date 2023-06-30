@@ -2,20 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/const/text_style_decoration.dart';
 import 'package:scimetic/core/elements/common_view_screen.dart';
+import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/elements/otp_textfield.dart';
-import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/authenticate_your_account/controller/authenticate_account_controller.dart';
 
-class AuthenticateAccountScreen extends StatelessWidget {
+class AuthenticateAccountScreen extends StatefulWidget {
    AuthenticateAccountScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AuthenticateAccountScreen> createState() => _AuthenticateAccountScreenState();
+}
+
+class _AuthenticateAccountScreenState extends State<AuthenticateAccountScreen> {
 
    final controller = Get.put(AuthenticateAccountController());
 
+
+   @override
+  void initState() {
+
+     super.initState();
+
+     Future.delayed(const Duration(seconds: 1), (){
+       showSnack(
+           title: AppStrings.verificationDesc,
+           width: 300.w
+       );
+     });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return CommonViewScreen(
         title: AppStrings.aYourAccount,
         subTitle: AppStrings.aYourAccountDesc,
@@ -35,7 +57,8 @@ class AuthenticateAccountScreen extends StatelessWidget {
               fontSize: 15.sp
             ),
             onSubmit: (val) {
-
+              AppConst().debug('code => $val');
+              controller.code.value = int.parse(val);
             },
           ),
         ),
@@ -50,16 +73,21 @@ class AuthenticateAccountScreen extends StatelessWidget {
                 AppStrings.hReceived,
                 style: TextStyleDecoration.subTitle,
               ),
-              Text(
-                AppStrings.rNCode,
-                style: TextStyleDecoration.headline2,
+              GestureDetector(
+                onTap: () async {
+                  await controller.sendVerificationCode();
+                },
+                child: Text(
+                  AppStrings.rNCode,
+                  style: TextStyleDecoration.headline2,
+                ),
               ),
             ],
           ),
         ),
         buttonText: AppStrings.confirm,
-        buttonTap: (){
-           Get.toNamed(AppPages.NEWPASSWORD);
+        buttonTap: () async {
+          await controller.verifyAccount();
         },
         isSubtitle: true,
       isEmail: true,

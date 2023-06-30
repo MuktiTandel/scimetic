@@ -32,7 +32,7 @@ class GraphScreen extends StatelessWidget {
         child: CommonAppbar(
           drawerTap: (){
             Get.back();
-            overviewController.getHourData(
+            overviewController.get24HourData(
                 id: overviewController.id.value,
                 identifier: dashboardController.selectItem.value
             );
@@ -63,16 +63,19 @@ class GraphScreen extends StatelessWidget {
                   value: controller.value(),
                   color: controller.color(),
                   value1: controller.value_(),
-                  isHour: controller.isHour.value,
-                  hourSelect: (){
-                    overviewController.getHourData(
+                  is24Hour: controller.is24Hour.value,
+                  hour24Select: (){
+                    overviewController.get24HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if ( controller.isHour.value == false ) {
-                      controller.isHour.value = true;
+                    if (controller.is24Hour.value == false) {
+                      controller.is24Hour.value = true;
                       controller.isWeek.value = false;
                       controller.isMonth.value = false;
+                      controller.is1Hour.value = false;
+                      controller.is6Hour.value = false;
+                      controller.is12Hour.value = false;
                     }
                   },
                   isWeek: controller.isWeek.value,
@@ -81,10 +84,13 @@ class GraphScreen extends StatelessWidget {
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if ( controller.isWeek.value == false ) {
-                      controller.isHour.value = false;
+                    if (controller.isWeek.value == false) {
+                      controller.is24Hour.value = false;
                       controller.isWeek.value = true;
                       controller.isMonth.value = false;
+                      controller.is1Hour.value = false;
+                      controller.is6Hour.value = false;
+                      controller.is12Hour.value = false;
                     }
                   },
                   isMonth: controller.isMonth.value,
@@ -93,10 +99,58 @@ class GraphScreen extends StatelessWidget {
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if ( controller.isMonth.value == false ) {
-                      controller.isHour.value = false;
+                    if (controller.isMonth.value == false) {
+                      controller.is24Hour.value = false;
                       controller.isWeek.value = false;
                       controller.isMonth.value = true;
+                      controller.is1Hour.value = false;
+                      controller.is6Hour.value = false;
+                      controller.is12Hour.value = false;
+                    }
+                  },
+                  is1Hour: controller.is1Hour.value,
+                  hour1Select: (){
+                    overviewController.get1HourData(
+                        id: overviewController.id.value,
+                        identifier: dashboardController.selectItem.value
+                    );
+                    if (controller.is1Hour.value == false) {
+                      controller.is24Hour.value = false;
+                      controller.isWeek.value = false;
+                      controller.isMonth.value = false;
+                      controller.is1Hour.value = true;
+                      controller.is6Hour.value = false;
+                      controller.is12Hour.value = false;
+                    }
+                  },
+                  is6Hour: controller.is6Hour.value,
+                  hour6Select: (){
+                    overviewController.get6HourData(
+                        id: overviewController.id.value,
+                        identifier: dashboardController.selectItem.value
+                    );
+                    if (controller.is6Hour.value == false) {
+                      controller.is24Hour.value = false;
+                      controller.isWeek.value = false;
+                      controller.isMonth.value = false;
+                      controller.is1Hour.value = false;
+                      controller.is6Hour.value = true;
+                      controller.is12Hour.value = false;
+                    }
+                  },
+                  is12Hour: controller.is12Hour.value,
+                  hour12Select: (){
+                    overviewController.get12HourData(
+                        id: overviewController.id.value,
+                        identifier: dashboardController.selectItem.value
+                    );
+                    if (controller.is12Hour.value == false) {
+                      controller.is24Hour.value = false;
+                      controller.isWeek.value = false;
+                      controller.isMonth.value = false;
+                      controller.is1Hour.value = false;
+                      controller.is6Hour.value = false;
+                      controller.is12Hour.value = true;
                     }
                   },
                   graph: Obx(() => overviewController.isClimateData.value == true
@@ -105,16 +159,27 @@ class GraphScreen extends StatelessWidget {
               ),),
               SizedBox(height: 10.h,),
               growSheetWidget(
-                selectStage: controller.selectStage,
-                isFlowering: controller.isFlowering,
-                isGermination: controller.isGermination,
-                isSeedling: controller.isSeedling,
-                isVegetative: controller.isVegetative,
+                selectStage: overviewController.selectStage,
+                isFlowering: overviewController.isFlowering,
+                isGermination: overviewController.isGermination,
+                isSeedling: overviewController.isSeedling,
+                isVegetative: overviewController.isVegetative,
                 context: context,
-                plantedDate: controller.plantedDate,
-                harvestDate: controller.harvestDate,
+                plantedDate: overviewController.plantedDate,
+                harvestDate: overviewController.harvestDate,
                 plantedDateValue: controller.plantedDateValue,
-                harvestDateValue: controller.harvestDateValue
+                harvestDateValue: controller.harvestDateValue,
+                controller: controller.barcodeController,
+                plantController: controller.plantController,
+                genealogyController: controller.genealogyController,
+                  rangeValue1: controller.rangeValue1,
+                  rangeValue2: controller.rangeValue2,
+                  rangeValue3: controller.rangeValue3,
+                  rangeValue4: controller.rangeValue4,
+                  progressValue: controller.progressValue,
+                onTap: (){},
+                harvestTap: (){},
+                plantedTap: (){}
               ),
               SizedBox(height: 10.h,),
               deviceOverviewWidget(

@@ -14,13 +14,14 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/reports/controller/reports_controller.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ReportScreen extends StatelessWidget {
-   ReportScreen({Key? key}) : super(key: key);
+  ReportScreen({Key? key}) : super(key: key);
 
-   final controller = Get.put(ReportController());
+  final controller = Get.put(ReportController());
 
   @override
   Widget build(BuildContext context) {
@@ -39,120 +40,163 @@ class ReportScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                          text: AppStrings.generateReport,
+                        text: AppStrings.generateReport,
                         fontWeight: FontWeight.w600,
                         fontSize: 15.sp,
-                        color: Get.isDarkMode ? Colors.white : AppColors.lightBorder,
+                        color: Get.isDarkMode
+                            ? Colors.white
+                            : AppColors.lightBorder,
                       ),
                       Obx(() => controller.isValid.value == false
-                          ? SizedBox(height: 10.h,)
+                          ? SizedBox(
+                              height: 10.h,
+                            )
                           : const SizedBox.shrink()),
-                      Obx(() => controller.isValid.value == true
-                          ? const SizedBox.shrink()
-                          : commonErrorWidget(
-                          onTap: (){
-                            controller.isValid.value = true;
-                          },
-                          errorMessage: controller.errorMessage.value
-                      ),),
-                      SizedBox(height: 10.h,),
+                      Obx(
+                        () => controller.isValid.value == true
+                            ? const SizedBox.shrink()
+                            : commonErrorWidget(
+                                onTap: () {
+                                  controller.isValid.value = true;
+                                },
+                                errorMessage: controller.errorMessage.value),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       commonTextField(
                           title: AppStrings.name,
                           controller: controller.nameController,
-                          hintText: AppStrings.name
+                          hintText: AppStrings.name),
+                      SizedBox(
+                        height: 15.h,
                       ),
-                      SizedBox(height: 15.h,),
                       commonTextField(
                           title: AppStrings.companyName,
                           controller: controller.companyNameController,
-                          hintText: AppStrings.companyName
+                          hintText: AppStrings.companyName),
+                      SizedBox(
+                        height: 15.h,
                       ),
-                      SizedBox(height: 15.h,),
                       commonTextField(
                           title: AppStrings.batchID,
                           controller: controller.batchIdController,
-                          hintText: AppStrings.batchID
+                          hintText: AppStrings.batchID),
+                      SizedBox(
+                        height: 15.h,
                       ),
-                      SizedBox(height: 15.h,),
                       CustomText(
                         text: AppStrings.sensor,
-                        color: Get.isDarkMode ? Colors.white : AppColors.lightText,
+                        color:
+                            Get.isDarkMode ? Colors.white : AppColors.lightText,
                         fontSize: 12.h,
                         fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(height: 5.h,),
+                      SizedBox(
+                        height: 5.h,
+                      ),
                       CustomDropDown(
                         width: 330.w,
-                          hintText: AppStrings.chooseSensor,
-                          itemList: controller.sensorList,
-                          value: controller.chooseSensor.value,
-                          onChange: (value){
-                            controller.chooseSensor.value = value;
+                        hintText: AppStrings.chooseSensor,
+                        itemList: controller.sensorList,
+                        value: controller.chooseSensor.value,
+                        onChange: (value) {
+                          controller.chooseSensor.value = value;
+                          if (value.contains(AppStrings.temperature)) {
+                            controller.chooseSensor.value = "temperature";
+                          } else if (value.contains(AppStrings.cO2)) {
+                            controller.chooseSensor.value = "co2";
+                          } else if (value.contains(AppStrings.humidity)) {
+                            controller.chooseSensor.value = "humidity";
+                          } else if (value.contains(AppStrings.vpd)) {
+                            controller.chooseSensor.value = "vpd";
                           }
+                        },
+                        isEdit: false.obs,
+                        isEnable: false,
                       ),
-                      SizedBox(height: 15.h,),
+                      SizedBox(
+                        height: 15.h,
+                      ),
                       CustomText(
                         text: AppStrings.dateRange,
-                        color: Get.isDarkMode ? Colors.white : AppColors.lightText,
+                        color:
+                            Get.isDarkMode ? Colors.white : AppColors.lightText,
                         fontSize: 12.h,
                         fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(height: 5.h,),
+                      SizedBox(
+                        height: 5.h,
+                      ),
                       Row(
                         children: [
                           dateTextField(
                               controller: controller.startDate,
                               hintText: AppStrings.startDate,
-                            onTap: (){
+                              onTap: () {
                                 showDialog(
                                     context: context,
                                     barrierColor: Colors.transparent,
                                     builder: (BuildContext context) {
                                       return selectDateDialog(
-                                          dateController: controller.startDateController,
-                                          textController: controller.startDate
-                                      );
-                                    }
-                                );
-                            }
+                                          dateController:
+                                              controller.startDateController,
+                                          textController: controller.startDate);
+                                    });
+                              }),
+                          SizedBox(
+                            width: 10.w,
                           ),
-                          SizedBox(width: 10.w,),
                           dateTextField(
                               controller: controller.endDate,
                               hintText: AppStrings.endDate,
-                            onTap: (){
-                              showDialog(
-                                  context: context,
-                                  barrierColor: Colors.transparent,
-                                  builder: (BuildContext context) {
-                                    return selectDateDialog(
-                                        dateController: controller.endDateController,
-                                        textController: controller.endDate
-                                    );
-                                  }
-                              );
-                            }
-                          )
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    barrierColor: Colors.transparent,
+                                    builder: (BuildContext context) {
+                                      return selectDateDialog(
+                                          dateController:
+                                              controller.endDateController,
+                                          textController: controller.endDate);
+                                    });
+                              })
                         ],
                       ),
-                      SizedBox(height: 20.h,),
+                      SizedBox(
+                        height: 20.h,
+                      ),
                       CustomButton(
-                          onTap: (){},
-                          buttonText: AppStrings.upload,
+                        onTap: () {},
+                        buttonText: AppStrings.upload,
                         backgroundColor: AppColors.subTitleColor,
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       OutLineButton(
-                        onTap: (){},
+                        onTap: () async{
+                          await controller.onGenerate().whenComplete(() async {
+                            await controller.screenshotController.capture(
+                                delay: const Duration(milliseconds: 500)
+                            ).then((value) async {
+                              AppConst().debug("image => $value");
+                            }).catchError((onError){
+                              AppConst().debug("$onError");
+                            });
+                          });
+                        },
                         width: Get.width,
                         height: 45.h,
                         buttonText: AppStrings.generateExport,
                       ),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       CustomButton(
-                        onTap: (){
+                        onTap: () {
                           controller.onGenerate();
                         },
                         buttonText: AppStrings.generate,
@@ -163,102 +207,141 @@ class ReportScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.all(15.w),
-                child: Container(
-                  height: 350.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.all(10.w),
-                        child: Obx(() => CustomText(
-                          text: controller.chooseSensor.value,
-                          fontSize: 15.sp,
-                          color: AppColors.subTitleColor,
-                          fontWeight: FontWeight.w600,
-                        )),
-                      ),
-                      SizedBox(
-                        height: 274.h,
-                        child: SfCartesianChart(
-                          margin:const EdgeInsets.all(0),
-                          plotAreaBorderColor: Colors.transparent,
-                          primaryYAxis: NumericAxis(
-                            majorTickLines: const MajorTickLines(
-                                width: 0
-                            ),
-                            majorGridLines:  MajorGridLines(
-                                width: 1.w,
-                                dashArray: const [7,7],
-                                color: Get.isDarkMode ? Colors.white38 : AppColors.subTitleColor.withOpacity(0.3)
-                            ),
-                            axisLine: const AxisLine(
-                                color: Colors.transparent,
-                                width: 0
-                            ),
-                            labelFormat: '{value} kpd',
-                            labelPosition: ChartDataLabelPosition.inside,
-                            labelAlignment: LabelAlignment.end,
-                            plotOffset: 20,
-                            minimum: 0,
-                            maximum: 100,
-                            maximumLabels: 2,
-                            labelStyle: TextStyle(
-                              color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                              fontSize: 10.h,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Poppins",
-                            ),
-                          ),
-                          primaryXAxis: DateTimeAxis(
-                            maximumLabels: 5,
-                            dateFormat: DateFormat("HH:mm"),
-                            majorGridLines: const MajorGridLines(
-                              width: 0,
-                            ),
-                            majorTickLines: const MajorTickLines(width: 0),
-                            axisLine: const AxisLine(
-                                width: 0
-                            ),
-                            labelStyle: TextStyle(
-                                color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                                fontSize: 10.h,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Poppins"
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.all(10.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              SizedBox(height: 20.h,),
+              Obx(
+                () => controller.isGetData.value == true
+                    ? Screenshot(
+                      controller: controller.screenshotController,
+                      child: Container(
+                        height: 362.h,
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomText(
-                              text: "",
-                              fontSize: 15.sp,
-                              color: AppColors.subTitleColor,
-                              fontWeight: FontWeight.w600,
+                            Padding(
+                              padding: EdgeInsets.all(10.w),
+                              child: Obx(() => CustomText(
+                                    text: controller.chooseSensor.value,
+                                    fontSize: 15.sp,
+                                    color: AppColors.subTitleColor,
+                                    fontWeight: FontWeight.w600,
+                                  )),
                             ),
-                            CustomText(
-                              text: "",
-                              fontSize: 15.sp,
-                              color: AppColors.subTitleColor,
-                              fontWeight: FontWeight.w600,
+                            SizedBox(
+                              height: 274.h,
+                              child: SfCartesianChart(
+                                margin: const EdgeInsets.all(0),
+                                plotAreaBorderColor: Colors.transparent,
+                                zoomPanBehavior: ZoomPanBehavior(
+                                  enablePinching: true,
+                                  zoomMode: ZoomMode.x,
+                                  enablePanning: true
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  majorTickLines:
+                                      const MajorTickLines(width: 0),
+                                  labelFormat: '{value} ${controller.format.value}',
+                                  majorGridLines: MajorGridLines(
+                                      width: 1.w,
+                                      dashArray: const [7, 7],
+                                      color: Get.isDarkMode
+                                          ? Colors.white38
+                                          : AppColors.subTitleColor
+                                              .withOpacity(0.3)),
+                                  axisLine: const AxisLine(
+                                      color: Colors.transparent, width: 0),
+                                  labelPosition:
+                                      ChartDataLabelPosition.inside,
+                                  labelAlignment: LabelAlignment.end,
+                                  plotOffset: 20,
+                                  minimum: 0,
+                                  maximum: double.parse(controller.maxValue.value.toStringAsFixed(0)),
+                                  labelStyle: TextStyle(
+                                    color: Get.isDarkMode
+                                        ? Colors.white
+                                        : AppColors.subTitleColor,
+                                    fontSize: 10.h,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: "Poppins",
+                                  ),
+                                ),
+                                primaryXAxis: DateTimeAxis(
+                                  dateFormat: DateFormat("HH:mm"),
+                                  maximumLabels: 23,
+                                  intervalType: DateTimeIntervalType.hours,
+                                  interval: controller
+                                      .endDateController.selectedDate!
+                                      .difference(controller
+                                          .startDateController.selectedDate!)
+                                      .inDays
+                                      .toDouble(),
+                                  maximum: controller
+                                      .endDateController.selectedDate!,
+                                  minimum: controller
+                                      .startDateController.selectedDate!,
+                                  majorGridLines: const MajorGridLines(
+                                    width: 0,
+                                  ),
+                                  majorTickLines:
+                                      const MajorTickLines(width: 0),
+                                  axisLine: const AxisLine(width: 0),
+                                  labelStyle: TextStyle(
+                                      color: Get.isDarkMode
+                                          ? Colors.white
+                                          : AppColors.subTitleColor,
+                                      fontSize: 10.h,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Poppins"),
+                                ),
+                                series: [
+                                HiloSeries<ChartSampleData, DateTime>(
+                                      dataSource: controller.chartDataList,
+                                      name: 'AAPL',
+                                      // showIndicationForSameValues: isCardView ? true : _toggleVisibility,
+                                      xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
+                                      color: AppColors.red,
+
+                                      /// High, low, open and close values used to render the HLOC series.
+                                      lowValueMapper: (ChartSampleData sales, _) => sales.low,
+                                      highValueMapper: (ChartSampleData sales, _) => sales.high,
+                                      // openValueMapper: (ChartSampleData sales, _) => sales.open,
+                                      // closeValueMapper: (ChartSampleData sales, _) => sales.close
+                                  )
+                                ],
+                              ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.all(10.w),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text: DateFormat.MMMMd().format(controller
+                                        .startDateController.selectedDate!),
+                                    fontSize: 15.sp,
+                                    color: AppColors.subTitleColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  CustomText(
+                                    text: DateFormat.MMMMd().format(controller
+                                        .endDateController.selectedDate!),
+                                    fontSize: 15.sp,
+                                    color: AppColors.subTitleColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
+                    )
+                    : const SizedBox.shrink(),
               ),
-              SizedBox(height: 20.h,)
+              SizedBox(
+                height: 20.h,
+              )
             ],
           ),
         ),
@@ -266,10 +349,10 @@ class ReportScreen extends StatelessWidget {
     );
   }
 
-  Widget commonTextField({
-    required String title,
-    required TextEditingController controller,
-    required String hintText}) {
+  Widget commonTextField(
+      {required String title,
+      required TextEditingController controller,
+      required String hintText}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -279,7 +362,9 @@ class ReportScreen extends StatelessWidget {
           fontSize: 12.h,
           fontWeight: FontWeight.w500,
         ),
-        SizedBox(height: 5.h,),
+        SizedBox(
+          height: 5.h,
+        ),
         SizedBox(
           height: 40.h,
           child: CustomTextField(
@@ -289,18 +374,17 @@ class ReportScreen extends StatelessWidget {
             hintTextSize: 12.sp,
             focusBorderColor: AppColors.buttonColor,
             isFilled: Get.isDarkMode ? true : false,
-            onchange: (value){},
+            onchange: (value) {},
           ),
         ),
       ],
     );
   }
 
-  Widget dateTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required VoidCallback onTap
-  }) {
+  Widget dateTextField(
+      {required TextEditingController controller,
+      required String hintText,
+      required VoidCallback onTap}) {
     return Expanded(
       child: SizedBox(
         height: 40.h,
@@ -310,29 +394,29 @@ class ReportScreen extends StatelessWidget {
           hintText: hintText,
           contentPadding: EdgeInsets.only(left: 10.w),
           suffixWidget: GestureDetector(
-            onTap: (){
+            onTap: () {
               onTap();
             },
             child: Padding(
               padding: EdgeInsets.all(10.w),
               child: Image.asset(
                 AppImages.calender,
-                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                 height: 10.h,
                 width: 10.w,
               ),
             ),
           ),
-          onchange: (value){},
+          onchange: (value) {},
         ),
       ),
     );
   }
 
-  Widget selectDateDialog({
-    required DateRangePickerController dateController,
-    required TextEditingController textController
-  }) {
+  Widget selectDateDialog(
+      {required DateRangePickerController dateController,
+      required TextEditingController textController}) {
     return AlertDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
       backgroundColor: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
@@ -348,16 +432,16 @@ class ReportScreen extends StatelessWidget {
                 fontFamily: "Poppins",
                 fontSize: 14.sp,
                 color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                fontWeight: FontWeight.w500
-            ),
+                fontWeight: FontWeight.w500),
           ),
-          onSubmit: (context){
+          onSubmit: (context) {
             Get.back();
             AppConst().debug('Select date => ${dateController.selectedDate}');
             final DateFormat formatter = DateFormat('yyyy-MM-dd');
-            textController.text = formatter.format(dateController.selectedDate!);
+            textController.text =
+                formatter.format(dateController.selectedDate!);
           },
-          onCancel: (){
+          onCancel: () {
             Get.back();
           },
           showNavigationArrow: true,
@@ -367,30 +451,28 @@ class ReportScreen extends StatelessWidget {
                 textStyle: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 12.sp,
-                    color: Get.isDarkMode ? AppColors.darkBlue3 : AppColors.lightIcon,
-                    fontWeight: FontWeight.w500
-                )
-            ),
+                    color: Get.isDarkMode
+                        ? AppColors.darkBlue3
+                        : AppColors.lightIcon,
+                    fontWeight: FontWeight.w500)),
           ),
           monthCellStyle: DateRangePickerMonthCellStyle(
             textStyle: TextStyle(
                 fontFamily: "Poppins",
                 fontSize: 12.sp,
                 color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
-                fontWeight: FontWeight.w500
-            ),
+                fontWeight: FontWeight.w500),
             disabledDatesTextStyle: TextStyle(
                 fontFamily: "Poppins",
                 fontSize: 12.sp,
-                color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                fontWeight: FontWeight.w500
-            ),
+                color:
+                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                fontWeight: FontWeight.w500),
             todayTextStyle: TextStyle(
                 fontFamily: "Poppins",
                 fontSize: 12.sp,
                 color: Get.isDarkMode ? Colors.white : AppColors.lightText,
-                fontWeight: FontWeight.w500
-            ),
+                fontWeight: FontWeight.w500),
           ),
           selectionColor: AppColors.buttonColor,
           todayHighlightColor: AppColors.lightIcon,
@@ -398,8 +480,7 @@ class ReportScreen extends StatelessWidget {
               fontFamily: "Poppins",
               fontSize: 12.sp,
               color: Colors.white,
-              fontWeight: FontWeight.w500
-          ),
+              fontWeight: FontWeight.w500),
         ),
       ),
     );

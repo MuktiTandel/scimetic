@@ -68,32 +68,32 @@ Widget deviceOverviewWidget({ required VoidCallback onTap,
                 online: valvesOnline,
                 offline: valvesOffline
               ),
-              SizedBox(height: 15.h,),
-              CustomButton(
-                onTap: (){
-                  onTap();
-                },
-                height: 42.h,
-                buttonText: AppStrings.addNewDevice,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        AppImages.add,
-                        height: 15.h,
-                        width: 15.w,
-                      ),
-                      SizedBox(width: 10.w,),
-                      CustomText(
-                        text: AppStrings.addNewDevice,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                      )
-                    ],
-                  ),
-                ),
-              )
+              // SizedBox(height: 15.h,),
+              // CustomButton(
+              //   onTap: (){
+              //     onTap();
+              //   },
+              //   height: 42.h,
+              //   buttonText: AppStrings.addNewDevice,
+              //   child: Center(
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         SvgPicture.asset(
+              //           AppImages.add,
+              //           height: 15.h,
+              //           width: 15.w,
+              //         ),
+              //         SizedBox(width: 10.w,),
+              //         CustomText(
+              //           text: AppStrings.addNewDevice,
+              //           fontSize: 15.sp,
+              //           fontWeight: FontWeight.w500,
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // )
             ],
           ),
         )

@@ -8,7 +8,8 @@ Widget commonTimeTextField({
   required TextEditingController controller,
   required String hintText,
   required ValueChanged<String>? onChanged,
-  double? width
+  double? width,
+  bool? isField
 }) {
   return SizedBox(
     height: 40.h,
@@ -21,7 +22,7 @@ Widget commonTimeTextField({
       borderRadius: 8,
       hintText: hintText,
       focusBorderColor: AppColors.buttonColor,
-      isFilled: Get.isDarkMode ? true : false,
+      isFilled: isField ?? Get.isDarkMode ? true : false,
       contentPadding: EdgeInsets.only(top: 10.h, bottom: 10.h),
       onchange: onChanged,
     ),

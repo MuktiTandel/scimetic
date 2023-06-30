@@ -12,11 +12,17 @@ Widget commonGraphWidget( {
   required String image,
   required String value,
   required String value1,
-  required bool isHour,
+  required bool is1Hour,
+  required bool is6Hour,
+  required bool is12Hour,
+  required bool is24Hour,
   required bool isWeek,
   required bool isMonth,
   required Widget graph,
-  required VoidCallback hourSelect,
+  required VoidCallback hour1Select,
+  required VoidCallback hour6Select,
+  required VoidCallback hour12Select,
+  required VoidCallback hour24Select,
   required VoidCallback weekSelect,
   required VoidCallback monthSelect,
   required Color color,
@@ -86,7 +92,7 @@ Widget commonGraphWidget( {
                     ],
                   ),
                 ) : SizedBox(
-                  height: 50.h,
+                  height: 60.h,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -220,11 +226,38 @@ Widget commonGraphWidget( {
                 Row(
                   children: [
                     hwmSelectWidget(
-                        title: AppStrings.hours,
+                        title: AppStrings.hours1,
                         width: 34.w,
-                        isSelected: isHour,
+                        isSelected: is1Hour,
                         onTap: (){
-                          hourSelect();
+                          hour1Select();
+                        }
+                    ),
+                    SizedBox(width: 10.w,),
+                    hwmSelectWidget(
+                        title: AppStrings.hours6,
+                        width: 34.w,
+                        isSelected: is6Hour,
+                        onTap: (){
+                          hour6Select();
+                        }
+                    ),
+                    SizedBox(width: 10.w,),
+                    hwmSelectWidget(
+                        title: AppStrings.hours12,
+                        width: 34.w,
+                        isSelected: is12Hour,
+                        onTap: (){
+                          hour12Select();
+                        }
+                    ),
+                    SizedBox(width: 10.w,),
+                    hwmSelectWidget(
+                        title: AppStrings.hours24,
+                        width: 34.w,
+                        isSelected: is24Hour,
+                        onTap: (){
+                          hour24Select();
                         }
                     ),
                     SizedBox(width: 10.w,),

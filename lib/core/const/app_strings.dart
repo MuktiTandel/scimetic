@@ -402,6 +402,8 @@ class AppStrings {
   static const String extractorControl = "Extractor Control";
   static const String extractorFanControl = "Extractor Fan Control";
   static const String batchLabel = "Batch Label";
+  static const String weeklyReport = "Weekly Report";
+  static const String createdBy = "Created By";
   static const String passwordNotMatch = "Invalid password. "
       "Password does not match";
   static const String invalidFullName = "Invalid fullname. At least 4 "

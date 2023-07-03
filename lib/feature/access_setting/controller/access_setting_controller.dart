@@ -12,7 +12,6 @@ import 'package:scimetic/core/utils/check_net_connectivity.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/access_setting/model/user_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:encrypt/encrypt.dart' as encrypt;
 
 class AccessSettingController extends GetxController {
   final TextEditingController searchController = TextEditingController();
@@ -68,9 +67,6 @@ class AccessSettingController extends GetxController {
 
   RxString errorMessage = "".obs;
 
-  static encrypt.Encrypted? encrypted;
-  static var decrypted;
-
   RxInt userId = 0.obs;
 
   RxBool isShow = false.obs;
@@ -78,40 +74,6 @@ class AccessSettingController extends GetxController {
   RxInt getId = 0.obs;
 
   List<bool> checkList = [];
-
-  static encryptAES(plainText) {
-    print('encrypt');
-    final key = encrypt.Key.fromUtf8('my 32 length key................');
-    final iv = encrypt.IV.fromLength(16);
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    encrypted = encrypter.encrypt(plainText, iv: iv);
-    print(encrypted!.base16);
-  }
-
-  static decryptAES(plainText) {
-    print('decrypt');
-    final key = encrypt.Key.fromUtf8('my 32 length key................');
-    final iv = encrypt.IV.fromLength(16);
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    decrypted = encrypter.decrypt(encrypted!, iv: iv);
-    print(decrypted);
-  }
-
-  String getPassword(String password) {
-    final plainText = 'Password@123';
-    final key = encrypt.Key.fromUtf8('my 32 length key................');
-    final iv = encrypt.IV.fromLength(16);
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-
-    final encrypted = encrypter.encrypt(plainText, iv: iv);
-    final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    print(encrypted.base64);
-
-    return decrypted;
-  }
 
   Future getUserList() async {
     token = storeData.getString(StoreData.accessToken)!;

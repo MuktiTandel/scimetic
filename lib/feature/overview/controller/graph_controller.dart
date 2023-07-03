@@ -41,6 +41,9 @@ class GraphController extends GetxController {
   RxDouble rangeValue4 = 0.0.obs;
   RxInt progressValue = 0.obs;
 
+  RxInt currentDay = 0.obs;
+  RxInt totalPeriod = 0.obs;
+
   @override
   void onClose() {
 

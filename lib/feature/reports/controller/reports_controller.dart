@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +10,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
+import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
@@ -17,6 +18,7 @@ import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/check_net_connectivity.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/reports/model/report_model.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:http/http.dart' as http;
 
@@ -84,6 +86,8 @@ class ReportController extends GetxController {
   List<ChartSampleData> chartDataList = [];
 
   RxString format = "".obs;
+
+  ScreenshotController screenshotController = ScreenshotController();
 
   Future getReportData() async {
     isGetData.value = false;
@@ -522,19 +526,148 @@ class ReportController extends GetxController {
     }
   }
 
-  Future<Uint8List> makePdf() async {
+  Future<Uint8List> makePdf({
+  required String companyName,
+    required String batchId,
+    required String createdBy
+}) async {
+
     final pdf = pw.Document();
+    final ByteData byteData = await rootBundle.load(AppImages.logo);
+
+    final Uint8List byteList = byteData.buffer.asUint8List();
+
+    final DateTime now = DateTime.now();
+
+    final DateFormat formatter = DateFormat('EE MMM d y');
+
     pdf.addPage(pw.Page(
       pageFormat: PdfPageFormat.a4,
+      margin: pw.EdgeInsets.zero,
       build: (pw.Context context) {
         return pw.Column(
           children: [
             pw.Container(
-              height: 40.h,
+              height: 70.h,
               color: const PdfColor.fromInt(0xFFF9F9F9),
-              padding: pw.EdgeInsets.all(20.w),
-              child: pw.Row(
+              child: pw.Padding(
+                padding: pw.EdgeInsets.all(30.w),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Image(pw.MemoryImage(
+                        byteList,
+                      ),
+                          height: 40.h
+                      ),
+                      pw.SizedBox(width: 10.w),
+                      pw.Text(
+                        AppStrings.scimetic,
+                        style: pw.TextStyle(
+                          fontSize: 24.sp,
+                          fontBold: pw.Font.courier()
+                        )
+                      ),
+                      pw.Expanded(
+                        child: pw.SizedBox(width: 10.w)
+                      ),
+                      pw.Text(
+                          formatter.format(now),
+                          style: pw.TextStyle(
+                              fontSize: 24.sp,
+                              fontBold: pw.Font.courier(),
+                          )
+                      ),
+                    ]
+                )
+              )
+            ),
+            pw.Padding(
+              padding: pw.EdgeInsets.all(30.w),
+              child: pw.Column(
                 children: [
+                  pw.Center(
+                      child:  pw.Text(
+                          AppStrings.weeklyReport,
+                          style: pw.TextStyle(
+                            fontSize: 25.sp,
+                            fontBold: pw.Font.courier(),
+                          )
+                      )
+                  ),
+                  pw.SizedBox(
+                    height: 30.h
+                  ),
+                  pw.Row(
+                    children: [
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(
+                              AppStrings.companyName,
+                              style: pw.TextStyle(
+                                fontSize: 15.sp,
+                                color: PdfColors.grey,
+                                fontBold: pw.Font.courier(),
+                              )
+                          ),
+                          pw.Text(
+                              companyName,
+                              style: pw.TextStyle(
+                                fontSize: 15.sp,
+                                fontBold: pw.Font.courier(),
+                              )
+                          ),
+                        ]
+                      ),
+                      pw.Expanded(
+                          child: pw.SizedBox(width: 10.w)
+                      ),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Text(
+                                AppStrings.batchID,
+                                style: pw.TextStyle(
+                                  fontSize: 15.sp,
+                                  color: PdfColors.grey,
+                                  fontBold: pw.Font.courier(),
+                                )
+                            ),
+                            pw.Text(
+                                batchId,
+                                style: pw.TextStyle(
+                                  fontSize: 15.sp,
+                                  fontBold: pw.Font.courier(),
+                                )
+                            ),
+                          ]
+                      ),
+                      pw.Expanded(
+                          child: pw.SizedBox(width: 10.w)
+                      ),
+                      pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Text(
+                                AppStrings.createdBy,
+                                style: pw.TextStyle(
+                                  fontSize: 15.sp,
+                                  color: PdfColors.grey,
+                                  fontBold: pw.Font.courier(),
+                                )
+                            ),
+                            pw.Text(
+                                createdBy,
+                                style: pw.TextStyle(
+                                  fontSize: 15.sp,
+                                  fontBold: pw.Font.courier(),
+                                )
+                            ),
+                          ]
+                      )
+                    ]
+                  )
                 ]
               )
             )
@@ -542,6 +675,7 @@ class ReportController extends GetxController {
         );
       }
     ));
+
     return pdf.save();
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
-
-import 'package:scimetic/core/elements/custom_text.dart';
 
 class DonutChart extends StatefulWidget {
   final String plantedDate;
@@ -121,6 +118,8 @@ class _DonutChartState extends State<DonutChart> {
       'flowering': (9 / 16) * totalPeriod,
     };
 
+    print('total period => $totalPeriod}');
+
     int remainingDays = currentDays;
     weightages.forEach((key, value) {
       if (remainingDays > 0) {
@@ -144,24 +143,25 @@ class _DonutChartState extends State<DonutChart> {
       angles[key] = {'startAngle': startAngle, 'endAngle': endAngle};
     }
 
+    angles.forEach((key, value) {
+      print('$key $value');
+    });
+
     return angles;
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100.h,
-      width: 200.w,
+      height: 100,
+      width: 200,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Align(
             alignment: Alignment.center,
-            child: CustomText(
-             text: '$percentGrowth%',
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
+            child: Text(
+              '$percentGrowth%',
             ),
           ),
           Align(
@@ -206,3 +206,4 @@ class ChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant ChartPainter oldDelegate) => true;
 }
+

@@ -15,7 +15,6 @@ import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/edit_delete_popup.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/access_setting/controller/access_setting_controller.dart';
-import 'package:scimetic/feature/access_setting/element/password_decrypt.dart';
 import 'package:scimetic/feature/access_setting/model/user_model.dart';
 
 class AccessSettingScreen extends StatelessWidget {

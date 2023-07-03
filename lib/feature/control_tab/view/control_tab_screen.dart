@@ -70,18 +70,19 @@ class ControlTabScreen extends StatelessWidget {
                         fontSize: 12.h,
                       ),
                       SizedBox(height: 5.h,),
-                      CustomDropDown(
-                          width: 330.w,
-                          hintText: AppStrings.chooseSwitch,
-                          itemList: controller.apiService.switchList,
-                          value: controller.blackOutSwitch.value,
-                          isFilled: Get.isDarkMode ? true : false,
-                          onChange: (value) {
-                            controller.blackOutSwitch.value = value;
-                          },
+                      Obx(() => CustomDropDown(
+                        width: 330.w,
+                        hintText: AppStrings.chooseSwitch,
+                        itemList: controller.isGetData.value == true
+                            ? controller.switchList : [],
+                        value: controller.blackOutSwitch.value,
+                        isFilled: Get.isDarkMode ? true : false,
+                        onChange: (value) {
+                          controller.blackOutSwitch.value = value;
+                        },
                         isEdit: false.obs,
                         isEnable: false,
-                      ),
+                      )),
                       SizedBox(
                         height: 10.h,
                       ),
@@ -168,19 +169,20 @@ class ControlTabScreen extends StatelessWidget {
                                 fontSize: 12.h,
                               ),
                               SizedBox(height: 5.h,),
-                              CustomDropDown(
-                                  width: 310.w,
-                                  yValue: 50,
-                                  hintText: AppStrings.chooseSwitch,
-                                  itemList: controller.apiService.switchList,
-                                  value: controller.uVScreenSwitch.value,
-                                  isFilled: true,
-                                  onChange: (value) {
-                                    controller.uVScreenSwitch.value = value;
-                                  },
+                              Obx(() => CustomDropDown(
+                                width: 310.w,
+                                yValue: 50,
+                                hintText: AppStrings.chooseSwitch,
+                                itemList: controller.isGetData.value == true
+                                    ? controller.switchList : [],
+                                value: controller.uVScreenSwitch.value,
+                                isFilled: true,
+                                onChange: (value) {
+                                  controller.uVScreenSwitch.value = value;
+                                },
                                 isEdit: false.obs,
                                 isEnable: false,
-                              ),
+                              )),
                               SizedBox(
                                 height: 10.h,
                               ),

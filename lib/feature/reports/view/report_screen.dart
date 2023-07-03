@@ -14,6 +14,8 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/reports/controller/reports_controller.dart';
+import 'package:scimetic/feature/reports/view/pdf_preview.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -176,7 +178,19 @@ class ReportScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       OutLineButton(
-                        onTap: () {},
+                        onTap: () async {
+                          await controller.screenshotController
+                              .capture(delay: const Duration(milliseconds: 500))
+                              .then((value) async {
+                            AppConst().debug("image => $value");
+                          }).catchError((onError) {
+                            AppConst().debug("$onError");
+                          });
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return PdfPreviewPage();
+                          }));
+                        },
                         width: Get.width,
                         height: 45.h,
                         buttonText: AppStrings.generateExport,
@@ -196,133 +210,146 @@ class ReportScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20.h,),
+              SizedBox(
+                height: 20.h,
+              ),
               Obx(
                 () => controller.isGetData.value == true
-                    ? Container(
-                      height: 362.h,
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.w),
-                            child: Obx(() => CustomText(
-                                  text: controller.chooseSensor.value,
-                                  fontSize: 15.sp,
-                                  color: AppColors.subTitleColor,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                          ),
-                          SizedBox(
-                            height: 274.h,
-                            child: SfCartesianChart(
-                              margin: const EdgeInsets.all(0),
-                              plotAreaBorderColor: Colors.transparent,
-                              zoomPanBehavior: ZoomPanBehavior(
-                                enablePinching: true,
-                                zoomMode: ZoomMode.x,
-                                enablePanning: true
+                    ? Screenshot(
+                        controller: controller.screenshotController,
+                        child: Container(
+                          height: 362.h,
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(10.w),
+                                child: Obx(() => CustomText(
+                                      text: controller.chooseSensor.value,
+                                      fontSize: 15.sp,
+                                      color: AppColors.subTitleColor,
+                                      fontWeight: FontWeight.w600,
+                                    )),
                               ),
-                              primaryYAxis: NumericAxis(
-                                majorTickLines:
-                                    const MajorTickLines(width: 0),
-                                labelFormat: '{value} ${controller.format.value}',
-                                majorGridLines: MajorGridLines(
-                                    width: 1.w,
-                                    dashArray: const [7, 7],
-                                    color: Get.isDarkMode
-                                        ? Colors.white38
-                                        : AppColors.subTitleColor
-                                            .withOpacity(0.3)),
-                                axisLine: const AxisLine(
-                                    color: Colors.transparent, width: 0),
-                                labelPosition:
-                                    ChartDataLabelPosition.inside,
-                                labelAlignment: LabelAlignment.end,
-                                plotOffset: 20,
-                                minimum: 0,
-                                maximum: double.parse(controller.maxValue.value.toStringAsFixed(0)),
-                                labelStyle: TextStyle(
-                                  color: Get.isDarkMode
-                                      ? Colors.white
-                                      : AppColors.subTitleColor,
-                                  fontSize: 10.h,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                              primaryXAxis: DateTimeAxis(
-                                dateFormat: DateFormat("HH:mm"),
-                                maximumLabels: 23,
-                                intervalType: DateTimeIntervalType.hours,
-                                interval: controller
-                                    .endDateController.selectedDate!
-                                    .difference(controller
-                                        .startDateController.selectedDate!)
-                                    .inDays
-                                    .toDouble(),
-                                maximum: controller
-                                    .endDateController.selectedDate!,
-                                minimum: controller
-                                    .startDateController.selectedDate!,
-                                majorGridLines: const MajorGridLines(
-                                  width: 0,
-                                ),
-                                majorTickLines:
-                                    const MajorTickLines(width: 0),
-                                axisLine: const AxisLine(width: 0),
-                                labelStyle: TextStyle(
-                                    color: Get.isDarkMode
-                                        ? Colors.white
-                                        : AppColors.subTitleColor,
-                                    fontSize: 10.h,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Poppins"),
-                              ),
-                              series: [
-                              HiloSeries<ChartSampleData, DateTime>(
-                                    dataSource: controller.chartDataList,
-                                    name: 'AAPL',
-                                    // showIndicationForSameValues: isCardView ? true : _toggleVisibility,
-                                    xValueMapper: (ChartSampleData sales, _) => sales.x as DateTime,
-                                    color: AppColors.red,
+                              SizedBox(
+                                height: 274.h,
+                                child: SfCartesianChart(
+                                  margin: const EdgeInsets.all(0),
+                                  plotAreaBorderColor: Colors.transparent,
+                                  zoomPanBehavior: ZoomPanBehavior(
+                                      enablePinching: true,
+                                      zoomMode: ZoomMode.x,
+                                      enablePanning: true),
+                                  primaryYAxis: NumericAxis(
+                                    majorTickLines:
+                                        const MajorTickLines(width: 0),
+                                    labelFormat:
+                                        '{value} ${controller.format.value}',
+                                    majorGridLines: MajorGridLines(
+                                        width: 1.w,
+                                        dashArray: const [7, 7],
+                                        color: Get.isDarkMode
+                                            ? Colors.white38
+                                            : AppColors.subTitleColor
+                                                .withOpacity(0.3)),
+                                    axisLine: const AxisLine(
+                                        color: Colors.transparent, width: 0),
+                                    labelPosition:
+                                        ChartDataLabelPosition.inside,
+                                    labelAlignment: LabelAlignment.end,
+                                    plotOffset: 20,
+                                    minimum: 0,
+                                    maximum: double.parse(controller
+                                        .maxValue.value
+                                        .toStringAsFixed(0)),
+                                    labelStyle: TextStyle(
+                                      color: Get.isDarkMode
+                                          ? Colors.white
+                                          : AppColors.subTitleColor,
+                                      fontSize: 10.h,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                  primaryXAxis: DateTimeAxis(
+                                    dateFormat: DateFormat("HH:mm"),
+                                    maximumLabels: 23,
+                                    intervalType: DateTimeIntervalType.hours,
+                                    interval: controller
+                                        .endDateController.selectedDate!
+                                        .difference(controller
+                                            .startDateController.selectedDate!)
+                                        .inDays
+                                        .toDouble(),
+                                    maximum: controller
+                                        .endDateController.selectedDate!,
+                                    minimum: controller
+                                        .startDateController.selectedDate!,
+                                    majorGridLines: const MajorGridLines(
+                                      width: 0,
+                                    ),
+                                    majorTickLines:
+                                        const MajorTickLines(width: 0),
+                                    axisLine: const AxisLine(width: 0),
+                                    labelStyle: TextStyle(
+                                        color: Get.isDarkMode
+                                            ? Colors.white
+                                            : AppColors.subTitleColor,
+                                        fontSize: 10.h,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  series: [
+                                    HiloSeries<ChartSampleData, DateTime>(
+                                      dataSource: controller.chartDataList,
+                                      name: 'AAPL',
+                                      // showIndicationForSameValues: isCardView ? true : _toggleVisibility,
+                                      xValueMapper:
+                                          (ChartSampleData sales, _) =>
+                                              sales.x as DateTime,
+                                      color: AppColors.red,
 
-                                    /// High, low, open and close values used to render the HLOC series.
-                                    lowValueMapper: (ChartSampleData sales, _) => sales.low,
-                                    highValueMapper: (ChartSampleData sales, _) => sales.high,
-                                    // openValueMapper: (ChartSampleData sales, _) => sales.open,
-                                    // closeValueMapper: (ChartSampleData sales, _) => sales.close
-                                )
-                              ],
-                            ),
+                                      /// High, low, open and close values used to render the HLOC series.
+                                      lowValueMapper:
+                                          (ChartSampleData sales, _) =>
+                                              sales.low,
+                                      highValueMapper:
+                                          (ChartSampleData sales, _) =>
+                                              sales.high,
+                                      // openValueMapper: (ChartSampleData sales, _) => sales.open,
+                                      // closeValueMapper: (ChartSampleData sales, _) => sales.close
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      text: DateFormat.MMMMd().format(controller
+                                          .startDateController.selectedDate!),
+                                      fontSize: 15.sp,
+                                      color: AppColors.subTitleColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    CustomText(
+                                      text: DateFormat.MMMMd().format(controller
+                                          .endDateController.selectedDate!),
+                                      fontSize: 15.sp,
+                                      color: AppColors.subTitleColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(10.w),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                CustomText(
-                                  text: DateFormat.MMMMd().format(controller
-                                      .startDateController.selectedDate!),
-                                  fontSize: 15.sp,
-                                  color: AppColors.subTitleColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                CustomText(
-                                  text: DateFormat.MMMMd().format(controller
-                                      .endDateController.selectedDate!),
-                                  fontSize: 15.sp,
-                                  color: AppColors.subTitleColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                        ),
+                      )
                     : const SizedBox.shrink(),
               ),
               SizedBox(

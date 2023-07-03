@@ -16,6 +16,7 @@ import 'package:scimetic/feature/access_setting/controller/access_setting_contro
 import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
 import 'package:scimetic/feature/circulation_control/controller/circulation_control_controller.dart';
 import 'package:scimetic/feature/co2_control/controller/co2_controller.dart';
+import 'package:scimetic/feature/control_tab/controller/control_tab_controller.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
@@ -80,6 +81,8 @@ class HomeScreen extends StatelessWidget {
   final wetWallControlController = Get.put(WetWallControlController());
 
   final extractorFanControlController = Get.put(ExtractorControlController());
+
+  final screenControlController = Get.put(ControlTabController());
 
   @override
   Widget build(BuildContext context) {
@@ -894,7 +897,7 @@ class HomeScreen extends StatelessWidget {
           settingCommonWidget(
               image: AppImages.controlTab,
               title: AppStrings.screenControl,
-              onTap: () {
+              onTap: () async {
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -923,6 +926,7 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(17);
                 Get.back();
+                await screenControlController.getUvScreenData();
               },
               isSelect: controller.isControlTab),
           SizedBox(

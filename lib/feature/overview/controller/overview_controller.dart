@@ -18,7 +18,6 @@ import 'package:scimetic/feature/overview/model/climate_model.dart';
 import 'package:scimetic/feature/device_settings/Model/device_model.dart';
 import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 import 'package:scimetic/feature/overview/model/growsheet_labeler_model.dart';
-import 'package:scimetic/feature/overview/model/state_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class OverviewController extends GetxController {
@@ -128,6 +127,8 @@ class OverviewController extends GetxController {
 
   RxInt currentDay = 0.obs;
   RxInt totalPeriod = 0.obs;
+
+  Map<String, num> data = {'germination': 0, 'seedling': 0, 'vegetative': 0, 'flowering': 0};
 
   Future getGrowSheetData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -590,33 +591,78 @@ class OverviewController extends GetxController {
     }
   }
 
-  graphData() async{
-    StageData stageData = StageData();
-
-    Map dataClone = stageData.toJson();
-
-    final weightages = {
+  Map<String, num> graphData() {
+    final Map<String, num> dataClone = Map.from(data);
+    final Map<String, double> weightages = {
       'germination': (1 / 16) * totalPeriod.value,
       'seedling': (2 / 16) * totalPeriod.value,
       'vegetative': (4 / 16) * totalPeriod.value,
-      'flowering': (9 / 16) * totalPeriod.value
+      'flowering': (9 / 16) * totalPeriod.value,
     };
 
-    dynamic remainingDays = currentDay.value;
-
+    int remainingDays = currentDay.value;
     weightages.forEach((key, value) {
-      AppConst().debug('stage value => $value');
-      if (remainingDays > 0 ) {
-        // dataClone[0] = value[1] - remainingDays > 0 ? remainingDays : value[1];
-        // remainingDays = remainingDays - value[1];
+      if (remainingDays > 0) {
+        dataClone[key] = (value - remainingDays) > 0 ? remainingDays : value;
+        remainingDays = remainingDays - value.toInt();
       }
     });
-
     dataClone.forEach((key, value) {
-      AppConst().debug("$key : $value");
+      AppConst().debug("$key $value");
     });
 
     return dataClone;
+  }
+
+  Map<String, Map<String, double>> resolveAngles(Map<String, num> data, int totalPeriod) {
+
+    rangeValue4.value = 0.0;
+    rangeValue3.value = 0.0;
+    rangeValue2.value = 0.0;
+    rangeValue1.value = 0.0;
+
+    final List<String> keys = data.keys.toList();
+    final Map<String, Map<String, double>> angles = {};
+
+    double startAngle = 0;
+    double endAngle = 0;
+    for (var key in keys) {
+      startAngle = angles.isEmpty ? 0 : startAngle + (data[keys[keys.indexOf(key) - 1]]! / totalPeriod) * 2 * pi;
+      endAngle = endAngle + (data[key]! / totalPeriod) * 2 * pi;
+      angles[key] = {'startAngle': startAngle, 'endAngle': endAngle};
+    }
+
+    rangeValue1.value = angles["germination"]!["endAngle"]! * 10 + 6;
+    rangeValue2.value = angles["seedling"]!["endAngle"]! * 10 + 10;
+    rangeValue3.value = angles["vegetative"]!["endAngle"]! * 10 + 10;
+    rangeValue4.value = progressValue.value.toDouble();
+
+    if ( rangeValue2.value < rangeValue1.value ) {
+      rangeValue2.value = rangeValue1.value + 5;
+    }
+
+    if ( rangeValue3.value < rangeValue2.value ) {
+      rangeValue3.value = rangeValue2.value + 5;
+    }
+
+    if ( rangeValue4.value < rangeValue3.value ) {
+      rangeValue4.value = rangeValue3.value + 5;
+    }
+
+    angles.forEach((key, value) {
+      AppConst().debug('$key $value');
+    });
+
+    AppConst().debug(
+        'range value 4 => ${rangeValue4.value}');
+    AppConst().debug(
+        'range value 3 => ${rangeValue3.value}');
+    AppConst().debug(
+        'range value 2 => ${rangeValue2.value}');
+    AppConst().debug(
+        'range value 1 => ${rangeValue1.value}');
+
+    return angles;
   }
 
 }

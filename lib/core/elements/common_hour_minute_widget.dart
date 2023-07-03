@@ -32,7 +32,7 @@ Widget commonHourMinuteWidget( {
               commonTimeTextField(
                   controller: hour1,
                   hintText: AppStrings.hh,
-                  isField: isField ?? false,
+                  isField: true,
                   onChanged: (value){
                     if ( value.isNotEmpty ) {
                       if (int.parse(value) > 23) {
@@ -52,7 +52,7 @@ Widget commonHourMinuteWidget( {
               commonTimeTextField(
                   controller: minute1,
                   hintText: AppStrings.mm,
-                  isField: isField ?? false,
+                  isField: true,
                   onChanged: (value) {
                     if ( value.isNotEmpty ) {
                       if (int.parse(value) > 59) {
@@ -80,7 +80,7 @@ Widget commonHourMinuteWidget( {
               commonTimeTextField(
                   controller: hour2,
                   hintText: AppStrings.hh,
-                  isField: isField ?? false,
+                  isField: true,
                   onChanged: (value){
                     if ( value.isNotEmpty ) {
                       if (int.parse(value) > 23) {
@@ -100,7 +100,7 @@ Widget commonHourMinuteWidget( {
               commonTimeTextField(
                   controller: minute2,
                   hintText: AppStrings.mm,
-                  isField: isField ?? false,
+                  isField: true,
                   onChanged: (value) {
                     if ( value.isNotEmpty ) {
                       if (int.parse(value) > 59) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_appbar.dart';
@@ -178,8 +179,85 @@ class GraphScreen extends StatelessWidget {
                   rangeValue4: controller.rangeValue4,
                   progressValue: controller.progressValue,
                 onTap: (){},
-                harvestTap: (){},
-                plantedTap: (){}
+                  plantedTap: () {
+                    if (controller.harvestDate.selectedDate!
+                        .toString()
+                        .isNotEmpty) {
+
+                      controller.progressValue.value = 0;
+
+                      controller.totalPeriod.value = controller
+                          .harvestDate.selectedDate!
+                          .difference(controller
+                          .plantedDate.selectedDate!)
+                          .inDays +
+                          1;
+
+                      controller.currentDay.value =
+                          DateTime.now()
+                              .difference(controller
+                              .plantedDate
+                              .selectedDate!)
+                              .inDays +
+                              1;
+
+                      final data = overviewController.graphData();
+
+                      final num totalSpent = data.values
+                          .reduce((prev, curr) => prev + curr);
+                      controller.progressValue.value =
+                          ((totalSpent /
+                              controller
+                                  .totalPeriod.value) *
+                              100)
+                              .ceil()
+                              .clamp(0, 100);
+
+                      AppConst().debug(
+                          "progress value => ${controller.progressValue.value}");
+
+                      overviewController.resolveAngles(data, controller.totalPeriod.value);
+
+                    }
+                  },
+                  harvestTap: () async {
+
+                    if ( controller.plantedDate.selectedDate!.toString().isNotEmpty ) {
+                      controller.progressValue.value = 0;
+
+                      controller.totalPeriod.value = controller
+                          .harvestDate.selectedDate!
+                          .difference(controller
+                          .plantedDate.selectedDate!)
+                          .inDays +
+                          1;
+
+                      controller.currentDay.value = DateTime
+                          .now()
+                          .difference(controller
+                          .plantedDate.selectedDate!)
+                          .inDays +
+                          1;
+
+                      final data = overviewController.graphData();
+
+                      final num totalSpent = data.values
+                          .reduce((prev, curr) => prev + curr);
+                      controller.progressValue.value =
+                          ((totalSpent /
+                              controller
+                                  .totalPeriod.value) *
+                              100)
+                              .ceil()
+                              .clamp(0, 100);
+
+                      AppConst().debug(
+                          "progress value => ${controller
+                              .progressValue.value}");
+
+                      overviewController.resolveAngles(data, controller.totalPeriod.value);
+                    }
+                  }
               ),
               SizedBox(height: 10.h,),
               deviceOverviewWidget(

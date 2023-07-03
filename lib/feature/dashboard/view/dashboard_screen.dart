@@ -24,7 +24,7 @@ import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
-   DashboardScreen({Key? key}) : super(key: key);
+  DashboardScreen({Key? key}) : super(key: key);
 
   final controller = Get.put(DashboardController());
 
@@ -38,267 +38,278 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => controller.isUser.value == false
         ? Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(15.w),
-            child: SizedBox(
-              height: 40.h,
-              child: CustomTextField(
-                controller: controller.searchController,
-                isFilled: true,
-                borderRadius: 8,
-                hintText: AppStrings.search,
-                focusBorderColor: AppColors.buttonColor,
-                contentPadding: EdgeInsets.only(left: 10.w),
-                suffixWidget: Padding(
-                  padding: EdgeInsets.all(13.w),
-                  child: Image.asset(
-                    AppImages.search,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText
-                        : AppColors.lightText,
-                  ),
-                ),
-                onchange: (value) {
-                  if (value.isNotEmpty) {
-                    controller.dataList.value = controller.dataList
-                        .where((element) => element.name!.contains(value))
-                        .toList();
-                  } else {
-                    controller.dataList.clear();
-                    controller.dataList.addAll(controller.mainList);
-                  }
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 10.h),
-            child: Row(
+            backgroundColor: context.theme.scaffoldBackgroundColor,
+            body: Column(
               children: [
-                Expanded(
-                  child: selectWidget(
-                      onTap: () async {
-                        controller.isUser.value = true;
-                        homeController.isDashboard.value = false;
-                        await accessSettingController.getUserList();
-                        accessSettingController.roleValue.value = "";
-                      },
-                      image: AppImages.manageUser,
-                      title: AppStrings.manageUsers,
-                    context: context
-                  ),
-                ),
-                SizedBox(
-                  width: 15.w,
-                ),
-                Expanded(
-                  child: selectWidget(
-                      onTap: () {},
-                      image: AppImages.suspend,
-                      title: AppStrings.suspend,
-                      context: context
-                  ),
-                ),
-                SizedBox(
-                  width: 15.w,
-                ),
-                Expanded(
-                  child: selectWidget(
-                      onTap: () {},
-                      image: AppImages.delete,
-                      title: AppStrings.delete,
-                      color: AppColors.red,
-                      context: context
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: ScrollConfiguration(
-              behavior: AppBehavior(),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Obx(
-                          () => controller.isGetData.value == false
-                          ? const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.buttonColor,
-                        ),
-                      )
-                          : ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: controller.dataList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            GrowController data =
-                            controller.dataList[index];
-
-                            return listWidget(
-                                onTap: () {
-                                  controller.isOverView.value = true;
-                                  controller.isSelect.value = true;
-                                  controller.isOverViewTitle.value = true;
-                                  controller.id.value = data.id!;
-                                  overViewController.is24Hour.value = true;
-                                  overViewController.isWeek.value = false;
-                                  overViewController.isMonth.value = false;
-                                  overViewController.id.value = data.id!;
-                                  overViewController.isGetData.value =
-                                  false;
-                                  overViewController.isGraphScreen.value =
-                                  true;
-                                  controller.selectItem.value =
-                                      data.identifier ?? "";
-                                  if (controller.dataList.isNotEmpty) {
-                                    controller.itemList.clear();
-                                    for (var element
-                                    in controller.dataList) {
-                                      controller.itemList
-                                          .add(element.identifier!);
-                                    }
-                                    AppConst().debug(
-                                        'item list length => ${controller.itemList.length}');
-                                  }
-                                  overViewController
-                                      .getClimateData(
-                                      identifier: data.identifier!,
-                                      range: "24h")
-                                      .whenComplete(() {
-                                    overViewController
-                                        .getGrowSheetData(id: data.id!)
-                                        .whenComplete(() {
-                                      overViewController
-                                          .getDeviceData(id: data.id!)
-                                          .whenComplete(() {
-                                        overViewController.isGetData.value =
-                                        true;
-                                      });
-                                    });
-                                  });
-                                  controller.storeData
-                                      .setData(StoreData.id, data.id!);
-                                  controller.storeData.setData(
-                                      StoreData.identifier,
-                                      data.identifier!);
-                                },
-                                context: context,
-                                title: data.name ?? "",
-                                desc: data.description ?? "",
-                                editTap: () {
-                                  controller.id.value = data.id!;
-                                  controller.isEdit.value = true;
-                                  controller.growspaceNameController.text =
-                                  data.name!;
-                                  controller.locationController.text =
-                                  "${data.latitude.toString()},${data.longitude.toString()}";
-                                  controller.serialNumberController.text =
-                                  data.identifier!;
-                                  controller.descriptionController.text =
-                                  data.description!;
-
-                                  if (data.dayStart!.isNotEmpty) {
-                                    final dayStart = data.dayStart!;
-
-                                    AppConst().debug(dayStart);
-
-                                    final split = dayStart.split(":");
-
-                                    final Map<int, String> values = {
-                                      for (int i = 0; i < split.length; i++)
-                                        i: split[i]
-                                    };
-
-                                    AppConst().debug('${values[0]}');
-
-                                    controller.dayHourController.text =
-                                    values[0]!;
-                                    controller.dayMinuteController.text =
-                                    values[1]!;
-                                  }
-
-                                  if (data.nightStart!.isNotEmpty) {
-                                    final nightStart = data.nightStart!;
-
-                                    final split1 = nightStart.split(":");
-
-                                    final Map<int, String> values1 = {
-                                      for (int i = 0;
-                                      i < split1.length;
-                                      i++)
-                                        i: split1[i]
-                                    };
-
-                                    controller.nightHourController.text =
-                                    values1[0]!;
-                                    controller.nightMinuteController.text =
-                                    values1[1]!;
-                                  }
-
-                                  Future.delayed(
-                                      const Duration(microseconds: 5000),
-                                          () {
-                                        Get.dialog(dialog());
-                                      });
-                                },
-                                temperature:
-                                data.climate!.temperature ?? 0.0,
-                                co2: data.climate!.co2 ?? 0.0,
-                                humidity: data.climate!.humidity ?? 0.0,
-                                vpd: data.climate!.vpd ?? 0.0,
-                              id: data.id ?? 0
-                            );
-                          }),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 18.w),
-                      child: CustomButton(
-                        height: 30.h,
-                        width: 85.w,
-                        onTap: () {
-                          Get.dialog(dialog());
-                        },
-                        buttonText: AppStrings.add,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                AppImages.add,
-                                height: 12.h,
-                                width: 12.w,
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              const Text(AppStrings.add)
-                            ],
-                          ),
+                Padding(
+                  padding: EdgeInsets.all(15.w),
+                  child: SizedBox(
+                    height: 40.h,
+                    child: CustomTextField(
+                      controller: controller.searchController,
+                      isFilled: true,
+                      borderRadius: 8,
+                      hintText: AppStrings.search,
+                      focusBorderColor: AppColors.buttonColor,
+                      contentPadding: EdgeInsets.only(left: 10.w),
+                      suffixWidget: Padding(
+                        padding: EdgeInsets.all(13.w),
+                        child: Image.asset(
+                          AppImages.search,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightText,
                         ),
                       ),
+                      onchange: (value) {
+                        if (value.isNotEmpty) {
+                          controller.dataList.value = controller.dataList
+                              .where((element) => element.name!.contains(value))
+                              .toList();
+                        } else {
+                          controller.dataList.clear();
+                          controller.dataList.addAll(controller.mainList);
+                        }
+                      },
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 15.w, right: 15.w, bottom: 10.h),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: selectWidget(
+                            onTap: () async {
+                              controller.isUser.value = true;
+                              homeController.isDashboard.value = false;
+                              await accessSettingController.getUserList();
+                              accessSettingController.roleValue.value = "";
+                            },
+                            image: AppImages.manageUser,
+                            title: AppStrings.manageUsers,
+                            context: context),
+                      ),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      Expanded(
+                        child: selectWidget(
+                            onTap: () {},
+                            image: AppImages.suspend,
+                            title: AppStrings.suspend,
+                            context: context),
+                      ),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      Expanded(
+                        child: selectWidget(
+                            onTap: () {},
+                            image: AppImages.delete,
+                            title: AppStrings.delete,
+                            color: AppColors.red,
+                            context: context),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: AppBehavior(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Obx(
+                            () => controller.isGetData.value == false
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.buttonColor,
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: controller.dataList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      GrowController data =
+                                          controller.dataList[index];
+
+                                      return listWidget(
+                                          onTap: () {
+                                            controller.isOverView.value = true;
+                                            controller.isSelect.value = true;
+                                            controller.isOverViewTitle.value =
+                                                true;
+                                            controller.id.value = data.id!;
+                                            overViewController.is24Hour.value =
+                                                true;
+                                            overViewController.isWeek.value =
+                                                false;
+                                            overViewController.isMonth.value =
+                                                false;
+                                            overViewController.id.value =
+                                                data.id!;
+                                            overViewController.isGetData.value =
+                                                false;
+                                            overViewController
+                                                .isGraphScreen.value = true;
+                                            controller.selectItem.value =
+                                                data.identifier ?? "";
+                                            if (controller
+                                                .dataList.isNotEmpty) {
+                                              controller.itemList.clear();
+                                              for (var element
+                                                  in controller.dataList) {
+                                                controller.itemList
+                                                    .add(element.identifier!);
+                                              }
+                                              AppConst().debug(
+                                                  'item list length => ${controller.itemList.length}');
+                                            }
+                                            overViewController
+                                                .getClimateData(
+                                                    identifier:
+                                                        data.identifier!,
+                                                    range: "24h")
+                                                .whenComplete(() {
+                                              overViewController
+                                                  .getGrowSheetData(
+                                                      id: data.id!)
+                                                  .whenComplete(() {
+                                                overViewController
+                                                    .getDeviceData(id: data.id!)
+                                                    .whenComplete(() {
+                                                  overViewController
+                                                      .isGetData.value = true;
+                                                });
+                                              });
+                                            });
+                                            controller.storeData.setData(
+                                                StoreData.id, data.id!);
+                                            controller.storeData.setData(
+                                                StoreData.identifier,
+                                                data.identifier!);
+                                          },
+                                          context: context,
+                                          title: data.name ?? "",
+                                          desc: data.description ?? "",
+                                          editTap: () {
+                                            controller.id.value = data.id!;
+                                            controller.isEdit.value = true;
+                                            controller.growspaceNameController
+                                                .text = data.name!;
+                                            controller.locationController.text =
+                                                "${data.latitude.toString()},${data.longitude.toString()}";
+                                            controller.serialNumberController
+                                                .text = data.identifier!;
+                                            controller.descriptionController
+                                                .text = data.description!;
+
+                                            if (data.dayStart!.isNotEmpty) {
+                                              final dayStart = data.dayStart!;
+
+                                              AppConst().debug(dayStart);
+
+                                              final split = dayStart.split(":");
+
+                                              final Map<int, String> values = {
+                                                for (int i = 0;
+                                                    i < split.length;
+                                                    i++)
+                                                  i: split[i]
+                                              };
+
+                                              AppConst().debug('${values[0]}');
+
+                                              controller.dayHourController
+                                                  .text = values[0]!;
+                                              controller.dayMinuteController
+                                                  .text = values[1]!;
+                                            }
+
+                                            if (data.nightStart!.isNotEmpty) {
+                                              final nightStart =
+                                                  data.nightStart!;
+
+                                              final split1 =
+                                                  nightStart.split(":");
+
+                                              final Map<int, String> values1 = {
+                                                for (int i = 0;
+                                                    i < split1.length;
+                                                    i++)
+                                                  i: split1[i]
+                                              };
+
+                                              controller.nightHourController
+                                                  .text = values1[0]!;
+                                              controller.nightMinuteController
+                                                  .text = values1[1]!;
+                                            }
+
+                                            Future.delayed(
+                                                const Duration(
+                                                    microseconds: 5000), () {
+                                              Get.dialog(dialog());
+                                            });
+                                          },
+                                          temperature:
+                                              data.climate!.temperature ?? 0.0,
+                                          co2: data.climate!.co2 ?? 0.0,
+                                          humidity:
+                                              data.climate!.humidity ?? 0.0,
+                                          vpd: data.climate!.vpd ?? 0.0,
+                                          id: data.id ?? 0);
+                                    }),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 18.w),
+                            child: CustomButton(
+                              height: 30.h,
+                              width: 85.w,
+                              onTap: () {
+                                Get.dialog(dialog());
+                              },
+                              buttonText: AppStrings.add,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppImages.add,
+                                      height: 12.h,
+                                      width: 12.w,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    const Text(AppStrings.add)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    )
-        : AccessSettingScreen()
-    );
+          )
+        : AccessSettingScreen());
   }
 
   Widget listWidget(
@@ -311,8 +322,7 @@ class DashboardScreen extends StatelessWidget {
       required double humidity,
       required double co2,
       required double vpd,
-        required int id
-      }) {
+      required int id}) {
     String temperatureValue = temperature != 0 ? temperature.toString() : "-";
     String humidityValue = humidity != 0.0 ? humidity.toString() : "-";
     String co2Value = co2 != 0 ? co2.toString() : "-";
@@ -341,12 +351,13 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   editDeletePopup(
                       editTap: editTap,
-                    deleteTap: () async {
-                        await controller.deleteGrowController(id: id).whenComplete(() async {
+                      deleteTap: () async {
+                        await controller
+                            .deleteGrowController(id: id)
+                            .whenComplete(() async {
                           await controller.getDataList();
                         });
-                    }
-                  )
+                      })
                 ],
               ),
               GestureDetector(
@@ -763,7 +774,7 @@ class DashboardScreen extends StatelessWidget {
       {required VoidCallback onTap,
       required String image,
       required String title,
-        required BuildContext context,
+      required BuildContext context,
       Color? color}) {
     return GestureDetector(
       onTap: () {

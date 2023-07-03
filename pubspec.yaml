@@ -50,10 +50,10 @@ dependencies:
   get_storage: ^2.1.1
 
   # for chat view
-  syncfusion_flutter_charts: ^21.1.41
+  syncfusion_flutter_charts: ^22.1.36
 
   # for progress indicator
-  syncfusion_flutter_gauges: ^21.1.41
+  syncfusion_flutter_gauges: ^22.1.36
 
   # for show drop down
   dropdown_button2: ^1.0.7
@@ -65,19 +65,19 @@ dependencies:
   file_picker: ^5.3.0
 
   # for date picker
-  syncfusion_flutter_datepicker: ^21.2.4
+  syncfusion_flutter_datepicker: ^22.1.36
 
   # for calendar
-  syncfusion_flutter_calendar: ^21.2.4
+  syncfusion_flutter_calendar: ^22.1.36
 
   # for date format
   intl: ^0.18.1
 
   # for slider
-  syncfusion_flutter_sliders: ^21.2.4
+  syncfusion_flutter_sliders: ^22.1.36
 
   # for theme
-  syncfusion_flutter_core: ^21.2.4
+  syncfusion_flutter_core: ^22.1.36
 
   # for dotted line
   dotted_line: ^3.1.0
@@ -101,6 +101,10 @@ dependencies:
   dotted_border: ^2.0.0+3
 
   crypto: ^3.0.3
+
+  screenshot: ^2.1.0
+
+  printing: ^5.11.0
 
   # for generate pdf
   pdf:

@@ -16,9 +16,9 @@ class PdfPreviewPage extends StatelessWidget {
       ),
       body: PdfPreview(
         build: (context) => controller.makePdf(
-            companyName: "testing",
-          batchId: "10123",
-          createdBy: "test"
+            companyName: controller.companyNameController.text,
+          batchId: controller.batchIdController.text,
+          createdBy: controller.nameController.text
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kd_api_call/kd_api_call.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:scimetic/core/const/app_colors.dart';
@@ -88,6 +90,8 @@ class ReportController extends GetxController {
   RxString format = "".obs;
 
   ScreenshotController screenshotController = ScreenshotController();
+
+  Uint8List? image;
 
   Future getReportData() async {
     isGetData.value = false;
@@ -218,7 +222,7 @@ class ReportController extends GetxController {
     }
   }
 
-  void onGenerate() async {
+  Future onGenerate() async {
     isValid.value = true;
 
     if (nameController.text.isEmpty) {
@@ -667,6 +671,39 @@ class ReportController extends GetxController {
                           ]
                       )
                     ]
+                  ),
+                  pw.SizedBox(
+                      height: 40.h
+                  ),
+                  pw.Image(pw.MemoryImage(
+                    image!,
+                  ),
+                      height: 300.h,
+                    width: 400.w,
+                    fit: pw.BoxFit.fill
+                  ),
+                  pw.SizedBox(
+                      height: 20.h
+                  ),
+                  pw.Text(
+                      AppStrings.verifiedDesc,
+                      style: pw.TextStyle(
+                        fontSize: 15.sp,
+                        fontBold: pw.Font.courier(),
+                      )
+                  ),
+                  pw.SizedBox(
+                      height: 40.h
+                  ),
+                  pw.Align(
+                    alignment: pw.Alignment.topRight,
+                    child: pw.Text(
+                        AppStrings.signature,
+                        style: pw.TextStyle(
+                          fontSize: 15.sp,
+                          fontBold: pw.Font.courier(),
+                        )
+                    ),
                   )
                 ]
               )
@@ -675,6 +712,16 @@ class ReportController extends GetxController {
         );
       }
     ));
+
+    final DateFormat formatter1 = DateFormat('yyyy-MM-dd');
+
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String path = '$dir/${chooseSensor.value}-${formatter1
+        .format(startDateController.selectedDate!)}-'
+        '${formatter1.format(endDateController.selectedDate!)}#$batchId.pdf';
+    AppConst().debug('path => $path');
+    final File file = File(path);
+    await file.writeAsBytes(await pdf.save());
 
     return pdf.save();
   }

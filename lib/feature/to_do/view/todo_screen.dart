@@ -305,13 +305,15 @@ class TodoScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CustomText(
-                    text: desc,
-                    color: Get.isDarkMode ? Colors.white : AppColors.lightText,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: CustomText(
+                      text: desc,
+                      color: Get.isDarkMode ? Colors.white : AppColors.lightText,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  Expanded(child: SizedBox(width: 20.w,)),
+                  SizedBox(width: 10.w,),
                   controller.isCompleted.value == false
                       ? controller.isProgress.value == false
                       ? PopupMenuButton<int>(

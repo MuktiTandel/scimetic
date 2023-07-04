@@ -179,17 +179,23 @@ class ReportScreen extends StatelessWidget {
                       ),
                       OutLineButton(
                         onTap: () async {
+                          await controller.onGenerate();
                           await controller.screenshotController
                               .capture(delay: const Duration(milliseconds: 500))
                               .then((value) async {
+                                controller.image = value;
                             AppConst().debug("image => $value");
                           }).catchError((onError) {
                             AppConst().debug("$onError");
                           });
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return PdfPreviewPage();
-                          }));
+                          controller.makePdf(
+                              companyName: controller.companyNameController.text,
+                              batchId: controller.batchIdController.text,
+                              createdBy: controller.nameController.text);
+                          // Navigator.of(context)
+                          //     .push(MaterialPageRoute(builder: (context) {
+                          //   return PdfPreviewPage();
+                          // }));
                         },
                         width: Get.width,
                         height: 45.h,

@@ -323,10 +323,10 @@ class DashboardScreen extends StatelessWidget {
       required double co2,
       required double vpd,
       required int id}) {
-    String temperatureValue = temperature != 0 ? temperature.toString() : "-";
-    String humidityValue = humidity != 0.0 ? humidity.toString() : "-";
-    String co2Value = co2 != 0 ? co2.toString() : "-";
-    String vpdValue = vpd != 0.0 ? vpd.toString() : "-";
+    String temperatureValue = temperature != 0 ? temperature.toStringAsFixed(2) : "-";
+    String humidityValue = humidity != 0.0 ? humidity.toStringAsFixed(2) : "-";
+    String co2Value = co2 != 0 ? co2.toStringAsFixed(2) : "-";
+    String vpdValue = vpd != 0.0 ? vpd.toStringAsFixed(2) : "-";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

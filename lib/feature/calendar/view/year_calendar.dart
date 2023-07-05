@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
+import 'package:scimetic/feature/calendar/controller/calendar_controller.dart';
+import 'package:scrollable_clean_calendar/utils/enums.dart';
 
 class YearCalendar extends StatelessWidget {
-  const YearCalendar({Key? key}) : super(key: key);
+  YearCalendar({Key? key}) : super(key: key);
+
+  final controller = Get.put(CalendarController());
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return /*Column(
       children: [
         Padding(
             padding: EdgeInsets.all(10.w),
@@ -49,6 +54,28 @@ class YearCalendar extends StatelessWidget {
           allowViewNavigation: false,
         )
       ],
+    )*/
+        Expanded(
+          child: ScrollableCleanCalendar(
+            calendarController: controller.calendarController,
+            layout: Layout.BEAUTY,
+            calendarCrossAxisSpacing: 0,
+            dayTextStyle: TextStyle(fontFamily: 'Poppins', fontSize: 14.sp),
+            showWeekdays: true,
+            monthTextStyle: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.buttonColor),
+            weekdayTextStyle: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 15.sp,
+                color: Get.isDarkMode ? AppColors.darkBlue3 : AppColors.lightIcon,
+                fontWeight: FontWeight.w500),
+            dayDisableColor: Get.isDarkMode
+                ? Colors.white.withOpacity(0.5)
+                : AppColors.lightText,
+      ),
     );
   }
 }

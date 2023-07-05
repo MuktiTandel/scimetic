@@ -71,7 +71,7 @@ dependencies:
   syncfusion_flutter_calendar: ^22.1.36
 
   # for date format
-  intl: ^0.18.1
+  intl: ^0.18.0
 
   # for slider
   syncfusion_flutter_sliders: ^22.1.36
@@ -100,13 +100,22 @@ dependencies:
   # for dotted border
   dotted_border: ^2.0.0+3
 
+  # for decrypt password
   crypto: ^3.0.3
 
+  # for take screen shot
   screenshot: ^2.1.0
 
+  # for get file path
+  path_provider: ^2.0.15
+
+  # for year calendar view
+  scrollable_clean_calendar: ^1.4.1
+
+  # for display pdf
   printing: ^5.11.0
 
-  path_provider: ^2.0.15
+  week_of_year: ^2.0.0
 
   # for generate pdf
   pdf:

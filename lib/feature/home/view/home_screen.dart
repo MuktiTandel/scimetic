@@ -254,6 +254,7 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
+                                        organizationController.isSelect.value = true;
                                         dashboardController.isOverView.value = true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
@@ -288,6 +289,7 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
+                                        organizationController.isSelect.value = true;
                                         dashboardController.isOverView.value = true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
@@ -316,6 +318,7 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
+                                        organizationController.isSelect.value = true;
                                         dashboardController.isOverView.value = true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
@@ -354,6 +357,7 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () async {
+                                        organizationController.isSelect.value = true;
                                         dashboardController.isOverView.value = true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
@@ -631,6 +635,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.deviceSetup,
               title: AppStrings.deviceSetup,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -669,6 +674,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.thermometer,
               title: AppStrings.temperatureControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -707,6 +713,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.circulation,
               title: AppStrings.circulationControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -745,6 +752,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.sun1,
               title: AppStrings.wetWallControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -783,6 +791,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.humidity,
               title: AppStrings.humidityControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -821,6 +830,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.settings,
               title: AppStrings.extractorControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -860,6 +870,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.cloud,
               title: AppStrings.co2Control,
               onTap: () {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -898,6 +909,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.controlTab,
               title: AppStrings.screenControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -936,6 +948,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.sun1,
               title: AppStrings.lightingControl,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -974,6 +987,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.energy,
               title: AppStrings.energyManagement,
               onTap: () {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1011,6 +1025,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.wateringCan,
               title: AppStrings.irrigation,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1059,6 +1074,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.fertigation,
               title: AppStrings.fertigation,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1097,6 +1113,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.lock,
               title: AppStrings.accessSettings,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1136,6 +1153,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.briefcase,
               title: AppStrings.organisationSettings,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1174,6 +1192,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.user,
               title: AppStrings.userSetting,
               onTap: () {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;
@@ -1211,6 +1230,7 @@ class HomeScreen extends StatelessWidget {
               image: AppImages.notification,
               title: AppStrings.notifications,
               onTap: () async {
+                organizationController.isSelect.value = true;
                 dashboardController.isOverView.value = true;
                 controller.isModuleView.value = true;
                 controller.isOrganization.value = false;

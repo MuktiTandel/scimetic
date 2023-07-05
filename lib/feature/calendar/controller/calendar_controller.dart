@@ -13,6 +13,7 @@ import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/calendar/model/event_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarController extends GetxController {
@@ -47,6 +48,20 @@ class CalendarController extends GetxController {
   EventModel eventModel = EventModel();
 
   List<TimeRegion> dayEventList = [];
+
+  final calendarController = CleanCalendarController(
+    minDate: DateTime.now().subtract(Duration(days: 365)),
+    maxDate: DateTime.now().add(const Duration(days: 365)),
+    onRangeSelected: (firstDate, secondDate) {},
+    onDayTapped: (date) {},
+    // readOnly: true,
+    onPreviousMinDateTapped: (date) {},
+    onAfterMaxDateTapped: (date) {},
+    weekdayStart: DateTime.sunday,
+    initialFocusDate: DateTime.now(),
+    initialDateSelected: DateTime.now(),
+    // endDateSelected: DateTime(2022, 3, 20),
+  );
 
   getIndex() {
 

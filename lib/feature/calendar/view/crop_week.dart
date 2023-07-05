@@ -1,168 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/feature/calendar/element/event.dart';
+import 'package:scimetic/feature/calendar/element/gantt_view.dart';
+import 'package:scimetic/feature/calendar/element/week_day.dart';
 
-class CropWeek extends StatefulWidget {
-   const CropWeek({
-     Key? key,
-     required this.getDay,
-     required this.getDates
-   }) : super(key: key);
-
-   final int getDay;
-   final List<int> getDates;
-
-  @override
-  State<CropWeek> createState() => _CropWeekState();
-}
-
-class _CropWeekState extends State<CropWeek> {
-
-  DateTime selectedDate = DateTime.now();
-
-  int currentDateSelectedIndex = 0;
-
-  ScrollController scrollController = ScrollController();
-
-  List<String> listOfDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  List<int> datesList = [];
-
-  int lastDay = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    datesList.addAll(widget.getDates);
-    lastDay = datesList.last;
-  }
+class CropWeek extends StatelessWidget {
+  const CropWeek({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10.w),
-            child: CustomText(
-                text: DateFormat('MMMM, yyyy').format(DateTime.now()),
-              color: AppColors.buttonColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 17.sp,
-            ),
-          ),
-          SizedBox(
-            height: 515.h,
-            child: PageView.builder(
-              scrollDirection: Axis.horizontal,
-              onPageChanged: (value) {
-                lastDay = datesList.last;
-                datesList.clear();
-                for( int i = lastDay + 1; i < lastDay + 8; i++ ) {
-                  datesList.add(i);
-                }
-                setState(() {
-
-                });
-              },
-              itemCount: 10,
-                itemBuilder: (context,int index) {
-                  return commonView();
-                }
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget commonView() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 10.w),
-          child: SizedBox(
-            height: 50.h,
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index ) {
-                  return SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: listOfDays[index],
-                          color: AppColors.lightIcon,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(height: 5.h,),
-                        CustomText(
-                          text: datesList[index].toString(),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.subTitleColor,
-                        )
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index ) {
-                  return SizedBox(width: 25.w,);
-                },
-                itemCount: 7
-            ),
-          ),
+    return GanttChartView(
+      maxDuration: const Duration(days: 40 * 2), //optional, set to null for infinite horizontal scroll
+      startDate: DateTime.now(), //required
+      dayWidth: 51.3.w, //column width for each day
+      eventHeight: 50.h, //row height for events
+      stickyAreaWidth: 200, //sticky area width
+      showStickyArea: false, //show sticky area or not
+      showDays: true, //show days or not
+      startOfTheWeek: WeekDay.sunday, //custom start of the week
+      // weekEnds: const {WeekDay.friday, WeekDay.saturday}, //custom weekends
+      isExtraHoliday: (context, day) {
+        //define custom holiday logic for each day
+        return DateUtils.isSameDay(DateTime(2022, 7, 1), day);
+      },
+      weekHeaderBuilder: (context, date) {
+        return Text(date.toString());
+      },
+      dayHeaderHeight: 50.h,
+      holidayColor: Colors.white,
+      events: [
+        //event relative to startDate
+        GanttRelativeEvent(
+          relativeToStart: const Duration(days: 0),
+          duration: const Duration(days: 5),
+          displayName: 'Do a very helpful task',
         ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              height: 470.h,
-              width: Get.width,
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                  VerticalDivider(
-                    thickness: 1.w,
-                    color: AppColors.lightGray3,
-                  ),
-                  Expanded(child: SizedBox(width: 10.w,)),
-                ],
-              ),
-            ),
-          ),
-        )
+        //event with absolute start and end
+        GanttAbsoluteEvent(
+          startDate: DateTime(2022, 6, 10),
+          endDate: DateTime(2022, 6, 16),
+          displayName: 'Another task',
+        ),
       ],
     );
   }
 }
+

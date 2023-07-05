@@ -725,6 +725,7 @@ class ReportController extends GetxController {
 
     return pdf.save();
   }
+
 }
 
 ///Chart sample data

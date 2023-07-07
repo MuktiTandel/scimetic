@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:week_of_year/week_of_year.dart';
 
 class GanttChartDefaultWeekHeader extends StatelessWidget {
@@ -25,11 +29,12 @@ class GanttChartDefaultWeekHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsetsDirectional.only(start: 8, top: 1, bottom: 1),
-      decoration: BoxDecoration(
-        color: backgroundColor ?? defaultBackgroundColor,
-        border: border ?? _defaultBorder,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 15.w),
+      // padding: const EdgeInsetsDirectional.only(start: 8, top: 1, bottom: 1),
+      // decoration: BoxDecoration(
+      //   color: backgroundColor ?? defaultBackgroundColor,
+      //   border: border ?? _defaultBorder,
+      // ),
       child: widgetBuilder?.call(context) ?? _defaultChild(context),
     );
   }
@@ -39,24 +44,23 @@ class GanttChartDefaultWeekHeader extends StatelessWidget {
         bottom: BorderSide(),
       );
 
-  Widget _defaultChild(BuildContext context) => Center(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            String txt;
-            if (constraints.maxWidth < 50) {
-              txt = weekDate.month.toString();
-            } else if (constraints.maxWidth < 7 * 20) {
-              txt = '${weekDate.month}-${weekDate.year % 100}';
-            } else {
-              txt =
-                  '${weekDate.day}-${weekDate.month}-${weekDate.year}  #$weekNumberWithinThisYear';
-            }
+  Widget _defaultChild(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      String txt;
+      if (constraints.maxWidth < 50) {
+        txt = weekDate.month.toString();
+      } else if (constraints.maxWidth < 7 * 20) {
+        txt = '${weekDate.month}-${weekDate.year % 100}';
+      } else {
+        txt = DateFormat("MMMM, y").format(weekDate);
+      }
 
-            return Text(
-              txt,
-              style: TextStyle(color: color ?? defaultColor),
-            );
-          },
-        ),
+      return CustomText(
+          text: txt,
+        color: AppColors.buttonColor,
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w600,
       );
+    },
+  );
 }

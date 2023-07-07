@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scimetic/core/const/app_colors.dart';
 import 'event.dart';
 
 class GanttChartDefaultEventRowPerDayBuilder extends StatelessWidget {
@@ -6,7 +7,9 @@ class GanttChartDefaultEventRowPerDayBuilder extends StatelessWidget {
   static const defaultBorder = BorderDirectional(
     top: BorderSide.none,
     bottom: BorderSide.none,
-    start: BorderSide(),
+    start: BorderSide(
+      color: AppColors.lightBorder,
+    ),
   );
 
   const GanttChartDefaultEventRowPerDayBuilder({
@@ -43,21 +46,26 @@ class GanttChartDefaultEventRowPerDayBuilder extends StatelessWidget {
         : isWithinEvent
             ? eventColor
             : null;
-    return Container(
-      decoration: BoxDecoration(
-        color: isHoliday ? color : null,
-        border: border ?? defaultBorder,
-      ),
-      child: !isWithinEvent || isHoliday
-          ? null
-          : LayoutBuilder(
-              builder: (context, constraints) => Center(
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: border ?? defaultBorder,
+          ),
+        ),
+        LayoutBuilder(
+            builder: (context, constraints) {
+              return Center(
                 child: Container(
-                  height: constraints.maxHeight / 2,
-                  color: color,
+                  height: constraints.maxHeight / 5,
+                  decoration: BoxDecoration(
+                    color: color,
+                  ),
                 ),
-              ),
-            ),
+              );
+            }
+        )
+      ],
     );
   }
 }

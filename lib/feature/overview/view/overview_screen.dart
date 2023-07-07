@@ -503,7 +503,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                         ? HourGraph(
                                             minY: controller.minLightY.value,
                                             maxY: controller.maxLightY.value,
-                                            dataList: controller.lightDataList,
+                                            dataList: controller.vpdDataList,
                                             graphColor: AppColors.pink,
                                             format: " mol/m2day",
                                           )

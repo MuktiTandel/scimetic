@@ -133,9 +133,23 @@ class TemperatureController extends GetxController {
     id.value = storeData.getInt(StoreData.id)!;
 
     if (token.isNotEmpty) {
+
       progressDialog(true, Get.context!);
 
       switchList.clear();
+
+      dayCoolingSwitch.value = "";
+      nightCoolingSwitch.value = "";
+      dayHeatingSwitch.value = "";
+      nightHeatingSwitch.value = "";
+      extractorFanDaySwitch.value = "";
+      extractorFanNightSwitch.value = "";
+      wetWallDaySwitch.value = "";
+      wetWallNightSwitch.value = "";
+      extractorDayTemperature.clear();
+      extractorNightTemperature.clear();
+      wetWallDayTemperature.clear();
+      wetWallNightTemperature.clear();
 
       isGetData.value = false;
 

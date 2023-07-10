@@ -15,9 +15,12 @@ import 'package:scimetic/core/elements/common_popup.dart';
 import 'package:scimetic/core/elements/common_textfield_widget.dart';
 import 'package:scimetic/core/elements/common_time_textfield.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
+import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/irrigation_control/controller/irrigation_controller.dart';
 import 'package:scimetic/feature/irrigation_control/model/irrigation_control_model.dart';
 
@@ -25,6 +28,8 @@ class IrrigationControlScreen extends StatelessWidget {
   IrrigationControlScreen({Key? key}) : super(key: key);
 
   final controller = Get.put(IrrigationController());
+
+  final dashboardController = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,33 @@ class IrrigationControlScreen extends StatelessWidget {
             padding: EdgeInsets.all(15.w),
             child: Column(
               children: [
+                CustomDropDown(
+                  width: 330.w,
+                  hintText: dashboardController.selectItem.value,
+                  itemList: dashboardController.itemList,
+                  value: dashboardController.selectItem.value,
+                  onChange: (value) async {
+                    dashboardController.selectItem.value = value;
+                    for (var element in dashboardController.mainList) {
+                      if (element.identifier!.contains(value)) {
+                        controller.storeData.setData(StoreData.id, element.id!);
+                        AppConst().debug('select id => ${element.id}');
+                      }
+                    }
+                    controller.storeData.setData(StoreData.identifier, value);
+                    AppConst().debug(
+                        'select value => ${dashboardController.selectItem.value}');
+                    for (var element in dashboardController.dataList) {
+                      if (element.identifier!.contains(value)) {
+                        controller.id.value = element.id!;
+                      }
+                    }
+                    await controller.getIrrigationControlData();
+                  },
+                  isEdit: false.obs,
+                  isEnable: false,
+                ),
+                SizedBox(height: 10.h,),
                 SizedBox(
                   height: 40.h,
                   child: CustomTextField(

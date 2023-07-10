@@ -1192,32 +1192,39 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               SizedBox(
                                 height: 10.h,
                               ),
-                              deviceOverviewWidget(
+                              Obx(() => deviceOverviewWidget(
                                   onTap: () {
                                     dashboardController.isOverView.value =
-                                        false;
+                                    false;
                                     homeController.isDeviceSetup.value = true;
                                     homeController.isSetting.value = true;
                                     homeController.changeModuleIndex(5);
                                   },
-                                  switchesOnline: controller.deviceModel
+                                  switchesOnline: controller.isGetDevice.value == true
+                                      ? controller.deviceModel
                                       .devices!.devicesSwitch!.online
-                                      .toString(),
-                                  switchesOffline: controller.deviceModel
+                                      .toString() : "0",
+                                  switchesOffline: controller.isGetDevice.value == true
+                                      ? controller.deviceModel
                                       .devices!.devicesSwitch!.offline
-                                      .toString(),
-                                  sensorOnline: controller
+                                      .toString() : "0",
+                                  sensorOnline: controller.isGetDevice.value == true
+                                      ? controller
                                       .deviceModel.devices!.sensor!.online
-                                      .toString(),
-                                  sensorOffline: controller
+                                      .toString() : "0",
+                                  sensorOffline: controller.isGetDevice.value == true
+                                      ? controller
                                       .deviceModel.devices!.sensor!.offline
-                                      .toString(),
-                                  valvesOnline: controller
+                                      .toString() : "0",
+                                  valvesOnline: controller.isGetDevice.value == true
+                                      ? controller
                                       .deviceModel.devices!.valve!.online
-                                      .toString(),
-                                  valvesOffline: controller
+                                      .toString() : "0",
+                                  valvesOffline: controller.isGetDevice.value == true
+                                      ? controller
                                       .deviceModel.devices!.valve!.offline
-                                      .toString()),
+                                      .toString() : "0"
+                              ),),
                               SizedBox(
                                 height: 20.h,
                               )

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_description_textfield.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
+import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/device_settings/Model/device_model.dart';
 import 'package:scimetic/feature/device_settings/controller/device_settings_controller.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -22,87 +25,102 @@ class DeviceSettingsScreen extends StatelessWidget {
 
    final overviewController = Get.put(OverviewController());
 
+   final dashboardController = Get.put(DashboardController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: ScrollConfiguration(
-        behavior: AppBehavior(),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(height: 10.h,),
-              Obx(() => overviewController.isGetData.value == false ? const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.buttonColor,
-                ),
-              ) : Column(
-                children: [
-                  commonListView(
-                      title: AppStrings.switches,
-                      totalDevice: overviewController.deviceModel.devices!.devicesSwitch!.total!,
-                      totalOnline: overviewController.deviceModel.devices!.devicesSwitch!.online!,
-                      totalOffline: overviewController.deviceModel.devices!.devicesSwitch!.offline!,
-                      isSelect: controller.isSwitches
-                  ),
-                  SizedBox(height: 8.h,),
-                  commonListView(
-                      title: AppStrings.sensors,
-                      totalDevice: overviewController.deviceModel.devices!.sensor!.total!,
-                      totalOnline: overviewController.deviceModel.devices!.sensor!.online!,
-                      totalOffline: overviewController.deviceModel.devices!.sensor!.offline!,
-                      isSelect: controller.isSensors
-                  ),
-                  SizedBox(height: 8.h,),
-                  commonListView(
-                      title: AppStrings.valves,
-                      totalDevice: overviewController.deviceModel.devices!.valve!.total!,
-                      totalOnline: overviewController.deviceModel.devices!.valve!.online!,
-                      totalOffline: overviewController.deviceModel.devices!.valve!.offline!,
-                      isSelect: controller.isValves
-                  )
-                ],
-              ),),
-              // SizedBox(height: 10.h,),
-              // Padding(
-              //   padding:  EdgeInsets.only(right: 10.w),
-              //   child: CustomButton(
-              //     height: 30.h,
-              //     width: 85.w,
-              //       onTap: (){
-              //       controller.isEdit.value = false;
-              //       Get.dialog(
-              //         dialogWidget(
-              //           sensorDeviceData: SensorDevice(),
-              //           valvesDeviceData: SensorDevice(),
-              //           switchDeviceData: SwitchDevice(),
-              //           id: 0
-              //         )
-              //       );
-              //       },
-              //       buttonText: AppStrings.add,
-              //     child: Center(
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           SvgPicture.asset(
-              //             AppImages.add,
-              //             height: 12.h,
-              //             width: 12.w,
-              //           ),
-              //           SizedBox(width: 10.w,),
-              //           const Text(
-              //               AppStrings.add
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // )
-            ],
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+            child: CustomDropDown(
+              width: 330.w,
+              hintText: dashboardController.selectItem.value,
+              itemList: dashboardController.itemList,
+              value: dashboardController.selectItem.value,
+              onChange: (value) async {
+                dashboardController.selectItem.value = value;
+                for (var element in dashboardController.mainList) {
+                  if (element.identifier!.contains(value)) {
+                    controller.storeData.setData(StoreData.id, element.id!);
+                    AppConst().debug('select id => ${element.id}');
+                  }
+                }
+                controller.storeData.setData(StoreData.identifier, value);
+                AppConst().debug(
+                    'select value => ${dashboardController.selectItem.value}');
+                for (var element in dashboardController.dataList) {
+                  if (element.identifier!.contains(value)) {
+                    controller.id.value = element.id!;
+                  }
+                }
+                await controller.getDeviceData();
+              },
+              isEdit: false.obs,
+              isEnable: false,
+            ),
           ),
-        ),
+          Expanded(
+            child: ScrollConfiguration(
+              behavior: AppBehavior(),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(height: 10.h,),
+                    Column(
+                      children: [
+                       Obx(() =>  commonListView(
+                           title: AppStrings.switches,
+                           totalDevice: controller.isGetDevice.value == true
+                               ? controller.deviceModel.devices!.devicesSwitch!.total!
+                               : 0,
+                           totalOnline: controller.isGetDevice.value == true
+                               ? controller.deviceModel.devices!.devicesSwitch!.online!
+                               : 0,
+                           totalOffline: controller.isGetDevice.value == true
+                               ? controller.deviceModel.devices!.devicesSwitch!.offline!
+                               : 0,
+                           isSelect: controller.isSwitches
+                       )),
+                        SizedBox(height: 8.h,),
+                        Obx(() => commonListView(
+                            title: AppStrings.sensors,
+                            totalDevice: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.sensor!.total!
+                                : 0,
+                            totalOnline: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.sensor!.online!
+                                : 0,
+                            totalOffline: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.sensor!.offline!
+                                : 0,
+                            isSelect: controller.isSensors
+                        )),
+                        SizedBox(height: 8.h,),
+                        Obx(() => commonListView(
+                            title: AppStrings.valves,
+                            totalDevice: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.valve!.total!
+                                : 0,
+                            totalOnline: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.valve!.online!
+                                : 0,
+                            totalOffline: controller.isGetDevice.value == true
+                                ? controller.deviceModel.devices!.valve!.offline!
+                                : 0,
+                            isSelect: controller.isValves
+                        ))
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

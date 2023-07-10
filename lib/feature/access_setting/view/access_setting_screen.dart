@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_dialog_widget.dart';
@@ -262,24 +261,6 @@ class AccessSettingScreen extends StatelessWidget {
 
   Widget listWidget(
       {required RxBool isSelect, required User data, required RxBool isShow}) {
-    // AccessSettingController.encryptAES("Password@123");
-    //
-    // AccessSettingController.decryptAES(data.password!);
-    //
-    // controller.getPassword(data.password!);
-
-    // const encryptionKey = 'scimeticEncryptedKey';
-
-    String encryptedString = 'U2FsdGVkX190MUODKzac4/DW4UkVaolbvH3jShbRvag=';
-    String key = 'scimeticEncryptedKey';
-
-    // String decryptedString = decryptString(encryptedString, key);
-
-    // print('Decrypted string: $decryptedString');
-
-    // AppConst().debug('password => ${Encryption.instance.decrypt(data.password!).toString()}');
-
-    // controller.keyController.text = Encryption.instance.decrypt(data.password!).toString();
 
     return Column(
       children: [
@@ -420,59 +401,59 @@ class AccessSettingScreen extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Row(
-                children: [
-                  Image.asset(
-                    AppImages.key,
-                    height: 18.h,
-                    width: 18.w,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText
-                        : AppColors.lightBorder,
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Expanded(
-                    child: Obx(() => TextFormField(
-                          controller: controller.keyController,
-                          readOnly: true,
-                          obscureText: isShow.value,
-                          style: TextStyle(
-                              fontSize: 13.sp,
-                              color: Get.isDarkMode
-                                  ? Colors.white
-                                  : AppColors.subTitleColor,
-                              fontFamily: "Poppins",
-                              letterSpacing: 2.w,
-                              fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              suffixIcon: Obx(() => GestureDetector(
-                                    onTap: () {
-                                      isShow.value = !isShow.value;
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10.w),
-                                      child: Image.asset(
-                                        isShow.value == false
-                                            ? AppImages.visible
-                                            : AppImages.unVisible,
-                                        height: 15.h,
-                                        width: 15.w,
-                                        color: Get.isDarkMode
-                                            ? Colors.white
-                                            : AppColors.subTitleColor,
-                                      ),
-                                    ),
-                                  ))),
-                        )),
-                  )
-                ],
-              )
+              // SizedBox(
+              //   height: 10.h,
+              // ),
+              // Row(
+              //   children: [
+              //     Image.asset(
+              //       AppImages.key,
+              //       height: 18.h,
+              //       width: 18.w,
+              //       color: Get.isDarkMode
+              //           ? AppColors.darkText
+              //           : AppColors.lightBorder,
+              //     ),
+              //     SizedBox(
+              //       width: 10.w,
+              //     ),
+              //     Expanded(
+              //       child: Obx(() => TextFormField(
+              //             controller: controller.keyController,
+              //             readOnly: true,
+              //             obscureText: isShow.value,
+              //             style: TextStyle(
+              //                 fontSize: 13.sp,
+              //                 color: Get.isDarkMode
+              //                     ? Colors.white
+              //                     : AppColors.subTitleColor,
+              //                 fontFamily: "Poppins",
+              //                 letterSpacing: 2.w,
+              //                 fontWeight: FontWeight.w500),
+              //             decoration: InputDecoration(
+              //                 border: InputBorder.none,
+              //                 suffixIcon: Obx(() => GestureDetector(
+              //                       onTap: () {
+              //                         isShow.value = !isShow.value;
+              //                       },
+              //                       child: Padding(
+              //                         padding: EdgeInsets.all(10.w),
+              //                         child: Image.asset(
+              //                           isShow.value == false
+              //                               ? AppImages.visible
+              //                               : AppImages.unVisible,
+              //                           height: 15.h,
+              //                           width: 15.w,
+              //                           color: Get.isDarkMode
+              //                               ? Colors.white
+              //                               : AppColors.subTitleColor,
+              //                         ),
+              //                       ),
+              //                     ))),
+              //           )),
+              //     )
+              //   ],
+              // )
             ],
           ),
         ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
@@ -14,9 +13,12 @@ import 'package:scimetic/core/elements/common_dialog_widget.dart';
 import 'package:scimetic/core/elements/common_erroe_widget.dart';
 import 'package:scimetic/core/elements/common_popup.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
+import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/fertigation_control/controller/fertigation_controller.dart';
 import 'package:scimetic/feature/fertigation_control/model/fertigation_model.dart';
 
@@ -24,6 +26,8 @@ class FertigationControlScreen extends StatelessWidget {
   FertigationControlScreen({Key? key}) : super(key: key);
 
   final controller = Get.put(FertigationController());
+
+  final dashboardController = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,33 @@ class FertigationControlScreen extends StatelessWidget {
             padding: EdgeInsets.all(15.w),
             child: Column(
               children: [
+                CustomDropDown(
+                  width: 330.w,
+                  hintText: dashboardController.selectItem.value,
+                  itemList: dashboardController.itemList,
+                  value: dashboardController.selectItem.value,
+                  onChange: (value) async {
+                    dashboardController.selectItem.value = value;
+                    for (var element in dashboardController.mainList) {
+                      if (element.identifier!.contains(value)) {
+                        controller.storeData.setData(StoreData.id, element.id!);
+                        AppConst().debug('select id => ${element.id}');
+                      }
+                    }
+                    controller.storeData.setData(StoreData.identifier, value);
+                    AppConst().debug(
+                        'select value => ${dashboardController.selectItem.value}');
+                    for (var element in dashboardController.dataList) {
+                      if (element.identifier!.contains(value)) {
+                        controller.id.value = element.id!;
+                      }
+                    }
+                    await controller.getFertigationControlData();
+                  },
+                  isEdit: false.obs,
+                  isEnable: false,
+                ),
+                SizedBox(height: 10.h,),
                 SizedBox(
                   height: 40.h,
                   child: CustomTextField(

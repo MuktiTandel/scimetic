@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
+import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
@@ -52,9 +53,9 @@ class DeviceSettingsController extends GetxController {
   List<RxBool> selectValvesDevice = [];
   List<RxBool> selectSwitchDevice = [];
 
-  Future getDeviceData() async {
+  RxBool isGetDevice = false.obs;
 
-    isGetData.value = false;
+  Future getDeviceData() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
 
@@ -62,6 +63,10 @@ class DeviceSettingsController extends GetxController {
 
     if ( token.isNotEmpty ) {
       try {
+
+        isGetDevice.value = false;
+
+        progressDialog(true, Get.context!);
 
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.device}/${id.value}',
@@ -77,11 +82,15 @@ class DeviceSettingsController extends GetxController {
 
         dynamic data = jsonDecode(apiResponse!.body);
 
-        isGetData.value = true;
+        progressDialog(false, Get.context!);
 
         if ( apiResponse!.statusCode == 200 ) {
 
+          isGetDevice.value = true;
+
           deviceModel = DeviceModel.fromJson(data);
+
+          AppConst().debug('device => ${deviceModel.devices!.devicesSwitch!.total}');
 
           if ( deviceModel.devices!.sensor!.devices!.isNotEmpty ) {
             sensorDeviceList.clear();
@@ -113,16 +122,18 @@ class DeviceSettingsController extends GetxController {
             selectSwitchDevice = List.generate(switchDeviceList.length, (index) => false.obs);
           }
 
+          showSnack(
+              width: 200.w,
+              title: data["message"]
+          );
+
           return true;
         } else {
-
-          if ( apiResponse!.statusCode == 403 ) {
 
             showSnack(
                 width: 200.w,
                 title: data["message"]
             );
-          }
 
           return false;
         }

@@ -53,6 +53,15 @@ class CirculationControlController extends GetxController {
 
     if ( token.isNotEmpty ) {
 
+      temperatureOffController.clear();
+      temperatureOffDeadbandController.clear();
+      humidityOnController.clear();
+      humidityOnDeadbandController.clear();
+      timeOnHour.clear();
+      timeOnMinute.clear();
+      timeOffHour.clear();
+      timeOffMinute.clear();
+
       progressDialog(true, Get.context!);
 
       try {

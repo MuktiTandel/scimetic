@@ -42,7 +42,7 @@ class IrrigationController extends GetxController {
 
   RxBool isApply = false.obs;
 
-  RxDouble listHeight = 80.0.obs;
+  RxDouble listHeight = 90.0.obs;
 
   List<Schedule1> scheduleList = [];
 

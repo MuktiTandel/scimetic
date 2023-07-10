@@ -128,6 +128,8 @@ class OverviewController extends GetxController {
   RxInt currentDay = 0.obs;
   RxInt totalPeriod = 0.obs;
 
+  RxBool isGetDevice = false.obs;
+
   Map<String, num> data = {'germination': 0, 'seedling': 0, 'vegetative': 0, 'flowering': 0};
 
   Future getGrowSheetData({required int id}) async {
@@ -282,9 +284,13 @@ class OverviewController extends GetxController {
   }
 
   Future getDeviceData({required int id}) async {
+
     token = storeData.getString(StoreData.accessToken)!;
 
     if (token.isNotEmpty) {
+
+      isGetDevice.value = false;
+
       try {
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.device}/$id',
@@ -301,9 +307,12 @@ class OverviewController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if (apiResponse!.statusCode == 200) {
+
+          isGetDevice.value = true;
+
           deviceModel = DeviceModel.fromJson(data);
 
-          AppConst().debug('grow sheet data => ${deviceModel.devices}');
+          AppConst().debug('device => ${deviceModel.devices!.sensor!.total}');
 
           return true;
         } else {

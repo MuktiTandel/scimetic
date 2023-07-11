@@ -14,6 +14,7 @@ import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/core/utils/check_net_connectivity.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/humidity_control/model/humidity_control_model.dart';
 import 'package:scimetic/feature/humidity_control/model/humidity_model.dart';
 
 class HumidityController extends GetxController {
@@ -85,6 +86,10 @@ class HumidityController extends GetxController {
 
   RxString errorMessage = "".obs;
 
+  RxBool isEdit = false.obs;
+
+  HumidityControlModel humidityControlModel = HumidityControlModel();
+
   Future getHumidityControllerData() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -94,6 +99,18 @@ class HumidityController extends GetxController {
     if ( token.isNotEmpty ) {
 
       isGetData.value = false;
+
+      isEdit.value = false;
+
+      dayHumidityRHController.clear();
+      dayHumidityRHDeadbandController.clear();
+      nightHumidityRHController.clear();
+      nightHumidityRHDeadbandController.clear();
+      dayDehumidityRHController.clear();
+      nightDehumidityRHController.clear();
+      dayDehumidityRHDeadbandController.clear();
+      nightDehumidityRHDeadbandController.clear();
+      dayHumiditySwitch.value = "";
 
       progressDialog(true, Get.context!);
 
@@ -126,6 +143,10 @@ class HumidityController extends GetxController {
         isGetData.value = true;
 
         if ( apiResponse!.statusCode == 200 ) {
+
+          isEdit.value = true;
+
+          humidityControlModel = HumidityControlModel.fromJson(data);
 
           showSnack(
               width: 200.w,

@@ -80,8 +80,9 @@ class WetWallControlScreen extends StatelessWidget {
                           ),
                           Obx(
                             () => GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 controller.isAuto.value = !controller.isAuto.value;
+                                await controller.addWetWallControlData();
                               },
                               child: Image.asset(
                                 controller.isAuto.value == false
@@ -149,6 +150,7 @@ class WetWallControlScreen extends StatelessWidget {
                                     title: AppStrings.temperature,
                                     controller: controller.dayTemperatureController,
                                     suffixText: "°C",
+                                    isReadOnly: !controller.isAuto.value,
                                     hintText: AppStrings.temperature,
                                     onChanged: (value) {}),
                                 SizedBox(
@@ -160,7 +162,9 @@ class WetWallControlScreen extends StatelessWidget {
                                         controller.dayTemperatureDeadbandController,
                                     suffixText: "°C",
                                     hintText: AppStrings.temperatureDeadband,
-                                    onChanged: (value) {}),
+                                    isReadOnly: !controller.isAuto.value,
+                                    onChanged: (value) {}
+                                ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -186,8 +190,8 @@ class WetWallControlScreen extends StatelessWidget {
                                     onChange: (value) {
                                       controller.daySwitch.value = value;
                                     },
-                                    isEdit: false.obs,
-                                    isEnable: false,
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isAuto.value,
                                   ),
                                 ),
                                 SizedBox(
@@ -203,7 +207,7 @@ class WetWallControlScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 5.h,
                                 ),
-                                CustomDropDown(
+                                Obx(() => CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
                                   itemList: controller.dayRelayList,
@@ -212,9 +216,9 @@ class WetWallControlScreen extends StatelessWidget {
                                   onChange: (value) {
                                     controller.dayRelay.value = value;
                                   },
-                                  isEdit: false.obs,
-                                  isEnable: false,
-                                )
+                                  isEdit: controller.isEdit,
+                                  isEnable: !controller.isAuto.value,
+                                ))
                               ],
                             ),
                           ),
@@ -245,6 +249,7 @@ class WetWallControlScreen extends StatelessWidget {
                                       suffixText: "°C",
                                       hintText: AppStrings.temperature,
                                       isFilled: true,
+                                      isReadOnly: !controller.isAuto.value,
                                       onChanged: (value) {}),
                                   SizedBox(
                                     height: 15.h,
@@ -256,6 +261,7 @@ class WetWallControlScreen extends StatelessWidget {
                                       suffixText: "°C",
                                       isFilled: true,
                                       hintText: AppStrings.temperatureDeadband,
+                                      isReadOnly: !controller.isAuto.value,
                                       onChanged: (value) {}),
                                   SizedBox(
                                     height: 15.h,
@@ -282,8 +288,8 @@ class WetWallControlScreen extends StatelessWidget {
                                       onChange: (value) {
                                         controller.nightSwitch.value = value;
                                       },
-                                      isEdit: false.obs,
-                                      isEnable: false,
+                                      isEdit: controller.isEdit,
+                                      isEnable: !controller.isAuto.value,
                                     ),
                                   ),
                                   SizedBox(
@@ -299,7 +305,7 @@ class WetWallControlScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  CustomDropDown(
+                                  Obx(() => CustomDropDown(
                                     width: 330.w,
                                     hintText: AppStrings.chooseRelay,
                                     itemList: controller.nightRelayList,
@@ -308,9 +314,9 @@ class WetWallControlScreen extends StatelessWidget {
                                     onChange: (value) {
                                       controller.nightRelay.value = value;
                                     },
-                                    isEdit: false.obs,
-                                    isEnable: false,
-                                  )
+                                    isEdit: controller.isEdit,
+                                    isEnable: !controller.isAuto.value,
+                                  ))
                                 ],
                               ),
                             ),
@@ -324,7 +330,17 @@ class WetWallControlScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: OutLineButton(
-                              onTap: () {},
+                              onTap: () {
+                                controller.isEdit.value = false;
+                                controller.dayTemperatureController.clear();
+                                controller.nightTemperatureController.clear();
+                                controller.dayTemperatureDeadbandController.clear();
+                                controller.nightTemperatureDeadbandController.clear();
+                                controller.daySwitch.value = "";
+                                controller.nightSwitch.value = "";
+                                controller.dayRelay.value = "";
+                                controller.nightRelay.value = "";
+                              },
                               buttonText: AppStrings.cancel,
                               color: AppColors.red,
                             ),

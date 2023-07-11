@@ -84,7 +84,8 @@ class HumidityControlScreen extends StatelessWidget {
                           : const SizedBox.shrink(),
                     ),
                     Container(
-                      color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                      color:
+                          Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                       child: Column(
                         children: [
                           Padding(
@@ -101,7 +102,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 ),
                                 commonTexField(
                                     title: AppStrings.setTargetRelativeHumidity,
-                                    controller: controller.dayHumidityRHController,
+                                    controller:
+                                        controller.dayHumidityRHController,
                                     suffixText: "%",
                                     hintText: "RH",
                                     onChanged: (value) {}),
@@ -110,8 +112,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 ),
                                 commonTexField(
                                     title: AppStrings.deadband,
-                                    controller:
-                                        controller.dayHumidityRHDeadbandController,
+                                    controller: controller
+                                        .dayHumidityRHDeadbandController,
                                     suffixText: "%",
                                     hintText: "RH",
                                     onChanged: (value) {}),
@@ -132,13 +134,16 @@ class HumidityControlScreen extends StatelessWidget {
                                   () => CustomDropDown(
                                     width: 330.w,
                                     hintText: AppStrings.chooseSwitch,
-                                    itemList: controller.isGetData.value == true ? controller.switchList : [],
+                                    itemList: controller.isGetData.value == true
+                                        ? controller.switchList
+                                        : [],
                                     value: controller.dayHumiditySwitch.value,
                                     isFilled: Get.isDarkMode ? true : false,
                                     onChange: (value) {
-                                      controller.dayHumiditySwitch.value = value;
+                                      controller.dayHumiditySwitch.value =
+                                          value;
                                     },
-                                    isEdit: false.obs,
+                                    isEdit: controller.isEdit,
                                     isEnable: false,
                                   ),
                                 ),
@@ -165,10 +170,10 @@ class HumidityControlScreen extends StatelessWidget {
                                     controller.dayHumidityRelay.value = value;
 
                                     controller.dayDehumidificationRelayList
-                                        .removeWhere(
-                                            (element) => (element.contains(value)));
+                                        .removeWhere((element) =>
+                                            (element.contains(value)));
                                   },
-                                  isEdit: false.obs,
+                                  isEdit: controller.isEdit,
                                   isEnable: false,
                                 ),
                               ],
@@ -195,7 +200,8 @@ class HumidityControlScreen extends StatelessWidget {
                                     height: 10.h,
                                   ),
                                   commonTexField(
-                                      title: AppStrings.setTargetRelativeHumidity,
+                                      title:
+                                          AppStrings.setTargetRelativeHumidity,
                                       controller:
                                           controller.nightHumidityRHController,
                                       suffixText: "%",
@@ -207,8 +213,8 @@ class HumidityControlScreen extends StatelessWidget {
                                   ),
                                   commonTexField(
                                     title: AppStrings.deadband,
-                                    controller:
-                                        controller.nightHumidityRHDeadbandController,
+                                    controller: controller
+                                        .nightHumidityRHDeadbandController,
                                     suffixText: "%",
                                     hintText: "RH",
                                     onChanged: (value) {},
@@ -231,13 +237,18 @@ class HumidityControlScreen extends StatelessWidget {
                                     () => CustomDropDown(
                                       width: 320.w,
                                       hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.isGetData.value == true ? controller.switchList : [],
-                                      value: controller.nightHumiditySwitch.value,
+                                      itemList:
+                                          controller.isGetData.value == true
+                                              ? controller.switchList
+                                              : [],
+                                      value:
+                                          controller.nightHumiditySwitch.value,
                                       onChange: (value) {
-                                        controller.nightHumiditySwitch.value = value;
+                                        controller.nightHumiditySwitch.value =
+                                            value;
                                       },
                                       isFilled: true,
-                                      isEdit: false.obs,
+                                      isEdit: controller.isEdit,
                                       isEnable: false,
                                     ),
                                   ),
@@ -261,13 +272,14 @@ class HumidityControlScreen extends StatelessWidget {
                                     value: controller.nightHumidityRelay.value,
                                     isFilled: true,
                                     onChange: (value) {
-                                      controller.nightHumidityRelay.value = value;
+                                      controller.nightHumidityRelay.value =
+                                          value;
 
                                       controller.nightDehumidificationRelayList
-                                          .removeWhere(
-                                              (element) => (element.contains(value)));
+                                          .removeWhere((element) =>
+                                              (element.contains(value)));
                                     },
-                                    isEdit: false.obs,
+                                    isEdit: controller.isEdit,
                                     isEnable: false,
                                   ),
                                 ],
@@ -281,7 +293,8 @@ class HumidityControlScreen extends StatelessWidget {
                       height: 10.h,
                     ),
                     Container(
-                      color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                      color:
+                          Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                       child: Column(
                         children: [
                           Padding(
@@ -298,7 +311,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 ),
                                 commonTexField(
                                     title: AppStrings.setTargetRelativeHumidity,
-                                    controller: controller.dayDehumidityRHController,
+                                    controller:
+                                        controller.dayDehumidityRHController,
                                     suffixText: "%",
                                     hintText: "RH",
                                     onChanged: (value) {}),
@@ -307,8 +321,8 @@ class HumidityControlScreen extends StatelessWidget {
                                 ),
                                 commonTexField(
                                     title: AppStrings.deadband,
-                                    controller:
-                                        controller.dayDehumidityRHDeadbandController,
+                                    controller: controller
+                                        .dayDehumidityRHDeadbandController,
                                     suffixText: "%",
                                     hintText: "RH",
                                     onChanged: (value) {}),
@@ -329,14 +343,17 @@ class HumidityControlScreen extends StatelessWidget {
                                   () => CustomDropDown(
                                     width: 330.w,
                                     hintText: AppStrings.chooseSwitch,
-                                    itemList: controller.isGetData.value == true ? controller.switchList : [],
-                                    value: controller.dayDehumidificationSwitch.value,
+                                    itemList: controller.isGetData.value == true
+                                        ? controller.switchList
+                                        : [],
+                                    value: controller
+                                        .dayDehumidificationSwitch.value,
                                     isFilled: Get.isDarkMode ? true : false,
                                     onChange: (value) {
-                                      controller.dayDehumidificationSwitch.value =
-                                          value;
+                                      controller.dayDehumidificationSwitch
+                                          .value = value;
                                     },
-                                    isEdit: false.obs,
+                                    isEdit: controller.isEdit,
                                     isEnable: false,
                                   ),
                                 ),
@@ -356,16 +373,19 @@ class HumidityControlScreen extends StatelessWidget {
                                 CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
-                                  itemList: controller.dayDehumidificationRelayList,
-                                  value: controller.dayDehumidificationRelay.value,
+                                  itemList:
+                                      controller.dayDehumidificationRelayList,
+                                  value:
+                                      controller.dayDehumidificationRelay.value,
                                   isFilled: true,
                                   onChange: (value) {
-                                    controller.dayDehumidificationRelay.value = value;
+                                    controller.dayDehumidificationRelay.value =
+                                        value;
 
                                     controller.dayHumidityRelayList.removeWhere(
                                         (element) => (element.contains(value)));
                                   },
-                                  isEdit: false.obs,
+                                  isEdit: controller.isEdit,
                                   isEnable: false,
                                 ),
                               ],
@@ -429,18 +449,22 @@ class HumidityControlScreen extends StatelessWidget {
                                     () => CustomDropDown(
                                       width: 320.w,
                                       hintText: AppStrings.chooseSwitch,
-                                      itemList: controller.isGetData.value == true ? controller.switchList : [],
+                                      itemList:
+                                          controller.isGetData.value == true
+                                              ? controller.switchList
+                                              : [],
                                       value: controller
                                           .nightDehumidificationSwitch.value,
                                       onChange: (value) {
-                                        controller.nightDehumidificationSwitch.value =
-                                            value;
+                                        controller.nightDehumidificationSwitch
+                                            .value = value;
 
-                                        controller.nightHumidityRelayList.removeWhere(
-                                            (element) => (element.contains(value)));
+                                        controller.nightHumidityRelayList
+                                            .removeWhere((element) =>
+                                                (element.contains(value)));
                                       },
                                       isFilled: true,
-                                      isEdit: false.obs,
+                                      isEdit: controller.isEdit,
                                       isEnable: false,
                                     ),
                                   ),
@@ -461,16 +485,16 @@ class HumidityControlScreen extends StatelessWidget {
                                     width: 320.w,
                                     yValue: 0,
                                     hintText: AppStrings.chooseRelay,
-                                    itemList:
-                                        controller.nightDehumidificationRelayList,
-                                    value:
-                                        controller.nightDehumidificationRelay.value,
+                                    itemList: controller
+                                        .nightDehumidificationRelayList,
+                                    value: controller
+                                        .nightDehumidificationRelay.value,
                                     isFilled: true,
                                     onChange: (value) {
-                                      controller.nightDehumidificationRelay.value =
-                                          value;
+                                      controller.nightDehumidificationRelay
+                                          .value = value;
                                     },
-                                    isEdit: false.obs,
+                                    isEdit: controller.isEdit,
                                     isEnable: false,
                                   ),
                                 ],

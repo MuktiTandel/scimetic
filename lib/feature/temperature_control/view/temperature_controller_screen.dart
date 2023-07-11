@@ -65,17 +65,17 @@ class TemperatureControllerScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        color:
+                            Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             commonEnableTitleWidget(
                                 title: AppStrings.cooling,
                                 isSelect: controller.isCoolingEnable,
-                              onTap: () async {
+                                onTap: () async {
                                   await controller.addTemperatureControlData();
-                              }
-                            ),
+                                }),
                             Divider(
                               thickness: 1.w,
                               color: Get.isDarkMode
@@ -107,14 +107,20 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   Obx(() => CustomDropDown(
                                         width: 330.w,
                                         hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller.dayCoolingSwitch.value,
+                                        itemList:
+                                            controller.isGetData.value == true
+                                                ? controller.switchList
+                                                : [],
+                                        value:
+                                            controller.dayCoolingSwitch.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.dayCoolingSwitch.value = value;
+                                          controller.dayCoolingSwitch.value =
+                                              value;
                                         },
                                         isEdit: controller.isEdit,
-                                        isEnable: !controller.isCoolingEnable.value,
+                                        isEnable:
+                                            !controller.isCoolingEnable.value,
                                       )),
                                   SizedBox(
                                     height: 10.h,
@@ -134,24 +140,29 @@ class TemperatureControllerScreen extends StatelessWidget {
                                       width: 330.w,
                                       hintText: AppStrings.chooseRelay,
                                       itemList: controller.dayCoolingRelayList,
-                                      value:
-                                          controller.dayCoolingRelaySelection.value,
+                                      value: controller
+                                          .dayCoolingRelaySelection.value,
                                       isFilled: Get.isDarkMode ? true : false,
                                       onChange: (value) {
-                                        controller.dayCoolingRelaySelection.value =
-                                            value;
-                                          if ( value.contains("Relay 1")) {
-                                            controller.dayCoolingRelaySelection.value = 'Relay_1';
-                                          } else if ( value.contains("Relay 2")) {
-                                            controller.dayCoolingRelaySelection.value = 'Relay_2';
-                                          } else if ( value.contains("Relay 3")) {
-                                            controller.dayCoolingRelaySelection.value = 'Relay_3';
-                                          } else {
-                                            controller.dayCoolingRelaySelection.value = 'Relay_4';
-                                          }
+                                        controller.dayCoolingRelaySelection
+                                            .value = value;
+                                        if (value.contains("Relay 1")) {
+                                          controller.dayCoolingRelaySelection
+                                              .value = 'Relay_1';
+                                        } else if (value.contains("Relay 2")) {
+                                          controller.dayCoolingRelaySelection
+                                              .value = 'Relay_2';
+                                        } else if (value.contains("Relay 3")) {
+                                          controller.dayCoolingRelaySelection
+                                              .value = 'Relay_3';
+                                        } else {
+                                          controller.dayCoolingRelaySelection
+                                              .value = 'Relay_4';
+                                        }
                                       },
                                       isEdit: controller.isEdit,
-                                      isEnable: !controller.isCoolingEnable.value,
+                                      isEnable:
+                                          !controller.isCoolingEnable.value,
                                     ),
                                   )
                                 ],
@@ -190,15 +201,21 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseSwitch,
-                                          itemList: controller.switchList,
-                                          value: controller.nightCoolingSwitch.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.isGetData.value == true
+                                                  ? controller.switchList
+                                                  : [],
+                                          value: controller
+                                              .nightCoolingSwitch.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
-                                            controller.nightCoolingSwitch.value =
-                                                value;
+                                            controller.nightCoolingSwitch
+                                                .value = value;
                                           },
                                           isEdit: controller.isEdit,
-                                          isEnable: !controller.isCoolingEnable.value,
+                                          isEnable:
+                                              !controller.isCoolingEnable.value,
                                         )),
                                     SizedBox(
                                       height: 10.h,
@@ -216,24 +233,34 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseRelay,
-                                          itemList: controller.nightCoolingRelayList,
-                                          value: controller.nightCoolingRelay.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.nightCoolingRelayList,
+                                          value: controller
+                                              .nightCoolingRelay.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
                                             controller.nightCoolingRelay.value =
                                                 value;
-                                            if ( value.contains("Relay 1")) {
-                                              controller.nightCoolingRelay.value = 'Relay_1';
-                                            } else if ( value.contains("Relay 2")) {
-                                              controller.nightCoolingRelay.value = 'Relay_2';
-                                            } else if ( value.contains("Relay 3")) {
-                                              controller.nightCoolingRelay.value = 'Relay_3';
+                                            if (value.contains("Relay 1")) {
+                                              controller.nightCoolingRelay
+                                                  .value = 'Relay_1';
+                                            } else if (value
+                                                .contains("Relay 2")) {
+                                              controller.nightCoolingRelay
+                                                  .value = 'Relay_2';
+                                            } else if (value
+                                                .contains("Relay 3")) {
+                                              controller.nightCoolingRelay
+                                                  .value = 'Relay_3';
                                             } else {
-                                              controller.nightCoolingRelay.value = 'Relay_4';
+                                              controller.nightCoolingRelay
+                                                  .value = 'Relay_4';
                                             }
                                           },
                                           isEdit: controller.isEdit,
-                                          isEnable: !controller.isCoolingEnable.value,
+                                          isEnable:
+                                              !controller.isCoolingEnable.value,
                                         )),
                                   ],
                                 ),
@@ -246,17 +273,17 @@ class TemperatureControllerScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       Container(
-                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        color:
+                            Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             commonEnableTitleWidget(
                                 title: AppStrings.heating,
                                 isSelect: controller.isHeatingEnable,
-                              onTap: () async {
+                                onTap: () async {
                                   await controller.addTemperatureControlData();
-                              }
-                            ),
+                                }),
                             Divider(
                               thickness: 1.w,
                               color: Get.isDarkMode
@@ -288,14 +315,20 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   Obx(() => CustomDropDown(
                                         width: 330.w,
                                         hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller.dayHeatingSwitch.value,
+                                        itemList:
+                                            controller.isGetData.value == true
+                                                ? controller.switchList
+                                                : [],
+                                        value:
+                                            controller.dayHeatingSwitch.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.dayHeatingSwitch.value = value;
+                                          controller.dayHeatingSwitch.value =
+                                              value;
                                         },
                                         isEdit: controller.isEdit,
-                                        isEnable: !controller.isHeatingEnable.value,
+                                        isEnable:
+                                            !controller.isHeatingEnable.value,
                                       )),
                                   SizedBox(
                                     height: 10.h,
@@ -318,19 +351,25 @@ class TemperatureControllerScreen extends StatelessWidget {
                                       value: controller.dayHeatingRelay.value,
                                       isFilled: Get.isDarkMode ? true : false,
                                       onChange: (value) {
-                                        controller.dayHeatingRelay.value = value;
-                                        if ( value.contains("Relay 1")) {
-                                          controller.dayHeatingRelay.value = 'Relay_1';
-                                        } else if ( value.contains("Relay 2")) {
-                                          controller.dayHeatingRelay.value = 'Relay_2';
-                                        } else if ( value.contains("Relay 3")) {
-                                          controller.dayHeatingRelay.value = 'Relay_3';
+                                        controller.dayHeatingRelay.value =
+                                            value;
+                                        if (value.contains("Relay 1")) {
+                                          controller.dayHeatingRelay.value =
+                                              'Relay_1';
+                                        } else if (value.contains("Relay 2")) {
+                                          controller.dayHeatingRelay.value =
+                                              'Relay_2';
+                                        } else if (value.contains("Relay 3")) {
+                                          controller.dayHeatingRelay.value =
+                                              'Relay_3';
                                         } else {
-                                          controller.dayHeatingRelay.value = 'Relay_4';
+                                          controller.dayHeatingRelay.value =
+                                              'Relay_4';
                                         }
                                       },
                                       isEdit: controller.isEdit,
-                                      isEnable: !controller.isHeatingEnable.value,
+                                      isEnable:
+                                          !controller.isHeatingEnable.value,
                                     ),
                                   )
                                 ],
@@ -369,15 +408,21 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseSwitch,
-                                          itemList: controller.switchList,
-                                          value: controller.nightHeatingSwitch.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.isGetData.value == true
+                                                  ? controller.switchList
+                                                  : [],
+                                          value: controller
+                                              .nightHeatingSwitch.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
-                                            controller.nightHeatingSwitch.value =
-                                                value;
+                                            controller.nightHeatingSwitch
+                                                .value = value;
                                           },
                                           isEdit: controller.isEdit,
-                                          isEnable: !controller.isHeatingEnable.value,
+                                          isEnable:
+                                              !controller.isHeatingEnable.value,
                                         )),
                                     SizedBox(
                                       height: 10.h,
@@ -395,24 +440,34 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseRelay,
-                                          itemList: controller.nightHeatingRelayList,
-                                          value: controller.nightHeatingRelay.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.nightHeatingRelayList,
+                                          value: controller
+                                              .nightHeatingRelay.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
                                             controller.nightHeatingRelay.value =
                                                 value;
-                                            if ( value.contains("Relay 1")) {
-                                              controller.nightHeatingRelay.value = 'Relay_1';
-                                            } else if ( value.contains("Relay 2")) {
-                                              controller.nightHeatingRelay.value = 'Relay_2';
-                                            } else if ( value.contains("Relay 3")) {
-                                              controller.nightHeatingRelay.value = 'Relay_3';
+                                            if (value.contains("Relay 1")) {
+                                              controller.nightHeatingRelay
+                                                  .value = 'Relay_1';
+                                            } else if (value
+                                                .contains("Relay 2")) {
+                                              controller.nightHeatingRelay
+                                                  .value = 'Relay_2';
+                                            } else if (value
+                                                .contains("Relay 3")) {
+                                              controller.nightHeatingRelay
+                                                  .value = 'Relay_3';
                                             } else {
-                                              controller.nightHeatingRelay.value = 'Relay_4';
+                                              controller.nightHeatingRelay
+                                                  .value = 'Relay_4';
                                             }
                                           },
                                           isEdit: controller.isEdit,
-                                          isEnable: !controller.isHeatingEnable.value,
+                                          isEnable:
+                                              !controller.isHeatingEnable.value,
                                         )),
                                   ],
                                 ),
@@ -425,7 +480,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       Container(
-                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        color:
+                            Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -450,14 +506,17 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 8.h,
                                   ),
-                                  Obx(() => commonTexField(
-                                      title: AppStrings.temperature,
-                                      controller: controller.extractorDayTemperature,
-                                      suffixText: "°C",
-                                      hintText: AppStrings.temperature,
-                                      onChanged: (value) {},
-                                      isReadOnly: !controller.isExtractorFanOn.value
-                                  ),),
+                                  Obx(
+                                    () => commonTexField(
+                                        title: AppStrings.temperature,
+                                        controller:
+                                            controller.extractorDayTemperature,
+                                        suffixText: "°C",
+                                        hintText: AppStrings.temperature,
+                                        onChanged: (value) {},
+                                        isReadOnly:
+                                            !controller.isExtractorFanOn.value),
+                                  ),
                                   SizedBox(
                                     height: 10.h,
                                   ),
@@ -474,17 +533,22 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   Obx(() => CustomDropDown(
                                         width: 330.w,
                                         hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller.extractorFanDaySwitch.value,
+                                        itemList:
+                                            controller.isGetData.value == true
+                                                ? controller.switchList
+                                                : [],
+                                        value: controller
+                                            .extractorFanDaySwitch.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.extractorFanDaySwitch.value =
-                                              value;
+                                          controller.extractorFanDaySwitch
+                                              .value = value;
                                         },
                                         isEdit: controller.isEdit.value == false
                                             ? false.obs
                                             : true.obs,
-                                    isEnable: !controller.isExtractorFanOn.value,
+                                        isEnable:
+                                            !controller.isExtractorFanOn.value,
                                       )),
                                   SizedBox(
                                     height: 10.h,
@@ -502,24 +566,33 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   Obx(() => CustomDropDown(
                                         width: 330.w,
                                         hintText: AppStrings.chooseRelay,
-                                        itemList: controller.dayExtractorRelayList,
-                                        value: controller.extractorFanDayRelay.value,
+                                        itemList:
+                                            controller.dayExtractorRelayList,
+                                        value: controller
+                                            .extractorFanDayRelay.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.extractorFanDayRelay.value =
-                                              value;
-                                          if ( value.contains("Relay 1")) {
-                                            controller.extractorFanDayRelay.value = 'Relay_1';
-                                          } else if ( value.contains("Relay 2")) {
-                                            controller.extractorFanDayRelay.value = 'Relay_2';
-                                          } else if ( value.contains("Relay 3")) {
-                                            controller.extractorFanDayRelay.value = 'Relay_3';
+                                          controller.extractorFanDayRelay
+                                              .value = value;
+                                          if (value.contains("Relay 1")) {
+                                            controller.extractorFanDayRelay
+                                                .value = 'Relay_1';
+                                          } else if (value
+                                              .contains("Relay 2")) {
+                                            controller.extractorFanDayRelay
+                                                .value = 'Relay_2';
+                                          } else if (value
+                                              .contains("Relay 3")) {
+                                            controller.extractorFanDayRelay
+                                                .value = 'Relay_3';
                                           } else {
-                                            controller.extractorFanDayRelay.value = 'Relay_4';
+                                            controller.extractorFanDayRelay
+                                                .value = 'Relay_4';
                                           }
                                         },
                                         isEdit: controller.isEdit,
-                                    isEnable: !controller.isExtractorFanOn.value,
+                                        isEnable:
+                                            !controller.isExtractorFanOn.value,
                                       )),
                                 ],
                               ),
@@ -544,15 +617,17 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     SizedBox(
                                       height: 8.h,
                                     ),
-                                    Obx(() => commonTexField(
-                                        title: AppStrings.temperature,
-                                        controller:
-                                        controller.extractorNightTemperature,
-                                        suffixText: "°C",
-                                        hintText: AppStrings.temperature,
-                                        onChanged: (value) {},
-                                        isReadOnly: !controller.isExtractorFanOn.value
-                                    ),),
+                                    Obx(
+                                      () => commonTexField(
+                                          title: AppStrings.temperature,
+                                          controller: controller
+                                              .extractorNightTemperature,
+                                          suffixText: "°C",
+                                          hintText: AppStrings.temperature,
+                                          onChanged: (value) {},
+                                          isReadOnly: !controller
+                                              .isExtractorFanOn.value),
+                                    ),
                                     SizedBox(
                                       height: 10.h,
                                     ),
@@ -570,18 +645,22 @@ class TemperatureControllerScreen extends StatelessWidget {
                                       () => CustomDropDown(
                                         width: 320.w,
                                         hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value:
-                                            controller.extractorFanNightSwitch.value,
+                                        itemList:
+                                            controller.isGetData.value == true
+                                                ? controller.switchList
+                                                : [],
+                                        value: controller
+                                            .extractorFanNightSwitch.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.extractorFanNightSwitch.value =
-                                              value;
+                                          controller.extractorFanNightSwitch
+                                              .value = value;
                                         },
                                         isEdit: controller.isEdit.value == false
                                             ? false.obs
                                             : true.obs,
-                                        isEnable: !controller.isExtractorFanOn.value,
+                                        isEnable:
+                                            !controller.isExtractorFanOn.value,
                                       ),
                                     ),
                                     SizedBox(
@@ -600,26 +679,34 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseRelay,
-                                          itemList:
-                                              controller.nightExtractorRelayList,
-                                          value:
-                                              controller.extractorFanNightRelay.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList: controller
+                                              .nightExtractorRelayList,
+                                          value: controller
+                                              .extractorFanNightRelay.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
-                                            controller.extractorFanNightRelay.value =
-                                                value;
-                                            if ( value.contains("Relay 1")) {
-                                              controller.extractorFanNightRelay.value = 'Relay_1';
-                                            } else if ( value.contains("Relay 2")) {
-                                              controller.extractorFanNightRelay.value = 'Relay_2';
-                                            } else if ( value.contains("Relay 3")) {
-                                              controller.extractorFanNightRelay.value = 'Relay_3';
+                                            controller.extractorFanNightRelay
+                                                .value = value;
+                                            if (value.contains("Relay 1")) {
+                                              controller.extractorFanNightRelay
+                                                  .value = 'Relay_1';
+                                            } else if (value
+                                                .contains("Relay 2")) {
+                                              controller.extractorFanNightRelay
+                                                  .value = 'Relay_2';
+                                            } else if (value
+                                                .contains("Relay 3")) {
+                                              controller.extractorFanNightRelay
+                                                  .value = 'Relay_3';
                                             } else {
-                                              controller.extractorFanNightRelay.value = 'Relay_4';
+                                              controller.extractorFanNightRelay
+                                                  .value = 'Relay_4';
                                             }
                                           },
                                           isEdit: controller.isEdit,
-                                      isEnable: !controller.isExtractorFanOn.value,
+                                          isEnable: !controller
+                                              .isExtractorFanOn.value,
                                         )),
                                   ],
                                 ),
@@ -632,7 +719,8 @@ class TemperatureControllerScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       Container(
-                        color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
+                        color:
+                            Get.isDarkMode ? AppColors.darkTheme : Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -659,12 +747,13 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   ),
                                   Obx(() => commonTexField(
                                       title: AppStrings.temperature,
-                                      controller: controller.wetWallDayTemperature,
+                                      controller:
+                                          controller.wetWallDayTemperature,
                                       suffixText: "°C",
                                       hintText: AppStrings.temperature,
                                       onChanged: (value) {},
-                                      isReadOnly: controller.isWetWallOn.value
-                                  )),
+                                      isReadOnly:
+                                          controller.isWetWallOn.value)),
                                   SizedBox(
                                     height: 10.h,
                                   ),
@@ -681,14 +770,19 @@ class TemperatureControllerScreen extends StatelessWidget {
                                   Obx(() => CustomDropDown(
                                         width: 330.w,
                                         hintText: AppStrings.chooseSwitch,
-                                        itemList: controller.switchList,
-                                        value: controller.wetWallDaySwitch.value,
+                                        itemList:
+                                            controller.isGetData.value == true
+                                                ? controller.switchList
+                                                : [],
+                                        value:
+                                            controller.wetWallDaySwitch.value,
                                         isFilled: Get.isDarkMode ? true : false,
                                         onChange: (value) {
-                                          controller.wetWallDaySwitch.value = value;
+                                          controller.wetWallDaySwitch.value =
+                                              value;
                                         },
                                         isEdit: controller.isEdit,
-                                    isEnable: !controller.isWetWallOn.value,
+                                        isEnable: !controller.isWetWallOn.value,
                                       )),
                                   SizedBox(
                                     height: 10.h,
@@ -704,26 +798,34 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     height: 5.h,
                                   ),
                                   Obx(() => CustomDropDown(
-                                      width: 330.w,
-                                      hintText: AppStrings.chooseRelay,
-                                      itemList: controller.dayWetWallRelayList,
-                                      value: controller.wetWalDayRelay.value,
-                                      isFilled: Get.isDarkMode ? true : false,
-                                      onChange: (value) {
-                                        controller.wetWalDayRelay.value = value;
-                                        if ( value.contains("Relay 1")) {
-                                          controller.wetWalDayRelay.value = 'Relay_1';
-                                        } else if ( value.contains("Relay 2")) {
-                                          controller.wetWalDayRelay.value = 'Relay_2';
-                                        } else if ( value.contains("Relay 3")) {
-                                          controller.wetWalDayRelay.value = 'Relay_3';
-                                        } else {
-                                          controller.wetWalDayRelay.value = 'Relay_4';
-                                        }
-                                      },
-                                      isEdit: controller.isEdit,
-                                    isEnable: !controller.isWetWallOn.value,
-                                  )),
+                                        width: 330.w,
+                                        hintText: AppStrings.chooseRelay,
+                                        itemList:
+                                            controller.dayWetWallRelayList,
+                                        value: controller.wetWalDayRelay.value,
+                                        isFilled: Get.isDarkMode ? true : false,
+                                        onChange: (value) {
+                                          controller.wetWalDayRelay.value =
+                                              value;
+                                          if (value.contains("Relay 1")) {
+                                            controller.wetWalDayRelay.value =
+                                                'Relay_1';
+                                          } else if (value
+                                              .contains("Relay 2")) {
+                                            controller.wetWalDayRelay.value =
+                                                'Relay_2';
+                                          } else if (value
+                                              .contains("Relay 3")) {
+                                            controller.wetWalDayRelay.value =
+                                                'Relay_3';
+                                          } else {
+                                            controller.wetWalDayRelay.value =
+                                                'Relay_4';
+                                          }
+                                        },
+                                        isEdit: controller.isEdit,
+                                        isEnable: !controller.isWetWallOn.value,
+                                      )),
                                 ],
                               ),
                             ),
@@ -747,15 +849,17 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     SizedBox(
                                       height: 8.h,
                                     ),
-                                    Obx(() => commonTexField(
-                                        title: AppStrings.temperature,
-                                        controller:
-                                        controller.wetWallNightTemperature,
-                                        suffixText: "°C",
-                                        hintText: AppStrings.temperature,
-                                        onChanged: (value) {},
-                                        isReadOnly: controller.isWetWallOn.value
-                                    ),),
+                                    Obx(
+                                      () => commonTexField(
+                                          title: AppStrings.temperature,
+                                          controller: controller
+                                              .wetWallNightTemperature,
+                                          suffixText: "°C",
+                                          hintText: AppStrings.temperature,
+                                          onChanged: (value) {},
+                                          isReadOnly:
+                                              controller.isWetWallOn.value),
+                                    ),
                                     SizedBox(
                                       height: 10.h,
                                     ),
@@ -772,15 +876,21 @@ class TemperatureControllerScreen extends StatelessWidget {
                                     Obx(() => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseSwitch,
-                                          itemList: controller.switchList,
-                                          value: controller.wetWallNightSwitch.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.isGetData.value == true
+                                                  ? controller.switchList
+                                                  : [],
+                                          value: controller
+                                              .wetWallNightSwitch.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           onChange: (value) {
-                                            controller.wetWallNightSwitch.value =
-                                                value;
+                                            controller.wetWallNightSwitch
+                                                .value = value;
                                           },
                                           isEdit: controller.isEdit,
-                                      isEnable: !controller.isWetWallOn.value,
+                                          isEnable:
+                                              !controller.isWetWallOn.value,
                                         )),
                                     SizedBox(
                                       height: 10.h,
@@ -799,21 +909,32 @@ class TemperatureControllerScreen extends StatelessWidget {
                                       () => CustomDropDown(
                                           width: 320.w,
                                           hintText: AppStrings.chooseRelay,
-                                          itemList: controller.nightWetWallRelayList,
-                                          value: controller.wetWalNightRelay.value,
-                                          isFilled: Get.isDarkMode ? true : false,
+                                          itemList:
+                                              controller.nightWetWallRelayList,
+                                          value:
+                                              controller.wetWalNightRelay.value,
+                                          isFilled:
+                                              Get.isDarkMode ? true : false,
                                           isEdit: controller.isEdit,
-                                          isEnable: !controller.isWetWallOn.value,
+                                          isEnable:
+                                              !controller.isWetWallOn.value,
                                           onChange: (value) {
-                                            controller.wetWalNightRelay.value = value;
-                                            if ( value.contains("Relay 1")) {
-                                              controller.wetWalNightRelay.value = 'Relay_1';
-                                            } else if ( value.contains("Relay 2")) {
-                                              controller.wetWalNightRelay.value = 'Relay_2';
-                                            } else if ( value.contains("Relay 3")) {
-                                              controller.wetWalNightRelay.value = 'Relay_3';
+                                            controller.wetWalNightRelay.value =
+                                                value;
+                                            if (value.contains("Relay 1")) {
+                                              controller.wetWalNightRelay
+                                                  .value = 'Relay_1';
+                                            } else if (value
+                                                .contains("Relay 2")) {
+                                              controller.wetWalNightRelay
+                                                  .value = 'Relay_2';
+                                            } else if (value
+                                                .contains("Relay 3")) {
+                                              controller.wetWalNightRelay
+                                                  .value = 'Relay_3';
                                             } else {
-                                              controller.wetWalNightRelay.value = 'Relay_4';
+                                              controller.wetWalNightRelay
+                                                  .value = 'Relay_4';
                                             }
                                           }),
                                     )

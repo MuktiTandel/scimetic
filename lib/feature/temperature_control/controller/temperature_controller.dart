@@ -132,6 +132,8 @@ class TemperatureController extends GetxController {
 
     id.value = storeData.getInt(StoreData.id)!;
 
+    isEdit.value = false;
+
     if (token.isNotEmpty) {
 
       progressDialog(true, Get.context!);
@@ -150,6 +152,7 @@ class TemperatureController extends GetxController {
       extractorNightTemperature.clear();
       wetWallDayTemperature.clear();
       wetWallNightTemperature.clear();
+      dayCoolingRelaySelection.value = "";
 
       isGetData.value = false;
 
@@ -179,11 +182,13 @@ class TemperatureController extends GetxController {
         progressDialog(false, Get.context!);
 
         if (apiResponse!.statusCode == 200) {
+
+          isEdit.value = true;
+
           temperatureControllerModel =
               TemperatureControllerModel.fromJson(data);
 
           if (temperatureControllerModel.temperatureControl != null) {
-            isEdit.value = true;
 
             temperatureControl = temperatureControllerModel.temperatureControl!;
 

@@ -160,7 +160,7 @@ class HumidityControlScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 5.h,
                                 ),
-                                CustomDropDown(
+                                Obx(() => CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
                                   itemList: controller.dayHumidityRelayList,
@@ -171,11 +171,11 @@ class HumidityControlScreen extends StatelessWidget {
 
                                     controller.dayDehumidificationRelayList
                                         .removeWhere((element) =>
-                                            (element.contains(value)));
+                                    (element.contains(value)));
                                   },
                                   isEdit: controller.isEdit,
                                   isEnable: false,
-                                ),
+                                )),
                               ],
                             ),
                           ),
@@ -265,7 +265,7 @@ class HumidityControlScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  CustomDropDown(
+                                  Obx(() => CustomDropDown(
                                     width: 320.w,
                                     hintText: AppStrings.chooseRelay,
                                     itemList: controller.nightHumidityRelayList,
@@ -277,11 +277,11 @@ class HumidityControlScreen extends StatelessWidget {
 
                                       controller.nightDehumidificationRelayList
                                           .removeWhere((element) =>
-                                              (element.contains(value)));
+                                      (element.contains(value)));
                                     },
                                     isEdit: controller.isEdit,
                                     isEnable: false,
-                                  ),
+                                  )),
                                 ],
                               ),
                             ),
@@ -370,24 +370,24 @@ class HumidityControlScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 5.h,
                                 ),
-                                CustomDropDown(
+                                Obx(() => CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
                                   itemList:
-                                      controller.dayDehumidificationRelayList,
+                                  controller.dayDehumidificationRelayList,
                                   value:
-                                      controller.dayDehumidificationRelay.value,
+                                  controller.dayDehumidificationRelay.value,
                                   isFilled: true,
                                   onChange: (value) {
                                     controller.dayDehumidificationRelay.value =
                                         value;
 
                                     controller.dayHumidityRelayList.removeWhere(
-                                        (element) => (element.contains(value)));
+                                            (element) => (element.contains(value)));
                                   },
                                   isEdit: controller.isEdit,
                                   isEnable: false,
-                                ),
+                                )),
                               ],
                             ),
                           ),
@@ -406,7 +406,7 @@ class HumidityControlScreen extends StatelessWidget {
                                 children: [
                                   commonImageText(
                                       image: AppImages.fillMoon,
-                                      title: AppStrings.nightHumidityMode,
+                                      title: AppStrings.nightDehumidificationMode,
                                       color: AppColors.lightGray1),
                                   SizedBox(
                                     height: 10.h,
@@ -481,7 +481,7 @@ class HumidityControlScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  CustomDropDown(
+                                  Obx(() => CustomDropDown(
                                     width: 320.w,
                                     yValue: 0,
                                     hintText: AppStrings.chooseRelay,
@@ -496,7 +496,7 @@ class HumidityControlScreen extends StatelessWidget {
                                     },
                                     isEdit: controller.isEdit,
                                     isEnable: false,
-                                  ),
+                                  )),
                                 ],
                               ),
                             ),

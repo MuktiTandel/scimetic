@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -18,15 +17,21 @@ import 'package:scimetic/feature/humidity_control/model/humidity_control_model.d
 import 'package:scimetic/feature/humidity_control/model/humidity_model.dart';
 
 class HumidityController extends GetxController {
-
   final TextEditingController dayHumidityRHController = TextEditingController();
-  final TextEditingController dayHumidityRHDeadbandController = TextEditingController();
-  final TextEditingController nightHumidityRHController = TextEditingController();
-  final TextEditingController nightHumidityRHDeadbandController = TextEditingController();
-  final TextEditingController dayDehumidityRHController = TextEditingController();
-  final TextEditingController nightDehumidityRHController = TextEditingController();
-  final TextEditingController dayDehumidityRHDeadbandController = TextEditingController();
-  final TextEditingController nightDehumidityRHDeadbandController = TextEditingController();
+  final TextEditingController dayHumidityRHDeadbandController =
+      TextEditingController();
+  final TextEditingController nightHumidityRHController =
+      TextEditingController();
+  final TextEditingController nightHumidityRHDeadbandController =
+      TextEditingController();
+  final TextEditingController dayDehumidityRHController =
+      TextEditingController();
+  final TextEditingController nightDehumidityRHController =
+      TextEditingController();
+  final TextEditingController dayDehumidityRHDeadbandController =
+      TextEditingController();
+  final TextEditingController nightDehumidityRHDeadbandController =
+      TextEditingController();
 
   RxString dayHumiditySwitch = "".obs;
   RxString dayHumidityRelay = "".obs;
@@ -91,13 +96,11 @@ class HumidityController extends GetxController {
   HumidityControlModel humidityControlModel = HumidityControlModel();
 
   Future getHumidityControllerData() async {
-
-    token =  storeData.getString(StoreData.accessToken)!;
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       isGetData.value = false;
 
       isEdit.value = false;
@@ -110,28 +113,26 @@ class HumidityController extends GetxController {
       nightDehumidityRHController.clear();
       dayDehumidityRHDeadbandController.clear();
       nightDehumidityRHDeadbandController.clear();
-      dayHumiditySwitch.value = "";
 
       progressDialog(true, Get.context!);
 
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.humidityControl}/${id.value}',
             requestType: HTTPRequestType.GET,
             headers: {
-              "Authorization" : 'Bearer $token',
-            }
-        );
+              "Authorization": 'Bearer $token',
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
         await apiService.getSwitchData().whenComplete(() {
-          if ( apiService.switchList.isNotEmpty ) {
+          if (apiService.switchList.isNotEmpty) {
             switchList.clear();
             switchList.addAll(apiService.switchList);
           }
@@ -142,220 +143,197 @@ class HumidityController extends GetxController {
 
         isGetData.value = true;
 
-        if ( apiResponse!.statusCode == 200 ) {
-
+        if (apiResponse!.statusCode == 200) {
           isEdit.value = true;
-
           humidityControlModel = HumidityControlModel.fromJson(data);
 
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          HumidityControl humidityControl =
+              humidityControlModel.humidityControl!;
+
+          dayHumidityRHController.text = humidityControl.dayHumidityRh != 0
+              ? humidityControl.dayHumidityRh.toString()
+              : "";
+          dayHumidityRHDeadbandController.text =
+              humidityControl.dayHumidityRhDeadband != 0
+                  ? humidityControl.dayHumidityRhDeadband.toString()
+                  : "";
+          dayHumiditySwitch.value = humidityControl.dayHumiditySwitch ?? "";
+          dayHumidityRelay.value = humidityControl.dayHumidityRelay ?? "";
+          nightHumidityRHController.text = humidityControl.nightHumidityRh != 0
+              ? humidityControl.nightHumidityRh.toString()
+              : "";
+          nightHumidityRHDeadbandController.text =
+              humidityControl.nightHumidityRhDeadband != 0
+                  ? humidityControl.nightHumidityRhDeadband.toString()
+                  : "";
+          nightHumiditySwitch.value = humidityControl.nightHumiditySwitch ?? "";
+          nightHumidityRelay.value = humidityControl.nightHumidityRelay ?? "";
+          dayDehumidityRHController.text = humidityControl.dayDehumidityRh != 0
+              ? humidityControl.dayDehumidityRh.toString()
+              : "";
+          dayDehumidityRHDeadbandController.text =
+              humidityControl.dayDehumidityRhDeadband != 0
+                  ? humidityControl.dayDehumidityRhDeadband.toString()
+                  : "";
+          dayDehumidificationSwitch.value =
+              humidityControl.dayDehumiditySwitch ?? "";
+          dayDehumidificationRelay.value =
+              humidityControl.dayDehumidityRelay ?? "";
+          nightDehumidityRHController.text =
+              humidityControl.nightDehumidityRh != 0
+                  ? humidityControl.nightDehumidityRh.toString()
+                  : "";
+          nightDehumidityRHDeadbandController.text =
+              humidityControl.nightDehumidityRhDeadband != 0
+                  ? humidityControl.nightDehumidityRhDeadband.toString()
+                  : "";
+          nightDehumidificationSwitch.value =
+              humidityControl.nightDehumiditySwitch ?? "";
+          nightDehumidificationRelay.value =
+              humidityControl.nightDehumidityRelay ?? "";
+
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
   Future addHumidityData({required HumidityModel humidityModel}) async {
-
-    token =  storeData.getString(StoreData.accessToken)!;
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.humidityControl}/${id.value}',
             requestType: HTTPRequestType.POST,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
-          parameter: humidityModel.toJson()
-        );
+            parameter: humidityModel.toJson());
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
-
     }
-
   }
 
   void onSave() async {
-
     isValid.value = true;
 
-    if ( dayHumidityRHController.text.isEmpty ) {
-
+    if (dayHumidityRHController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayHumidityRHDeadbandController.text.isEmpty ) {
-
+    } else if (dayHumidityRHDeadbandController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightHumidityRHController.text.isEmpty ) {
-
+    } else if (nightHumidityRHController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightHumidityRHDeadbandController.text.isEmpty ) {
-
+    } else if (nightHumidityRHDeadbandController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayDehumidityRHController.text.isEmpty ) {
-
+    } else if (dayDehumidityRHController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayDehumidityRHDeadbandController.text.isEmpty ) {
-
+    } else if (dayDehumidityRHDeadbandController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightDehumidityRHController.text.isEmpty ) {
-
+    } else if (nightDehumidityRHController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightDehumidityRHDeadbandController.text.isEmpty ) {
-
+    } else if (nightDehumidityRHDeadbandController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayHumiditySwitch.value.isEmpty ) {
-
+    } else if (dayHumiditySwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayHumidityRelay.value.isEmpty ) {
-
+    } else if (dayHumidityRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightHumiditySwitch.value.isEmpty ) {
-
+    } else if (nightHumiditySwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightHumidityRelay.value.isEmpty ) {
-
+    } else if (nightHumidityRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayDehumidificationSwitch.value.isEmpty ) {
-
+    } else if (dayDehumidificationSwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayDehumidificationRelay.value.isEmpty ) {
-
+    } else if (dayDehumidificationRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightDehumidificationSwitch.value.isEmpty ) {
-
+    } else if (nightDehumidificationSwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightDehumidificationRelay.value.isEmpty ) {
-
+    } else if (nightDehumidificationRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
     } else {
-
       bool isConnected = await checkNetConnectivity();
 
       if (isConnected == true) {
-
         progressDialog(true, Get.context!);
 
         HumidityModel humidityModel = HumidityModel();
 
-        humidityModel.dayHumidityRh = double.parse(dayHumidityRHController.text);
-        humidityModel.dayHumidityRhDeadband = double.parse(dayHumidityRHDeadbandController.text);
+        humidityModel.dayHumidityRh =
+            double.parse(dayHumidityRHController.text);
+        humidityModel.dayHumidityRhDeadband =
+            double.parse(dayHumidityRHDeadbandController.text);
         humidityModel.dayHumiditySwitch = dayHumiditySwitch.value;
         humidityModel.dayHumidityRelay = dayHumidityRelay.value;
-        humidityModel.nightHumidityRh = double.parse(nightHumidityRHController.text);
-        humidityModel.nightHumidityRhDeadband = double.parse(nightHumidityRHDeadbandController.text);
+        humidityModel.nightHumidityRh =
+            double.parse(nightHumidityRHController.text);
+        humidityModel.nightHumidityRhDeadband =
+            double.parse(nightHumidityRHDeadbandController.text);
         humidityModel.nightHumiditySwitch = nightHumiditySwitch.value;
         humidityModel.nightHumidityRelay = nightHumidityRelay.value;
-        humidityModel.dayDehumidityRh = double.parse(dayDehumidityRHController.text);
-        humidityModel.dayDehumidityRhDeadband = double.parse(dayDehumidityRHDeadbandController.text);
+        humidityModel.dayDehumidityRh =
+            double.parse(dayDehumidityRHController.text);
+        humidityModel.dayDehumidityRhDeadband =
+            double.parse(dayDehumidityRHDeadbandController.text);
         humidityModel.dayDehumiditySwitch = dayDehumidificationSwitch.value;
         humidityModel.dayDehumidityRelay = dayDehumidificationRelay.value;
-        humidityModel.nightDehumidityRh = double.parse(nightDehumidityRHController.text);
-        humidityModel.nightDehumidityRhDeadband = double.parse(nightDehumidityRHDeadbandController.text);
+        humidityModel.nightDehumidityRh =
+            double.parse(nightDehumidityRHController.text);
+        humidityModel.nightDehumidityRhDeadband =
+            double.parse(nightDehumidityRHDeadbandController.text);
         humidityModel.nightDehumiditySwitch = nightDehumidificationSwitch.value;
         humidityModel.nightDehumidityRelay = nightDehumidificationRelay.value;
 
         await addHumidityData(humidityModel: humidityModel).whenComplete(() {
-
-            progressDialog(false, Get.context!);
-
+          progressDialog(false, Get.context!);
         });
-
       } else {
-
-        showSnack(
-            title: AppStrings.noInternetConnection,
-            width: 200.w
-        );
-
+        showSnack(title: AppStrings.noInternetConnection, width: 200.w);
       }
     }
-
   }
-
 }

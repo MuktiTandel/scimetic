@@ -84,7 +84,7 @@ class ExtractorControlScreen extends StatelessWidget {
                                 controller.isAuto.value = !controller.isAuto.value;
                               },
                               child: Image.asset(
-                                controller.isAuto.value == false
+                                controller.isAuto.value == true
                                     ? Get.isDarkMode
                                         ? AppImages.darkSelectedToggle
                                         : AppImages.lightSelectToggle
@@ -101,11 +101,11 @@ class ExtractorControlScreen extends StatelessWidget {
                           ),
                           Obx(
                             () => CustomText(
-                              text: controller.isAuto.value
+                              text: controller.isAuto.value == false
                                   ? AppStrings.off
                                   : AppStrings.on,
                               fontSize: 14.sp,
-                              color: controller.isAuto.value
+                              color: controller.isAuto.value == false
                                   ? AppColors.lightText
                                   : Get.isDarkMode
                                       ? AppColors.darkText
@@ -147,22 +147,26 @@ class ExtractorControlScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                commonTexField(
+                                Obx(() => commonTexField(
                                     title: AppStrings.temperature,
                                     controller: controller.dayTemperatureController,
                                     suffixText: "°C",
                                     hintText: AppStrings.temperature,
-                                    onChanged: (value) {}),
+                                    isReadOnly: controller.isAuto.value,
+                                    onChanged: (value) {}
+                                )),
                                 SizedBox(
                                   height: 15.h,
                                 ),
-                                commonTexField(
+                                Obx(() => commonTexField(
                                     title: AppStrings.temperatureDeadband,
                                     controller:
-                                        controller.dayTemperatureDeadbandController,
+                                    controller.dayTemperatureDeadbandController,
                                     suffixText: "°C",
                                     hintText: AppStrings.temperatureDeadband,
-                                    onChanged: (value) {}),
+                                    isReadOnly: controller.isAuto.value,
+                                    onChanged: (value) {}
+                                )),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -188,8 +192,8 @@ class ExtractorControlScreen extends StatelessWidget {
                                     onChange: (value) {
                                       controller.daySwitch.value = value;
                                     },
-                                    isEdit: false.obs,
-                                    isEnable: false,
+                                    isEdit: controller.isEdit,
+                                    isEnable: controller.isAuto.value,
                                   ),
                                 ),
                                 SizedBox(
@@ -205,7 +209,7 @@ class ExtractorControlScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 5.h,
                                 ),
-                                CustomDropDown(
+                                Obx(() => CustomDropDown(
                                   width: 330.w,
                                   hintText: AppStrings.chooseRelay,
                                   itemList: controller.dayRelayList,
@@ -214,9 +218,9 @@ class ExtractorControlScreen extends StatelessWidget {
                                   onChange: (value) {
                                     controller.dayRelay.value = value;
                                   },
-                                  isEdit: false.obs,
-                                  isEnable: false,
-                                )
+                                  isEdit: controller.isEdit,
+                                  isEnable: controller.isAuto.value,
+                                ))
                               ],
                             ),
                           ),
@@ -240,25 +244,29 @@ class ExtractorControlScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  commonTexField(
+                                  Obx(() => commonTexField(
                                       title: AppStrings.temperature,
                                       controller:
-                                          controller.nightTemperatureController,
+                                      controller.nightTemperatureController,
                                       suffixText: "°C",
                                       hintText: AppStrings.temperature,
                                       isFilled: true,
-                                      onChanged: (value) {}),
+                                      isReadOnly: controller.isAuto.value,
+                                      onChanged: (value) {}
+                                  )),
                                   SizedBox(
                                     height: 15.h,
                                   ),
-                                  commonTexField(
+                                  Obx(() => commonTexField(
                                       title: AppStrings.temperatureDeadband,
                                       controller: controller
                                           .nightTemperatureDeadbandController,
                                       suffixText: "°C",
                                       isFilled: true,
+                                      isReadOnly: controller.isAuto.value,
                                       hintText: AppStrings.temperatureDeadband,
-                                      onChanged: (value) {}),
+                                      onChanged: (value) {}
+                                  )),
                                   SizedBox(
                                     height: 15.h,
                                   ),
@@ -284,8 +292,8 @@ class ExtractorControlScreen extends StatelessWidget {
                                       onChange: (value) {
                                         controller.nightSwitch.value = value;
                                       },
-                                      isEdit: false.obs,
-                                      isEnable: false,
+                                      isEdit: controller.isEdit,
+                                      isEnable: controller.isAuto.value,
                                     ),
                                   ),
                                   SizedBox(
@@ -301,7 +309,7 @@ class ExtractorControlScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 5.h,
                                   ),
-                                  CustomDropDown(
+                                  Obx(() => CustomDropDown(
                                     width: 330.w,
                                     hintText: AppStrings.chooseRelay,
                                     itemList: controller.nightRelayList,
@@ -310,9 +318,9 @@ class ExtractorControlScreen extends StatelessWidget {
                                     onChange: (value) {
                                       controller.nightRelay.value = value;
                                     },
-                                    isEdit: false.obs,
-                                    isEnable: false,
-                                  )
+                                    isEdit: controller.isEdit,
+                                    isEnable: controller.isAuto.value,
+                                  ))
                                 ],
                               ),
                             ),

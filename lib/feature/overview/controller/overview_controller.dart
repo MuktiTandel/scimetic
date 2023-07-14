@@ -130,7 +130,12 @@ class OverviewController extends GetxController {
 
   RxBool isGetDevice = false.obs;
 
-  Map<String, num> data = {'germination': 0, 'seedling': 0, 'vegetative': 0, 'flowering': 0};
+  Map<String, num> data = {
+    'germination': 0,
+    'seedling': 0,
+    'vegetative': 0,
+    'flowering': 0
+  };
 
   Future getGrowSheetData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -284,11 +289,9 @@ class OverviewController extends GetxController {
   }
 
   Future getDeviceData({required int id}) async {
-
     token = storeData.getString(StoreData.accessToken)!;
 
     if (token.isNotEmpty) {
-
       isGetDevice.value = false;
 
       try {
@@ -307,7 +310,6 @@ class OverviewController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         if (apiResponse!.statusCode == 200) {
-
           isGetDevice.value = true;
 
           deviceModel = DeviceModel.fromJson(data);
@@ -356,11 +358,37 @@ class OverviewController extends GetxController {
           growsheetLabeler =
               growSheetLabelerModel.growsheetLabeler ?? GrowsheetLabeler();
 
+          selectStage.value = growsheetLabeler.stage ?? "";
+
+          harvestDate.selectedDate =
+              DateFormat("yyyy-MM-dd").parse(growsheetLabeler.harvestDate!);
+          plantedDate.selectedDate = DateFormat("yyyy-MM-dd hh:mm:ss")
+              .parse(growsheetLabeler.plantedDate!);
+
+          progressValue.value = 0;
+
+          totalPeriod.value = harvestDate.selectedDate!
+                  .difference(plantedDate.selectedDate!)
+                  .inDays +
+              1;
+
+          currentDay.value =
+              DateTime.now().difference(plantedDate.selectedDate!).inDays + 1;
+
+          final graphData1 = graphData();
+
+          final num totalSpent =
+              graphData1.values.reduce((prev, curr) => prev + curr);
+          progressValue.value =
+              ((totalSpent / totalPeriod.value) * 100).ceil().clamp(0, 100);
+
+          AppConst().debug("progress value => ${progressValue.value}");
+
+          resolveAngles(graphData1, totalPeriod.value);
+
           return true;
         } else {
-          if (apiResponse!.statusCode == 403) {
-            showSnack(width: 200.w, title: data["message"]);
-          }
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
@@ -408,18 +436,24 @@ class OverviewController extends GetxController {
   }
 
   Future addGrowSheetLabeler() async {
-
     GrowsheetLabeler growSheetLabeler = GrowsheetLabeler();
 
-    growSheetLabeler.typeOfPlant = plantController.text.isNotEmpty ? plantController.text : "";
-    growSheetLabeler.genealogy = genealogyController.text.isNotEmpty ? genealogyController.text : "";
-    growSheetLabeler.stage = selectStage.value.isNotEmpty ? selectStage.value : "";
-    growSheetLabeler.plantedDate = plantedDateValue.value.isNotEmpty ? plantedDateValue.value : "";
-    growSheetLabeler.harvestDate = harvestDateValue.value.isNotEmpty ? harvestDateValue.value : "";
-    growSheetLabeler.barcode = barcodeController.text.isNotEmpty ? int.parse(barcodeController.text) : 0;
+    growSheetLabeler.typeOfPlant =
+        plantController.text.isNotEmpty ? plantController.text : "";
+    growSheetLabeler.genealogy =
+        genealogyController.text.isNotEmpty ? genealogyController.text : "";
+    growSheetLabeler.stage =
+        selectStage.value.isNotEmpty ? selectStage.value : "";
+    growSheetLabeler.plantedDate =
+        plantedDateValue.value.isNotEmpty ? plantedDateValue.value : "";
+    growSheetLabeler.harvestDate =
+        harvestDateValue.value.isNotEmpty ? harvestDateValue.value : "";
+    growSheetLabeler.barcode = barcodeController.text.isNotEmpty
+        ? int.parse(barcodeController.text)
+        : 0;
 
-    await updateGrowSheetLabelerData(id: growSheetId.value, growsheetLabeler: growSheetLabeler);
-
+    await updateGrowSheetLabelerData(
+        id: growSheetId.value, growsheetLabeler: growSheetLabeler);
   }
 
   Future get1HourData({required int id, required String identifier}) async {
@@ -623,8 +657,8 @@ class OverviewController extends GetxController {
     return dataClone;
   }
 
-  Map<String, Map<String, double>> resolveAngles(Map<String, num> data, int totalPeriod) {
-
+  Map<String, Map<String, double>> resolveAngles(
+      Map<String, num> data, int totalPeriod) {
     rangeValue4.value = 0.0;
     rangeValue3.value = 0.0;
     rangeValue2.value = 0.0;
@@ -636,7 +670,10 @@ class OverviewController extends GetxController {
     double startAngle = 0;
     double endAngle = 0;
     for (var key in keys) {
-      startAngle = angles.isEmpty ? 0 : startAngle + (data[keys[keys.indexOf(key) - 1]]! / totalPeriod) * 2 * pi;
+      startAngle = angles.isEmpty
+          ? 0
+          : startAngle +
+              (data[keys[keys.indexOf(key) - 1]]! / totalPeriod) * 2 * pi;
       endAngle = endAngle + (data[key]! / totalPeriod) * 2 * pi;
       angles[key] = {'startAngle': startAngle, 'endAngle': endAngle};
     }
@@ -646,15 +683,15 @@ class OverviewController extends GetxController {
     rangeValue3.value = angles["vegetative"]!["endAngle"]! * 10 + 10;
     rangeValue4.value = progressValue.value.toDouble();
 
-    if ( rangeValue2.value < rangeValue1.value ) {
+    if (rangeValue2.value < rangeValue1.value) {
       rangeValue2.value = rangeValue1.value + 5;
     }
 
-    if ( rangeValue3.value < rangeValue2.value ) {
+    if (rangeValue3.value < rangeValue2.value) {
       rangeValue3.value = rangeValue2.value + 5;
     }
 
-    if ( rangeValue4.value < rangeValue3.value ) {
+    if (rangeValue4.value < rangeValue3.value) {
       rangeValue4.value = rangeValue3.value + 5;
     }
 
@@ -662,18 +699,13 @@ class OverviewController extends GetxController {
       AppConst().debug('$key $value');
     });
 
-    AppConst().debug(
-        'range value 4 => ${rangeValue4.value}');
-    AppConst().debug(
-        'range value 3 => ${rangeValue3.value}');
-    AppConst().debug(
-        'range value 2 => ${rangeValue2.value}');
-    AppConst().debug(
-        'range value 1 => ${rangeValue1.value}');
+    AppConst().debug('range value 4 => ${rangeValue4.value}');
+    AppConst().debug('range value 3 => ${rangeValue3.value}');
+    AppConst().debug('range value 2 => ${rangeValue2.value}');
+    AppConst().debug('range value 1 => ${rangeValue1.value}');
 
     return angles;
   }
-
 }
 
 class ChartSampleData {

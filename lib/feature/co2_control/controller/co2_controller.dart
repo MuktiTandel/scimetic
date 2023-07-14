@@ -13,6 +13,7 @@ import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/services/api_service.dart';
 import 'package:scimetic/core/utils/check_net_connectivity.dart';
 import 'package:scimetic/core/utils/store_data.dart';
+import 'package:scimetic/feature/co2_control/model/co2_control_model.dart';
 import 'package:scimetic/feature/co2_control/model/co2_model.dart';
 
 class Co2Controller extends GetxController {
@@ -47,12 +48,7 @@ class Co2Controller extends GetxController {
     'Relay 4'
   ];
 
-  List<String> relayList = [
-    'Relay 1',
-    'Relay 2',
-    'Relay 3',
-    'Relay 4'
-  ];
+  List<String> relayList = ['Relay 1', 'Relay 2', 'Relay 3', 'Relay 4'];
 
   RxBool isGetData = false.obs;
 
@@ -70,189 +66,175 @@ class Co2Controller extends GetxController {
 
   RxString errorMessage = "".obs;
 
-  Future getCo2ControllerData() async {
+  Co2ControlModel co2controlModel = Co2ControlModel();
 
-    token =  storeData.getString(StoreData.accessToken)!;
+  RxBool isEdit = false.obs;
+
+  Future getCo2ControllerData() async {
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       isGetData.value = false;
+
+      isEdit.value = false;
 
       progressDialog(true, Get.context!);
 
-      try {
+      dayMinimumTarget.clear();
+      dayMaximumTarget.clear();
+      dayHighProtection.clear();
+      nightMinimumTarget.clear();
+      nightMaximumTarget.clear();
+      nightHighProtection.clear();
 
+      try {
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.co2Control}/${id.value}',
             requestType: HTTPRequestType.GET,
             headers: {
-              "Authorization" : 'Bearer $token',
-            }
-        );
+              "Authorization": 'Bearer $token',
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
         await apiService.getSwitchData().whenComplete(() {
-          if ( apiService.switchList.isNotEmpty ) {
+          if (apiService.switchList.isNotEmpty) {
             switchList.clear();
             switchList.addAll(apiService.switchList);
           }
           AppConst().debug('switch list length => ${switchList.length}');
         });
 
-         progressDialog(false, Get.context!);
+        progressDialog(false, Get.context!);
 
         isGetData.value = true;
 
-        if ( apiResponse!.statusCode == 200 ) {
+        if (apiResponse!.statusCode == 200) {
 
-           showSnack(
-               width: 200.w,
-               title: data["message"]
-           );
+          isEdit.value = true;
+          co2controlModel = Co2ControlModel.fromJson(data);
+
+          Co2Control co2control = co2controlModel.co2Control!;
+
+          dayMinimumTarget.text = co2control.dayMinLevel != 0
+              ? co2control.dayMinLevel.toString()
+              : "";
+          dayMaximumTarget.text = co2control.dayMaxLevel != 0
+              ? co2control.dayMaxLevel.toString()
+              : "";
+          dayHighProtection.text = co2control.dayHighLevel != 0
+              ? co2control.dayHighLevel.toString()
+              : "";
+          dayLightningSwitch.value = co2control.daySwitch ?? "";
+          dayLightningRelay.value = co2control.dayRelay ?? "";
+          nightMinimumTarget.text = co2control.nightMinLevel != 0
+              ? co2control.nightMinLevel.toString()
+              : "";
+          nightMaximumTarget.text = co2control.nightMaxLevel != 0
+              ? co2control.nightMaxLevel.toString()
+              : "";
+          nightHighProtection.text = co2control.nightHighLevel != 0
+              ? co2control.nightHighLevel.toString()
+              : "";
+          nightLightningSwitch.value = co2control.nightSwitch ?? "";
+          nightLightningRelay.value = co2control.nightRelay ?? "";
+
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
   Future addCo2Data({required Co2Model co2model}) async {
-
-    token =  storeData.getString(StoreData.accessToken)!;
+    token = storeData.getString(StoreData.accessToken)!;
 
     id.value = storeData.getInt(StoreData.id)!;
 
-    if ( token.isNotEmpty ) {
-
+    if (token.isNotEmpty) {
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: '${ApiPath.baseUrl}${ApiPath.co2Control}/${id.value}',
             requestType: HTTPRequestType.POST,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
-            parameter: co2model.toJson()
-        );
+            parameter: co2model.toJson());
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
-
     }
-
   }
 
   void onSave() async {
-
     isValid.value = true;
 
-    if ( dayMinimumTarget.text.isEmpty ) {
-
+    if (dayMinimumTarget.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayMaximumTarget.text.isEmpty ) {
-
+    } else if (dayMaximumTarget.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayHighProtection.text.isEmpty ) {
-
+    } else if (dayHighProtection.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayLightningSwitch.value.isEmpty ) {
-
+    } else if (dayLightningSwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( dayLightningRelay.value.isEmpty ) {
-
+    } else if (dayLightningRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightMinimumTarget.text.isEmpty ) {
-
+    } else if (nightMinimumTarget.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightMaximumTarget.text.isEmpty ) {
-
+    } else if (nightMaximumTarget.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightHighProtection.text.isEmpty ) {
-
+    } else if (nightHighProtection.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightLightningRelay.value.isEmpty ) {
-
+    } else if (nightLightningRelay.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( nightLightningSwitch.value.isEmpty ) {
-
+    } else if (nightLightningSwitch.value.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
     } else {
-
       bool isConnected = await checkNetConnectivity();
 
-      if ( isConnected == true ) {
-
+      if (isConnected == true) {
         progressDialog(true, Get.context!);
 
         Co2Model co2model = Co2Model();
@@ -269,21 +251,11 @@ class Co2Controller extends GetxController {
         co2model.nightRelay = nightLightningRelay.value;
 
         await addCo2Data(co2model: co2model).whenComplete(() {
-
           progressDialog(false, Get.context!);
-
         });
-
       } else {
-
-        showSnack(
-            title: AppStrings.noInternetConnection,
-            width: 200.w
-        );
+        showSnack(title: AppStrings.noInternetConnection, width: 200.w);
       }
-
     }
-
   }
-
 }

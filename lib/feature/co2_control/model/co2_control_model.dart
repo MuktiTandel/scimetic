@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-Welcome4 welcome4FromJson(String str) => Welcome4.fromJson(json.decode(str));
+Co2ControlModel co2ControlModelFromJson(String str) => Co2ControlModel.fromJson(json.decode(str));
 
-String welcome4ToJson(Welcome4 data) => json.encode(data.toJson());
+String co2ControlModelToJson(Co2ControlModel data) => json.encode(data.toJson());
 
-class Welcome4 {
-  Welcome4({
+class Co2ControlModel {
+  Co2ControlModel({
     this.message,
     this.co2Control,
   });
@@ -13,7 +13,7 @@ class Welcome4 {
   String? message;
   Co2Control? co2Control;
 
-  factory Welcome4.fromJson(Map<String, dynamic> json) => Welcome4(
+  factory Co2ControlModel.fromJson(Map<String, dynamic> json) => Co2ControlModel(
     message: json["message"] ?? "",
     co2Control: json["co2Control"] != null ? Co2Control.fromJson(json["co2Control"]) : Co2Control(),
   );

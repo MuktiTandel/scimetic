@@ -98,7 +98,7 @@ class OverviewController extends GetxController {
 
   GrowSheetLabelerModel growSheetLabelerModel = GrowSheetLabelerModel();
 
-  GrowsheetLabeler growsheetLabeler = GrowsheetLabeler();
+  GrowsheetLabeler growSheetLabeler = GrowsheetLabeler();
 
   RxBool isGetData = false.obs;
 
@@ -129,6 +129,10 @@ class OverviewController extends GetxController {
   RxInt totalPeriod = 0.obs;
 
   RxBool isGetDevice = false.obs;
+
+  DateTime plantedDate1 = DateTime.now();
+
+  DateTime harvestDate1 = DateTime.now();
 
   Map<String, num> data = {
     'germination': 0,
@@ -163,64 +167,7 @@ class OverviewController extends GetxController {
           growSheetId.value = growSheetData.growsheets!.first.id!;
 
           if (growSheetData.growsheets!.isNotEmpty) {
-            getGrowSheetLabelerData(id: growSheetId.value).whenComplete(() {
-              if (growSheetLabelerModel.growsheetLabeler != null) {
-                selectStage.value =
-                    growSheetLabelerModel.growsheetLabeler!.stage ??
-                        AppStrings.germination;
-              }
-
-              if (selectStage.value.contains(AppStrings.flowering)) {
-                isFlowering.value = true;
-                isVegetative.value = false;
-                isSeedling.value = false;
-                isGermination.value = false;
-              } else if (selectStage.value.contains(AppStrings.germination)) {
-                isGermination.value = true;
-                isSeedling.value = false;
-                isVegetative.value = false;
-                isFlowering.value = false;
-              } else if (selectStage.value.contains(AppStrings.seedling)) {
-                isSeedling.value = true;
-                isFlowering.value = false;
-                isVegetative.value = false;
-                isGermination.value = false;
-              } else if (selectStage.value.contains(AppStrings.vegetative)) {
-                isVegetative.value = true;
-                isGermination.value = false;
-                isFlowering.value = false;
-                isSeedling.value = false;
-              } else {
-                isGermination.value = true;
-                isSeedling.value = false;
-                isFlowering.value = false;
-                isVegetative.value = false;
-              }
-
-              if (growSheetLabelerModel.growsheetLabeler != null) {
-                if (growSheetLabelerModel
-                    .growsheetLabeler!.plantedDate!.isNotEmpty) {
-                  DateTime plantedDate = DateFormat("dd.MM.yyyy").parse(
-                      growSheetLabelerModel.growsheetLabeler!.plantedDate!);
-
-                  AppConst().debug('planted date => $plantedDate');
-
-                  plantedDateValue.value =
-                      "${plantedDate.day}.${plantedDate.month}.${plantedDate.year}";
-                }
-              }
-
-              if (growSheetLabelerModel.growsheetLabeler != null) {
-                if (growSheetLabelerModel
-                    .growsheetLabeler!.harvestDate!.isNotEmpty) {
-                  DateTime harvestDate = DateFormat("dd.MM.yyyy").parse(
-                      growSheetLabelerModel.growsheetLabeler!.harvestDate!);
-
-                  harvestDateValue.value =
-                      "${harvestDate.day}.${harvestDate.month}.${harvestDate.year}";
-                }
-              }
-            });
+            await getGrowSheetLabelerData(id: growSheetId.value);
           }
 
           AppConst().debug('grow sheet id => ${growSheetId.value}');
@@ -352,18 +299,86 @@ class OverviewController extends GetxController {
         if (apiResponse!.statusCode == 200) {
           growSheetLabelerModel = GrowSheetLabelerModel.fromJson(data);
 
-          AppConst().debug(
-              'grow sheet label => ${growSheetLabelerModel.growsheetLabeler}');
+          if (growSheetLabelerModel.growsheetLabeler != null) {
 
-          growsheetLabeler =
+            selectStage.value =
+                growSheetLabelerModel.growsheetLabeler!.stage ??
+                    AppStrings.germination;
+
+          }
+
+          if (selectStage.value.contains(AppStrings.flowering)) {
+
+            isFlowering.value = true;
+            isVegetative.value = false;
+            isSeedling.value = false;
+            isGermination.value = false;
+
+          } else if (selectStage.value.contains(AppStrings.germination)) {
+
+            isGermination.value = true;
+            isSeedling.value = false;
+            isVegetative.value = false;
+            isFlowering.value = false;
+
+          } else if (selectStage.value.contains(AppStrings.seedling)) {
+
+            isSeedling.value = true;
+            isFlowering.value = false;
+            isVegetative.value = false;
+            isGermination.value = false;
+
+          } else if (selectStage.value.contains(AppStrings.vegetative)) {
+
+            isVegetative.value = true;
+            isGermination.value = false;
+            isFlowering.value = false;
+            isSeedling.value = false;
+
+          } else {
+
+            isGermination.value = true;
+            isSeedling.value = false;
+            isFlowering.value = false;
+            isVegetative.value = false;
+
+          }
+
+          if (growSheetLabelerModel.growsheetLabeler != null) {
+
+            plantController.text = growSheetLabelerModel.growsheetLabeler!.typeOfPlant!;
+            genealogyController.text = growSheetLabelerModel.growsheetLabeler!.genealogy!;
+
+            if (growSheetLabelerModel
+                .growsheetLabeler!.plantedDate!.isNotEmpty) {
+              plantedDate1 = DateFormat("dd.MM.yyyy").parse(
+                  growSheetLabelerModel.growsheetLabeler!.plantedDate!);
+
+              plantedDateValue.value =
+              "${plantedDate1.day}.${plantedDate1.month}.${plantedDate1.year}";
+            }
+
+          }
+
+          if (growSheetLabelerModel.growsheetLabeler != null) {
+
+            if (growSheetLabelerModel
+                .growsheetLabeler!.harvestDate!.isNotEmpty) {
+              harvestDate1 = DateFormat("dd.MM.yyyy").parse(
+                  growSheetLabelerModel.growsheetLabeler!.harvestDate!);
+
+              harvestDateValue.value =
+              "${harvestDate1.day}.${harvestDate1.month}.${harvestDate1.year}";
+            }
+
+          }
+
+          growSheetLabeler =
               growSheetLabelerModel.growsheetLabeler ?? GrowsheetLabeler();
 
-          selectStage.value = growsheetLabeler.stage ?? "";
+          harvestDate.selectedDate = harvestDate1;
 
-          harvestDate.selectedDate =
-              DateFormat("yyyy-MM-dd").parse(growsheetLabeler.harvestDate!);
-          plantedDate.selectedDate = DateFormat("yyyy-MM-dd hh:mm:ss")
-              .parse(growsheetLabeler.plantedDate!);
+          plantedDate.selectedDate = plantedDate1;
 
           progressValue.value = 0;
 
@@ -557,9 +572,6 @@ class OverviewController extends GetxController {
             HourData(element.time!, element.temperature!);
         temperatureDataList.add(temperatureData);
         temperatureDataList.sort((a, b) => a.x.compareTo(b.x));
-        for (var element in temperatureDataList) {
-          AppConst().debug('temperature value => ${element.x} ${element.y}');
-        }
         HourData humidityData = HourData(element.time!, element.humidity!);
         humidityDataList.add(humidityData);
         humidityDataList.sort((a, b) => a.x.compareTo(b.x));
@@ -583,8 +595,6 @@ class OverviewController extends GetxController {
               temperatureYValueList.cast<double>().reduce(min);
           maxTemperatureY.value =
               temperatureYValueList.cast<double>().reduce(max);
-          AppConst().debug("temperature  min y${minTemperatureY.value}");
-          AppConst().debug("temperature  max y ${maxTemperatureY.value}");
         }
       }
       if (humidityDataList.isNotEmpty) {
@@ -594,8 +604,6 @@ class OverviewController extends GetxController {
         if (humidityYValueList.isNotEmpty) {
           minHumidityY.value = humidityYValueList.cast<double>().reduce(min);
           maxHumidityY.value = humidityYValueList.cast<double>().reduce(max);
-          AppConst().debug("humidity min y${minHumidityY.value}");
-          AppConst().debug("humidity max y ${maxHumidityY.value}");
         }
       }
       if (co2DataList.isNotEmpty) {
@@ -605,8 +613,6 @@ class OverviewController extends GetxController {
         if (co2YValueList.isNotEmpty) {
           minCo2Y.value = co2YValueList.cast<double>().reduce(min);
           maxCo2Y.value = co2YValueList.cast<double>().reduce(max);
-          AppConst().debug("co2 min y${minCo2Y.value}");
-          AppConst().debug("co2 max y ${maxCo2Y.value}");
         }
       }
       if (vpdDataList.isNotEmpty) {
@@ -616,8 +622,6 @@ class OverviewController extends GetxController {
         if (vpdYValueList.isNotEmpty) {
           minVpdY.value = vpdYValueList.cast<double>().reduce(min);
           maxVpdY.value = vpdYValueList.cast<double>().reduce(max);
-          AppConst().debug("vpd min y${minVpdY.value}");
-          AppConst().debug("vpd max y ${maxVpdY.value}");
         }
       }
       if (lightDataList.isNotEmpty) {
@@ -627,8 +631,6 @@ class OverviewController extends GetxController {
         if (lightYValueList.isNotEmpty) {
           minLightY.value = lightYValueList.cast<double>().reduce(min);
           maxLightY.value = lightYValueList.cast<double>().reduce(max);
-          AppConst().debug("lightning min y${minLightY.value}");
-          AppConst().debug("lightning max y ${maxLightY.value}");
         }
       }
     }

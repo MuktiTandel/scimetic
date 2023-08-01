@@ -47,6 +47,8 @@ class ProfileSettingController extends GetxController {
     name.value = storeData.getString(StoreData.userName) ?? "";
     email.value = storeData.getString(StoreData.userEmail) ?? "";
 
+    AppConst().debug('name ==> ${name.value}');
+
     if ( name.value.isNotEmpty ) {
 
       String firstName = "";
@@ -54,7 +56,7 @@ class ProfileSettingController extends GetxController {
 
       if ( name.value.contains(' ')) {
 
-        var name1 = name.value.split(" ");
+        var name1 = name.value.split("  ");
 
         firstName = name1[0];
         lastName = name1[1];

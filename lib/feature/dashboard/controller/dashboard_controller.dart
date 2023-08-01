@@ -124,6 +124,20 @@ class DashboardController extends GetxController {
             mainList.addAll(growModel.growControllers!);
           }
 
+          if (dataList.isNotEmpty) {
+            itemList.clear();
+            for (var element in dataList) {
+              itemList
+                  .add(element.identifier!);
+            }
+            AppConst().debug(
+                'item list length => ${itemList.length}');
+          }
+
+          if ( itemList.isNotEmpty ) {
+            selectItem.value = itemList.first;
+          }
+
           showSnack(
               width: 200.w,
               title: data["message"]

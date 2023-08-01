@@ -161,17 +161,6 @@ class DashboardScreen extends StatelessWidget {
                                                 .isGraphScreen.value = true;
                                             controller.selectItem.value =
                                                 data.identifier ?? "";
-                                            if (controller
-                                                .dataList.isNotEmpty) {
-                                              controller.itemList.clear();
-                                              for (var element
-                                                  in controller.dataList) {
-                                                controller.itemList
-                                                    .add(element.identifier!);
-                                              }
-                                              AppConst().debug(
-                                                  'item list length => ${controller.itemList.length}');
-                                            }
                                             overViewController
                                                 .getClimateData(
                                                     identifier:

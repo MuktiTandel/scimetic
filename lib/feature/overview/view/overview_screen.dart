@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,23 +39,29 @@ class _OverviewScreenState extends State<OverviewScreen> {
     super.initState();
     homeController.isDashboard.value = false;
     controller.isOverview.value = true;
-    // Timer.periodic(const Duration(minutes: 4), (timer) {
-    //   if ( controller.isGraphScreen.value = true ) {
-    //     if ( controller.isHour.value == true ) {
-    //       controller.getHourData(
+    // Timer.periodic(const Duration(minutes: 1), (timer) {
+    //   if (controller.isGraphScreen.value = true) {
+    //     if (controller.is1Hour.value == true) {
+    //       controller.get1HourData(
     //           id: controller.id.value,
-    //           identifier: dashboardController.selectItem.value
-    //       );
-    //     } else if ( controller.isWeek.value == true ) {
+    //           identifier: dashboardController.selectItem.value);
+    //     } else if (controller.isWeek.value == true) {
     //       controller.getWeekData(
     //           id: controller.id.value,
-    //           identifier: dashboardController.selectItem.value
-    //       );
-    //     } else if ( controller.isMonth.value == true ) {
+    //           identifier: dashboardController.selectItem.value);
+    //     } else if (controller.isMonth.value == true) {
     //       controller.getMonthData(
-    //           id: controller.id.value,
-    //           identifier: dashboardController.selectItem.value,
+    //         id: controller.id.value,
+    //         identifier: dashboardController.selectItem.value,
     //       );
+    //     } else if (controller.is6Hour.value == true) {
+    //       controller.get6HourData(
+    //           id: controller.id.value,
+    //           identifier: dashboardController.selectItem.value);
+    //     } else if (controller.is12Hour.value == true) {
+    //       controller.get12HourData(
+    //           id: controller.id.value,
+    //           identifier: dashboardController.selectItem.value);
     //     }
     //   }
     // });
@@ -1114,22 +1122,21 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                     if (controller.harvestDate.selectedDate!
                                         .toString()
                                         .isNotEmpty) {
-
                                       controller.progressValue.value = 0;
 
                                       controller.totalPeriod.value = controller
-                                          .harvestDate.selectedDate!
-                                          .difference(controller
-                                          .plantedDate.selectedDate!)
-                                          .inDays +
+                                              .harvestDate.selectedDate!
+                                              .difference(controller
+                                                  .plantedDate.selectedDate!)
+                                              .inDays +
                                           1;
 
                                       controller.currentDay.value =
                                           DateTime.now()
-                                              .difference(controller
-                                              .plantedDate
-                                              .selectedDate!)
-                                              .inDays +
+                                                  .difference(controller
+                                                      .plantedDate
+                                                      .selectedDate!)
+                                                  .inDays +
                                               1;
 
                                       final data = controller.graphData();
@@ -1138,37 +1145,39 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                           .reduce((prev, curr) => prev + curr);
                                       controller.progressValue.value =
                                           ((totalSpent /
-                                              controller
-                                                  .totalPeriod.value) *
-                                              100)
+                                                      controller
+                                                          .totalPeriod.value) *
+                                                  100)
                                               .ceil()
                                               .clamp(0, 100);
 
                                       AppConst().debug(
                                           "progress value => ${controller.progressValue.value}");
 
-                                      controller.resolveAngles(data, controller.totalPeriod.value);
-
+                                      controller.resolveAngles(
+                                          data, controller.totalPeriod.value);
                                     }
                                   },
                                   harvestTap: () async {
-
-                                    if ( controller.plantedDate.selectedDate!.toString().isNotEmpty ) {
+                                    if (controller.plantedDate.selectedDate!
+                                        .toString()
+                                        .isNotEmpty) {
                                       controller.progressValue.value = 0;
 
                                       controller.totalPeriod.value = controller
-                                          .harvestDate.selectedDate!
-                                          .difference(controller
-                                          .plantedDate.selectedDate!)
-                                          .inDays +
+                                              .harvestDate.selectedDate!
+                                              .difference(controller
+                                                  .plantedDate.selectedDate!)
+                                              .inDays +
                                           1;
 
-                                      controller.currentDay.value = DateTime
-                                          .now()
-                                          .difference(controller
-                                          .plantedDate.selectedDate!)
-                                          .inDays +
-                                          1;
+                                      controller.currentDay.value =
+                                          DateTime.now()
+                                                  .difference(controller
+                                                      .plantedDate
+                                                      .selectedDate!)
+                                                  .inDays +
+                                              1;
 
                                       final data = controller.graphData();
 
@@ -1176,55 +1185,59 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                           .reduce((prev, curr) => prev + curr);
                                       controller.progressValue.value =
                                           ((totalSpent /
-                                              controller
-                                                  .totalPeriod.value) *
-                                              100)
+                                                      controller
+                                                          .totalPeriod.value) *
+                                                  100)
                                               .ceil()
                                               .clamp(0, 100);
 
                                       AppConst().debug(
-                                          "progress value => ${controller
-                                              .progressValue.value}");
+                                          "progress value => ${controller.progressValue.value}");
 
-                                      controller.resolveAngles(data, controller.totalPeriod.value);
+                                      controller.resolveAngles(
+                                          data, controller.totalPeriod.value);
                                     }
                                   }),
                               SizedBox(
                                 height: 10.h,
                               ),
-                              Obx(() => deviceOverviewWidget(
-                                  onTap: () {
-                                    dashboardController.isOverView.value =
-                                    false;
-                                    homeController.isDeviceSetup.value = true;
-                                    homeController.isSetting.value = true;
-                                    homeController.changeModuleIndex(5);
-                                  },
-                                  switchesOnline: controller.isGetDevice.value == true
-                                      ? controller.deviceModel
-                                      .devices!.devicesSwitch!.online
-                                      .toString() : "0",
-                                  switchesOffline: controller.isGetDevice.value == true
-                                      ? controller.deviceModel
-                                      .devices!.devicesSwitch!.offline
-                                      .toString() : "0",
-                                  sensorOnline: controller.isGetDevice.value == true
-                                      ? controller
-                                      .deviceModel.devices!.sensor!.online
-                                      .toString() : "0",
-                                  sensorOffline: controller.isGetDevice.value == true
-                                      ? controller
-                                      .deviceModel.devices!.sensor!.offline
-                                      .toString() : "0",
-                                  valvesOnline: controller.isGetDevice.value == true
-                                      ? controller
-                                      .deviceModel.devices!.valve!.online
-                                      .toString() : "0",
-                                  valvesOffline: controller.isGetDevice.value == true
-                                      ? controller
-                                      .deviceModel.devices!.valve!.offline
-                                      .toString() : "0"
-                              ),),
+                              Obx(
+                                () => deviceOverviewWidget(
+                                    onTap: () {
+                                      dashboardController.isOverView.value =
+                                          false;
+                                      homeController.isDeviceSetup.value = true;
+                                      homeController.isSetting.value = true;
+                                      homeController.changeModuleIndex(5);
+                                    },
+                                    switchesOnline: controller.isGetDevice.value == true
+                                        ? controller.deviceModel.devices!
+                                            .devicesSwitch!.online
+                                            .toString()
+                                        : "0",
+                                    switchesOffline:
+                                        controller.isGetDevice.value == true
+                                            ? controller.deviceModel.devices!
+                                                .devicesSwitch!.offline
+                                                .toString()
+                                            : "0",
+                                    sensorOnline: controller.isGetDevice.value == true
+                                        ? controller.deviceModel.devices!.sensor!.online
+                                            .toString()
+                                        : "0",
+                                    sensorOffline: controller.isGetDevice.value == true
+                                        ? controller.deviceModel.devices!
+                                            .sensor!.offline
+                                            .toString()
+                                        : "0",
+                                    valvesOnline: controller.isGetDevice.value == true
+                                        ? controller.deviceModel.devices!.valve!.online
+                                            .toString()
+                                        : "0",
+                                    valvesOffline: controller.isGetDevice.value == true
+                                        ? controller.deviceModel.devices!.valve!.offline.toString()
+                                        : "0"),
+                              ),
                               SizedBox(
                                 height: 20.h,
                               )

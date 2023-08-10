@@ -94,7 +94,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(child: SizedBox(width: 10.w,)),
+                    SizedBox(width: 20.w,),
                     CustomButton(
                       width: 85.w,
                         height: 30.h,
@@ -102,17 +102,19 @@ class OrganizationSettingScreen extends StatelessWidget {
                             ? Colors.white : AppColors.subTitleColor,
                         buttonTextColor: Get.isDarkMode
                             ? AppColors.subTitleColor : Colors.white ,
-                        onTap: (){},
+                        onTap: (){
+                        controller.uploadImage();
+                        },
                         buttonText: AppStrings.upload
                     ),
                     SizedBox(width: 10.w,),
-                    OutLineButton(
-                      height: 30.h,
-                      width: 100.w,
-                      onTap: (){},
-                      color: AppColors.red,
-                      buttonText: AppStrings.remove,
-                    )
+                    // OutLineButton(
+                    //   height: 30.h,
+                    //   width: 100.w,
+                    //   onTap: (){},
+                    //   color: AppColors.red,
+                    //   buttonText: AppStrings.remove,
+                    // )
                   ],
                 ),
                 SizedBox(height: 15.h,),
@@ -127,7 +129,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.organizationNameController,
                   borderRadius: 8,
                   hintText: AppStrings.enterOrganizationName,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},
@@ -144,7 +146,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.addressController,
                   borderRadius: 8,
                   hintText: AppStrings.enterAddress,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},
@@ -161,7 +163,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.registrationNoController,
                   borderRadius: 8,
                   hintText: AppStrings.enterRegistrationNo,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},
@@ -178,7 +180,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.licenseNoController,
                   borderRadius: 8,
                   hintText: AppStrings.enterLicenseNumber,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},
@@ -241,9 +243,15 @@ class OrganizationSettingScreen extends StatelessWidget {
                     ),
                     counter: const SizedBox.shrink(),
                     fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
-                    filled: Get.isDarkMode ? true : false
+                    filled: Get.isDarkMode ? true : false,
+                    hintText: AppStrings.mobileNumber,
+                      hintStyle:  TextStyle(
+                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                        fontSize: 14.sp,
+                        fontFamily: "Poppins",
+                      )
                   ),
-                  initialCountryCode: 'IN',
+                  initialCountryCode: 'UA',
                   disableLengthCheck: false,
                   autovalidateMode: AutovalidateMode.disabled,
                   onChanged: (phone) {
@@ -261,7 +269,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.emailController,
                   borderRadius: 8,
                   hintText: AppStrings.enterEmail,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},
@@ -278,7 +286,7 @@ class OrganizationSettingScreen extends StatelessWidget {
                   controller: controller.websiteController,
                   borderRadius: 8,
                   hintText: AppStrings.websiteCom,
-                  hintTextSize: 12.sp,
+                  hintTextSize: 14.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
                   onchange: (value){},

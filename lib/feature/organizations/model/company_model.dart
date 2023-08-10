@@ -68,9 +68,9 @@ class Company {
     mobileNumber: json["mobileNumber"] ?? "",
     email: json["email"] ?? "",
     website: json["website"] ?? "",
-    growspaces: Controllers.fromJson(json["growspaces"]),
-    controllers: Controllers.fromJson(json["controllers"]),
-    sensors: Controllers.fromJson(json["sensors"]),
+    growspaces: json["growspaces"] != null ? Controllers.fromJson(json["growspaces"]) : Controllers(),
+    controllers: json["controllers"] != null ? Controllers.fromJson(json["controllers"]) : Controllers(),
+    sensors: json["sensors"] != null ? Controllers.fromJson(json["sensors"]) : Controllers(),
     admins: json["admins"] ?? 0,
     technicians: json["technicians"] ?? 0,
   );

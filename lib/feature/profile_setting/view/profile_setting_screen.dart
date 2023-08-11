@@ -8,6 +8,7 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/Outline_button.dart';
 import 'package:scimetic/core/elements/common_image_picker_widget.dart';
 import 'package:scimetic/core/elements/custom_button.dart';
+import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
@@ -75,10 +76,25 @@ class ProfileSettingScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Obx(() =>  controller.isPick.value == false
-                                ? Image.asset(
+                                ? controller.imageUrl.value.isEmpty ? Image.asset(
                               AppImages.logo,
                               height: 43.h,
                               width: 43.w,
+                            ) : ClipOval(
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(39),
+                                child: Image.network(
+                                  controller.imageUrl.value,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, expection, stackTrace){
+                                    return Image.asset(
+                                      AppImages.logo,
+                                      height: 40.h,
+                                      width: 40.w,
+                                    );
+                                  },
+                                ),
+                              ),
                             ) : ClipOval(
                               child: SizedBox.fromSize(
                                 size: const Size.fromRadius(39),
@@ -93,7 +109,7 @@ class ProfileSettingScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(child: SizedBox(width: 10.w,)),
+                    SizedBox(width: 20.w,),
                     CustomButton(
                         width: 85.w,
                         height: 30.h,
@@ -101,17 +117,23 @@ class ProfileSettingScreen extends StatelessWidget {
                             ? Colors.white : AppColors.subTitleColor,
                         buttonTextColor: Get.isDarkMode
                             ? AppColors.subTitleColor : Colors.white ,
-                        onTap: (){},
+                        onTap: (){
+                          if ( controller.imageFile != null ) {
+                            controller.uploadImage();
+                          } else {
+                            showSnack(title: AppStrings.pCImage, width: 250.w);
+                          }
+                        },
                         buttonText: AppStrings.upload
                     ),
-                    SizedBox(width: 10.w,),
-                    OutLineButton(
-                      height: 30.h,
-                      width: 100.w,
-                      onTap: (){},
-                      color: AppColors.red,
-                      buttonText: AppStrings.remove,
-                    )
+                    // SizedBox(width: 10.w,),
+                    // OutLineButton(
+                    //   height: 30.h,
+                    //   width: 100.w,
+                    //   onTap: (){},
+                    //   color: AppColors.red,
+                    //   buttonText: AppStrings.remove,
+                    // )
                   ],
                 ),
                 SizedBox(height: 15.h,),

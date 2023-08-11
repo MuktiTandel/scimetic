@@ -1,63 +1,28 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class GraphController extends GetxController {
 
-  RxBool is24Hour = true.obs;
-  RxBool is1Hour = false.obs;
-  RxBool is6Hour = false.obs;
-  RxBool is12Hour = false.obs;
-  RxBool isWeek = false.obs;
-  RxBool isMonth = false.obs;
-
-  RxBool isGermination = true.obs;
-  RxBool isSeedling = false.obs;
-  RxBool isVegetative = false.obs;
-  RxBool isFlowering = false.obs;
-
-  DateRangePickerController plantedDate = DateRangePickerController();
-  DateRangePickerController harvestDate = DateRangePickerController();
-
-  RxString plantedDateValue = "".obs;
-  RxString harvestDateValue = "".obs;
-
-  RxString selectStage = AppStrings.germination.obs;
-
   final controller = Get.put(OverviewController());
-
-  final TextEditingController barcodeController = TextEditingController();
-  final TextEditingController plantController = TextEditingController();
-  final TextEditingController genealogyController = TextEditingController();
-
-  RxDouble rangeValue1 = 0.0.obs;
-  RxDouble rangeValue2 = 0.0.obs;
-  RxDouble rangeValue3 = 0.0.obs;
-  RxDouble rangeValue4 = 0.0.obs;
-  RxInt progressValue = 0.obs;
-
-  RxInt currentDay = 0.obs;
-  RxInt totalPeriod = 0.obs;
 
   @override
   void onClose() {
 
-    if ( controller.isTemperature.value == true ) {
-      controller.isTemperature.value = false;
-    } else if ( controller.isElectricalLoad.value == true ) {
-      controller.isElectricalLoad.value = false;
-    } else if ( controller.isCo2.value == true ) {
-      controller.isCo2.value = false;
-    } else if ( controller.isLightning.value == true ) {
-      controller.isLightning.value = false;
-    } else if ( controller.isVdp.value == true ) {
-      controller.isVdp.value = false;
-    }
+    // if ( controller.isTemperature.value == true ) {
+    //   controller.isTemperature.value = false;
+    // } else if ( controller.isElectricalLoad.value == true ) {
+    //   controller.isElectricalLoad.value = false;
+    // } else if ( controller.isCo2.value == true ) {
+    //   controller.isCo2.value = false;
+    // } else if ( controller.isLightning.value == true ) {
+    //   controller.isLightning.value = false;
+    // } else if ( controller.isVdp.value == true ) {
+    //   controller.isVdp.value = false;
+    // }
 
     super.onClose();
 

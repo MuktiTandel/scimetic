@@ -11,7 +11,7 @@ import 'package:scimetic/core/elements/otp_textfield.dart';
 import 'package:scimetic/feature/authenticate_your_account/controller/authenticate_account_controller.dart';
 
 class AuthenticateAccountScreen extends StatefulWidget {
-   AuthenticateAccountScreen({Key? key}) : super(key: key);
+   const AuthenticateAccountScreen({Key? key}) : super(key: key);
 
   @override
   State<AuthenticateAccountScreen> createState() => _AuthenticateAccountScreenState();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scimetic/feature/calendar/element/event.dart';
 import 'package:scimetic/feature/calendar/element/gantt_default_day_header.dart';
 import 'package:scimetic/feature/calendar/element/gantt_default_event_row_per_week.dart';

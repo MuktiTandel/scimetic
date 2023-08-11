@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
+import 'package:scimetic/core/const/app_const.dart';
+
 class DonutChart extends StatefulWidget {
   final String plantedDate;
   final String harvestDate;
@@ -118,7 +120,7 @@ class _DonutChartState extends State<DonutChart> {
       'flowering': (9 / 16) * totalPeriod,
     };
 
-    print('total period => $totalPeriod}');
+    AppConst().debug('total period => $totalPeriod}');
 
     int remainingDays = currentDays;
     weightages.forEach((key, value) {
@@ -144,7 +146,7 @@ class _DonutChartState extends State<DonutChart> {
     }
 
     angles.forEach((key, value) {
-      print('$key $value');
+      AppConst().debug('$key $value');
     });
 
     return angles;

@@ -343,6 +343,7 @@ class AppStrings {
   static const String downtime = "Downtime";
   static const String deviceType = "Device Type";
   static const String profileSettings = "Profile settings";
+  static const String profile = "profile";
   static const String notificationsSettings = "Notifications Settings";
   static const String userPhoto = "User Photo";
   static const String organizationKey = "Organization key";
@@ -404,6 +405,7 @@ class AppStrings {
   static const String batchLabel = "Batch Label";
   static const String weeklyReport = "Weekly Report";
   static const String createdBy = "Created By";
+  static const String pCImage = "Please choose image";
   static const String signature = "Signature _________________";
   static const String verifiedDesc = "I ________________ Acknowldge "
       "that the above recorded data is accurate and verified "

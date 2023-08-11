@@ -127,7 +127,8 @@ class OrganizationSettingController extends GetxController {
               "licenseNumber" : licenseNoController.text,
               "mobileNumber" : mobileNoController.text,
               "registrationNumber" : registrationNoController.text,
-              "website" : websiteController.text
+              "website" : websiteController.text,
+              "logo" : imageUrl.value
             });
 
         apiResponse =
@@ -171,7 +172,8 @@ class OrganizationSettingController extends GetxController {
       try {
 
         var request = http.MultipartRequest(
-          'PUT', Uri.parse("${ApiPath.baseUrl}${ApiPath.company}/${companyId.value}/upload"),
+          'PUT',
+          Uri.parse("${ApiPath.baseUrl}${ApiPath.company}/${companyId.value}/upload"),
         );
 
         Map<String,String> headers={
@@ -189,20 +191,23 @@ class OrganizationSettingController extends GetxController {
         );
         request.headers.addAll(headers);
 
-        print("request: "+request.toString());
         var res = await request.send();
         var response = await http.Response.fromStream(res);
-        print("This is response:"+ "${response.body}");
+        AppConst().debug("This is response:${response.body}");
+
+        var data = json.decode(response.body);
 
         progressDialog(false, Get.context!);
 
-        if (apiResponse!.statusCode == 200) {
+        if (response.statusCode == 200) {
 
-          // showSnack(width: 200.w, title: data["message"]);
+          imageUrl.value = data["image"];
+
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
         } else {
-          // showSnack(width: 200.w, title: data["message"]);
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }

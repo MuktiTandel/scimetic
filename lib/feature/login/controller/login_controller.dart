@@ -74,6 +74,8 @@ class LoginController extends GetxController {
 
         storeData.setData(StoreData.userId, loginResponseModel.user!.id);
 
+        storeData.setData(StoreData.userLogo, loginResponseModel.user!.image);
+
         showSnack(
             width: 200.w,
             title: data["message"]

@@ -14,8 +14,8 @@ class TodoModel {
   Todos? todos;
 
   factory TodoModel.fromJson(Map<String, dynamic> json) => TodoModel(
-    message: json["message"],
-    todos: Todos.fromJson(json["todos"]),
+    message: json["message"] ?? "",
+    todos: json["todos"] != null ? Todos.fromJson(json["todos"]) : Todos(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,9 +36,9 @@ class Todos {
   List<Todo>? completed;
 
   factory Todos.fromJson(Map<String, dynamic> json) => Todos(
-    toDo: List<Todo>.from(json["toDo"].map((x) => Todo.fromJson(x))),
-    inProgress: List<Todo>.from(json["inProgress"].map((x) => Todo.fromJson(x))),
-    completed: List<Todo>.from(json["completed"].map((x) => Todo.fromJson(x))),
+    toDo: json["toDo"] != null ? List<Todo>.from(json["toDo"].map((x) => Todo.fromJson(x))) : [],
+    inProgress: json["inProgress"] != null ? List<Todo>.from(json["inProgress"].map((x) => Todo.fromJson(x))) : [],
+    completed: json["completed"] != null ? List<Todo>.from(json["completed"].map((x) => Todo.fromJson(x))) : [],
   );
 
   Map<String, dynamic> toJson() => {

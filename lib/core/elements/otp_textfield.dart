@@ -203,7 +203,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
       addFocusNodeToEachTextField(index: i);
       addTextEditingControllerToEachTextField(index: i);
 
-      if (widget.styles.length > 0) {
+      if (widget.styles.isNotEmpty) {
         return _buildTextField(
           context: context,
           index: i,
@@ -241,7 +241,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
     required int indexOfTextField,
   }) {
     //only change focus to the next textField if the value entered has a length greater than one
-    if (value.length > 0) {
+    if (value.isNotEmpty) {
       //if the textField in focus is not the last textField,
       // change focus to the next textField
       if (indexOfTextField + 1 != widget.numberOfFields) {
@@ -259,7 +259,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
     required int indexOfTextField,
   }) {
     //only change focus to the previous textField if the value entered has a length zero
-    if (value.length == 0) {
+    if (value.isEmpty) {
       //if the textField in focus is not the first textField,
       // change focus to the previous textField
       if (indexOfTextField != 0) {

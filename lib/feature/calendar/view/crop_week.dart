@@ -11,7 +11,7 @@ class CropWeek extends StatelessWidget {
   Widget build(BuildContext context) {
     return GanttChartView(
       maxDuration: const Duration(days: 40 * 2), //optional, set to null for infinite horizontal scroll
-      startDate: DateTime.now().subtract(Duration(days: 7)), //required
+      startDate: DateTime.now().subtract(const Duration(days: 7)), //required
       dayWidth: 51.3.w, //column width for each day
       eventHeight: 50.h, //row height for events
       stickyAreaWidth: 200, //sticky area width

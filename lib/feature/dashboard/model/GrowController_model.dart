@@ -15,8 +15,8 @@ class GrowModel {
 
   factory GrowModel.fromJson(Map<String, dynamic> json) => GrowModel(
     message: json["message"] ?? "",
-    growControllers: List<GrowController>.
-    from(json["growControllers"].map((x) => GrowController.fromJson(x))) ,
+    growControllers: json["growControllers"] != null ? List<GrowController>.
+    from(json["growControllers"].map((x) => GrowController.fromJson(x))) : [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -70,22 +70,22 @@ class GrowController {
   Climate? climate;
 
   factory GrowController.fromJson(Map<String, dynamic> json) => GrowController(
-    id: json["id"],
-    name: json["name"],
-    identifier: json["identifier"],
+    id: json["id"] ?? 0,
+    name: json["name"] ?? "",
+    identifier: json["identifier"] ?? "",
     description: json["description"] ?? "",
     longitude: json["longitude"] == null ? 0.0 : json["longitude"].toDouble(),
     latitude: json["latitude"] == null ? 0.0 : json["latitude"].toDouble(),
-    dayStart: json["dayStart"],
-    nightStart: json["nightStart"],
-    temperatureControlAuto: json["temperatureControlAuto"],
-    humidityControlAuto: json["humidityControlAuto"],
-    co2ControlAuto: json["co2ControlAuto"],
-    lightingControlAuto: json["lightingControlAuto"],
+    dayStart: json["dayStart"] ?? "",
+    nightStart: json["nightStart"] ?? "",
+    temperatureControlAuto: json["temperatureControlAuto"] ?? false,
+    humidityControlAuto: json["humidityControlAuto"] ?? false,
+    co2ControlAuto: json["co2ControlAuto"] ?? false,
+    lightingControlAuto: json["lightingControlAuto"] ?? false,
     createdAt: json["createdAt"] == null ? DateTime.now() : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? DateTime.now() : DateTime.parse(json["updatedAt"]),
     companyId: json["companyId"],
-    creator: json["creator"],
+    creator: json["creator"] ?? 0,
     climate: json["climate"] == null ? Climate(
       temperature: 0.0,
       vpd: 0.0,

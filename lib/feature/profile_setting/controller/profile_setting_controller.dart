@@ -40,6 +40,8 @@ class ProfileSettingController extends GetxController {
 
   http.Response? apiResponse;
 
+  RxString imageUrl = "".obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -110,6 +112,7 @@ class ProfileSettingController extends GetxController {
 
   }
 
+  /// Update profile api call
   Future updateProfile() async {
 
     token = storeData.getString(StoreData.accessToken)!;
@@ -145,6 +148,66 @@ class ProfileSettingController extends GetxController {
         progressDialog(false, Get.context!);
 
         if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
+
+          return true;
+        } else {
+          showSnack(width: 200.w, title: data["message"]);
+
+          return false;
+        }
+      } catch (e) {
+        AppConst().debug(e.toString());
+      }
+    }
+
+  }
+
+  /// upload image
+  Future uploadImage() async {
+
+    token = storeData.getString(StoreData.accessToken)!;
+
+    userId.value = storeData.getInt(StoreData.companyId) ?? 0;
+
+    if (token.isNotEmpty) {
+      progressDialog(true, Get.context!);
+
+      try {
+
+        var request = http.MultipartRequest(
+          'PUT',
+          Uri.parse("${ApiPath.baseUrl}${ApiPath.user}/${userId.value}/upload"),
+        );
+
+        Map<String,String> headers={
+          "Authorization":"Bearer $token",
+          "Content-type": "multipart/form-data"
+        };
+
+        request.files.add(
+          http.MultipartFile(
+            'image',
+            imageFile!.readAsBytes().asStream(),
+            imageFile!.lengthSync(),
+            filename: 'filename',
+          ),
+        );
+        request.headers.addAll(headers);
+
+        var res = await request.send();
+        var response = await http.Response.fromStream(res);
+        AppConst().debug("This is response:${response.body}");
+        AppConst().debug("This is response status code :${response.statusCode}");
+
+        var data = json.decode(response.body);
+
+        progressDialog(false, Get.context!);
+
+        if (response.statusCode == 200) {
+
+          imageUrl.value = data["image"];
+
           showSnack(width: 200.w, title: data["message"]);
 
           return true;

@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -76,10 +75,25 @@ class OrganizationSettingScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Obx(() =>  controller.isPick.value == false
-                                ? Image.asset(
+                                ? controller.imageUrl.value.isEmpty ? Image.asset(
                               AppImages.logo,
                               height: 43.h,
                               width: 43.w,
+                            ) : ClipOval(
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(39),
+                                child: Image.network(
+                                  controller.imageUrl.value,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, expection, stackTrace){
+                                    return Image.asset(
+                                      AppImages.logo,
+                                      height: 40.h,
+                                      width: 40.w,
+                                    );
+                                  },
+                                ),
+                              ),
                             ) : ClipOval(
                               child: SizedBox.fromSize(
                                 size: const Size.fromRadius(39),
@@ -103,7 +117,9 @@ class OrganizationSettingScreen extends StatelessWidget {
                         buttonTextColor: Get.isDarkMode
                             ? AppColors.subTitleColor : Colors.white ,
                         onTap: (){
-                        controller.uploadImage();
+                        if (controller.imageFile != null) {
+                          controller.uploadImage();
+                        }
                         },
                         buttonText: AppStrings.upload
                     ),
@@ -306,7 +322,9 @@ class OrganizationSettingScreen extends StatelessWidget {
                       width: 100.w,
                         height: 30.h,
                         fontSize: 14.sp,
-                        onTap: (){},
+                        onTap: () async {
+                          await controller.updateCompanyDetails();
+                        },
                         buttonText: AppStrings.save
                     )
                   ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_strings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class DayCalendar extends StatelessWidget {
@@ -73,39 +72,39 @@ class DayCalendar extends StatelessWidget {
     );
   }
 
-  List<TimeRegion> _getTimeRegions() {
-    final List<TimeRegion> regions = <TimeRegion>[];
-    regions.add(
-        TimeRegion(
-        startTime: DateTime(2023,05,10,10),
-        endTime: DateTime(2023,05,10,11),
-        enablePointerInteraction: false,
-        color: AppColors.blue,
-          text: AppStrings.taskDesc,
-          textStyle: TextStyle(
-              fontSize: 11.sp,
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w400,
-              color: Colors.white
-          ),
-      ),
-    );
-
-    regions.add(TimeRegion(
-      startTime: DateTime(2023,05,10,14),
-      endTime: DateTime(2023,05,10,15),
-      enablePointerInteraction: false,
-      color: AppColors.orange,
-        text: AppStrings.taskDesc,
-      textStyle: TextStyle(
-          fontSize: 11.sp,
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w400,
-          color: Colors.black
-      ),
-    ),);
-
-    return regions;
-  }
+  // List<TimeRegion> _getTimeRegions() {
+  //   final List<TimeRegion> regions = <TimeRegion>[];
+  //   regions.add(
+  //       TimeRegion(
+  //       startTime: DateTime(2023,05,10,10),
+  //       endTime: DateTime(2023,05,10,11),
+  //       enablePointerInteraction: false,
+  //       color: AppColors.blue,
+  //         text: AppStrings.taskDesc,
+  //         textStyle: TextStyle(
+  //             fontSize: 11.sp,
+  //             fontFamily: "Poppins",
+  //             fontWeight: FontWeight.w400,
+  //             color: Colors.white
+  //         ),
+  //     ),
+  //   );
+  //
+  //   regions.add(TimeRegion(
+  //     startTime: DateTime(2023,05,10,14),
+  //     endTime: DateTime(2023,05,10,15),
+  //     enablePointerInteraction: false,
+  //     color: AppColors.orange,
+  //       text: AppStrings.taskDesc,
+  //     textStyle: TextStyle(
+  //         fontSize: 11.sp,
+  //         fontFamily: "Poppins",
+  //         fontWeight: FontWeight.w400,
+  //         color: Colors.black
+  //     ),
+  //   ),);
+  //
+  //   return regions;
+  // }
 
 }

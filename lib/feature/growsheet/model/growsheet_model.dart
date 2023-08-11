@@ -17,7 +17,7 @@ class GrowSheetData {
 
   factory GrowSheetData.fromJson(Map<String, dynamic> json) => GrowSheetData(
     message: json["message"] ?? "",
-    growsheets: List<Growsheet>.from(json["growsheets"].map((x) => Growsheet.fromJson(x))),
+    growsheets: json["growsheets"] != null ? List<Growsheet>.from(json["growsheets"].map((x) => Growsheet.fromJson(x))) : [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -204,13 +204,13 @@ class Company {
   factory Company.fromJson(Map<String, dynamic> json) => Company(
     id: json["id"] ?? 0,
     name: json["name"] ?? "",
-    address: json["address"],
-    logo: json["logo"],
-    registrationNumber: json["registrationNumber"],
-    licenseNumber: json["licenseNumber"],
-    mobileNumber: json["mobileNumber"],
-    email: json["email"],
-    website: json["website"],
+    address: json["address"] ?? "",
+    logo: json["logo"] ?? "",
+    registrationNumber: json["registrationNumber"] ?? "",
+    licenseNumber: json["licenseNumber"] ?? "",
+    mobileNumber: json["mobileNumber"] ?? "",
+    email: json["email"] ?? "",
+    website: json["website"] ?? "",
     createdAt: json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : DateTime.now(),
     updatedAt: json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : DateTime.now(),
   );

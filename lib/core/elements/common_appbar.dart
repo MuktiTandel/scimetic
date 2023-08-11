@@ -33,9 +33,6 @@ class CommonAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-     // isCrop.value = false;
-     // isPersonal.value = true;
-
     return AppBar(
       systemOverlayStyle: Get.isDarkMode
           ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,

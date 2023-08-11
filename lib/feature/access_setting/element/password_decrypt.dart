@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:encrypt/encrypt.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
-import 'package:scimetic/core/const/app_const.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class Encryption {
@@ -80,7 +77,7 @@ class EncryptData{
 //for AES Algorithms
 
   static Encrypted? encrypted;
-  static var decrypted;
+  static var decrypted = "";
 
 
   static encryptAES(plainText){
@@ -88,7 +85,6 @@ class EncryptData{
     final iv = IV.fromLength(16);
     final encrypter = Encrypter(AES(key));
     encrypted = encrypter.encrypt(plainText, iv: iv);
-    print(encrypted!.base64);
   }
 
   static decryptAES(plainText){
@@ -96,7 +92,6 @@ class EncryptData{
     final iv = IV.fromLength(16);
     final encrypter = Encrypter(AES(key, padding: null));
     decrypted = encrypter.decrypt(Encrypted.fromBase64(plainText), iv: iv);
-    print(decrypted);
     return decrypted;
   }
 

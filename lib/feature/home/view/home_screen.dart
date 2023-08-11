@@ -33,6 +33,7 @@ import 'package:scimetic/feature/organizations/controller/organization_controlle
 import 'package:scimetic/feature/organizations/view/organization_screen.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/view/overview_screen.dart';
+import 'package:scimetic/feature/profile_setting/controller/profile_setting_controller.dart';
 import 'package:scimetic/feature/temperature_control/controller/temperature_controller.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 import 'package:scimetic/feature/wet_wall_control/controller/wet_wall_control_controller.dart';
@@ -83,6 +84,8 @@ class HomeScreen extends StatelessWidget {
   final extractorFanControlController = Get.put(ExtractorControlController());
 
   final screenControlController = Get.put(ControlTabController());
+
+  final profileSettingController = Get.put(ProfileSettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -1182,6 +1185,7 @@ class HomeScreen extends StatelessWidget {
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(13);
                 Get.back();
+                organizationSettingController.isPick.value = false;
                 await organizationSettingController.getCompanyDetails();
               },
               isSelect: controller.isOrganisationSettings),
@@ -1220,6 +1224,7 @@ class HomeScreen extends StatelessWidget {
                 dashboardController.isOverViewTitle.value = false;
                 overviewController.isGraphScreen.value = false;
                 controller.changeModuleIndex(14);
+                profileSettingController.isPick.value = false;
                 Get.back();
               },
               isSelect: controller.isUserSetting),

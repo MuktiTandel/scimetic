@@ -39,10 +39,10 @@ class GanttChartDefaultWeekHeader extends StatelessWidget {
     );
   }
 
-  BoxBorder get _defaultBorder => const BorderDirectional(
-        start: BorderSide(),
-        bottom: BorderSide(),
-      );
+  // BoxBorder get _defaultBorder => const BorderDirectional(
+  //       start: BorderSide(),
+  //       bottom: BorderSide(),
+  //     );
 
   Widget _defaultChild(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {

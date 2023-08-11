@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
-import 'package:scimetic/core/elements/custom_button.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
 Widget deviceOverviewWidget({ required VoidCallback onTap,
@@ -119,29 +117,35 @@ Widget commonDeviceOverviewWidget( {required String title,
               color: AppColors.buttonColor,
             ),
             Expanded(child: SizedBox(width: 10.w,)),
-            Row(
-              children: [
-                Image.asset(
-                  AppImages.warning,
-                  height: 20.h,
-                  width: 20.w,
-                ),
-                SizedBox(width: 5.w,),
-                CustomText(
-                  text: AppStrings.check,
-                  fontSize: 14.sp,
-                  color: AppColors.darkOrange1,
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(width: 10.w,),
-                Image.asset(
-                  AppImages.rightArrow,
-                  height: 12.h,
-                  width: 12.w,
-                  color: AppColors.darkOrange1,
-                )
-              ],
-            )
+            CustomText(
+              text: "${int.parse(offline) + int.parse(online)} ${AppStrings.devices}",
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+            // Row(
+            //   children: [
+            //     Image.asset(
+            //       AppImages.warning,
+            //       height: 20.h,
+            //       width: 20.w,
+            //     ),
+            //     SizedBox(width: 5.w,),
+            //     CustomText(
+            //       text: AppStrings.check,
+            //       fontSize: 14.sp,
+            //       color: AppColors.darkOrange1,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //     SizedBox(width: 10.w,),
+            //     Image.asset(
+            //       AppImages.rightArrow,
+            //       height: 12.h,
+            //       width: 12.w,
+            //       color: AppColors.darkOrange1,
+            //     )
+            //   ],
+            // )
           ],
         ),
         SizedBox(height: 8.h,),

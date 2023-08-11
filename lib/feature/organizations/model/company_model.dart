@@ -16,7 +16,7 @@ class CompanyResponseModel {
 
   factory CompanyResponseModel.fromJson(Map<String, dynamic> json) => CompanyResponseModel(
     message: json["message"] ?? "",
-    companies: List<Company>.from(json["companies"].map((x) => Company.fromJson(x))),
+    companies: json["companies"] != null ? List<Company>.from(json["companies"].map((x) => Company.fromJson(x))) : [],
   );
 
   Map<String, dynamic> toJson() => {

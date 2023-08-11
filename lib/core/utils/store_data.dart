@@ -14,6 +14,7 @@ class StoreData {
   static const String userName = "userName";
   static const String userEmail = "userEmail";
   static const String userId = "userId";
+  static const String userLogo = "userLogo";
 
   void setData(String key, dynamic value) => GetStorage().write(key, value);
 

@@ -9,7 +9,6 @@ import 'package:scimetic/feature/circulation_control/view/circulation_control_sc
 import 'package:scimetic/feature/co2_control/view/co2_control_screen.dart';
 import 'package:scimetic/feature/control_tab/view/control_tab_screen.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
-import 'package:scimetic/feature/dashboard/view/dashboard_screen.dart';
 import 'package:scimetic/feature/device_settings/view/device_settings_screen.dart';
 import 'package:scimetic/feature/energy_management/view/energy_management_screen.dart';
 import 'package:scimetic/feature/extractor_control/view/extractor_control_screen.dart';

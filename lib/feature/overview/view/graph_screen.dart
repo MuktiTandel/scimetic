@@ -64,94 +64,94 @@ class GraphScreen extends StatelessWidget {
                   value: controller.value(),
                   color: controller.color(),
                   value1: controller.value_(),
-                  is24Hour: controller.is24Hour.value,
+                  is24Hour: overviewController.is24Hour.value,
                   hour24Select: (){
                     overviewController.get24HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.is24Hour.value == false) {
-                      controller.is24Hour.value = true;
-                      controller.isWeek.value = false;
-                      controller.isMonth.value = false;
-                      controller.is1Hour.value = false;
-                      controller.is6Hour.value = false;
-                      controller.is12Hour.value = false;
+                    if (overviewController.is24Hour.value == false) {
+                      overviewController.is24Hour.value = true;
+                      overviewController.isWeek.value = false;
+                      overviewController.isMonth.value = false;
+                      overviewController.is1Hour.value = false;
+                      overviewController.is6Hour.value = false;
+                      overviewController.is12Hour.value = false;
                     }
                   },
-                  isWeek: controller.isWeek.value,
+                  isWeek: overviewController.isWeek.value,
                   weekSelect: (){
                     overviewController.getWeekData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.isWeek.value == false) {
-                      controller.is24Hour.value = false;
-                      controller.isWeek.value = true;
-                      controller.isMonth.value = false;
-                      controller.is1Hour.value = false;
-                      controller.is6Hour.value = false;
-                      controller.is12Hour.value = false;
+                    if (overviewController.isWeek.value == false) {
+                      overviewController.is24Hour.value = false;
+                      overviewController.isWeek.value = true;
+                      overviewController.isMonth.value = false;
+                      overviewController.is1Hour.value = false;
+                      overviewController.is6Hour.value = false;
+                      overviewController.is12Hour.value = false;
                     }
                   },
-                  isMonth: controller.isMonth.value,
+                  isMonth: overviewController.isMonth.value,
                   monthSelect: (){
                     overviewController.getMonthData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.isMonth.value == false) {
-                      controller.is24Hour.value = false;
-                      controller.isWeek.value = false;
-                      controller.isMonth.value = true;
-                      controller.is1Hour.value = false;
-                      controller.is6Hour.value = false;
-                      controller.is12Hour.value = false;
+                    if (overviewController.isMonth.value == false) {
+                      overviewController.is24Hour.value = false;
+                      overviewController.isWeek.value = false;
+                      overviewController.isMonth.value = true;
+                      overviewController.is1Hour.value = false;
+                      overviewController.is6Hour.value = false;
+                      overviewController.is12Hour.value = false;
                     }
                   },
-                  is1Hour: controller.is1Hour.value,
+                  is1Hour: overviewController.is1Hour.value,
                   hour1Select: (){
                     overviewController.get1HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.is1Hour.value == false) {
-                      controller.is24Hour.value = false;
-                      controller.isWeek.value = false;
-                      controller.isMonth.value = false;
-                      controller.is1Hour.value = true;
-                      controller.is6Hour.value = false;
-                      controller.is12Hour.value = false;
+                    if (overviewController.is1Hour.value == false) {
+                      overviewController.is24Hour.value = false;
+                      overviewController.isWeek.value = false;
+                      overviewController.isMonth.value = false;
+                      overviewController.is1Hour.value = true;
+                      overviewController.is6Hour.value = false;
+                      overviewController.is12Hour.value = false;
                     }
                   },
-                  is6Hour: controller.is6Hour.value,
+                  is6Hour: overviewController.is6Hour.value,
                   hour6Select: (){
                     overviewController.get6HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.is6Hour.value == false) {
-                      controller.is24Hour.value = false;
-                      controller.isWeek.value = false;
-                      controller.isMonth.value = false;
-                      controller.is1Hour.value = false;
-                      controller.is6Hour.value = true;
-                      controller.is12Hour.value = false;
+                    if (overviewController.is6Hour.value == false) {
+                      overviewController.is24Hour.value = false;
+                      overviewController.isWeek.value = false;
+                      overviewController.isMonth.value = false;
+                      overviewController.is1Hour.value = false;
+                      overviewController.is6Hour.value = true;
+                      overviewController.is12Hour.value = false;
                     }
                   },
-                  is12Hour: controller.is12Hour.value,
+                  is12Hour: overviewController.is12Hour.value,
                   hour12Select: (){
                     overviewController.get12HourData(
                         id: overviewController.id.value,
                         identifier: dashboardController.selectItem.value
                     );
-                    if (controller.is12Hour.value == false) {
-                      controller.is24Hour.value = false;
-                      controller.isWeek.value = false;
-                      controller.isMonth.value = false;
-                      controller.is1Hour.value = false;
-                      controller.is6Hour.value = false;
-                      controller.is12Hour.value = true;
+                    if (overviewController.is12Hour.value == false) {
+                      overviewController.is24Hour.value = false;
+                      overviewController.isWeek.value = false;
+                      overviewController.isMonth.value = false;
+                      overviewController.is1Hour.value = false;
+                      overviewController.is6Hour.value = false;
+                      overviewController.is12Hour.value = true;
                     }
                   },
                   graph: Obx(() => overviewController.isClimateData.value == true
@@ -168,34 +168,34 @@ class GraphScreen extends StatelessWidget {
                 context: context,
                 plantedDate: overviewController.plantedDate,
                 harvestDate: overviewController.harvestDate,
-                plantedDateValue: controller.plantedDateValue,
-                harvestDateValue: controller.harvestDateValue,
-                controller: controller.barcodeController,
-                plantController: controller.plantController,
-                genealogyController: controller.genealogyController,
-                  rangeValue1: controller.rangeValue1,
-                  rangeValue2: controller.rangeValue2,
-                  rangeValue3: controller.rangeValue3,
-                  rangeValue4: controller.rangeValue4,
-                  progressValue: controller.progressValue,
+                plantedDateValue: overviewController.plantedDateValue,
+                harvestDateValue: overviewController.harvestDateValue,
+                controller: overviewController.barcodeController,
+                plantController: overviewController.plantController,
+                genealogyController: overviewController.genealogyController,
+                  rangeValue1: overviewController.rangeValue1,
+                  rangeValue2: overviewController.rangeValue2,
+                  rangeValue3: overviewController.rangeValue3,
+                  rangeValue4: overviewController.rangeValue4,
+                  progressValue: overviewController.progressValue,
                 onTap: (){},
                   plantedTap: () {
-                    if (controller.harvestDate.selectedDate!
+                    if (overviewController.harvestDate.selectedDate!
                         .toString()
                         .isNotEmpty) {
 
-                      controller.progressValue.value = 0;
+                      overviewController.progressValue.value = 0;
 
-                      controller.totalPeriod.value = controller
+                      overviewController.totalPeriod.value = overviewController
                           .harvestDate.selectedDate!
-                          .difference(controller
+                          .difference(overviewController
                           .plantedDate.selectedDate!)
                           .inDays +
                           1;
 
-                      controller.currentDay.value =
+                      overviewController.currentDay.value =
                           DateTime.now()
-                              .difference(controller
+                              .difference(overviewController
                               .plantedDate
                               .selectedDate!)
                               .inDays +
@@ -205,36 +205,36 @@ class GraphScreen extends StatelessWidget {
 
                       final num totalSpent = data.values
                           .reduce((prev, curr) => prev + curr);
-                      controller.progressValue.value =
+                      overviewController.progressValue.value =
                           ((totalSpent /
-                              controller
+                              overviewController
                                   .totalPeriod.value) *
                               100)
                               .ceil()
                               .clamp(0, 100);
 
                       AppConst().debug(
-                          "progress value => ${controller.progressValue.value}");
+                          "progress value => ${overviewController.progressValue.value}");
 
-                      overviewController.resolveAngles(data, controller.totalPeriod.value);
+                      overviewController.resolveAngles(data, overviewController.totalPeriod.value);
 
                     }
                   },
                   harvestTap: () async {
 
-                    if ( controller.plantedDate.selectedDate!.toString().isNotEmpty ) {
-                      controller.progressValue.value = 0;
+                    if ( overviewController.plantedDate.selectedDate!.toString().isNotEmpty ) {
+                      overviewController.progressValue.value = 0;
 
-                      controller.totalPeriod.value = controller
+                      overviewController.totalPeriod.value = overviewController
                           .harvestDate.selectedDate!
-                          .difference(controller
+                          .difference(overviewController
                           .plantedDate.selectedDate!)
                           .inDays +
                           1;
 
-                      controller.currentDay.value = DateTime
+                      overviewController.currentDay.value = DateTime
                           .now()
-                          .difference(controller
+                          .difference(overviewController
                           .plantedDate.selectedDate!)
                           .inDays +
                           1;
@@ -243,19 +243,19 @@ class GraphScreen extends StatelessWidget {
 
                       final num totalSpent = data.values
                           .reduce((prev, curr) => prev + curr);
-                      controller.progressValue.value =
+                      overviewController.progressValue.value =
                           ((totalSpent /
-                              controller
+                              overviewController
                                   .totalPeriod.value) *
                               100)
                               .ceil()
                               .clamp(0, 100);
 
                       AppConst().debug(
-                          "progress value => ${controller
+                          "progress value => ${overviewController
                               .progressValue.value}");
 
-                      overviewController.resolveAngles(data, controller.totalPeriod.value);
+                      overviewController.resolveAngles(data, overviewController.totalPeriod.value);
                     }
                   }
               ),

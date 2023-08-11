@@ -4,7 +4,7 @@ import 'package:scimetic/feature/device_settings/Model/device_model.dart';
 
 SwitchModel switchModelFromJson(String str) => SwitchModel.fromJson(json.decode(str));
 
-String SwitchModelToJson(SwitchModel data) => json.encode(data.toJson());
+String switchModelToJson(SwitchModel data) => json.encode(data.toJson());
 
 class SwitchModel {
   SwitchModel({

@@ -36,15 +36,15 @@ class GanttChartDefaultDayHeader extends StatelessWidget {
     );
   }
 
-  Color _defaultColor(bool isHoliday) =>
-      isHoliday ? defaultHolidayColor : defaultColor;
-
-  Color _defaultBackgroundColor(bool isHoliday) => defaultBackgroundColor;
-
-  BoxBorder get _defaultBorder => const BorderDirectional(
-        // bottom: BorderSide(),
-        start: BorderSide(),
-      );
+  // Color _defaultColor(bool isHoliday) =>
+  //     isHoliday ? defaultHolidayColor : defaultColor;
+  //
+  // Color _defaultBackgroundColor(bool isHoliday) => defaultBackgroundColor;
+  //
+  // BoxBorder get _defaultBorder => const BorderDirectional(
+  //       bottom: BorderSide(),
+        // start: BorderSide(),
+      // );
 
   Widget _defaultChild(BuildContext context) => Center(
         child: Column(

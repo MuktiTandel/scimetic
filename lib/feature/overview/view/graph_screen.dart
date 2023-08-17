@@ -33,10 +33,50 @@ class GraphScreen extends StatelessWidget {
         child: CommonAppbar(
           drawerTap: (){
             Get.back();
-            overviewController.get24HourData(
-                id: overviewController.id.value,
-                identifier: dashboardController.selectItem.value
-            );
+            if ( overviewController.is1Hour.value == true ) {
+              overviewController.get1HourData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            } else if ( overviewController.is6Hour.value == true ) {
+              overviewController.get6HourData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            } else if ( overviewController.is12Hour.value == true ) {
+              overviewController.get12HourData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            } else if ( overviewController.is24Hour.value == true ) {
+              overviewController.get24HourData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            } else if ( overviewController.isWeek.value == true ) {
+              overviewController.getWeekData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            } else {
+              overviewController.getMonthData(
+                  id: overviewController.id.value,
+                  identifier: dashboardController
+                      .selectItem.value);
+            }
+           Future.delayed(const Duration(seconds: 1), (){
+             if ( overviewController.isTemperature.value == true ) {
+               overviewController.isTemperature.value = false;
+             } else if ( overviewController.isElectricalLoad.value == true ) {
+               overviewController.isElectricalLoad.value = false;
+             } else if ( overviewController.isCo2.value == true ) {
+               overviewController.isCo2.value = false;
+             } else if ( overviewController.isLightning.value == true ) {
+               overviewController.isLightning.value = false;
+             } else if ( overviewController.isVdp.value == true ) {
+               overviewController.isVdp.value = false;
+             }
+           });
           },
           title: AppStrings.overview,
           notificationTap: (){

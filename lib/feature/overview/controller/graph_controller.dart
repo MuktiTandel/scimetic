@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
+import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -134,7 +135,7 @@ class GraphController extends GetxController {
         format: " mol/m2day",
       );
     } else if ( controller.isVdp.value == true ) {
-      HourGraph(
+      return HourGraph(
         minY: controller.minVpdY.value,
         maxY: controller.maxVpdY.value,
         graphColor: AppColors.lightBlue2,

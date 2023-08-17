@@ -34,7 +34,7 @@ class GraphController extends GetxController {
     if ( controller.isTemperature.value == true ) {
       return AppStrings.temperature;
     } else if ( controller.isElectricalLoad.value == true ) {
-      return AppStrings.electricalLoad;
+      return AppStrings.humidity;
     } else if ( controller.isCo2.value == true ) {
       return AppStrings.cO2;
     } else if ( controller.isLightning.value == true ) {
@@ -61,15 +61,20 @@ class GraphController extends GetxController {
 
   value() {
     if ( controller.isTemperature.value == true ) {
-      return "24";
+      return controller.temperatureValue.value
+          .toStringAsFixed(2)
+          .toString();
     } else if ( controller.isElectricalLoad.value == true ) {
-      return "85";
+      return controller.humidityValue.value
+          .toStringAsFixed(2)
+          .toString();
     } else if ( controller.isCo2.value == true ) {
-      return "750";
+      return controller.co2Value.value.toString();
     } else if ( controller.isLightning.value == true ) {
-      return "40";
+      return controller.lightningValue.value
+          .toString();
     } else if ( controller.isVdp.value == true ) {
-      return "0.95";
+      return controller.vpdValue.value.toString();
     }
   }
 

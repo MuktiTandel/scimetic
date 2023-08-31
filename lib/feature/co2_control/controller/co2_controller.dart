@@ -70,6 +70,7 @@ class Co2Controller extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  /// for get co2 data
   Future getCo2ControllerData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -160,6 +161,7 @@ class Co2Controller extends GetxController {
     }
   }
 
+  /// for add new co2 data
   Future addCo2Data({required Co2Model co2model}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -198,6 +200,7 @@ class Co2Controller extends GetxController {
     }
   }
 
+  /// for validation
   void onSave() async {
     isValid.value = true;
 

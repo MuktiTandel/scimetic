@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
-import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
@@ -9,25 +8,6 @@ import 'package:scimetic/feature/overview/element/hour_graph.dart';
 class GraphController extends GetxController {
 
   final controller = Get.put(OverviewController());
-
-  @override
-  void onClose() {
-
-    // if ( controller.isTemperature.value == true ) {
-    //   controller.isTemperature.value = false;
-    // } else if ( controller.isElectricalLoad.value == true ) {
-    //   controller.isElectricalLoad.value = false;
-    // } else if ( controller.isCo2.value == true ) {
-    //   controller.isCo2.value = false;
-    // } else if ( controller.isLightning.value == true ) {
-    //   controller.isLightning.value = false;
-    // } else if ( controller.isVdp.value == true ) {
-    //   controller.isVdp.value = false;
-    // }
-
-    super.onClose();
-
-  }
 
   title() {
 

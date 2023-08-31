@@ -86,6 +86,7 @@ class DashboardController extends GetxController {
 
   }
 
+  /// for get grow space list
   Future getDataList() async {
 
     isGetData.value = false;
@@ -163,6 +164,7 @@ class DashboardController extends GetxController {
     }
   }
 
+  /// for create new grow space
   Future createGrowSpace({required GrowspaceModel growspaceModel}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;

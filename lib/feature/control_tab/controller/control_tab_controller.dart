@@ -70,6 +70,7 @@ class ControlTabController extends GetxController {
 
   RxString errorMessage = "".obs;
 
+  /// for get uv screen data
   Future getUvScreenData() async {
 
     token =  storeData.getString(StoreData.accessToken)!;

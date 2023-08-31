@@ -50,7 +50,7 @@ class OrganizationSettingController extends GetxController {
   Future getCompanyDetails() async {
     token = storeData.getString(StoreData.accessToken)!;
 
-    companyId.value = storeData.getInt(StoreData.companyId) ?? 0;
+    companyId.value = storeData.getInt(StoreData.companyId) ?? 1;
 
     if (token.isNotEmpty) {
       progressDialog(true, Get.context!);

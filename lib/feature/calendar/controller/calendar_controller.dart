@@ -50,7 +50,7 @@ class CalendarController extends GetxController {
   List<TimeRegion> dayEventList = [];
 
   final calendarController = CleanCalendarController(
-    minDate: DateTime.now().subtract(Duration(days: 365)),
+    minDate: DateTime.now().subtract(const Duration(days: 365)),
     maxDate: DateTime.now().add(const Duration(days: 365)),
     onRangeSelected: (firstDate, secondDate) {},
     onDayTapped: (date) {},
@@ -93,6 +93,7 @@ class CalendarController extends GetxController {
     return getDates;
   }
 
+  /// for get event list
   Future getEventList() async {
 
     isGetData.value = false;

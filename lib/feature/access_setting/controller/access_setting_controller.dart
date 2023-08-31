@@ -75,6 +75,7 @@ class AccessSettingController extends GetxController {
 
   List<bool> checkList = [];
 
+  /// for get user list
   Future getUserList() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -142,6 +143,7 @@ class AccessSettingController extends GetxController {
     }
   }
 
+  /// for create new user
   Future createUser() async {
 
     token = storeData.getString(StoreData.accessToken)!;
@@ -185,6 +187,7 @@ class AccessSettingController extends GetxController {
     }
   }
 
+  /// for update user
   Future updateUser() async {
 
     token = storeData.getString(StoreData.accessToken)!;
@@ -229,6 +232,7 @@ class AccessSettingController extends GetxController {
     }
   }
 
+  /// for validation and update or create user
   void onSave() async {
     isValid.value = true;
 
@@ -293,4 +297,5 @@ class AccessSettingController extends GetxController {
       }
     }
   }
+
 }

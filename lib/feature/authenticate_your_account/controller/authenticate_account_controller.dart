@@ -29,6 +29,7 @@ class AuthenticateAccountController extends GetxController {
 
   }
 
+  /// for get email
   getEmail() {
 
     if ( email.isNotEmpty ) {
@@ -58,6 +59,7 @@ class AuthenticateAccountController extends GetxController {
 
   }
 
+  /// for send verification code
   Future sendVerificationCode() async {
 
     try {
@@ -107,6 +109,7 @@ class AuthenticateAccountController extends GetxController {
 
   }
 
+  /// for account verify
   Future verifyAccount() async {
 
     progressDialog(true, Get.context!);

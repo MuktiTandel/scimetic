@@ -45,6 +45,7 @@ class CirculationControlController extends GetxController {
 
   RxString errorMessage = "".obs;
 
+  /// for get circulation control data
   Future getCirculationControlData() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -165,6 +166,7 @@ class CirculationControlController extends GetxController {
 
   }
 
+  /// for save circulation control data
   Future saveCirculationData({ required CirculationFanControl circulationFanControl }) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -212,6 +214,7 @@ class CirculationControlController extends GetxController {
 
   }
 
+  /// for validation
   void onSave ()  async {
 
     isValid.value = true;

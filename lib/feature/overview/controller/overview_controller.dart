@@ -92,6 +92,8 @@ class OverviewController extends GetxController {
 
   GrowSheetData growSheetData = GrowSheetData();
 
+  Growsheet growSheet = Growsheet();
+
   ClimateModel climateData = ClimateModel();
 
   DeviceModel deviceModel = DeviceModel();
@@ -167,6 +169,7 @@ class OverviewController extends GetxController {
           growSheetId.value = growSheetData.growsheets!.first.id!;
 
           if (growSheetData.growsheets!.isNotEmpty) {
+            growSheet = growSheetData.growsheets!.first;
             await getGrowSheetLabelerData(id: growSheetId.value);
           }
 

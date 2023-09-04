@@ -195,6 +195,8 @@ class ProfileSettingController extends GetxController {
         );
         request.headers.addAll(headers);
 
+        AppConst().debug("url => ${request.url}");
+
         var res = await request.send();
         var response = await http.Response.fromStream(res);
         AppConst().debug("This is response:${response.body}");

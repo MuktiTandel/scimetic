@@ -146,25 +146,93 @@ class SwitchDevice {
 
 class FluffyData {
   FluffyData({
+    this.heap,
+    this.time,
+    this.wifi,
     this.info1,
     this.info2,
     this.info3,
+    this.sleep,
+    this.power1,
+    this.power2,
+    this.power3,
+    this.power4,
+    this.uptime,
+    this.loadAvg,
+    this.mqttCount,
+    this.sleepMode,
+    this.uptimeSec,
+    this.topic,
+    this.current,
+    this.previous,
+    this.description,
   });
 
+  int? heap;
+  DateTime? time;
+  Wifi? wifi;
   Info1? info1;
   Info2? info2;
   Info3? info3;
+  int? sleep;
+  String? power1;
+  String? power2;
+  String? power3;
+  String? power4;
+  String? uptime;
+  int? loadAvg;
+  int? mqttCount;
+  String? sleepMode;
+  int? uptimeSec;
+  String? topic;
+  String? current;
+  String? previous;
+  String? description;
 
   factory FluffyData.fromJson(Map<String, dynamic> json) => FluffyData(
-    info1: json["Info1"] != null ? Info1.fromJson(json["Info1"]) : Info1(),
-    info2: json["Info2"] != null ? Info2.fromJson(json["Info2"]) : Info2(),
-    info3: json["Info3"] != null ? Info3.fromJson(json["Info3"]) : Info3(),
+    heap: json["Heap"] ?? 0,
+    time: json["Time"] == null ? DateTime.now() : DateTime.parse(json["Time"]),
+    wifi: json["Wifi"] == null ? Wifi() : Wifi.fromJson(json["Wifi"]),
+    info1: json["Info1"] == null ? Info1() : Info1.fromJson(json["Info1"]),
+    info2: json["Info2"] == null ? Info2() : Info2.fromJson(json["Info2"]),
+    info3: json["Info3"] == null ? Info3() : Info3.fromJson(json["Info3"]),
+    sleep: json["Sleep"] ?? 0,
+    power1: json["POWER1"] ?? "",
+    power2: json["POWER2"] ?? "",
+    power3: json["POWER3"] ?? "",
+    power4: json["POWER4"] ?? "",
+    uptime: json["Uptime"] ?? "",
+    loadAvg: json["LoadAvg"] ?? 0,
+    mqttCount: json["MqttCount"] ?? 0,
+    sleepMode: json["SleepMode"] ?? "",
+    uptimeSec: json["UptimeSec"] ?? 0,
+    topic: json["topic"] ?? "",
+    current: json["current"] ?? "",
+    previous: json["previous"] ?? "",
+    description: json["description"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
+    "Heap": heap,
+    "Time": time!.toIso8601String(),
+    "Wifi": wifi!.toJson(),
     "Info1": info1!.toJson(),
     "Info2": info2!.toJson(),
     "Info3": info3!.toJson(),
+    "Sleep": sleep,
+    "POWER1": power1,
+    "POWER2": power2,
+    "POWER3": power3,
+    "POWER4": power4,
+    "Uptime": uptime,
+    "LoadAvg": loadAvg,
+    "MqttCount": mqttCount,
+    "SleepMode": sleepMode,
+    "UptimeSec": uptimeSec,
+    "topic": topic,
+    "current": current,
+    "previous": previous,
+    "description": description,
   };
 }
 
@@ -317,7 +385,7 @@ class SensorDevice {
   String? serialNumber;
   String? location;
   dynamic description;
-  PurpleData? data;
+  FluffyData? data;
   String? status;
   dynamic createdAt;
   dynamic updatedAt;
@@ -332,7 +400,7 @@ class SensorDevice {
     serialNumber: json["serialNumber"] ?? "",
     location: json["location"] ?? "",
     description: json["description"] ?? "",
-    data: json["data"] != null ? PurpleData.fromJson(json["data"]) : PurpleData(),
+    data: json["data"] != null ? FluffyData.fromJson(json["data"]) : FluffyData(),
     status: json["status"] ?? "",
     createdAt: json["createdAt"] ?? "",
     updatedAt: json["updatedAt"] ?? "",

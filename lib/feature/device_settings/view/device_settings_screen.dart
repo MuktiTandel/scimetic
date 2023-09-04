@@ -283,7 +283,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       sensorData = controller.sensorDeviceList[index];
                       id = sensorData.id ?? 0;
                       desc = sensorData.description ?? "";
-                      status = sensorData.status ?? "";
+                      status = sensorData.status ?? AppStrings.offline;
                       location = sensorData.location ?? "";
                       info1 = sensorData.data!.info1!;
                       info2 = sensorData.data!.info2!;
@@ -296,7 +296,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       valvesData = controller.valvesDeviceList[index];
                       id = valvesData.id ?? 0;
                       desc = valvesData.description ?? "";
-                      status = valvesData.status ?? "";
+                      status = valvesData.status ?? AppStrings.offline;
                       location = valvesData.location ?? "";
                       info1 = valvesData.data!.info1!;
                       info2 = valvesData.data!.info2!;
@@ -309,7 +309,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       switchData = controller.switchDeviceList[index];
                       id = switchData.id ?? 0;
                       desc = switchData.description ?? "";
-                      status = switchData.status ?? "";
+                      status = switchData.status ?? AppStrings.offline;
                       location = switchData.location ?? "";
                       info1 = switchData.data!.info1!;
                       info2 = switchData.data!.info2!;
@@ -321,7 +321,7 @@ class DeviceSettingsScreen extends StatelessWidget {
                       id: id,
                       desc: desc,
                       location: location,
-                      status: status,
+                      status: status.isNotEmpty ? status : AppStrings.offline,
                       isDeviceSelect: controller.isSwitches.value == true
                           ? controller.selectSwitchDevice[index]
                           : controller.isSensors.value == true
@@ -368,7 +368,7 @@ class DeviceSettingsScreen extends StatelessWidget {
     required SensorDevice sensorDeviceData,
     required String serialNumber,
     required SwitchDevice switchDeviceData,
-    required SensorDevice valvesDeviceData
+    required SensorDevice valvesDeviceData,
   }) {
 
     return Column(
@@ -477,7 +477,9 @@ class DeviceSettingsScreen extends StatelessWidget {
                         Row(
                           children: [
                             Image.asset(
-                              AppImages.greenEllipse,
+                              status.contains(AppStrings.online)
+                                  ? AppImages.greenEllipse
+                                  : AppImages.redEllipse,
                               height: 9.h,
                               width: 9.w,
                             ),
@@ -493,13 +495,13 @@ class DeviceSettingsScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    /*SizedBox(height: 10.h,),
-                              CustomText(
-                                text: "tDMKR4K9CWUFBduY5sygMuh2",
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.lightIcon,
-                              )*/
+                    SizedBox(height: 10.h,),
+                    CustomText(
+                      text: serialNumber,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.lightIcon,
+                    )
                   ],
                 ),
               ),

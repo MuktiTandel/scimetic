@@ -911,7 +911,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            text: AppStrings.growsheetName,
+                                            text: controller.growSheet.name
+                                                ?? AppStrings.growsheetName,
                                             fontSize: 20.sp,
                                             color: AppColors.buttonColor,
                                             fontWeight: FontWeight.w600,
@@ -920,7 +921,8 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                             height: 5.h,
                                           ),
                                           CustomText(
-                                            text: AppStrings.seedling,
+                                            text: controller.growSheet.seedBank
+                                                ?? AppStrings.seedling,
                                             fontSize: 15.sp,
                                             fontWeight: FontWeight.w500,
                                             color: Get.isDarkMode
@@ -971,7 +973,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                                             ? Colors.white
                                                             : Colors.black,
                                                         fontWeight:
-                                                            FontWeight.w400,
+                                                            FontWeight.w500,
                                                       )
                                                     ],
                                                   ),

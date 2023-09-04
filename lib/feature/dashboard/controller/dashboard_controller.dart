@@ -226,6 +226,7 @@ class DashboardController extends GetxController {
 
   }
 
+  /// for update grow space
   Future updateGrowSpace({required int id, required GrowController growController }) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -288,6 +289,7 @@ class DashboardController extends GetxController {
 
   }
 
+  /// for delete Grow space
   Future deleteGrowController({required int id}) async {
 
     bool isConnected = await checkNetConnectivity();
@@ -344,6 +346,7 @@ class DashboardController extends GetxController {
 
   }
 
+  /// for check validation
   Future onSave() async {
 
     isValid.value = true;

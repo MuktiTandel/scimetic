@@ -93,6 +93,7 @@ class FertigationController extends GetxController {
 
   List<bool> checkList = [];
 
+  /// for get fertigation control data list
   Future getFertigationControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -165,6 +166,7 @@ class FertigationController extends GetxController {
     }
   }
 
+  /// for add new fertigation control data
   Future addFertigationControlData(
       {required FertigationControlModel fertigationControlModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -208,6 +210,7 @@ class FertigationController extends GetxController {
     }
   }
 
+  /// for delete fertigation control data
   Future deleteFertigationControl() async {
     bool isConnected = await checkNetConnectivity();
 
@@ -252,6 +255,7 @@ class FertigationController extends GetxController {
     }
   }
 
+  /// for apply toggle
   Future toggleApply({required bool applied, required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -297,6 +301,7 @@ class FertigationController extends GetxController {
     }
   }
 
+  /// for update fertigation control data
   Future updateFertigationControl(
       {required FertigationControlModel fertigationControlModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -339,6 +344,7 @@ class FertigationController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 

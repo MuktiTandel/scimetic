@@ -62,6 +62,7 @@ class ExtractorControlController extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  /// for get extractor fan control data
   Future getExtractorFanControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -144,6 +145,7 @@ class ExtractorControlController extends GetxController {
     }
   }
 
+  /// for add new extractor fan control data
   Future addExtractorFanControlData(
       {required ExtractorControlModel extractorControlModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -187,6 +189,7 @@ class ExtractorControlController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 

@@ -55,6 +55,9 @@ class DeviceSettingsController extends GetxController {
 
   RxBool isGetDevice = false.obs;
 
+  RxList tableDataList = [].obs;
+
+  /// for get device data
   Future getDeviceData() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -147,6 +150,7 @@ class DeviceSettingsController extends GetxController {
 
   }
 
+  /// for update device data
   Future updateDevice({
     required SensorDevice sensorDevice,
     required int id,

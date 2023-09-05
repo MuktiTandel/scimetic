@@ -74,6 +74,7 @@ class TodoController extends GetxController {
   
   Todo editTodo = Todo();
 
+  /// for get todo list
   Future getTodoList() async {
 
     growSpaceList.clear();
@@ -194,6 +195,7 @@ class TodoController extends GetxController {
     }
   }
 
+  /// for get company user data
   Future getCompanyUser() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -259,6 +261,7 @@ class TodoController extends GetxController {
     }
   }
 
+  /// for create new todo
   Future createTask({required Todo todo}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -312,6 +315,7 @@ class TodoController extends GetxController {
     }
   }
 
+  /// for delete todo
   Future deleteTodo({required int id}) async {
 
     bool isConnected = await checkNetConnectivity();
@@ -364,6 +368,7 @@ class TodoController extends GetxController {
 
   }
 
+  /// for update todo
   Future updateTodo({required Todo todo}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -411,6 +416,7 @@ class TodoController extends GetxController {
 
   }
 
+  /// for check validation
   void onSave() async {
 
     isValid.value = true;

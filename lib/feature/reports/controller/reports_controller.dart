@@ -93,6 +93,7 @@ class ReportController extends GetxController {
 
   Uint8List? image;
 
+  /// for get report data
   Future getReportData() async {
     isGetData.value = false;
 
@@ -222,6 +223,7 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for generate report graph
   Future onGenerate() async {
     isValid.value = true;
 
@@ -251,6 +253,7 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for temperature list filter
   void temperatureFilterList() {
     if (temperatureDataList.isNotEmpty) {
       temperatureFilterDataList.clear();
@@ -322,6 +325,7 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for co2 list filter
   void co2FilterList() {
     if (co2DataList.isNotEmpty) {
       co2FilterDataList.clear();
@@ -391,6 +395,7 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for humidity list filter
   void humidityFilterList() {
     if (humidityDataList.isNotEmpty) {
       humidityFilterDataList.clear();
@@ -461,6 +466,7 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for vpd list filter
   void vpdFilterList() {
     if (vpdDataList.isNotEmpty) {
       vpdFilterDataList.clear();
@@ -530,11 +536,12 @@ class ReportController extends GetxController {
     }
   }
 
+  /// for generate pdf
   Future<Uint8List> makePdf({
   required String companyName,
     required String batchId,
     required String createdBy
-}) async {
+  }) async {
 
     final pdf = pw.Document();
     final ByteData byteData = await rootBundle.load(AppImages.logo);

@@ -120,6 +120,7 @@ class GrowSheetController extends GetxController {
   RxBool isFertigationEnable1 = false.obs;
   RxBool isFertigationEnable2 = false.obs;
 
+  /// for get grow sheet data list
   Future getGrowSheetData() async {
 
     isGetData.value = false;
@@ -206,6 +207,7 @@ class GrowSheetController extends GetxController {
 
   }
 
+  /// for get from options
   Future getFormOption() async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -282,6 +284,7 @@ class GrowSheetController extends GetxController {
 
   }
 
+  /// for create new grow sheet
   Future createGrowSheet({required CreateGrowSheet createGrowSheet}) async {
 
     growControllerId.value = storeData.getInt(StoreData.id)!;
@@ -326,6 +329,7 @@ class GrowSheetController extends GetxController {
     }
   }
 
+  /// for delete grow sheet
   Future deleteGrowSheet() async {
 
     bool isConnected = await checkNetConnectivity();
@@ -381,6 +385,7 @@ class GrowSheetController extends GetxController {
 
   }
 
+  /// for update grow sheet
   Future updateGrowSheet({ required CreateGrowSheet createGrowSheet}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -434,6 +439,7 @@ class GrowSheetController extends GetxController {
 
   }
 
+  /// for toggle apply
   Future toggleApply({required int id, required bool applied}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -493,6 +499,7 @@ class GrowSheetController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
 
     isValid.value = true;

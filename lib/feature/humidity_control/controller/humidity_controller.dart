@@ -95,6 +95,7 @@ class HumidityController extends GetxController {
 
   HumidityControlModel humidityControlModel = HumidityControlModel();
 
+  /// for get humidity controller data
   Future getHumidityControllerData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -206,6 +207,7 @@ class HumidityController extends GetxController {
     }
   }
 
+  /// for add new humidity control data
   Future addHumidityData({required HumidityModel humidityModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -244,6 +246,7 @@ class HumidityController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 

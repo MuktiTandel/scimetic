@@ -599,11 +599,11 @@ class DeviceSettingsScreen extends StatelessWidget {
               ),
               Obx(() => isDeviceSelect.value == true
                   ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                child: controller.isSwitches.value == true
-                    ? switchesTable(info1: info1, info2: info2, info3: info3)
-                    : sensorTable(sensorDeviceData: sensorDeviceData),
-              )
+                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                    child: controller.isSwitches.value == true
+                      ? switchesTable(info1: info1, info2: info2, info3: info3)
+                      : sensorTable(sensorDeviceData: sensorDeviceData),
+                  )
                   : const SizedBox.shrink()
               )
             ],

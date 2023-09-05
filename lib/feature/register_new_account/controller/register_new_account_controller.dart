@@ -37,6 +37,7 @@ class RegisterNewAccountController extends GetxController {
 
   http.Response? apiResponse;
 
+  /// for create new user
   Future createUser(CreateUserModel userModel) async {
 
     try {
@@ -77,6 +78,7 @@ class RegisterNewAccountController extends GetxController {
 
   }
 
+  /// for check validation
   void onRegister() async {
 
     isValid.value = true;

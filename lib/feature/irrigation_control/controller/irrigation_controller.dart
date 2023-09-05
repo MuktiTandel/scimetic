@@ -100,6 +100,7 @@ class IrrigationController extends GetxController {
 
   RxInt irrigationId = 0.obs;
 
+  /// for get irrigation control data
   Future getIrrigationControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -172,6 +173,7 @@ class IrrigationController extends GetxController {
     }
   }
 
+  /// for add new irrigation control data
   Future addIrrigationControlData(
       {required IrrigationModel irrigationModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -215,6 +217,7 @@ class IrrigationController extends GetxController {
     }
   }
 
+  /// for delete irrigation control data
   Future deleteIrrigationControl() async {
     bool isConnected = await checkNetConnectivity();
 
@@ -259,6 +262,7 @@ class IrrigationController extends GetxController {
     }
   }
 
+  /// for toggle apply
   Future toggleApply({required bool applied, required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -302,7 +306,8 @@ class IrrigationController extends GetxController {
     }
   }
 
-  Future updateFertigationControl(
+  /// for update irrigation control data
+  Future updateIrrigationControl(
       {required IrrigationModel irrigationModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -344,6 +349,7 @@ class IrrigationController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 
@@ -471,7 +477,7 @@ class IrrigationController extends GetxController {
             await getIrrigationControlData();
           });
         } else {
-          await updateFertigationControl(irrigationModel: irrigationModel)
+          await updateIrrigationControl(irrigationModel: irrigationModel)
               .whenComplete(() async {
                 isEdit.value = false;
                 listHeight.value = 80.0;

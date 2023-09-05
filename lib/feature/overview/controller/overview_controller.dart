@@ -143,6 +143,7 @@ class OverviewController extends GetxController {
     'flowering': 0
   };
 
+  /// for get grow sheet data
   Future getGrowSheetData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -189,6 +190,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for get climate data
   Future getClimateData(
       {required String identifier, required String range}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -238,6 +240,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for get device data
   Future getDeviceData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -280,6 +283,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for get grow sheet labeler data
   Future getGrowSheetLabelerData({required int id}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -416,6 +420,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for update grow sheet labeler data
   Future updateGrowSheetLabelerData(
       {required int id, required GrowsheetLabeler growsheetLabeler}) async {
     token = storeData.getString(StoreData.accessToken)!;
@@ -453,6 +458,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for add new grow sheet labeler data
   Future addGrowSheetLabeler() async {
     GrowsheetLabeler growSheetLabeler = GrowsheetLabeler();
 
@@ -474,6 +480,7 @@ class OverviewController extends GetxController {
         id: growSheetId.value, growsheetLabeler: growSheetLabeler);
   }
 
+  /// for get 1 hour graph data
   Future get1HourData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -487,6 +494,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get 6 hour graph data
   Future get6HourData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -500,6 +508,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get 12 hour graph data
   Future get12HourData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -513,6 +522,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get 24 hour graph data
   Future get24HourData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -526,6 +536,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get week graph data
   Future getWeekData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -539,6 +550,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get month graph data
   Future getMonthData({required int id, required String identifier}) async {
     progressDialog(true, Get.context!);
 
@@ -552,6 +564,7 @@ class OverviewController extends GetxController {
     });
   }
 
+  /// for get graph data
   void getGraphData() {
     temperatureDataList.clear();
     temperatureYValueList.clear();
@@ -639,6 +652,7 @@ class OverviewController extends GetxController {
     }
   }
 
+  /// for calculation for batch label
   Map<String, num> graphData() {
     final Map<String, num> dataClone = Map.from(data);
     final Map<String, double> weightages = {
@@ -662,6 +676,7 @@ class OverviewController extends GetxController {
     return dataClone;
   }
 
+  /// for calculation for batch label progress
   Map<String, Map<String, double>> resolveAngles(
       Map<String, num> data, int totalPeriod) {
     rangeValue4.value = 0.0;

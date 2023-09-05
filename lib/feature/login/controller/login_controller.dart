@@ -36,6 +36,7 @@ class LoginController extends GetxController {
 
   RxBool isCall = false.obs;
 
+  /// for user login
   Future loginUser(LoginModel loginModel) async {
 
     try {
@@ -101,6 +102,7 @@ class LoginController extends GetxController {
 
   }
 
+  /// for check validation
   Future userLogin() async {
 
     final bool emailValid =

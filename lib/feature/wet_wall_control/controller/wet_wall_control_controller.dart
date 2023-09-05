@@ -62,6 +62,7 @@ class WetWallControlController extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  /// for get wet wall control data
   Future getWetWallControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -151,6 +152,7 @@ class WetWallControlController extends GetxController {
     }
   }
 
+  /// for add new wet wall control data
   Future addWetWallControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -209,6 +211,7 @@ class WetWallControlController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 
@@ -244,4 +247,5 @@ class WetWallControlController extends GetxController {
       }
     }
   }
+
 }

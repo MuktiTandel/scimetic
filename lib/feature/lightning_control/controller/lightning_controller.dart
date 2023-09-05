@@ -54,6 +54,7 @@ class LightningController extends GetxController {
 
   LightningControlModel lightningControlModel = LightningControlModel();
 
+  /// for get lightning data
   Future getLightningData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -159,6 +160,7 @@ class LightningController extends GetxController {
     }
   }
 
+  /// for set time
   void setTime({
     required String time,
     required TextEditingController hour,
@@ -182,6 +184,7 @@ class LightningController extends GetxController {
 
   }
 
+  /// for add new lightning data
   Future addLightningData({required LightningModel lightningModel}) async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -220,6 +223,7 @@ class LightningController extends GetxController {
     }
   }
 
+  /// for check validation
   void onSave() async {
     isValid.value = true;
 

@@ -51,6 +51,7 @@ class OrganizationController extends GetxController {
 
   RxBool isUser = false.obs;
 
+  /// for get organization data list
   Future getDataList() async {
 
     bool isConnected = await checkNetConnectivity();
@@ -121,6 +122,7 @@ class OrganizationController extends GetxController {
     }
   }
 
+  /// for add new organization
   Future addOrganization({required Company company}) async {
 
     token =  storeData.getString(StoreData.accessToken)!;
@@ -176,6 +178,7 @@ class OrganizationController extends GetxController {
 
   }
 
+  /// for check validation
   void onSave() async {
 
     isValid.value = true;
@@ -258,6 +261,7 @@ class OrganizationController extends GetxController {
 
   }
 
+  /// for delete organization
   Future deleteOrganization({required int id}) async {
 
     bool isConnected = await checkNetConnectivity();

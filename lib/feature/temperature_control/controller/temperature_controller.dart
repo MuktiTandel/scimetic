@@ -127,6 +127,7 @@ class TemperatureController extends GetxController {
 
   RxBool isEdit = false.obs;
 
+  /// for get temperature controller data
   Future getTemperatureControllerData() async {
     token = storeData.getString(StoreData.accessToken)!;
 
@@ -336,6 +337,7 @@ class TemperatureController extends GetxController {
     }
   }
 
+  /// for add new temperature controller data
   Future addTemperatureControlData() async {
     token = storeData.getString(StoreData.accessToken)!;
 

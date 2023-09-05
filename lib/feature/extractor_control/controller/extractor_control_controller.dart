@@ -17,6 +17,7 @@ import 'package:scimetic/feature/extractor_control/model/Extractor_control_model
 import 'package:scimetic/feature/extractor_control/model/extractor_fan_model.dart';
 
 class ExtractorControlController extends GetxController {
+
   final TextEditingController dayTemperatureController =
       TextEditingController();
   final TextEditingController nightTemperatureController =

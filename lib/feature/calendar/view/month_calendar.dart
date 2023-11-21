@@ -6,6 +6,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/feature/calendar/model/event_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+// ignore: must_be_immutable
 class MonthCalendar extends StatefulWidget {
     MonthCalendar({
      Key? key,

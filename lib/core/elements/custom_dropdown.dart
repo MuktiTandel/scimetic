@@ -6,6 +6,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
+// ignore: must_be_immutable
 class CustomDropDown extends StatelessWidget {
    CustomDropDown({
     Key? key,
@@ -45,7 +46,7 @@ class CustomDropDown extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(color: Get.isDarkMode
-                ? AppColors.darkText : AppColors.lightBorder,)
+                ? AppColors.darkText : const Color.fromARGB(255, 99, 57, 57),)
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),

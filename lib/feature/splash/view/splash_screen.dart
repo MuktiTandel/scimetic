@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
+import 'package:scimetic/core/const/share_preference.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 
@@ -16,8 +17,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   String email = "";
+  String accessToken = "";
 
   StoreData storeData = StoreData();
 
@@ -26,15 +27,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     email = storeData.getString(StoreData.email) ?? "";
-
+    // accessToken = storeData.getString(StoreData.accessToken) ?? "";
+    accessToken = SharePreferenceService.getString(StoreData.accessToken);
+    print(accessToken);
     Future.delayed(const Duration(seconds: 3), () {
-
-      if ( email.isEmpty ) {
+      if (accessToken.isEmpty) {
         Get.offNamed(AppPages.REGISTERNEWACCOUNT);
       } else {
         Get.offAllNamed(AppPages.HOME);
       }
-
     });
   }
 
@@ -46,40 +47,40 @@ class _SplashScreenState extends State<SplashScreen> {
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        body: Container(
-          height: Get.height,
-          width: Get.width,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.lightGreen,
-                AppColors.darkGreen,
-                ],
+          body: Container(
+        height: Get.height,
+        width: Get.width,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.lightGreen,
+              AppColors.darkGreen,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                AppImages.appLogo,
+                height: 80.h,
+                width: 80.w,
               ),
+              SizedBox(
+                height: 20.h,
+              ),
+              SvgPicture.asset(
+                AppImages.appTitle,
+                height: 20.h,
+                width: 20.w,
+              ),
+            ],
           ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                    AppImages.appLogo,
-                  height: 80.h,
-                  width: 80.w,
-                ),
-                SizedBox(height: 20.h,),
-                SvgPicture.asset(
-                    AppImages.appTitle,
-                  height: 20.h,
-                  width: 20.w,
-                ),
-              ],
-            ),
-          ),
-        )
-      ),
+        ),
+      )),
     );
   }
-
 }

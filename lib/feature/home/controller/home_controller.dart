@@ -91,6 +91,7 @@ class HomeController extends GetxController {
 
   void changeModuleIndex(int index) {
     moduleIndex.value = index;
+    print(moduleIndex.value);
   }
 
   appbarTitle() {

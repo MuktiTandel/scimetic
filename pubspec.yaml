@@ -119,6 +119,9 @@ dependencies:
 
   # for generate pdf
   pdf:
+  # for storge 
+  shared_preferences: ^2.2.2
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:

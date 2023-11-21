@@ -30,88 +30,90 @@ class CalendarScreen extends StatelessWidget {
   }
 
   Widget personalCalendar() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(10.w),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isDay.value == false ) {
-                          controller.isDay.value = true;
-                          controller.isWeek.value = false;
-                          controller.isMonth.value = false;
-                          controller.isYear.value = false;
-                        }
-                      },
-                      text: AppStrings.day,
-                      isSelected: controller.isDay.value
-                  ),)
-              ),
-              SizedBox(width: 10.w,),
-              Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isWeek.value == false ) {
-                          controller.isDay.value = false;
-                          controller.isWeek.value = true;
-                          controller.isMonth.value = false;
-                          controller.isYear.value = false;
-                        }
-                      },
-                      text: AppStrings.week,
-                      isSelected: controller.isWeek.value
-                  ),)
-              ),
-              SizedBox(width: 10.w,),
-              Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isMonth.value == false ) {
-                          controller.isDay.value = false;
-                          controller.isWeek.value = false;
-                          controller.isMonth.value = true;
-                          controller.isYear.value = false;
-                        }
-                      },
-                      text: AppStrings.month,
-                      isSelected: controller.isMonth.value
-                  ),)
-              ),
-              SizedBox(width: 10.w,),
-              Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isYear.value == false ) {
-                          controller.isDay.value = false;
-                          controller.isWeek.value = false;
-                          controller.isMonth.value = false;
-                          controller.isYear.value = true;
-                        }
-                      },
-                      text: AppStrings.year,
-                      isSelected: controller.isYear.value
-                  ),)
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(10.w),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isDay.value == false ) {
+                            controller.isDay.value = true;
+                            controller.isWeek.value = false;
+                            controller.isMonth.value = false;
+                            controller.isYear.value = false;
+                          }
+                        },
+                        text: AppStrings.day,
+                        isSelected: controller.isDay.value
+                    ),)
+                ),
+                SizedBox(width: 10.w,),
+                Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isWeek.value == false ) {
+                            controller.isDay.value = false;
+                            controller.isWeek.value = true;
+                            controller.isMonth.value = false;
+                            controller.isYear.value = false;
+                          }
+                        },
+                        text: AppStrings.week,
+                        isSelected: controller.isWeek.value
+                    ),)
+                ),
+                SizedBox(width: 10.w,),
+                Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isMonth.value == false ) {
+                            controller.isDay.value = false;
+                            controller.isWeek.value = false;
+                            controller.isMonth.value = true;
+                            controller.isYear.value = false;
+                          }
+                        },
+                        text: AppStrings.month,
+                        isSelected: controller.isMonth.value
+                    ),)
+                ),
+                SizedBox(width: 10.w,),
+                Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isYear.value == false ) {
+                            controller.isDay.value = false;
+                            controller.isWeek.value = false;
+                            controller.isMonth.value = false;
+                            controller.isYear.value = true;
+                          }
+                        },
+                        text: AppStrings.year,
+                        isSelected: controller.isYear.value
+                    ),)
+                ),
+              ],
+            ),
           ),
-        ),
-        Obx(() => controller.isDay.value == true
-            ? DayCalendar(
-          dayEventList: controller.dayEventList,
-        )
-            : controller.isWeek.value == true
-            ?  WeekCalendar(
-          weekEventList: controller.dayEventList,
-        )
-            : controller.isMonth.value == true
-            ?  MonthCalendar(
-          eventList: controller.eventList,
-        ) : YearCalendar())
-      ],
+          Obx(() => controller.isDay.value == true
+              ? DayCalendar(
+            dayEventList: controller.dayEventList,
+          )
+              : controller.isWeek.value == true
+              ?  WeekCalendar(
+            weekEventList: controller.dayEventList,
+          )
+              : controller.isMonth.value == true
+              ?  MonthCalendar(
+            eventList: controller.eventList,
+          ) : YearCalendar())
+        ],
+      ),
     );
   }
 

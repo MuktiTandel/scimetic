@@ -5,6 +5,7 @@ import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+// ignore: must_be_immutable
 class WeekCalendar extends StatelessWidget {
    WeekCalendar({
     Key? key,

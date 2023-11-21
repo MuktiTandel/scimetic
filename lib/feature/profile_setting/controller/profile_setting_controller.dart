@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kd_api_call/kd_api_call.dart';
+import 'package:path/path.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
@@ -14,13 +15,14 @@ import 'package:scimetic/core/utils/store_data.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileSettingController extends GetxController {
-
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController organizationNameController = TextEditingController();
-  final TextEditingController organizationKeyController = TextEditingController();
+  final TextEditingController organizationNameController =
+      TextEditingController();
+  final TextEditingController organizationKeyController =
+      TextEditingController();
   final TextEditingController recoveryEmailController = TextEditingController();
 
   StoreData storeData = StoreData();
@@ -51,56 +53,48 @@ class ProfileSettingController extends GetxController {
 
     AppConst().debug('name ==> ${name.value}');
 
-    if ( name.value.isNotEmpty ) {
-
+    if (name.value.isNotEmpty) {
       String firstName = "";
       String lastName = "";
 
-      if ( name.value.contains(' ')) {
-
-        var name1 = name.value.split("  ");
+      if (name.value.contains(' ')) {
+        var name1 = name.value.split(" ");
 
         firstName = name1[0];
-        lastName = name1[1];
+        lastName = name.value.contains(" ") ? name1[1] : "";
 
         firstNameController.text = firstName;
         lastNameController.text = lastName;
-
       }
-
     }
 
-    if ( email.value.isNotEmpty ) {
-
+    if (email.value.isNotEmpty) {
       emailController.text = email.value;
-
     }
-
   }
 
   /// Get from gallery
   getFromGallery() async {
-
     try {
       isPick.value = false;
 
-      XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 25,
+      );
 
       if (image != null) {
+        isPick.value = true;
 
-            isPick.value = true;
-
-            imageFile = File(image.path);
-          }
+        imageFile = File(image.path);
+      }
     } catch (e) {
       AppConst().debug('$e');
     }
-
   }
 
   /// Get from camera
   getFromCamera() async {
-
     isPick.value = false;
 
     XFile? photo = await picker.pickImage(source: ImageSource.camera);
@@ -109,18 +103,15 @@ class ProfileSettingController extends GetxController {
       isPick.value = true;
       imageFile = File(photo.path);
     }
-
   }
 
   /// Update profile api call
   Future updateProfile() async {
-
     token = storeData.getString(StoreData.accessToken)!;
 
     userId.value = storeData.getInt(StoreData.userId)!;
 
     if (token.isNotEmpty) {
-
       progressDialog(true, Get.context!);
 
       try {
@@ -135,11 +126,11 @@ class ProfileSettingController extends GetxController {
               "email": emailController.text,
               "mobile": mobileNumberController.text,
               "name": "${firstNameController.text} ${lastNameController.text}",
-              "recoveryEmail" : recoveryEmailController.text
+              "recoveryEmail": recoveryEmailController.text
             });
 
         apiResponse =
-        await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
@@ -160,12 +151,10 @@ class ProfileSettingController extends GetxController {
         AppConst().debug(e.toString());
       }
     }
-
   }
 
   /// upload image
   Future uploadImage() async {
-
     token = storeData.getString(StoreData.accessToken)!;
 
     userId.value = storeData.getInt(StoreData.companyId) ?? 0;
@@ -174,55 +163,95 @@ class ProfileSettingController extends GetxController {
       progressDialog(true, Get.context!);
 
       try {
-
-        var request = http.MultipartRequest(
-          'PUT',
-          Uri.parse("${ApiPath.baseUrl}${ApiPath.user}/${userId.value}/upload"),
+        APIRequestInfo requestInfo = APIRequestInfo(
+          url:
+              "${ApiPath.baseUrl}${ApiPath.user}/${storeData.getData(StoreData.userId).toString()}/upload",
+          requestType: HTTPRequestType.POST,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
+          },
+          parameter: {
+            "fileName": basename(imageFile!.path),
+          },
         );
 
-        Map<String,String> headers={
-          "Authorization":"Bearer $token",
-          "Content-type": "multipart/form-data"
-        };
+        final apiResponse =
+            await ApiCall.instance.callService(requestInfo: requestInfo);
+        final signedUrlData = jsonDecode(apiResponse.body);
+        final signedUrl = signedUrlData['url'];
+        if (signedUrl != "") {
+          APIRequestInfo requestInfo1 = APIRequestInfo(
+              url: signedUrl,
+              requestType: HTTPRequestType.PUT,
+              // docList: [
+              //   UploadDocument(docKey: "file", docPathList: [imageFile!.path])
+              // ],
+              headers: {
+                'Content-Type': 'image/jpeg',
+              },
+              parameter: await imageFile!.readAsBytes());
+          final apiResponse1 =
+              await ApiCall.instance.callService(requestInfo: requestInfo1);
+          if (apiResponse1.statusCode == 200) {
+            APIRequestInfo getImage = APIRequestInfo(
+              url:
+                  "${ApiPath.baseUrl}${ApiPath.user}/${storeData.getData(StoreData.userId).toString()}/getURL",
+              requestType: HTTPRequestType.GET,
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer $token"
+              },
+              // parameter: {
+              //   imageFile,
+              // },
+            );
+            final apiResponse2 =
+                await ApiCall.instance.callService(requestInfo: getImage);
+            var data = json.decode(apiResponse.body);
+            if (apiResponse2.statusCode == 200) {
+              imageUrl.value = data["url"];
+              storeData.setData(StoreData.userImage, imageUrl.value);
+              print(storeData.getData(StoreData.userImage));
+              showSnack(width: 200.w, title: data["message"]);
+              progressDialog(false, Get.context!);
 
-        request.files.add(
-          http.MultipartFile(
-            'image',
-            imageFile!.readAsBytes().asStream(),
-            imageFile!.lengthSync(),
-            filename: 'filename',
-          ),
-        );
-        request.headers.addAll(headers);
+              return true;
+            } else {
+              showSnack(width: 200.w, title: data["message"]);
+              progressDialog(false, Get.context!);
 
-        AppConst().debug("url => ${request.url}");
-
-        var res = await request.send();
-        var response = await http.Response.fromStream(res);
-        AppConst().debug("This is response:${response.body}");
-        AppConst().debug("This is response status code :${response.statusCode}");
-
-        var data = json.decode(response.body);
-
-        progressDialog(false, Get.context!);
-
-        if (response.statusCode == 200) {
-
-          imageUrl.value = data["image"];
-
-          showSnack(width: 200.w, title: data["message"]);
-
-          return true;
-        } else {
-          showSnack(width: 200.w, title: data["message"]);
-
-          return false;
+              return false;
+            }
+          }
         }
       } catch (e) {
         AppConst().debug(e.toString());
       }
     }
-
   }
-
 }
+// var request = http.MultipartRequest(
+        //   'PUT',
+        //   Uri.parse("${ApiPath.baseUrl}${ApiPath.user}/${userId.value}/upload"),
+        // );
+
+        // Map<String, String> headers = {
+        //   "Authorization": "Bearer $token",
+        //   "Content-type": "multipart/form-data"
+        // };
+
+        // request.files.add(
+        //   http.MultipartFile(
+        //     'image',
+        //     imageFile!.readAsBytes().asStream(),
+        //     imageFile!.lengthSync(),
+        //     filename: 'filename',
+        //   ),
+        // );
+        // request.headers.addAll(headers);
+
+        // AppConst().debug("url => ${request.url}");
+
+        // var res = await request.send();
+        // var response = await http.Response.fromStream(res);

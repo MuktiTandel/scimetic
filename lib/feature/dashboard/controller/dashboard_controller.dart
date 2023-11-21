@@ -15,7 +15,6 @@ import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
 import 'package:scimetic/feature/dashboard/model/growSpace_model.dart';
 
 class DashboardController extends GetxController {
-
   RxBool isOverView = false.obs;
 
   RxBool isOverViewTitle = false.obs;
@@ -54,9 +53,7 @@ class DashboardController extends GetxController {
 
   StoreData storeData = StoreData();
 
-  RxList dataList = [GrowController(
-    name: "test"
-  )].obs;
+  RxList dataList = [GrowController(name: "test")].obs;
 
   List<GrowController> mainList = [];
 
@@ -80,35 +77,32 @@ class DashboardController extends GetxController {
 
     roleId.value = storeData.getInt(StoreData.roleId)!;
 
-    if ( roleId.value != 1 ) {
-       getDataList();
+    if (roleId.value != 1) {
+      getDataList();
     }
-
   }
 
   /// for get grow space list
   Future getDataList() async {
-
     isGetData.value = false;
 
     dataList.clear();
 
     mainList.clear();
 
-    token =  storeData.getString(StoreData.accessToken)!;
+    token = storeData.getString(StoreData.accessToken)!;
 
-    if ( token.isNotEmpty ) {
+    if (token.isNotEmpty) {
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: ApiPath.baseUrl + ApiPath.growController,
             requestType: HTTPRequestType.GET,
-          headers: {
-            "Authorization" : 'Bearer $token',
-          }
-        );
+            headers: {
+              "Authorization": 'Bearer $token',
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
@@ -116,11 +110,10 @@ class DashboardController extends GetxController {
 
         isGetData.value = true;
 
-        if ( apiResponse!.statusCode == 200 ) {
-
+        if (apiResponse!.statusCode == 200) {
           growModel = GrowModel.fromJson(data);
 
-          if ( growModel.growControllers!.isNotEmpty ) {
+          if (growModel.growControllers!.isNotEmpty) {
             dataList.addAll(growModel.growControllers!);
             mainList.addAll(growModel.growControllers!);
           }
@@ -128,56 +121,41 @@ class DashboardController extends GetxController {
           if (dataList.isNotEmpty) {
             itemList.clear();
             for (var element in dataList) {
-              itemList
-                  .add(element.identifier!);
+              itemList.add(element.identifier!);
             }
-            AppConst().debug(
-                'item list length => ${itemList.length}');
+            AppConst().debug('item list length => ${itemList.length}');
           }
 
-          if ( itemList.isNotEmpty ) {
+          if (itemList.isNotEmpty) {
             selectItem.value = itemList.first;
           }
 
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
+          showSnack(width: 200.w, title: data["message"]);
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
   }
 
   /// for create new grow space
   Future createGrowSpace({required GrowspaceModel growspaceModel}) async {
+    token = storeData.getString(StoreData.accessToken)!;
 
-    token =  storeData.getString(StoreData.accessToken)!;
-
-    if ( token.isNotEmpty ) {
+    if (token.isNotEmpty) {
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: ApiPath.baseUrl + ApiPath.growController,
             requestType: HTTPRequestType.POST,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
             parameter: {
               "name": growspaceModel.name,
@@ -186,116 +164,86 @@ class DashboardController extends GetxController {
               "description": growspaceModel.description,
               "dayStart": growspaceModel.dayStart,
               "nightStart": growspaceModel.nightStart
-            }
-        );
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
-
         } else {
-
-          if ( apiResponse!.statusCode == 403 ) {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
+          if (apiResponse!.statusCode == 403) {
+            showSnack(width: 200.w, title: data["message"]);
           }
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
   /// for update grow space
-  Future updateGrowSpace({required int id, required GrowController growController }) async {
+  Future updateGrowSpace(
+      {required int id, required GrowController growController}) async {
+    token = storeData.getString(StoreData.accessToken)!;
 
-    token =  storeData.getString(StoreData.accessToken)!;
-
-    if ( token.isNotEmpty ) {
+    if (token.isNotEmpty) {
       try {
-
         APIRequestInfo apiRequestInfo = APIRequestInfo(
             url: "${ApiPath.baseUrl}${ApiPath.growController}/$id",
             requestType: HTTPRequestType.PUT,
             headers: {
-              "Authorization" : 'Bearer $token',
-              "Content-Type" : "application/json"
+              "Authorization": 'Bearer $token',
+              "Content-Type": "application/json"
             },
             parameter: {
-              "name" : growController.name,
-              "description" : growController.description,
-              "dayStart" : growController.dayStart,
-              "nightStart" : growController.nightStart,
-              "temperatureControlAuto" : growController.temperatureControlAuto,
-              "humidityControlAuto" : growController.humidityControlAuto,
-              "co2ControlAuto" : growController.co2ControlAuto,
-              "lightingControlAuto" : growController.lightingControlAuto
-            }
-        );
+              "name": growController.name,
+              "description": growController.description,
+              "dayStart": growController.dayStart,
+              "nightStart": growController.nightStart,
+              "temperatureControlAuto": growController.temperatureControlAuto,
+              "humidityControlAuto": growController.humidityControlAuto,
+              "co2ControlAuto": growController.co2ControlAuto,
+              "lightingControlAuto": growController.lightingControlAuto
+            });
 
-        apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+        apiResponse =
+            await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
         AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
         dynamic data = jsonDecode(apiResponse!.body);
 
-        if ( apiResponse!.statusCode == 200 ) {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        if (apiResponse!.statusCode == 200) {
+          showSnack(width: 200.w, title: data["message"]);
 
           return true;
         } else {
-
-          if ( apiResponse!.statusCode == 403 ) {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
+          if (apiResponse!.statusCode == 403) {
+            showSnack(width: 200.w, title: data["message"]);
           }
 
           return false;
         }
-
       } catch (e) {
-
         AppConst().debug(e.toString());
-
       }
     }
-
   }
 
   /// for delete Grow space
   Future deleteGrowController({required int id}) async {
-
     bool isConnected = await checkNetConnectivity();
 
-    if ( isConnected == true ) {
-
+    if (isConnected == true) {
       token = storeData.getString(StoreData.accessToken)!;
 
       if (token.isNotEmpty) {
@@ -305,31 +253,21 @@ class DashboardController extends GetxController {
               requestType: HTTPRequestType.DELETE,
               headers: {
                 "Authorization": 'Bearer $token',
-              }
-          );
+              });
 
           apiResponse =
-          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+              await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
           AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
           dynamic data = jsonDecode(apiResponse!.body);
 
           if (apiResponse!.statusCode == 200) {
-
-            showSnack(
-                width: 200.w,
-                title: data["message"]
-            );
+            showSnack(width: 200.w, title: data["message"]);
 
             return true;
           } else {
-
-              showSnack(
-                  width: 200.w,
-                  title: data["message"]
-              );
-
+            showSnack(width: 200.w, title: data["message"]);
 
             return false;
           }
@@ -338,81 +276,65 @@ class DashboardController extends GetxController {
         }
       }
     } else {
-      showSnack(
-          title: AppStrings.noInternetConnection,
-          width: 200.w
-      );
+      showSnack(title: AppStrings.noInternetConnection, width: 200.w);
     }
-
   }
 
   /// for check validation
   Future onSave() async {
-
     isValid.value = true;
 
     final bool locationValidation = locationController.text.contains(",");
 
-    if ( growspaceNameController.text.isEmpty ) {
-
+    if (growspaceNameController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( locationController.text.isEmpty ) {
-
+    } else if (locationController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( serialNumberController.text.isEmpty ) {
-
+    } else if (serialNumberController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( descriptionController.text.isEmpty ) {
-
+    } else if (descriptionController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( locationValidation == false ) {
-
+    } else if (locationValidation == false) {
       isValid.value = false;
       errorMessage.value = AppStrings.locationErrorMessage;
-
     } else {
-
       bool isConnected = await checkNetConnectivity();
 
-      if ( isConnected == true ) {
-
-        if ( isEdit.value == false ) {
-
+      if (isConnected == true) {
+        if (isEdit.value == false) {
           GrowspaceModel growspaceModel = GrowspaceModel();
 
           growspaceModel.name = growspaceNameController.text;
           growspaceModel.identifier = serialNumberController.text;
           growspaceModel.description = descriptionController.text;
           growspaceModel.location = locationController.text;
-          growspaceModel.dayStart = dayHourController.text.isNotEmpty ?
-          "${dayHourController.text}"
-              ":${dayMinuteController.text}" : "";
-          growspaceModel.nightStart = nightHourController.text.isNotEmpty ?
-          "${nightHourController.text}"
-              ":${nightMinuteController.text}" : "";
+          growspaceModel.dayStart = dayHourController.text.isNotEmpty
+              ? "${dayHourController.text}"
+                  ":${dayMinuteController.text}"
+              : "";
+          growspaceModel.nightStart = nightHourController.text.isNotEmpty
+              ? "${nightHourController.text}"
+                  ":${nightMinuteController.text}"
+              : "";
 
           await createGrowSpace(growspaceModel: growspaceModel)
               .whenComplete(() {
             Get.back();
-             getDataList();
+            getDataList();
           });
-
         } else {
-
           GrowController growController = GrowController();
 
           growController.name = growspaceNameController.text;
           growController.description = descriptionController.text;
-          growController.dayStart = "${dayHourController.text}:${dayMinuteController.text}";
-          growController.nightStart = "${nightHourController.text}:${nightMinuteController.text}";
+          growController.dayStart =
+              "${dayHourController.text}:${dayMinuteController.text}";
+          growController.nightStart =
+              "${nightHourController.text}:${nightMinuteController.text}";
           growController.temperatureControlAuto = true;
           growController.humidityControlAuto = true;
           growController.co2ControlAuto = true;
@@ -420,11 +342,9 @@ class DashboardController extends GetxController {
 
           await updateGrowSpace(id: id.value, growController: growController)
               .whenComplete(() {
-                Get.back();
-                getDataList();
+            Get.back();
+            getDataList();
           });
-
-
         }
 
         growspaceNameController.clear();
@@ -435,18 +355,9 @@ class DashboardController extends GetxController {
         dayMinuteController.clear();
         nightHourController.clear();
         nightMinuteController.clear();
-
       } else {
-
-        showSnack(
-            title: AppStrings.noInternetConnection,
-            width: 200.w
-        );
-
+        showSnack(title: AppStrings.noInternetConnection, width: 200.w);
       }
-
     }
-
   }
-
 }

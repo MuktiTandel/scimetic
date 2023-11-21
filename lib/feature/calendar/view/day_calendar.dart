@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+// ignore: must_be_immutable
 class DayCalendar extends StatelessWidget {
    DayCalendar({
     Key? key,

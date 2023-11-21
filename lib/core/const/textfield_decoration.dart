@@ -31,6 +31,7 @@ class TextFieldDecoration {
         ),
       );
 
+  // ignore: unused_field
   static final OutlineInputBorder _border = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(
@@ -38,7 +39,7 @@ class TextFieldDecoration {
       width: borderWidth,
     ),
   );
-
+  // ignore: unused_field
   static final OutlineInputBorder _enabledBorder = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(
@@ -46,7 +47,7 @@ class TextFieldDecoration {
       width: borderWidth,
     ),
   );
-
+  // ignore: unused_field
   static final OutlineInputBorder _disabledBorder = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(
@@ -54,7 +55,7 @@ class TextFieldDecoration {
       width: borderWidth,
     ),
   );
-
+  // ignore: unused_field
   static final OutlineInputBorder _focusedBorder = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(
@@ -62,7 +63,7 @@ class TextFieldDecoration {
       width: borderWidth,
     ),
   );
-
+  // ignore: unused_field
   static final OutlineInputBorder _errorBorder = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(
@@ -70,7 +71,7 @@ class TextFieldDecoration {
       width: borderWidth,
     ),
   );
-
+  // ignore: unused_field
   static final OutlineInputBorder _focusedErrorBorder = OutlineInputBorder(
     borderRadius: textBorderRadius,
     borderSide: BorderSide(

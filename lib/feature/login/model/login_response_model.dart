@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final loginResponseModel = loginResponseModelFromJson(jsonString);
+
 import 'dart:convert';
 
 LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.fromJson(json.decode(str));
@@ -5,129 +9,129 @@ LoginResponseModel loginResponseModelFromJson(String str) => LoginResponseModel.
 String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJson());
 
 class LoginResponseModel {
-  LoginResponseModel({
-    this.message,
-    this.accessToken,
-    this.user,
-  });
+    final String? message;
+    final String? accessToken;
+    final User? user;
+    final String? url;
 
-  String? message;
-  String? accessToken;
-  User? user;
+    LoginResponseModel({
+        this.message,
+        this.accessToken,
+        this.user,
+        this.url,
+    });
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
-    message: json["message"] ?? "",
-    accessToken: json["accessToken"] ?? "",
-    user: json["user"] != null ? User.fromJson(json["user"]) : User(),
-  );
+    factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
+        message: json["message"],
+        accessToken: json["accessToken"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        url: json["url"],
+    );
 
-  Map<String, dynamic> toJson() => {
-    "message": message,
-    "accessToken": accessToken,
-    "user": user!.toJson(),
-  };
+    Map<String, dynamic> toJson() => {
+        "message": message,
+        "accessToken": accessToken,
+        "user": user?.toJson(),
+        "url": url,
+    };
 }
 
 class User {
-  User({
-    this.id,
-    this.email,
-    this.password,
-    this.name,
-    this.inDarkMode,
-    this.emailVerified,
-    this.verificationCode,
-    this.mobile,
-    this.recoveryEmail,
-    this.image,
-    this.createdAt,
-    this.updatedAt,
-    this.companyId,
-    this.roleId,
-    this.role,
-  });
+    final int? id;
+    final String? email;
+    final String? name;
+    final bool? inDarkMode;
+    final bool? emailVerified;
+    final int? verificationCode;
+    final dynamic mobile;
+    final dynamic recoveryEmail;
+    final String? image;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? companyId;
+    final int? roleId;
+    final Role? role;
 
-  int? id;
-  String? email;
-  String? password;
-  String? name;
-  bool? inDarkMode;
-  bool? emailVerified;
-  int? verificationCode;
-  dynamic mobile;
-  dynamic recoveryEmail;
-  dynamic image;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  dynamic companyId;
-  int? roleId;
-  Role? role;
+    User({
+        this.id,
+        this.email,
+        this.name,
+        this.inDarkMode,
+        this.emailVerified,
+        this.verificationCode,
+        this.mobile,
+        this.recoveryEmail,
+        this.image,
+        this.createdAt,
+        this.updatedAt,
+        this.companyId,
+        this.roleId,
+        this.role,
+    });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"] ?? 0,
-    email: json["email"] ?? "",
-    password: json["password"] ?? "",
-    name: json["name"] ?? "",
-    inDarkMode: json["inDarkMode"] ?? false,
-    emailVerified: json["emailVerified"] ?? false,
-    verificationCode: json["verificationCode"] ?? 0,
-    mobile: json["mobile"] ?? "",
-    recoveryEmail: json["recoveryEmail"] ?? "",
-    image: json["image"] ?? "",
-    createdAt: json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : DateTime.now(),
-    updatedAt: json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : DateTime.now(),
-    companyId: json["companyId"] ?? "",
-    roleId: json["roleId"] ?? 0,
-    role: json["role"] != null ? Role.fromJson(json["role"]) : Role(),
-  );
+    factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
+        email: json["email"],
+        name: json["name"],
+        inDarkMode: json["inDarkMode"],
+        emailVerified: json["emailVerified"],
+        verificationCode: json["verificationCode"],
+        mobile: json["mobile"],
+        recoveryEmail: json["recoveryEmail"],
+        image: json["image"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        companyId: json["companyId"],
+        roleId: json["roleId"],
+        role: json["role"] == null ? null : Role.fromJson(json["role"]),
+    );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "email": email,
-    "password": password,
-    "name": name,
-    "inDarkMode": inDarkMode,
-    "emailVerified": emailVerified,
-    "verificationCode": verificationCode,
-    "mobile": mobile,
-    "recoveryEmail": recoveryEmail,
-    "image": image,
-    "createdAt": createdAt!.toIso8601String(),
-    "updatedAt": updatedAt!.toIso8601String(),
-    "companyId": companyId,
-    "roleId": roleId,
-    "role": role!.toJson(),
-  };
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "email": email,
+        "name": name,
+        "inDarkMode": inDarkMode,
+        "emailVerified": emailVerified,
+        "verificationCode": verificationCode,
+        "mobile": mobile,
+        "recoveryEmail": recoveryEmail,
+        "image": image,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "companyId": companyId,
+        "roleId": roleId,
+        "role": role?.toJson(),
+    };
 }
 
 class Role {
-  Role({
-    this.id,
-    this.code,
-    this.name,
-    this.createdAt,
-    this.updatedAt,
-  });
+    final int? id;
+    final String? code;
+    final String? name;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
 
-  int? id;
-  String? code;
-  String? name;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+    Role({
+        this.id,
+        this.code,
+        this.name,
+        this.createdAt,
+        this.updatedAt,
+    });
 
-  factory Role.fromJson(Map<String, dynamic> json) => Role(
-    id: json["id"] ?? 0,
-    code: json["code"] ?? "",
-    name: json["name"] ?? "",
-    createdAt: json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : DateTime.now(),
-    updatedAt: json["updatedAt"] != null ? DateTime.parse(json["updatedAt"]) : DateTime.now(),
-  );
+    factory Role.fromJson(Map<String, dynamic> json) => Role(
+        id: json["id"],
+        code: json["code"],
+        name: json["name"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "code": code,
-    "name": name,
-    "createdAt": createdAt!.toIso8601String(),
-    "updatedAt": updatedAt!.toIso8601String(),
-  };
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "code": code,
+        "name": name,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+    };
 }

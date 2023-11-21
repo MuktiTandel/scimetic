@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:kd_api_call/kd_api_call.dart';
 import 'package:scimetic/core/const/app_const.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/const/share_preference.dart';
 import 'package:scimetic/core/elements/custom_dialog.dart';
 import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
@@ -18,7 +19,6 @@ import 'package:http/http.dart' as http;
 import 'package:scimetic/feature/login/model/login_response_model.dart';
 
 class LoginController extends GetxController {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -38,136 +38,107 @@ class LoginController extends GetxController {
 
   /// for user login
   Future loginUser(LoginModel loginModel) async {
-
     try {
-
       APIRequestInfo apiRequestInfo = APIRequestInfo(
         url: ApiPath.baseUrl + ApiPath.login,
         requestType: HTTPRequestType.POST,
-        headers: {
-          "Content-Type" : "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         parameter: {
           "username": loginModel.username,
-          "password" : loginModel.password
+          "password": loginModel.password
         },
       );
 
-      apiResponse = await ApiCall.instance.callService(requestInfo: apiRequestInfo);
+      apiResponse =
+          await ApiCall.instance.callService(requestInfo: apiRequestInfo);
 
       AppConst().debug("Api response => ${apiResponse!.statusCode}");
 
       dynamic data = jsonDecode(apiResponse!.body);
 
-      if ( apiResponse!.statusCode == 200 ) {
-
+      if (apiResponse!.statusCode == 200) {
         loginResponseModel = LoginResponseModel.fromJson(data);
 
         AppConst().debug("accessToken => ${loginResponseModel.accessToken}");
 
-        storeData.setData(StoreData.accessToken, loginResponseModel.accessToken);
+        storeData.setData(
+            StoreData.accessToken, loginResponseModel.accessToken);
+        SharePreferenceService.setString(
+            StoreData.accessToken, loginResponseModel.accessToken.toString());
+        // SharePreferenceService.setString(
+        //     StoreData.userName, loginResponseModel.user!.name.toString());
+        // SharePreferenceService.setString(
+        //     StoreData.userEmail, loginResponseModel.user!.email.toString());
 
         storeData.setData(StoreData.roleId, loginResponseModel.user!.roleId);
 
         storeData.setData(StoreData.userName, loginResponseModel.user!.name);
-
+        print(storeData.getData(StoreData.userName));
         storeData.setData(StoreData.userEmail, loginResponseModel.user!.email);
 
         storeData.setData(StoreData.userId, loginResponseModel.user!.id);
+        print(storeData.getData(StoreData.userId));
 
         storeData.setData(StoreData.userLogo, loginResponseModel.user!.image);
+        storeData.setData(StoreData.userImage, loginResponseModel.url);
 
-        showSnack(
-            width: 200.w,
-            title: data["message"]
-        );
+        showSnack(width: 200.w, title: data["message"]);
 
         return true;
-
       } else {
-
-          showSnack(
-              width: 200.w,
-              title: data["message"]
-          );
+        showSnack(width: 200.w, title: data["message"]);
 
         return false;
       }
-
     } catch (e) {
-
       AppConst().debug(e.toString());
-
     }
-
   }
 
   /// for check validation
   Future userLogin() async {
-
-    final bool emailValid =
-    RegExp(r"^[a-zA-Z0-9.a-zA"
-    r"-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+    final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA"
+            r"-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(emailController.text);
 
     final bool passwordValid = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*'
-    r'?[0-9])(?=.*?[!@#\$&*~]).{8,}$').hasMatch(passwordController.text);
+            r'?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+        .hasMatch(passwordController.text);
 
-    if ( emailController.text.isEmpty ) {
-
+    if (emailController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( passwordController.text.isEmpty ) {
-
+    } else if (passwordController.text.isEmpty) {
       isValid.value = false;
       errorMessage.value = AppStrings.allFieldRequired;
-
-    } else if ( emailValid == false) {
-
-        isValid.value = false;
-        errorMessage.value = AppStrings.invalidEmail;
-
-    } else if ( passwordValid == false ) {
-
-        isValid.value = false;
-        errorMessage.value = AppStrings.invalidPassword;
-
+    } else if (emailValid == false) {
+      isValid.value = false;
+      errorMessage.value = AppStrings.invalidEmail;
+    } else if (passwordValid == false) {
+      isValid.value = false;
+      errorMessage.value = AppStrings.invalidPassword;
     } else {
-
       bool isConnected = await checkNetConnectivity();
 
       if (isConnected == true) {
-
         progressDialog(true, Get.context!);
 
         isValid.value = true;
 
         LoginModel loginModel = LoginModel(
-            username: emailController.text,
-            password: passwordController.text
-        );
+            username: emailController.text, password: passwordController.text);
 
         isCall.value = await loginUser(loginModel).whenComplete(() {
           progressDialog(false, Get.context!);
         });
 
-        if (isCall.value == true ) {
+        if (isCall.value == true) {
           Get.offAllNamed(AppPages.HOME);
           storeData.setData(StoreData.email, emailController.text);
         }
-
       } else {
-
-        showSnack(
-            title: AppStrings.noInternetConnection,
-            width: 200.w
-        );
-
+        showSnack(title: AppStrings.noInternetConnection, width: 200.w);
       }
-
     }
-
   }
-
 }

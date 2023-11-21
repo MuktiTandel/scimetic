@@ -12,12 +12,25 @@ import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
+import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/profile_setting/controller/profile_setting_controller.dart';
 
-class ProfileSettingScreen extends StatelessWidget {
-   ProfileSettingScreen({Key? key}) : super(key: key);
+class ProfileSettingScreen extends StatefulWidget {
+  ProfileSettingScreen({Key? key}) : super(key: key);
 
-   final controller = Get.put(ProfileSettingController());
+  @override
+  State<ProfileSettingScreen> createState() => _ProfileSettingScreenState();
+}
+
+class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
+  final controller = Get.put(ProfileSettingController());
+  String image = "";
+  @override
+  void initState() {
+    super.initState();
+    image = controller.storeData.getData(StoreData.userImage);
+    print(image);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,37 +46,41 @@ class ProfileSettingScreen extends StatelessWidget {
               children: [
                 CustomText(
                   text: AppStrings.mainInfo,
-                  color: Get.isDarkMode ? AppColors.darkIcon : AppColors.lightBorder,
+                  color: Get.isDarkMode
+                      ? AppColors.darkIcon
+                      : AppColors.lightBorder,
                   fontWeight: FontWeight.w500,
                   fontSize: 14.sp,
                 ),
-                SizedBox(height: 8.h,),
+                SizedBox(
+                  height: 8.h,
+                ),
                 CustomText(
                   text: AppStrings.userPhoto,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 8.h,),
+                SizedBox(
+                  height: 8.h,
+                ),
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return commonImagePickerWidget(
-                                  cameraTap: (){
-                                    Get.back();
-                                    controller.getFromCamera();
-                                  },
-                                  galleryTap: (){
-                                    Get.back();
-                                    controller.getFromGallery();
-                                  }
-                              );
-                            }
-                        );
+                              return commonImagePickerWidget(cameraTap: () {
+                                Get.back();
+                                controller.getFromCamera();
+                              }, galleryTap: () {
+                                Get.back();
+                                controller.getFromGallery();
+                                setState(() {});
+                              });
+                            });
                       },
                       child: CircleAvatar(
                         maxRadius: 34.h,
@@ -71,61 +88,76 @@ class ProfileSettingScreen extends StatelessWidget {
                         child: Container(
                           height: 66.h,
                           decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white
-                          ),
+                              shape: BoxShape.circle, color: Colors.white),
                           child: Center(
-                            child: Obx(() =>  controller.isPick.value == false
-                                ? controller.imageUrl.value.isEmpty ? Image.asset(
-                              AppImages.logo,
-                              height: 43.h,
-                              width: 43.w,
-                            ) : ClipOval(
-                              child: SizedBox.fromSize(
-                                size: const Size.fromRadius(39),
-                                child: Image.network(
-                                  controller.imageUrl.value,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context, expection, stackTrace){
-                                    return Image.asset(
-                                      AppImages.logo,
-                                      height: 40.h,
-                                      width: 40.w,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ) : ClipOval(
-                              child: SizedBox.fromSize(
-                                size: const Size.fromRadius(39),
-                                child: Image.file(
-                                  controller.imageFile!,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )
-                            ),
+                            child: Obx(() => controller.isPick.value == false
+                                ? controller.imageUrl.value.isEmpty
+                                    ? image != ""
+                                        ? ClipOval(
+                                            child: SizedBox.fromSize(
+                                              size: const Size.fromRadius(39),
+                                              child: Image.network(
+                                                image,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            AppImages.logo,
+                                            height: 43.h,
+                                            width: 43.w,
+                                          )
+                                    : ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: const Size.fromRadius(39),
+                                          child: Image.network(
+                                            controller.imageUrl.value,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (BuildContext context,
+                                                expection, stackTrace) {
+                                              return Image.asset(
+                                                AppImages.logo,
+                                                height: 40.h,
+                                                width: 40.w,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                : ClipOval(
+                                    child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(39),
+                                      child: Image.file(
+                                        controller.imageFile!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 20.w,),
+                    SizedBox(
+                      width: 20.w,
+                    ),
                     CustomButton(
                         width: 85.w,
                         height: 30.h,
                         backgroundColor: Get.isDarkMode
-                            ? Colors.white : AppColors.subTitleColor,
+                            ? Colors.white
+                            : AppColors.subTitleColor,
                         buttonTextColor: Get.isDarkMode
-                            ? AppColors.subTitleColor : Colors.white ,
-                        onTap: (){
-                          if ( controller.imageFile != null ) {
+                            ? AppColors.subTitleColor
+                            : Colors.white,
+                        onTap: () {
+                          if (controller.imageFile != null) {
                             controller.uploadImage();
+                            setState(() {});
                           } else {
                             showSnack(title: AppStrings.pCImage, width: 250.w);
                           }
                         },
-                        buttonText: AppStrings.upload
-                    ),
+                        buttonText: AppStrings.upload),
                     // SizedBox(width: 10.w,),
                     // OutLineButton(
                     //   height: 30.h,
@@ -136,14 +168,19 @@ class ProfileSettingScreen extends StatelessWidget {
                     // )
                   ],
                 ),
-                SizedBox(height: 15.h,),
+                SizedBox(
+                  height: 15.h,
+                ),
                 CustomText(
                   text: AppStrings.firstName,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.h,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 CustomTextField(
                   controller: controller.firstNameController,
                   borderRadius: 8,
@@ -151,16 +188,21 @@ class ProfileSettingScreen extends StatelessWidget {
                   hintTextSize: 12.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
-                SizedBox(height: 15.h,),
+                SizedBox(
+                  height: 15.h,
+                ),
                 CustomText(
                   text: AppStrings.lastName,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.h,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 CustomTextField(
                   controller: controller.lastNameController,
                   borderRadius: 8,
@@ -168,16 +210,21 @@ class ProfileSettingScreen extends StatelessWidget {
                   hintTextSize: 12.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
-                SizedBox(height: 15.h,),
+                SizedBox(
+                  height: 15.h,
+                ),
                 CustomText(
                   text: AppStrings.email,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.h,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 CustomTextField(
                   controller: controller.emailController,
                   borderRadius: 8,
@@ -185,27 +232,33 @@ class ProfileSettingScreen extends StatelessWidget {
                   hintTextSize: 12.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
-                SizedBox(height: 15.h,),
+                SizedBox(
+                  height: 15.h,
+                ),
                 CustomText(
                   text: AppStrings.mobileNumber,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.h,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 IntlPhoneField(
                   controller: controller.mobileNumberController,
-                  cursorColor: Get.isDarkMode
-                      ? AppColors.darkText : AppColors.lightText,
+                  cursorColor:
+                      Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                   flagsButtonPadding: const EdgeInsets.all(8),
                   dropdownIconPosition: IconPosition.trailing,
                   dropdownTextStyle: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 15.sp,
                     color: Get.isDarkMode
-                        ? AppColors.darkText : AppColors.lightText,
+                        ? AppColors.darkText
+                        : AppColors.lightText,
                   ),
                   style: TextStyle(
                     fontFamily: "Poppins",
@@ -214,11 +267,12 @@ class ProfileSettingScreen extends StatelessWidget {
                   ),
                   dropdownIcon: Icon(
                     Icons.keyboard_arrow_down_rounded,
-                    color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                    color: Get.isDarkMode
+                        ? AppColors.darkText
+                        : AppColors.lightText,
                   ),
-                  dropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10)
-                  ),
+                  dropdownDecoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(
@@ -227,40 +281,49 @@ class ProfileSettingScreen extends StatelessWidget {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(
-                          color: Get.isDarkMode ? AppColors.darkText : AppColors.lightBorder,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightBorder,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                            color: AppColors.buttonColor
-                        ),
+                        borderSide:
+                            const BorderSide(color: AppColors.buttonColor),
                       ),
                       counter: const SizedBox.shrink(),
-                      fillColor: Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
-                      filled: Get.isDarkMode ? true : false
-                  ),
+                      fillColor:
+                          Get.isDarkMode ? AppColors.darkAppbar : Colors.white,
+                      filled: Get.isDarkMode ? true : false),
                   initialCountryCode: 'IN',
                   disableLengthCheck: false,
                   autovalidateMode: AutovalidateMode.disabled,
-                  onChanged: (phone) {
-                  },
+                  onChanged: (phone) {},
                 ),
-                SizedBox(height: 20.h,),
+                SizedBox(
+                  height: 20.h,
+                ),
                 CustomText(
                   text: AppStrings.securitySettings,
-                  color: Get.isDarkMode ? AppColors.darkIcon : AppColors.lightBorder,
+                  color: Get.isDarkMode
+                      ? AppColors.darkIcon
+                      : AppColors.lightBorder,
                   fontWeight: FontWeight.w500,
                   fontSize: 14.sp,
                 ),
-                SizedBox(height: 20.h,),
+                SizedBox(
+                  height: 20.h,
+                ),
                 CustomText(
                   text: AppStrings.recoveryEmail,
-                  color: Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
+                  color:
+                      Get.isDarkMode ? Colors.white : AppColors.subTitleColor,
                   fontSize: 12.h,
                   fontWeight: FontWeight.w500,
                 ),
-                SizedBox(height: 5.h,),
+                SizedBox(
+                  height: 5.h,
+                ),
                 CustomTextField(
                   controller: controller.recoveryEmailController,
                   borderRadius: 8,
@@ -268,31 +331,36 @@ class ProfileSettingScreen extends StatelessWidget {
                   hintTextSize: 12.sp,
                   focusBorderColor: AppColors.buttonColor,
                   isFilled: Get.isDarkMode ? true : false,
-                  onchange: (value){},
+                  onchange: (value) {},
                 ),
-                SizedBox(height: 15.h,),
+                SizedBox(
+                  height: 15.h,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutLineButton(
-                      onTap: (){},
+                      onTap: () {},
                       color: AppColors.red,
                       buttonText: AppStrings.cancel,
                       height: 30.h,
                     ),
-                    SizedBox(width: 15.w,),
+                    SizedBox(
+                      width: 15.w,
+                    ),
                     CustomButton(
                         width: 100.w,
                         height: 30.h,
                         fontSize: 14.sp,
-                        onTap: (){
+                        onTap: () {
                           controller.updateProfile();
                         },
-                        buttonText: AppStrings.save
-                    )
+                        buttonText: AppStrings.save)
                   ],
                 ),
-                SizedBox(height: 20.h,)
+                SizedBox(
+                  height: 20.h,
+                )
               ],
             ),
           ),

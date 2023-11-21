@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:scimetic/core/const/app_colors.dart';
 import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
+import 'package:scimetic/core/const/share_preference.dart';
 import 'package:scimetic/core/const/theme_service.dart';
 import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
@@ -95,6 +96,7 @@ class HomeScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size(Get.width, 45.h),
         child: Obx(() => CommonAppbar(
+              profileImage: controller.storeData.getData(StoreData.userImage),
               drawerTap: () {
                 controller.openDrawer();
               },
@@ -220,35 +222,32 @@ class HomeScreen extends StatelessWidget {
                                     height: 5.h,
                                   )
                                 : const SizedBox.shrink()),
-                            Obx(() =>  drawerWidget(
-                               onTap: () {
-                                 organizationController.isSelect.value = true;
-                                 dashboardController.isOverView.value =
-                                 false;
-                                 dashboardController.isSelect.value =
-                                 false;
-                                 controller.isDashboard.value = true;
-                                 controller.isModuleView.value = false;
-                                 dashboardController
-                                     .isOverViewTitle.value = false;
-                                 dashboardController.isUser.value =
-                                 false;
-                                 controller.unSelectSettingValue();
-                                 controller.unSelectModule();
-                                 overviewController.isGraphScreen.value =
-                                 false;
-                                 controller.isOrganization.value = false;
-                                 Get.back();
-                                 dashboardController.getDataList();
-                                 // this will b after remove
-                                 // dashboardController.isOverView.value = true;
-                                 // dashboardController.isSelect.value = true;
-                                 // controller.isModuleView.value = true;
-                               },
-                               image: AppImages.dashboard,
-                               title: AppStrings.dashboard,
-                               isSelect: controller.isDashboard.value,
-                               isRightWidget: false)),
+                            Obx(() => drawerWidget(
+                                onTap: () {
+                                  organizationController.isSelect.value = true;
+                                  dashboardController.isOverView.value = false;
+                                  dashboardController.isSelect.value = false;
+                                  controller.isDashboard.value = true;
+                                  controller.isModuleView.value = false;
+                                  dashboardController.isOverViewTitle.value =
+                                      false;
+                                  dashboardController.isUser.value = false;
+                                  controller.unSelectSettingValue();
+                                  controller.unSelectModule();
+                                  overviewController.isGraphScreen.value =
+                                      false;
+                                  controller.isOrganization.value = false;
+                                  Get.back();
+                                  dashboardController.getDataList();
+                                  // this will b after remove
+                                  // dashboardController.isOverView.value = true;
+                                  // dashboardController.isSelect.value = true;
+                                  // controller.isModuleView.value = true;
+                                },
+                                image: AppImages.dashboard,
+                                title: AppStrings.dashboard,
+                                isSelect: controller.isDashboard.value,
+                                isRightWidget: false)),
                             SizedBox(
                               height: 5.h,
                             ),
@@ -257,8 +256,10 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
-                                        organizationController.isSelect.value = true;
-                                        dashboardController.isOverView.value = true;
+                                        organizationController.isSelect.value =
+                                            true;
+                                        dashboardController.isOverView.value =
+                                            true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
                                         controller.isDashboard.value = false;
@@ -275,7 +276,8 @@ class HomeScreen extends StatelessWidget {
                                         controller.changeModuleIndex(0);
                                         Get.back();
                                         int id = controller.storeData
-                                            .getInt(StoreData.id)!;
+                                                .getInt(StoreData.id) ??
+                                            0;
                                         if (id != 0) {
                                           growSheetController
                                               .getGrowSheetData();
@@ -292,8 +294,10 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
-                                        organizationController.isSelect.value = true;
-                                        dashboardController.isOverView.value = true;
+                                        organizationController.isSelect.value =
+                                            true;
+                                        dashboardController.isOverView.value =
+                                            true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
                                         controller.isDashboard.value = false;
@@ -321,8 +325,10 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () {
-                                        organizationController.isSelect.value = true;
-                                        dashboardController.isOverView.value = true;
+                                        organizationController.isSelect.value =
+                                            true;
+                                        dashboardController.isOverView.value =
+                                            true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
                                         controller.isDashboard.value = false;
@@ -360,8 +366,10 @@ class HomeScreen extends StatelessWidget {
                                 Obx(
                                   () => drawerWidget(
                                       onTap: () async {
-                                        organizationController.isSelect.value = true;
-                                        dashboardController.isOverView.value = true;
+                                        organizationController.isSelect.value =
+                                            true;
+                                        dashboardController.isOverView.value =
+                                            true;
                                         controller.isModuleView.value = true;
                                         controller.isOrganization.value = false;
                                         controller.isDashboard.value = false;
@@ -396,54 +404,52 @@ class HomeScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 45.h,
                                   width: 226.w,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15.w,
-                                      ),
-                                      Image.asset(
-                                        AppImages.settings,
-                                        height: 20.h,
-                                        width: 20.w,
-                                        color: Get.isDarkMode
-                                            ? AppColors.white1
-                                            : Colors.black,
-                                      ),
-                                      SizedBox(
-                                        width: 20.w,
-                                      ),
-                                      CustomText(
-                                        text: AppStrings.settings,
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Get.isDarkMode
-                                            ? AppColors.white1
-                                            : Colors.black,
-                                      ),
-                                      Expanded(
-                                          child: SizedBox(
-                                        width: 10.w,
-                                      )),
-                                      Obx(
-                                        () => GestureDetector(
-                                          onTap: () {
-                                            controller.toggle();
-                                            controller.isGrowSheet.value =
-                                                false;
-                                            controller.isReport.value = false;
-                                            controller.isTodo.value = false;
-                                            controller.isCalender.value = false;
-                                            overviewController
-                                                .isGraphScreen.value = false;
-                                            controller.unSelectSettingValue();
-                                            controller.isDashboard.value ==
-                                                false;
-                                            controller.isOrganization.value =
-                                                false;
-                                            dashboardController
-                                                .isOverViewTitle.value = false;
-                                          },
-                                          child: SizedBox(
+                                  child: Obx(
+                                    () => GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        controller.toggle();
+                                        controller.isGrowSheet.value = false;
+                                        controller.isReport.value = false;
+                                        controller.isTodo.value = false;
+                                        controller.isCalender.value = false;
+                                        overviewController.isGraphScreen.value =
+                                            false;
+                                        controller.unSelectSettingValue();
+                                        controller.isDashboard.value == false;
+                                        controller.isOrganization.value = false;
+                                        dashboardController
+                                            .isOverViewTitle.value = false;
+                                      },
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 15.w,
+                                          ),
+                                          Image.asset(
+                                            AppImages.settings,
+                                            height: 20.h,
+                                            width: 20.w,
+                                            color: Get.isDarkMode
+                                                ? AppColors.white1
+                                                : Colors.black,
+                                          ),
+                                          SizedBox(
+                                            width: 20.w,
+                                          ),
+                                          CustomText(
+                                            text: AppStrings.settings,
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Get.isDarkMode
+                                                ? AppColors.white1
+                                                : Colors.black,
+                                          ),
+                                          Expanded(
+                                              child: SizedBox(
+                                            width: 10.w,
+                                          )),
+                                          SizedBox(
                                             child: Image.asset(
                                               controller.isSetting.value ==
                                                       false
@@ -457,12 +463,12 @@ class HomeScreen extends StatelessWidget {
                                                   : Colors.black,
                                             ),
                                           ),
-                                        ),
+                                          SizedBox(
+                                            width: 10.w,
+                                          )
+                                        ],
                                       ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
                                 Obx(() => controller.isSetting.value == true
@@ -526,6 +532,7 @@ class HomeScreen extends StatelessWidget {
                                 onTap: () {
                                   Get.offAllNamed(AppPages.LOGIN);
                                   GetStorage().remove(StoreData.email);
+                                  SharePreferenceService.prefs!.clear();
                                 },
                                 image: AppImages.logout,
                                 title: AppStrings.logOut,
@@ -559,6 +566,7 @@ class HomeScreen extends StatelessWidget {
       double? height,
       double? width}) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         onTap();
       },

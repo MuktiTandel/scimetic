@@ -28,6 +28,7 @@ import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/humidity_control/controller/humidity_controller.dart';
 import 'package:scimetic/feature/irrigation_control/controller/irrigation_controller.dart';
 import 'package:scimetic/feature/lightning_control/controller/lightning_controller.dart';
+import 'package:scimetic/feature/notification/controller/notification_controller.dart';
 import 'package:scimetic/feature/notification_setting/controller/notification_setting_controller.dart';
 import 'package:scimetic/feature/organization_settings/controller/organization_setting_controller.dart';
 import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
@@ -104,7 +105,13 @@ class HomeScreen extends StatelessWidget {
                   ? controller.appbarTitle()
                   : AppStrings.overview,
               notificationTap: () {
-                Get.toNamed(AppPages.NOTIFICATION);
+                Get.put(NotificationController())
+                    .getNotificationMsg()
+                    .then((value) {
+                  if (value) {
+                    Get.toNamed(AppPages.NOTIFICATION);
+                  }
+                });
               },
               profileTap: () {},
               leadingIcon: AppImages.drawer,

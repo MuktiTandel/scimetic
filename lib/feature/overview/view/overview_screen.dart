@@ -18,7 +18,6 @@ import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/feature/overview/element/hour_graph.dart';
-import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 
 class OverviewScreen extends StatefulWidget {
@@ -90,7 +89,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
     controller.isGraphScreen.value = false;
     organizationController.isUser.value = false;
     organizationController.isGrowSpaces.value = false;
-    return  false;
+    return false;
   }
 
   @override
@@ -258,6 +257,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       graph: Obx(() =>
                                           controller.isClimateData.value == true
                                               ? HourGraph(
+                                                  colors: [
+                                                    Color(0xffffae50),
+                                                    Color(0xffFF00FF),
+                                                    Color(0xff7DF9FF),
+                                                  ],
+                                                  dData: controller.tDevice,
+                                                  data: controller.temperature,
                                                   minY: controller
                                                       .minTemperatureY.value,
                                                   maxY: controller
@@ -273,7 +279,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.orange,
                                       onTap: () {
                                         controller.isTemperature.value = true;
-                                        Get.toNamed(AppPages.GRAPH);
+                                        // Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -297,6 +303,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                                   .isClimateData.value ==
                                               true
                                           ? HourGraph(
+                                              colors: [
+                                                Color(0xff56ccf2),
+                                                Color(0xffFF4500),
+                                                Color(0xffFFA500),
+                                              ],
+                                              dData: controller.hDevice,
+                                              data: controller.humidity,
                                               minY:
                                                   controller.minHumidityY.value,
                                               maxY:
@@ -399,7 +412,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       onTap: () {
                                         controller.isElectricalLoad.value =
                                             true;
-                                        Get.toNamed(AppPages.GRAPH);
+                                        // Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -422,6 +435,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                                   .isClimateData.value ==
                                               true
                                           ? HourGraph(
+                                              colors: [
+                                                Color(0xff3ce2c4),
+                                                Color(0xffFF1493),
+                                                Color(0xffBF00FF),
+                                              ],
+                                              dData: controller.cDevice,
+                                              data: controller.co2,
                                               minY: controller.minCo2Y.value,
                                               maxY: controller.maxCo2Y.value,
                                               graphColor: AppColors.lightGreen1,
@@ -520,7 +540,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.lightGreen1,
                                       onTap: () {
                                         controller.isCo2.value = true;
-                                        Get.toNamed(AppPages.GRAPH);
+                                        // Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -544,6 +564,15 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                                     .isClimateData.value ==
                                                 true
                                             ? HourGraph(
+                                                colors: [
+                                                  Color(0xfffb37a0),
+                                                  Color(0xffFF6F61),
+                                                  Color(0xffFF00FF),
+                                                ],
+                                                dData: controller.mDevice,
+                                                data: controller.umol,
+                                                // dData: controller.vDevice,
+                                                // data: controller.vpd,
                                                 minY:
                                                     controller.minLightY.value,
                                                 maxY:
@@ -649,7 +678,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                         color: AppColors.pink,
                                         onTap: () {
                                           controller.isLightning.value = true;
-                                          Get.toNamed(AppPages.GRAPH);
+                                          // Get.toNamed(AppPages.GRAPH);
                                         },
                                         isPhase: false),
                                   ),
@@ -673,6 +702,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                                   .isClimateData.value ==
                                               true
                                           ? HourGraph(
+                                              colors: [
+                                                Color(0xff56a7f2),
+                                                Color(0xff4169E1),
+                                                Color(0xff6A0DAD),
+                                              ],
+                                              dData: controller.vDevice,
+                                              data: controller.vpd,
                                               minY: controller.minVpdY.value,
                                               maxY: controller.maxVpdY.value,
                                               graphColor: AppColors.lightBlue2,
@@ -771,7 +807,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.lightBlue2,
                                       onTap: () {
                                         controller.isVdp.value = true;
-                                        Get.toNamed(AppPages.GRAPH);
+                                        // Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(

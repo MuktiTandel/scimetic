@@ -222,6 +222,7 @@ class OverviewController extends GetxController {
           if (climateData.climateData!.isNotEmpty) {
             climateDataList.addAll(climateData.climateData!);
             if (climateDataList.isNotEmpty) {
+              modifyData(climateDataList);
               getGraphData();
             }
           }
@@ -307,77 +308,62 @@ class OverviewController extends GetxController {
           growSheetLabelerModel = GrowSheetLabelerModel.fromJson(data);
 
           if (growSheetLabelerModel.growsheetLabeler != null) {
-
-            selectStage.value =
-                growSheetLabelerModel.growsheetLabeler!.stage ??
-                    AppStrings.germination;
-
+            selectStage.value = growSheetLabelerModel.growsheetLabeler!.stage ??
+                AppStrings.germination;
           }
 
           if (selectStage.value.contains(AppStrings.flowering)) {
-
             isFlowering.value = true;
             isVegetative.value = false;
             isSeedling.value = false;
             isGermination.value = false;
-
           } else if (selectStage.value.contains(AppStrings.germination)) {
-
             isGermination.value = true;
             isSeedling.value = false;
             isVegetative.value = false;
             isFlowering.value = false;
-
           } else if (selectStage.value.contains(AppStrings.seedling)) {
-
             isSeedling.value = true;
             isFlowering.value = false;
             isVegetative.value = false;
             isGermination.value = false;
-
           } else if (selectStage.value.contains(AppStrings.vegetative)) {
-
             isVegetative.value = true;
             isGermination.value = false;
             isFlowering.value = false;
             isSeedling.value = false;
-
           } else {
-
             isGermination.value = true;
             isSeedling.value = false;
             isFlowering.value = false;
             isVegetative.value = false;
-
           }
 
           if (growSheetLabelerModel.growsheetLabeler != null) {
-
-            plantController.text = growSheetLabelerModel.growsheetLabeler!.typeOfPlant!;
-            genealogyController.text = growSheetLabelerModel.growsheetLabeler!.genealogy!;
+            plantController.text =
+                growSheetLabelerModel.growsheetLabeler!.typeOfPlant!;
+            genealogyController.text =
+                growSheetLabelerModel.growsheetLabeler!.genealogy!;
 
             if (growSheetLabelerModel
                 .growsheetLabeler!.plantedDate!.isNotEmpty) {
-              plantedDate1 = DateFormat("dd.MM.yyyy").parse(
-                  growSheetLabelerModel.growsheetLabeler!.plantedDate!);
+              plantedDate1 = DateFormat("dd.MM.yyyy")
+                  .parse(growSheetLabelerModel.growsheetLabeler!.plantedDate!);
 
               plantedDateValue.value =
-              "${plantedDate1.day}.${plantedDate1.month}.${plantedDate1.year}";
+                  "${plantedDate1.day}.${plantedDate1.month}.${plantedDate1.year}";
             }
-
           }
 
           if (growSheetLabelerModel.growsheetLabeler != null) {
-
             if (growSheetLabelerModel
                 .growsheetLabeler!.harvestDate!.isNotEmpty) {
-              harvestDate1 = DateFormat("dd.MM.yyyy").parse(
-                  growSheetLabelerModel.growsheetLabeler!.harvestDate!);
+              harvestDate1 = DateFormat("dd.MM.yyyy")
+                  .parse(growSheetLabelerModel.growsheetLabeler!.harvestDate!);
 
               harvestDateValue.value =
-              "${harvestDate1.day}.${harvestDate1.month}.${harvestDate1.year}";
+                  "${harvestDate1.day}.${harvestDate1.month}.${harvestDate1.year}";
             }
-
           }
 
           growSheetLabeler =
@@ -564,6 +550,137 @@ class OverviewController extends GetxController {
     });
   }
 
+  // List<HourData2> temperature = [],
+  //     co2 = [],
+  //     humidity = [],
+  //     vpd = [],
+  //     soil = [],
+  //     umol = [];
+  List<Map<String, dynamic>> temperature = [],
+      co2 = [],
+      humidity = [],
+      vpd = [],
+      soil = [],
+      umol = [];
+  List<String> tDevice = [], cDevice = [], hDevice = [], vDevice = [] , mDevice=[];
+// for graph data modify
+  void modifyData(List<ClimateData> obj) {
+    temperature.clear();
+    co2.clear();
+    humidity.clear();
+    vpd.clear();
+    mDevice.clear();
+    umol.clear();
+    soil.clear();
+    tDevice.clear();
+    cDevice.clear();
+    hDevice.clear();
+    vDevice.clear();
+    Map<String, List<ClimateData>> res = {};
+
+    for (int i = 0; i < obj.length; i += 1) {
+      ClimateData curr = obj[i];
+
+      if (res.containsKey(curr.time?.toIso8601String())) {
+        print("*********************");
+        String time = curr.time!.toIso8601String();
+        res[time]!.add(curr);
+      } else {
+        String val = curr.time!.toIso8601String();
+        res[val] = [curr];
+      }
+    }
+
+    // Convert the result to the desired format (List<Map<String, dynamic>>)
+    Map<String, List<ClimateData>> formattedResult = {};
+
+    res.forEach((key, value) {
+      List<ClimateData> dataList = [];
+      for (ClimateData data in value) {
+        dataList.add(ClimateData(
+          time: data.time,
+          device: data.device,
+          temperature: data.temperature,
+          co2: data.co2,
+          humidity: data.humidity,
+          vpd: data.vpd,
+        ));
+      }
+      formattedResult[key] = dataList;
+    });
+    formattedResult.forEach((key, value) {
+      print(key);
+      print(value.length);
+    });
+
+    formattedResult.forEach((key, item) {
+      Map<String, dynamic> temp = {},
+          co = {},
+          hum = {},
+          vp = {},
+          soilObj = {},
+          umolObj = {};
+
+      for (int i = 0; i < item.length; i++) {
+        if (item[i].temperature != null &&
+            temp.length <= 3 &&
+            item[i].temperature != 0.0) {
+          print("******** ${item[i].temperature}");
+          temp[item[i].device.toString()] =
+              item[i].temperature!.toStringAsFixed(2);
+          // tempLatest = item[i].temperature!.toStringAsFixed(2);
+          if (!tDevice.contains(item[i].device))
+            tDevice.add(item[i].device.toString());
+        }
+        if (item[i].co2 != null && co.length <= 3 && item[i].co2 != 0.0) {
+          co[item[i].device.toString()] = item[i].co2!.toStringAsFixed(2);
+          // co2Latest = item[i].co2!.toStringAsFixed(2);
+          if (!cDevice.contains(item[i].device))
+            cDevice.add(item[i].device.toString());
+        }
+        if (item[i].humidity != null &&
+            hum.length <= 3 &&
+            item[i].humidity != 0.0) {
+          hum[item[i].device.toString()] = item[i].humidity!.toStringAsFixed(2);
+          // humidityLatest = item[i].humidity!.toStringAsFixed(2);
+          if (!hDevice.contains(item[i].device))
+            hDevice.add(item[i].device.toString());
+        }
+        if (item[i].vpd != null &&
+            vp.length <= 3 &&
+            item[i].vpd != 0.0) {
+          vp[item[i].device.toString()] = item[i].vpd!.toStringAsFixed(2);
+          // vpdLatest = item[i].vpd!.toStringAsFixed(2);
+          if (!vDevice.contains(item[i].device))
+            vDevice.add(item[i].device.toString());
+        }
+        if (item[i].mol != null &&
+            umolObj.length <= 3 &&
+            item[i].mol != 0.0) {
+          umolObj[item[i].device.toString()] = item[i].mol!.toStringAsFixed(2);
+          // vpdLatest = item[i].vpd!.toStringAsFixed(2);
+          if (!mDevice.contains(item[i].device))
+            mDevice.add(item[i].device.toString());
+        }
+      }
+
+      //  temperature.add(HourData2(DateTime.parse(key), [temp]));
+      //  co2.add(HourData2(DateTime.parse(key), [co]));
+      //  vpd.add(HourData2(DateTime.parse(key), [vp]));
+      //  humidity.add(HourData2(DateTime.parse(key), [hum]));
+      //  soil.add(HourData2(DateTime.parse(key), [temp]));
+      temperature.add({"x": DateTime.parse(key), ...temp});
+      co2.add({"x": DateTime.parse(key), ...co});
+      vpd.add({"x": DateTime.parse(key), ...vp});
+      humidity.add({"x": DateTime.parse(key), ...hum});
+      soil.add({"x": DateTime.parse(key), ...soilObj});
+      umol.add({"x": DateTime.parse(key), ...umolObj});
+    });
+    print(tDevice.length);
+
+    print("Temperature Data: $umol");
+  }
+
   /// for get graph data
   void getGraphData() {
     temperatureDataList.clear();
@@ -577,8 +694,9 @@ class OverviewController extends GetxController {
     vpdDataList.clear();
     vpdYValueList.clear();
     if (climateDataList.isNotEmpty) {
+      print("================================");
       isClimateData.value = true;
-      for (var element in climateDataList) {
+      for (ClimateData element in climateDataList) {
         temperatureValue.value = climateDataList.last.temperature ?? 0.0;
         humidityValue.value = climateDataList.last.humidity ?? 0.0;
         co2Value.value = climateDataList.last.co2 ?? 0.0;

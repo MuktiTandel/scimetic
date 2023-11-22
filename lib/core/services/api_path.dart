@@ -32,5 +32,6 @@ class ApiPath {
   static const wetWallControl = "/ctrl/wet_wall_control";
   static const extractorFanControl = "/ctrl/extractor_fan_control";
   static const blackoutScreen = "/blackoutscreen";
+  static const getNotifications = "/get_notifications";
 
 }

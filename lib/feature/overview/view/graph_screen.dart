@@ -9,6 +9,7 @@ import 'package:scimetic/core/elements/common_appbar.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
 import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
+import 'package:scimetic/feature/notification/controller/notification_controller.dart';
 import 'package:scimetic/feature/overview/controller/graph_controller.dart';
 import 'package:scimetic/feature/overview/controller/overview_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
@@ -80,7 +81,13 @@ class GraphScreen extends StatelessWidget {
           },
           title: AppStrings.overview,
           notificationTap: (){
-            Get.toNamed(AppPages.NOTIFICATION);
+            Get.put(NotificationController())
+                    .getNotificationMsg()
+                    .then((value) {
+                  if (value) {
+                    Get.toNamed(AppPages.NOTIFICATION);
+                  }
+                });
           },
           profileTap: (){},
           leadingIcon: AppImages.backArrow,

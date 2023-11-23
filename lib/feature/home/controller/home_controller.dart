@@ -107,7 +107,7 @@ class HomeController extends GetxController {
           return AppStrings.organizations;
         }
       } else if (organizationController.isSelect.value == true) {
-        if ( dashBoardController.isUser.value == true ) {
+        if (dashBoardController.isUser.value == true) {
           return AppStrings.accessSetting;
         } else {
           return dashBoardController.companyName.value;
@@ -207,4 +207,21 @@ class HomeController extends GetxController {
     WetWallControlScreen(),
     ExtractorControlScreen()
   ];
+
+  final dashboardController = Get.put(DashboardController());
+  Future<bool> onWillPop() async {
+    isOrganization.value = false;
+    isDashboard.value = true;
+    organizationController.isSelect.value = true;
+    isDashboard.value = true;
+    dashboardController.isSelect.value = true;
+    dashboardController.isOverView.value = false;
+    dashboardController.isOverViewTitle.value = false;
+    isModuleView.value = false;
+    unSelectSettingValue();
+    unSelectModule();
+    organizationController.isUser.value = false;
+    organizationController.isGrowSpaces.value = false;
+    return false;
+  }
 }

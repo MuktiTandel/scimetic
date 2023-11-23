@@ -119,12 +119,12 @@ class ExtractorControlController extends GetxController {
 
             ExtractorFanControl extractorFanControl = extractorFanModel.extractorFanControl!;
 
-            dayTemperatureController.text = extractorFanControl.dayTemperature != 0 ? extractorFanControl.dayTemperature.toString() : "";
-            dayTemperatureDeadbandController.text = extractorFanControl.dayTemperatureDeadband != 0 ? extractorFanControl.dayTemperatureDeadband.toString() : "";
+            dayTemperatureController.text = extractorFanControl.dayTemperature != null ? extractorFanControl.dayTemperature.toString() : "";
+            dayTemperatureDeadbandController.text = extractorFanControl.dayTemperatureDeadband != null ? extractorFanControl.dayTemperatureDeadband.toString() : "";
             daySwitch.value = extractorFanControl.daySwitch ?? "";
             dayRelay.value = extractorFanControl.dayRelay ?? "";
-            nightTemperatureController.text = extractorFanControl.nightTemperature != 0 ? extractorFanControl.nightTemperature.toString() : "";
-            nightTemperatureDeadbandController.text = extractorFanControl.nightTemperatureDeadband != 0 ? extractorFanControl.nightTemperatureDeadband.toString() : "";
+            nightTemperatureController.text = extractorFanControl.nightTemperature != null ? extractorFanControl.nightTemperature.toString() : "";
+            nightTemperatureDeadbandController.text = extractorFanControl.nightTemperatureDeadband != null ? extractorFanControl.nightTemperatureDeadband.toString() : "";
             nightSwitch.value = extractorFanControl.nightSwitch ?? "";
             nightRelay.value = extractorFanControl.nightRelay ?? "";
             isAuto.value = extractorFanControl.extractorFanAuto ?? false;

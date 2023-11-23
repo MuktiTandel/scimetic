@@ -124,24 +124,24 @@ class Co2Controller extends GetxController {
 
           Co2Control co2control = co2controlModel.co2Control!;
 
-          dayMinimumTarget.text = co2control.dayMinLevel != 0
+          dayMinimumTarget.text = co2control.dayMinLevel != null
               ? co2control.dayMinLevel.toString()
               : "";
-          dayMaximumTarget.text = co2control.dayMaxLevel != 0
+          dayMaximumTarget.text = co2control.dayMaxLevel != null
               ? co2control.dayMaxLevel.toString()
               : "";
-          dayHighProtection.text = co2control.dayHighLevel != 0
+          dayHighProtection.text = co2control.dayHighLevel != null
               ? co2control.dayHighLevel.toString()
               : "";
           dayLightningSwitch.value = co2control.daySwitch ?? "";
           dayLightningRelay.value = co2control.dayRelay ?? "";
-          nightMinimumTarget.text = co2control.nightMinLevel != 0
+          nightMinimumTarget.text = co2control.nightMinLevel != null
               ? co2control.nightMinLevel.toString()
               : "";
-          nightMaximumTarget.text = co2control.nightMaxLevel != 0
+          nightMaximumTarget.text = co2control.nightMaxLevel != null
               ? co2control.nightMaxLevel.toString()
               : "";
-          nightHighProtection.text = co2control.nightHighLevel != 0
+          nightHighProtection.text = co2control.nightHighLevel != null
               ? co2control.nightHighLevel.toString()
               : "";
           nightLightningSwitch.value = co2control.nightSwitch ?? "";

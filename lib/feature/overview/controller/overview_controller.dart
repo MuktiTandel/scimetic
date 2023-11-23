@@ -26,6 +26,7 @@ class OverviewController extends GetxController {
   RxBool isCo2 = false.obs;
   RxBool isLightning = false.obs;
   RxBool isVdp = false.obs;
+  RxBool isEnable = false.obs;
 
   RxBool is24Hour = true.obs;
   RxBool is1Hour = false.obs;
@@ -678,7 +679,7 @@ class OverviewController extends GetxController {
     });
     print(tDevice.length);
 
-    print("Temperature Data: $umol");
+    print("Temperature Data: $temperature");
   }
 
   /// for get graph data

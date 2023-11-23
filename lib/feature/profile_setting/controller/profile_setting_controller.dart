@@ -13,6 +13,7 @@ import 'package:scimetic/core/elements/custom_snack.dart';
 import 'package:scimetic/core/services/api_path.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:scimetic/feature/profile_setting/model/user_profile.dart';
 
 class ProfileSettingController extends GetxController {
   final TextEditingController firstNameController = TextEditingController();
@@ -137,7 +138,7 @@ class ProfileSettingController extends GetxController {
         dynamic data = jsonDecode(apiResponse!.body);
 
         progressDialog(false, Get.context!);
-
+        storeData.setData(StoreData.userImage, data["user"]["imageURL"]);
         if (apiResponse!.statusCode == 200) {
           showSnack(width: 200.w, title: data["message"]);
 
@@ -152,6 +153,8 @@ class ProfileSettingController extends GetxController {
       }
     }
   }
+
+  UserProfileModel userProfileModel = UserProfileModel();
 
   /// upload image
   Future uploadImage() async {
@@ -209,13 +212,16 @@ class ProfileSettingController extends GetxController {
             final apiResponse2 =
                 await ApiCall.instance.callService(requestInfo: getImage);
             var data = json.decode(apiResponse.body);
+            print(apiResponse2.body);
             if (apiResponse2.statusCode == 200) {
-              imageUrl.value = data["url"];
-              storeData.setData(StoreData.userImage, imageUrl.value);
-              print(storeData.getData(StoreData.userImage));
+              userProfileModel = userProfileModelFromJson(apiResponse2.body);
+              imageUrl.value = userProfileModel.url.toString();
+              print("userProfileModel.url.toString()");
+              print(userProfileModel.url.toString());
+              storeData.setData(StoreData.userImage, userProfileModel.url);
+              update();
               showSnack(width: 200.w, title: data["message"]);
               progressDialog(false, Get.context!);
-
               return true;
             } else {
               showSnack(width: 200.w, title: data["message"]);

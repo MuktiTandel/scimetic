@@ -10,10 +10,10 @@ import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/common_graph_widget.dart';
 import 'package:scimetic/core/elements/custom_dropdown.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
+import 'package:scimetic/core/routes/app_pages.dart';
 import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/dashboard/controller/dashboard_controller.dart';
 import 'package:scimetic/feature/home/controller/home_controller.dart';
-import 'package:scimetic/feature/organizations/controller/organization_controller.dart';
 import 'package:scimetic/feature/overview/element/device_overview_widget.dart';
 import 'package:scimetic/feature/overview/element/growsheet_widget.dart';
 import 'package:scimetic/core/elements/scroll_behavior.dart';
@@ -29,7 +29,7 @@ class OverviewScreen extends StatefulWidget {
 
 class _OverviewScreenState extends State<OverviewScreen> {
   final controller = Get.put(OverviewController());
-  final organizationController = Get.put(OrganizationController());
+ 
 
   final homeController = Get.put(HomeController());
 
@@ -75,28 +75,13 @@ class _OverviewScreenState extends State<OverviewScreen> {
     super.dispose();
   }
 
-  Future<bool> onWillPop() async {
-    homeController.isOrganization.value = false;
-    homeController.isDashboard.value = true;
-    organizationController.isSelect.value = true;
-    homeController.isDashboard.value = true;
-    dashboardController.isSelect.value = true;
-    dashboardController.isOverView.value = false;
-    dashboardController.isOverViewTitle.value = false;
-    homeController.isModuleView.value = false;
-    homeController.unSelectSettingValue();
-    homeController.unSelectModule();
-    controller.isGraphScreen.value = false;
-    organizationController.isUser.value = false;
-    organizationController.isGrowSpaces.value = false;
-    return false;
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => WillPopScope(
-        onWillPop: onWillPop,
+        onWillPop: homeController.onWillPop,
         child: Column(
           children: [
             Padding(
@@ -279,7 +264,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.orange,
                                       onTap: () {
                                         controller.isTemperature.value = true;
-                                        // Get.toNamed(AppPages.GRAPH);
+                                        Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -412,7 +397,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       onTap: () {
                                         controller.isElectricalLoad.value =
                                             true;
-                                        // Get.toNamed(AppPages.GRAPH);
+                                        Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -540,7 +525,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.lightGreen1,
                                       onTap: () {
                                         controller.isCo2.value = true;
-                                        // Get.toNamed(AppPages.GRAPH);
+                                        Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(
@@ -678,7 +663,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                         color: AppColors.pink,
                                         onTap: () {
                                           controller.isLightning.value = true;
-                                          // Get.toNamed(AppPages.GRAPH);
+                                          Get.toNamed(AppPages.GRAPH);
                                         },
                                         isPhase: false),
                                   ),
@@ -807,7 +792,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
                                       color: AppColors.lightBlue2,
                                       onTap: () {
                                         controller.isVdp.value = true;
-                                        // Get.toNamed(AppPages.GRAPH);
+                                        Get.toNamed(AppPages.GRAPH);
                                       },
                                       isPhase: false)),
                                   SizedBox(

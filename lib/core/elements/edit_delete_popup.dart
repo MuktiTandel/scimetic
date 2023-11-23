@@ -6,21 +6,14 @@ import 'package:scimetic/core/const/app_images.dart';
 import 'package:scimetic/core/const/app_strings.dart';
 import 'package:scimetic/core/elements/custom_text.dart';
 
-Widget editDeletePopup({
-  required VoidCallback editTap,
-  required VoidCallback deleteTap
-}) {
+Widget editDeletePopup(
+    {required VoidCallback editTap, required VoidCallback deleteTap}) {
   return PopupMenuButton<int>(
     offset: Offset(0, 17.h),
     padding: EdgeInsets.zero,
     color: Get.isDarkMode ? AppColors.darkTheme : Colors.white,
-    constraints: BoxConstraints(
-        maxWidth: 115.w,
-        maxHeight: 75.h
-    ),
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)
-    ),
+    constraints: BoxConstraints(maxWidth: 115.w, maxHeight: 100.h),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     child: Image.asset(
       AppImages.menu,
       height: 14.h,
@@ -32,13 +25,13 @@ Widget editDeletePopup({
       PopupMenuItem<int>(
           padding: EdgeInsets.zero,
           value: 0,
-          onTap: (){
+          onTap: () {
             editTap();
           },
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 3),
                 child: Row(
                   children: [
                     Image.asset(
@@ -46,36 +39,39 @@ Widget editDeletePopup({
                       height: 25.h,
                       width: 25.w,
                       color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightGray1,
+                          ? AppColors.darkText
+                          : AppColors.lightGray1,
                     ),
-                    SizedBox(width: 10.w,),
+                    SizedBox(
+                      width: 10.w,
+                    ),
                     CustomText(
                       text: AppStrings.edit,
                       fontSize: 15.sp,
                       color: Get.isDarkMode
-                          ? AppColors.darkText : AppColors.lightGray1,
+                          ? AppColors.darkText
+                          : AppColors.lightGray1,
                       fontWeight: FontWeight.w500,
                     )
                   ],
                 ),
               ),
               Divider(
-                color: Get.isDarkMode
-                    ? AppColors.darkBlue1
-                    : AppColors.lightGray2,
+                height: 5,
+                color:
+                    Get.isDarkMode ? AppColors.darkBlue1 : AppColors.lightGray2,
                 thickness: 1.w,
               )
             ],
-          )
-      ),
+          )),
       PopupMenuItem<int>(
           value: 1,
           padding: EdgeInsets.zero,
-          onTap: (){
+          onTap: () {
             deleteTap();
           },
           child: Padding(
-            padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 6.h),
+            padding: EdgeInsets.only(left: 10.w, right: 10.w),
             child: Row(
               children: [
                 Image.asset(
@@ -83,7 +79,9 @@ Widget editDeletePopup({
                   height: 25.h,
                   width: 25.w,
                 ),
-                SizedBox(width: 10.w,),
+                SizedBox(
+                  width: 10.w,
+                ),
                 CustomText(
                   text: AppStrings.delete,
                   fontSize: 15.sp,
@@ -92,8 +90,7 @@ Widget editDeletePopup({
                 )
               ],
             ),
-          )
-      ),
+          )),
     ],
   );
 }

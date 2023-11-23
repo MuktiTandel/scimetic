@@ -182,13 +182,14 @@ class ReportScreen extends StatelessWidget {
                           await controller.screenshotController
                               .capture(delay: const Duration(milliseconds: 500))
                               .then((value) async {
-                                controller.image = value;
+                            controller.image = value;
                             AppConst().debug("image => $value");
                           }).catchError((onError) {
                             AppConst().debug("$onError");
                           });
                           controller.makePdf(
-                              companyName: controller.companyNameController.text,
+                              companyName:
+                                  controller.companyNameController.text,
                               batchId: controller.batchIdController.text,
                               createdBy: controller.nameController.text);
                           // Navigator.of(context)
@@ -404,29 +405,38 @@ class ReportScreen extends StatelessWidget {
       required String hintText,
       required VoidCallback onTap}) {
     return Expanded(
-      child: SizedBox(
-        height: 40.h,
-        child: CustomTextField(
-          readOnly: true,
-          controller: controller,
-          hintText: hintText,
-          contentPadding: EdgeInsets.only(left: 10.w),
-          suffixWidget: GestureDetector(
-            onTap: () {
-              onTap();
-            },
-            child: Padding(
-              padding: EdgeInsets.all(10.w),
-              child: Image.asset(
-                AppImages.calender,
-                color:
-                    Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                height: 10.h,
-                width: 10.w,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          onTap();
+        },
+        child: SizedBox(
+          height: 40.h,
+          child: GestureDetector(
+            child: CustomTextField(
+              readOnly: true,
+              controller: controller,
+              hintText: hintText,
+              contentPadding: EdgeInsets.only(left: 10.w),
+              suffixWidget: GestureDetector(
+                onTap: () {
+                  onTap();
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(10.w),
+                  child: Image.asset(
+                    AppImages.calender,
+                    color: Get.isDarkMode
+                        ? AppColors.darkText
+                        : AppColors.lightText,
+                    height: 10.h,
+                    width: 10.w,
+                  ),
+                ),
               ),
+              onchange: (value) {},
             ),
           ),
-          onchange: (value) {},
         ),
       ),
     );

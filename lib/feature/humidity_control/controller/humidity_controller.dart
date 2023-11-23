@@ -151,29 +151,29 @@ class HumidityController extends GetxController {
           HumidityControl humidityControl =
               humidityControlModel.humidityControl!;
 
-          dayHumidityRHController.text = humidityControl.dayHumidityRh != 0
+          dayHumidityRHController.text = humidityControl.dayHumidityRh != null
               ? humidityControl.dayHumidityRh.toString()
               : "";
           dayHumidityRHDeadbandController.text =
-              humidityControl.dayHumidityRhDeadband != 0
+              humidityControl.dayHumidityRhDeadband != null
                   ? humidityControl.dayHumidityRhDeadband.toString()
                   : "";
           dayHumiditySwitch.value = humidityControl.dayHumiditySwitch ?? "";
           dayHumidityRelay.value = humidityControl.dayHumidityRelay ?? "";
-          nightHumidityRHController.text = humidityControl.nightHumidityRh != 0
+          nightHumidityRHController.text = humidityControl.nightHumidityRh != null
               ? humidityControl.nightHumidityRh.toString()
               : "";
           nightHumidityRHDeadbandController.text =
-              humidityControl.nightHumidityRhDeadband != 0
+              humidityControl.nightHumidityRhDeadband != null
                   ? humidityControl.nightHumidityRhDeadband.toString()
                   : "";
           nightHumiditySwitch.value = humidityControl.nightHumiditySwitch ?? "";
           nightHumidityRelay.value = humidityControl.nightHumidityRelay ?? "";
-          dayDehumidityRHController.text = humidityControl.dayDehumidityRh != 0
+          dayDehumidityRHController.text = humidityControl.dayDehumidityRh != null
               ? humidityControl.dayDehumidityRh.toString()
               : "";
           dayDehumidityRHDeadbandController.text =
-              humidityControl.dayDehumidityRhDeadband != 0
+              humidityControl.dayDehumidityRhDeadband != null
                   ? humidityControl.dayDehumidityRhDeadband.toString()
                   : "";
           dayDehumidificationSwitch.value =
@@ -181,11 +181,11 @@ class HumidityController extends GetxController {
           dayDehumidificationRelay.value =
               humidityControl.dayDehumidityRelay ?? "";
           nightDehumidityRHController.text =
-              humidityControl.nightDehumidityRh != 0
+              humidityControl.nightDehumidityRh != null
                   ? humidityControl.nightDehumidityRh.toString()
                   : "";
           nightDehumidityRHDeadbandController.text =
-              humidityControl.nightDehumidityRhDeadband != 0
+              humidityControl.nightDehumidityRhDeadband != null
                   ? humidityControl.nightDehumidityRhDeadband.toString()
                   : "";
           nightDehumidificationSwitch.value =

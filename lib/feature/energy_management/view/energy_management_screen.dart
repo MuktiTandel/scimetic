@@ -67,7 +67,7 @@ class EnergyManagementScreen extends StatelessWidget {
                         controller.isTemMonth.value = true;
                       }
                     },
-                    graph: controller.isTemHour.value == true ? HourGraph(
+                    graph: controller.isTemHour.value == true ? HourGraph1(
                       minY: 20,
                       maxY: 31,
                       dataList: controller.temperatureHourDataList,
@@ -137,7 +137,7 @@ class EnergyManagementScreen extends StatelessWidget {
                         controller.isElectricalMonth.value = true;
                       }
                     },
-                    graph: controller.isElectricalHour.value == true ? HourGraph(
+                    graph: controller.isElectricalHour.value == true ? HourGraph1(
                       minY: 80,
                       maxY: 91,
                       dataList: controller.electricalLoadHourData,
@@ -207,7 +207,7 @@ class EnergyManagementScreen extends StatelessWidget {
                         controller.isVoltageMonth.value = true;
                       }
                     },
-                    graph: controller.isVoltageHour.value == true ? HourGraph(
+                    graph: controller.isVoltageHour.value == true ? HourGraph1(
                       minY: 700,
                       maxY: 800,
                       dataList: controller.voltageHourData,

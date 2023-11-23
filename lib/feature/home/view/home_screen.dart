@@ -97,7 +97,15 @@ class HomeScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size(Get.width, 45.h),
         child: Obx(() => CommonAppbar(
-              profileImage: controller.storeData.getData(StoreData.userImage),
+              profileImage: profileSettingController.imageUrl.value != ""
+                  ? profileSettingController.imageUrl.value
+                  : (profileSettingController.storeData
+                              .getData(StoreData.userImage) ==
+                          "")
+                      ? ""
+                      : profileSettingController.storeData
+                              .getData(StoreData.userImage) ??
+                          "",
               drawerTap: () {
                 controller.openDrawer();
               },

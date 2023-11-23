@@ -155,7 +155,9 @@ class LightningController extends GetxController {
           return false;
         }
       } catch (e) {
-        AppConst().debug(e.toString());
+         progressDialog(false, Get.context!);
+          showSnack(width: 200.w, title: e.toString().split(")").last.split("^").first);
+        AppConst().debug(e.toString().split(")").last);
       }
     }
   }

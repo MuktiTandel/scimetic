@@ -28,7 +28,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   @override
   void initState() {
     super.initState();
-    image = controller.storeData.getData(StoreData.userImage);
+    image = controller.storeData.getData(StoreData.userImage) ?? "";
     print(image);
   }
 
@@ -140,24 +140,35 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                     SizedBox(
                       width: 20.w,
                     ),
-                    CustomButton(
-                        width: 85.w,
-                        height: 30.h,
-                        backgroundColor: Get.isDarkMode
-                            ? Colors.white
-                            : AppColors.subTitleColor,
-                        buttonTextColor: Get.isDarkMode
-                            ? AppColors.subTitleColor
-                            : Colors.white,
-                        onTap: () {
-                          if (controller.imageFile != null) {
-                            controller.uploadImage();
-                            setState(() {});
-                          } else {
-                            showSnack(title: AppStrings.pCImage, width: 250.w);
-                          }
-                        },
-                        buttonText: AppStrings.upload),
+                    Obx(
+                      () => CustomButton(
+                          width: 85.w,
+                          height: 30.h,
+                          backgroundColor: Get.isDarkMode
+                              ? (controller.isPick.value == true)
+                                  ? Colors.white
+                                  : AppColors.lightGray3.withOpacity(0.5)
+                              : (controller.isPick.value == true)
+                                  ? AppColors.subTitleColor
+                                  : AppColors.lightGray3,
+                          buttonTextColor: Get.isDarkMode
+                              ? AppColors.subTitleColor
+                              : Colors.white,
+                          onTap: (controller.isPick.value == true)
+                              ? () {
+                                  if (controller.imageFile != null) {
+                                    controller.uploadImage().then((value) {
+                                      setState(() {});
+                                    });
+                                  } else {
+                                    showSnack(
+                                        title: AppStrings.pCImage,
+                                        width: 250.w);
+                                  }
+                                }
+                              : () {},
+                          buttonText: AppStrings.upload),
+                    ),
                     // SizedBox(width: 10.w,),
                     // OutLineButton(
                     //   height: 30.h,
@@ -340,7 +351,9 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutLineButton(
-                      onTap: () {},
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
                       color: AppColors.red,
                       buttonText: AppStrings.cancel,
                       height: 30.h,
@@ -353,6 +366,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                         height: 30.h,
                         fontSize: 14.sp,
                         onTap: () {
+                          setState(() {});
+                          FocusScope.of(context).requestFocus(FocusNode());
                           controller.updateProfile();
                         },
                         buttonText: AppStrings.save)

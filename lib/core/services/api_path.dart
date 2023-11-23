@@ -24,6 +24,7 @@ class ApiPath {
   static const humidityControl = "/ctrl/humidity_control";
   static const co2Control = "/ctrl/co2_control";
   static const lightingControl = "/ctrl/lighting_control";
+  static const lightingBank = "/ctrl/lighting_bank";
   static const accessUser = "/access/user";
   static const user = "/user";
   static const notificationSettings = "/user/notification_settings";

@@ -12,20 +12,30 @@ import 'package:scimetic/feature/calendar/view/day_calendar.dart';
 import 'package:scimetic/feature/calendar/view/month_calendar.dart';
 import 'package:scimetic/feature/calendar/view/week_calendar.dart';
 import 'package:scimetic/feature/calendar/view/year_calendar.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 
-class CalendarScreen extends StatelessWidget {
+class CalendarScreen extends StatefulWidget {
    CalendarScreen({
      Key? key,
    }) : super(key: key);
 
+  @override
+  State<CalendarScreen> createState() => _CalendarScreenState();
+}
+
+class _CalendarScreenState extends State<CalendarScreen> {
    final controller = Get.put(CalendarController());
 
+  final homeController = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: Obx(() => controller.personalCalendar.value == false
-          ? personalCalendar() : cropCalendar(),)
+    return WillPopScope(
+      onWillPop: homeController.onWillPop,
+      child: Scaffold(
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        body: Obx(() => controller.personalCalendar.value == false
+            ? personalCalendar() : cropCalendar(),)
+      ),
     );
   }
 

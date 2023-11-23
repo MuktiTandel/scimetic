@@ -23,233 +23,247 @@ import 'package:scimetic/core/utils/store_data.dart';
 import 'package:scimetic/feature/growsheet/controller/growsheets_controller.dart';
 import 'package:scimetic/feature/growsheet/model/growsheet_model.dart';
 import 'package:scimetic/feature/growsheet/model/option_model.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 
-class GrowSheetsScreen extends StatelessWidget {
+class GrowSheetsScreen extends StatefulWidget {
   GrowSheetsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<GrowSheetsScreen> createState() => _GrowSheetsScreenState();
+}
+
+class _GrowSheetsScreenState extends State<GrowSheetsScreen> {
   final controller = Get.put(GrowSheetController());
+  
+
+  final homeController = Get.put(HomeController());
+
+ 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                left: 15.w, right: 15.w, top: 10.h, bottom: 10.h),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40.h,
-                  child: CustomTextField(
-                    controller: controller.searchController,
-                    isFilled: true,
-                    borderRadius: 8,
-                    hintText: AppStrings.search,
-                    contentPadding: EdgeInsets.only(left: 10.w),
-                    suffixWidget: Padding(
-                      padding: EdgeInsets.all(13.w),
-                      child: Image.asset(
-                        AppImages.search,
+    return WillPopScope(
+     onWillPop: homeController.onWillPop,
+      child: Scaffold(
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 15.w, right: 15.w, top: 10.h, bottom: 10.h),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 40.h,
+                    child: CustomTextField(
+                      controller: controller.searchController,
+                      isFilled: true,
+                      borderRadius: 8,
+                      hintText: AppStrings.search,
+                      contentPadding: EdgeInsets.only(left: 10.w),
+                      suffixWidget: Padding(
+                        padding: EdgeInsets.all(13.w),
+                        child: Image.asset(
+                          AppImages.search,
+                          color: Get.isDarkMode
+                              ? AppColors.darkText
+                              : AppColors.lightText,
+                        ),
+                      ),
+                      onchange: (value) {
+                        if (value.isNotEmpty) {
+                          controller.growSheetDataList.value = controller
+                              .growSheetDataList
+                              .where((element) => element.name!.contains(value))
+                              .toList();
+                        } else {
+                          controller.growSheetDataList.clear();
+                          controller.growSheetDataList
+                              .addAll(controller.mainList);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Row(
+                    children: [
+                      Obx(
+                        () => GestureDetector(
+                          onTap: () {
+                            controller.isCheckAll.value =
+                                !controller.isCheckAll.value;
+                            controller.growsheetIds.clear();
+                            for (var element in controller.growSheetDataList) {
+                              controller.growsheetIds.add(element.id);
+                            }
+                            AppConst().debug(
+                                'Id list length => ${controller.growsheetIds}');
+                            if (controller.isCheckAll.value == true) {
+                              for (var element in controller.selectList) {
+                                element.value = true;
+                              }
+                            } else {
+                              for (var element in controller.selectList) {
+                                element.value = false;
+                              }
+                            }
+                          },
+                          child: controller.isCheckAll.value == false
+                              ? Image.asset(
+                                  AppImages.unSelectedBox,
+                                  height: 20.h,
+                                  width: 20.w,
+                                  color: Get.isDarkMode
+                                      ? AppColors.darkText
+                                      : AppColors.lightText,
+                                )
+                              : Image.asset(
+                                  AppImages.selectedBox,
+                                  height: 20.h,
+                                  width: 20.w,
+                                ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      CustomText(
+                        text: AppStrings.checkAll,
+                        fontWeight: FontWeight.w500,
                         color: Get.isDarkMode
                             ? AppColors.darkText
                             : AppColors.lightText,
                       ),
-                    ),
-                    onchange: (value) {
-                      if (value.isNotEmpty) {
-                        controller.growSheetDataList.value = controller
-                            .growSheetDataList
-                            .where((element) => element.name!.contains(value))
-                            .toList();
-                      } else {
-                        controller.growSheetDataList.clear();
-                        controller.growSheetDataList
-                            .addAll(controller.mainList);
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  children: [
-                    Obx(
-                      () => GestureDetector(
-                        onTap: () {
-                          controller.isCheckAll.value =
-                              !controller.isCheckAll.value;
-                          controller.growsheetIds.clear();
-                          for (var element in controller.growSheetDataList) {
-                            controller.growsheetIds.add(element.id);
-                          }
-                          AppConst().debug(
-                              'Id list length => ${controller.growsheetIds}');
-                          if (controller.isCheckAll.value == true) {
-                            for (var element in controller.selectList) {
-                              element.value = true;
-                            }
-                          } else {
-                            for (var element in controller.selectList) {
-                              element.value = false;
-                            }
-                          }
-                        },
-                        child: controller.isCheckAll.value == false
-                            ? Image.asset(
-                                AppImages.unSelectedBox,
-                                height: 20.h,
-                                width: 20.w,
-                                color: Get.isDarkMode
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
-                              )
-                            : Image.asset(
-                                AppImages.selectedBox,
-                                height: 20.h,
-                                width: 20.w,
-                              ),
+                      SizedBox(
+                        width: 10.w,
                       ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    CustomText(
-                      text: AppStrings.checkAll,
-                      fontWeight: FontWeight.w500,
-                      color: Get.isDarkMode
-                          ? AppColors.darkText
-                          : AppColors.lightText,
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Obx(() => controller.isCheckAll.value == true ||
-                            controller.isSelect.value == true
-                        ? GestureDetector(
-                            onTap: () async {
-                              await controller.deleteGrowSheet();
-                            },
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  AppImages.trash,
-                                  height: 20.h,
-                                  width: 25.w,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                CustomText(
-                                  text: AppStrings.delete,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.red,
-                                  fontSize: 13.sp,
-                                ),
-                              ],
-                            ),
-                          )
-                        : const SizedBox.shrink())
-                  ],
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: ScrollConfiguration(
-              behavior: AppBehavior(),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Obx(
-                      () => controller.isGetData.value == false
-                          ? const Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.buttonColor,
+                      Obx(() => controller.isCheckAll.value == true ||
+                              controller.isSelect.value == true
+                          ? GestureDetector(
+                              onTap: () async {
+                                await controller.deleteGrowSheet();
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    AppImages.trash,
+                                    height: 20.h,
+                                    width: 25.w,
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  CustomText(
+                                    text: AppStrings.delete,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.red,
+                                    fontSize: 13.sp,
+                                  ),
+                                ],
                               ),
                             )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              itemCount: controller.growSheetDataList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Growsheet data =
-                                    controller.growSheetDataList[index];
-
-                                return listWidget(
-                                    name: data.name ?? "",
-                                    desc: data.description ?? "",
-                                    seedBank: data.seedBank ?? "",
-                                    dayTemperatureValue:
-                                        data.dayTargetTemperature.toString(),
-                                    nightTemperatureValue:
-                                        data.nightTargetTemperature.toString(),
-                                    dayHumidityValue: data
-                                        .dayTargetRelativeHumidity
-                                        .toString(),
-                                    nightHumidityValue: data
-                                        .nightTargetRelativeHumidity
-                                        .toString(),
-                                    dayCo2Value: data.dayTargetCo2.toString(),
-                                    nightCo2Value:
-                                        data.nightTargetCo2.toString(),
-                                    irrigationName:
-                                        data.irrigationControl!.name ?? "",
-                                    fertigationName1:
-                                        data.fertigationControl01!.name ?? "",
-                                    fertigationName2:
-                                        data.fertigationControl02!.name ?? "",
-                                    id: data.id!,
-                                    isApplied: controller.appliedList[index],
-                                    isSelect: controller.selectList[index],
-                                    data: data);
-                              }),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 18.w),
-                      child: CustomButton(
-                        height: 30.h,
-                        width: 85.w,
-                        onTap: () async {
-                          await controller.getFormOption().whenComplete(() {
-                            Get.dialog(dialogWidget());
-                          });
-                        },
-                        buttonText: AppStrings.add,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                AppImages.add,
-                                height: 12.h,
-                                width: 12.w,
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              const Text(AppStrings.add)
-                            ],
+                          : const SizedBox.shrink())
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: AppBehavior(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Obx(
+                        () => controller.isGetData.value == false
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.buttonColor,
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.zero,
+                                itemCount: controller.growSheetDataList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Growsheet data =
+                                      controller.growSheetDataList[index];
+    
+                                  return listWidget(
+                                      name: data.name ?? "",
+                                      desc: data.description ?? "",
+                                      seedBank: data.seedBank ?? "",
+                                      dayTemperatureValue:
+                                          data.dayTargetTemperature.toString(),
+                                      nightTemperatureValue:
+                                          data.nightTargetTemperature.toString(),
+                                      dayHumidityValue: data
+                                          .dayTargetRelativeHumidity
+                                          .toString(),
+                                      nightHumidityValue: data
+                                          .nightTargetRelativeHumidity
+                                          .toString(),
+                                      dayCo2Value: data.dayTargetCo2.toString(),
+                                      nightCo2Value:
+                                          data.nightTargetCo2.toString(),
+                                      irrigationName:
+                                          data.irrigationControl!.name ?? "",
+                                      fertigationName1:
+                                          data.fertigationControl01!.name ?? "",
+                                      fertigationName2:
+                                          data.fertigationControl02!.name ?? "",
+                                      id: data.id!,
+                                      isApplied: controller.appliedList[index],
+                                      isSelect: controller.selectList[index],
+                                      data: data);
+                                }),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 18.w),
+                        child: CustomButton(
+                          height: 30.h,
+                          width: 85.w,
+                          onTap: () async {
+                            await controller.getFormOption().whenComplete(() {
+                              Get.dialog(dialogWidget());
+                            });
+                          },
+                          buttonText: AppStrings.add,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  AppImages.add,
+                                  height: 12.h,
+                                  width: 12.w,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                const Text(AppStrings.add)
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    )
-                  ],
+                      SizedBox(
+                        height: 30.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -722,8 +736,7 @@ class GrowSheetsScreen extends StatelessWidget {
       required String hintText,
       required List<IgationControl> itemList,
       required RxInt id,
-        required bool isEnable
-      }) {
+      required bool isEnable}) {
     return DropdownButtonFormField2<IgationControl>(
       itemHeight: 40.h,
       // value: controller.isEdit.value == true ? selectValue : null,
@@ -778,11 +791,13 @@ class GrowSheetsScreen extends StatelessWidget {
               color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
             ));
       }).toList(),
-      onChanged: isEnable == true ? (IgationControl? value) {
-        selectValue = value!;
-        id.value = value.id!;
-        AppConst().debug('select value => ${value.id} ${value.name}');
-      } : null,
+      onChanged: isEnable == true
+          ? (IgationControl? value) {
+              selectValue = value!;
+              id.value = value.id!;
+              AppConst().debug('select value => ${value.id} ${value.name}');
+            }
+          : null,
     );
   }
 
@@ -1049,8 +1064,7 @@ class GrowSheetsScreen extends StatelessWidget {
                 children: [
                   enableWidget(
                       title: AppStrings.irrigationSchedule,
-                      isEnable: controller.isIrrigationEnable
-                  ),
+                      isEnable: controller.isIrrigationEnable),
                   SizedBox(
                     height: 5.h,
                   ),
@@ -1059,15 +1073,13 @@ class GrowSheetsScreen extends StatelessWidget {
                       itemList: controller.irrigationList,
                       selectValue: controller.irrigationValue,
                       id: controller.irrigationId,
-                      isEnable: controller.isIrrigationEnable.value
-                  )),
+                      isEnable: controller.isIrrigationEnable.value)),
                   SizedBox(
                     height: 10.h,
                   ),
                   enableWidget(
                       title: AppStrings.fertigationFormula1,
-                      isEnable: controller.isFertigationEnable1
-                  ),
+                      isEnable: controller.isFertigationEnable1),
                   SizedBox(
                     height: 5.h,
                   ),
@@ -1076,15 +1088,13 @@ class GrowSheetsScreen extends StatelessWidget {
                       itemList: controller.fertigationList1,
                       selectValue: controller.fertigationValue1,
                       id: controller.fertigationId1,
-                      isEnable: controller.isFertigationEnable1.value
-                  )),
+                      isEnable: controller.isFertigationEnable1.value)),
                   SizedBox(
                     height: 10.h,
                   ),
                   enableWidget(
                       title: AppStrings.fertigationFormula2,
-                      isEnable: controller.isFertigationEnable2
-                  ),
+                      isEnable: controller.isFertigationEnable2),
                   SizedBox(
                     height: 5.h,
                   ),
@@ -1093,8 +1103,7 @@ class GrowSheetsScreen extends StatelessWidget {
                       itemList: controller.fertigationList2,
                       selectValue: controller.fertigationValue2,
                       id: controller.fertigationId2,
-                      isEnable: controller.isFertigationEnable2.value
-                  )),
+                      isEnable: controller.isFertigationEnable2.value)),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -1190,9 +1199,7 @@ class GrowSheetsScreen extends StatelessWidget {
         )),
         Obx(
           () => CustomText(
-            text: isEnable.value
-                ? AppStrings.enable
-                : AppStrings.disable,
+            text: isEnable.value ? AppStrings.enable : AppStrings.disable,
             fontSize: 15.sp,
             color: AppColors.buttonColor,
             fontWeight: FontWeight.w500,

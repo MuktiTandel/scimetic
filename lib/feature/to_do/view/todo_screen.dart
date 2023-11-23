@@ -17,262 +17,274 @@ import 'package:scimetic/core/elements/custom_text.dart';
 import 'package:scimetic/core/elements/custom_textfield.dart';
 import 'package:scimetic/core/elements/select_widget.dart';
 import 'package:scimetic/feature/dashboard/model/GrowController_model.dart';
+import 'package:scimetic/feature/home/controller/home_controller.dart';
 import 'package:scimetic/feature/to_do/controller/todo_controller.dart';
 import 'package:scimetic/feature/to_do/model/company_user_model.dart';
 import 'package:scimetic/feature/to_do/model/todo_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class TodoScreen extends StatelessWidget {
+class TodoScreen extends StatefulWidget {
   TodoScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TodoScreen> createState() => _TodoScreenState();
+}
+
+class _TodoScreenState extends State<TodoScreen> {
   final controller = Get.put(TodoController());
 
+  final homeController = Get.put(HomeController());
+
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: Padding(
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isTodo.value == false ) {
-                          controller.isTodo.value = true;
-                          controller.isProgress.value = false;
-                          controller.isCompleted.value = false;
-                        }
-                      },
-                      text: AppStrings.toDo,
-                      isSelected: controller.isTodo.value
-                  ),)
-                ),
-                SizedBox(width: 10.w,),
-                Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isProgress.value == false ) {
-                          controller.isTodo.value = false;
-                          controller.isProgress.value = true;
-                          controller.isCompleted.value = false;
-                        }
-                      },
-                      text: AppStrings.inProgress,
-                      isSelected: controller.isProgress.value
-                  ),)
-                ),
-                SizedBox(width: 10.w,),
-                Expanded(
-                  child: Obx(() => selectWidget(
-                      onTap: (){
-                        if ( controller.isCompleted.value == false ) {
-                          controller.isTodo.value = false;
-                          controller.isProgress.value = false;
-                          controller.isCompleted.value = true;
-                        }
-                      },
-                      text: AppStrings.completed,
-                      isSelected: controller.isCompleted.value
-                  )),
-                )
-              ],
-            ),
-            SizedBox(height: 10.h,),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Obx(() => controller.isGetData.value == false ? const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.buttonColor,
-                      ),
-                    ) : ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.isTodo.value == true
-                            ? controller.todoList.length
-                            : controller.isProgress.value == true
-                            ? controller.inProgressList.length
-                            : controller.completedList.length,
-                        itemBuilder: (BuildContext context, int index ) {
-
-                          Todo todo = Todo();
-
-                          String growSpaceId = AppStrings.assignGrowSpace;
-
-                          String date = "";
-
-                          String startDate = "";
-
-                          if ( controller.isTodo.value == true ) {
-
-                            todo = controller.todoList[index];
-
-                            if ( controller.todoIdentifierList.length > index ) {
-                              growSpaceId =
-                              controller.todoIdentifierList[index];
-                            }
-
-                            DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.todoList[index].dueDate!);
-                            date = DateFormat("dd.MM.yyyy").format(parseDate);
-
-                          } else if ( controller.isProgress.value == true ) {
-
-                            todo = controller.inProgressList[index];
-
-                            if ( controller.inProgressIdentifierList.length > index ) {
-                              growSpaceId =
-                              controller.inProgressIdentifierList[index];
-                            }
-
-                            DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.inProgressList[index].dueDate!);
-                            date = DateFormat("dd.MM.yyyy").format(parseDate);
-
-                          } else if ( controller.isCompleted.value == true ) {
-
-                            todo = controller.completedList[index];
-
-                            if ( controller.completedIdentifierList.length > index ) {
-                              growSpaceId =
-                              controller.completedIdentifierList[index];
-                            }
-
-                            DateTime start = DateFormat("dd.MM.yyyy").parse(controller.completedList[index].dueDate!);
-                            startDate = DateFormat("dd.MM.yyyy").format(start);
-
+    return WillPopScope(
+     onWillPop: homeController.onWillPop,
+      child: Scaffold(
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        body: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isTodo.value == false ) {
+                            controller.isTodo.value = true;
+                            controller.isProgress.value = false;
+                            controller.isCompleted.value = false;
                           }
-
-                          return listWidget(
-                              isCompleted: controller.isCompleted.value,
-                            desc: todo.description ?? "",
-                            date: date,
-                            tag: todo.tag ?? "",
-                            growSpace: growSpaceId,
-                            startDate: startDate,
-                            endDate: todo.completedAt ?? "",
-                            isInProgress: controller.isProgress.value,
-                            onDelete: () async {
-                                controller.deleteTodo(id: todo.id!).whenComplete(() async{
-                                  await controller.getTodoList();
+                        },
+                        text: AppStrings.toDo,
+                        isSelected: controller.isTodo.value
+                    ),)
+                  ),
+                  SizedBox(width: 10.w,),
+                  Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isProgress.value == false ) {
+                            controller.isTodo.value = false;
+                            controller.isProgress.value = true;
+                            controller.isCompleted.value = false;
+                          }
+                        },
+                        text: AppStrings.inProgress,
+                        isSelected: controller.isProgress.value
+                    ),)
+                  ),
+                  SizedBox(width: 10.w,),
+                  Expanded(
+                    child: Obx(() => selectWidget(
+                        onTap: (){
+                          if ( controller.isCompleted.value == false ) {
+                            controller.isTodo.value = false;
+                            controller.isProgress.value = false;
+                            controller.isCompleted.value = true;
+                          }
+                        },
+                        text: AppStrings.completed,
+                        isSelected: controller.isCompleted.value
+                    )),
+                  )
+                ],
+              ),
+              SizedBox(height: 10.h,),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Obx(() => controller.isGetData.value == false ? const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.buttonColor,
+                        ),
+                      ) : ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.isTodo.value == true
+                              ? controller.todoList.length
+                              : controller.isProgress.value == true
+                              ? controller.inProgressList.length
+                              : controller.completedList.length,
+                          itemBuilder: (BuildContext context, int index ) {
+    
+                            Todo todo = Todo();
+    
+                            String growSpaceId = AppStrings.assignGrowSpace;
+    
+                            String date = "";
+    
+                            String startDate = "";
+    
+                            if ( controller.isTodo.value == true ) {
+    
+                              todo = controller.todoList[index];
+    
+                              if ( controller.todoIdentifierList.length > index ) {
+                                growSpaceId =
+                                controller.todoIdentifierList[index];
+                              }
+    
+                              DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.todoList[index].dueDate!);
+                              date = DateFormat("dd.MM.yyyy").format(parseDate);
+    
+                            } else if ( controller.isProgress.value == true ) {
+    
+                              todo = controller.inProgressList[index];
+    
+                              if ( controller.inProgressIdentifierList.length > index ) {
+                                growSpaceId =
+                                controller.inProgressIdentifierList[index];
+                              }
+    
+                              DateTime parseDate = DateFormat("dd.MM.yyyy").parse(controller.inProgressList[index].dueDate!);
+                              date = DateFormat("dd.MM.yyyy").format(parseDate);
+    
+                            } else if ( controller.isCompleted.value == true ) {
+    
+                              todo = controller.completedList[index];
+    
+                              if ( controller.completedIdentifierList.length > index ) {
+                                growSpaceId =
+                                controller.completedIdentifierList[index];
+                              }
+    
+                              DateTime start = DateFormat("dd.MM.yyyy").parse(controller.completedList[index].dueDate!);
+                              startDate = DateFormat("dd.MM.yyyy").format(start);
+    
+                            }
+    
+                            return listWidget(
+                                isCompleted: controller.isCompleted.value,
+                              desc: todo.description ?? "",
+                              date: date,
+                              tag: todo.tag ?? "",
+                              growSpace: growSpaceId,
+                              startDate: startDate,
+                              endDate: todo.completedAt ?? "",
+                              isInProgress: controller.isProgress.value,
+                              onDelete: () async {
+                                  controller.deleteTodo(id: todo.id!).whenComplete(() async{
+                                    await controller.getTodoList();
+                                  });
+                              },
+                              onTodoEdit: (){
+    
+                                  controller.isEdit.value = true;
+    
+                                  controller.editTodo = todo;
+    
+                                  String date = "";
+    
+                                  DateTime parseDate = DateFormat("dd.MM.yyyy").parse(todo.dueDate!);
+                                  date = DateFormat("dd.MM.yyyy").format(parseDate);
+    
+                                controller.dateTimeController.text = date;
+                                controller.descriptionController.text = todo.description ?? "";
+                                controller.tagController.text = todo.tag ?? "";
+                                controller.growSpaceId.value = todo.growspaceId ?? 0;
+                                controller.assignedTo.value = todo.assignedTo ?? 0;
+    
+                                for (var element in controller.userNameList) {
+                                  if ( element.id == controller.assignedTo.value) {
+                                    controller.selectValue = element;
+                                  }
+                                }
+    
+                                for (var element in controller.growSpaceList) {
+                                  if ( element.id == controller.growSpaceId.value ) {
+                                    controller.selectGrowSpace = element;
+                                  }
+                                }
+    
+                                Future.delayed(const Duration(seconds: 0), (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return commonDialog(context: context);
+                                      }
+                                  );
                                 });
-                            },
-                            onTodoEdit: (){
-
+                              },
+                              onInProgressEdit: (){
+    
                                 controller.isEdit.value = true;
-
+    
                                 controller.editTodo = todo;
-
+    
                                 String date = "";
-
+    
                                 DateTime parseDate = DateFormat("dd.MM.yyyy").parse(todo.dueDate!);
                                 date = DateFormat("dd.MM.yyyy").format(parseDate);
-
-                              controller.dateTimeController.text = date;
-                              controller.descriptionController.text = todo.description ?? "";
-                              controller.tagController.text = todo.tag ?? "";
-                              controller.growSpaceId.value = todo.growspaceId ?? 0;
-                              controller.assignedTo.value = todo.assignedTo ?? 0;
-
-                              for (var element in controller.userNameList) {
-                                if ( element.id == controller.assignedTo.value) {
-                                  controller.selectValue = element;
+    
+                                controller.dateTimeController.text = date;
+                                controller.descriptionController.text = todo.description ?? "";
+                                controller.growSpaceId.value = todo.growspaceId ?? 0;
+                                controller.assignedTo.value = todo.assignedTo ?? 0;
+    
+                                for (var element in controller.userNameList) {
+                                  if ( element.id == controller.assignedTo.value) {
+                                    controller.selectValue = element;
+                                  }
                                 }
-                              }
-
-                              for (var element in controller.growSpaceList) {
-                                if ( element.id == controller.growSpaceId.value ) {
-                                  controller.selectGrowSpace = element;
+    
+                                for (var element in controller.growSpaceList) {
+                                  if ( element.id == controller.growSpaceId.value ) {
+                                    controller.selectGrowSpace = element;
+                                  }
                                 }
-                              }
-
-                              Future.delayed(const Duration(seconds: 0), (){
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return commonDialog(context: context);
-                                    }
-                                );
-                              });
-                            },
-                            onInProgressEdit: (){
-
-                              controller.isEdit.value = true;
-
-                              controller.editTodo = todo;
-
-                              String date = "";
-
-                              DateTime parseDate = DateFormat("dd.MM.yyyy").parse(todo.dueDate!);
-                              date = DateFormat("dd.MM.yyyy").format(parseDate);
-
-                              controller.dateTimeController.text = date;
-                              controller.descriptionController.text = todo.description ?? "";
-                              controller.growSpaceId.value = todo.growspaceId ?? 0;
-                              controller.assignedTo.value = todo.assignedTo ?? 0;
-
-                              for (var element in controller.userNameList) {
-                                if ( element.id == controller.assignedTo.value) {
-                                  controller.selectValue = element;
-                                }
-                              }
-
-                              for (var element in controller.growSpaceList) {
-                                if ( element.id == controller.growSpaceId.value ) {
-                                  controller.selectGrowSpace = element;
-                                }
-                              }
-
-                              Future.delayed(const Duration(seconds: 0), (){
-                                Get.dialog(
-                                    commonDialog(context: context)
-                                );
-                              });
-                            },
-                            data: todo
-                          );
-                        }
-                    )),
-                    SizedBox(height: 10.h,),
-                    Obx(() =>  controller.isCompleted.value == false ? CustomButton(
-                     onTap: (){
-                       controller.isEdit.value = false;
-                       controller.descriptionController.clear();
-                       controller.tagController.clear();
-                       controller.dateTimeController.clear();
-                       Get.dialog(
-                         commonDialog(context: context)
-                       );
-                     },
-                     buttonText: AppStrings.addTask,
-                     child: Center(
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           SvgPicture.asset(
-                             AppImages.add,
-                             height: 15.h,
-                             width: 15.w,
-                           ),
-                           SizedBox(width: 10.w,),
-                           CustomText(
-                             text: AppStrings.addTask,
-                             fontSize: 13.sp,
-                             fontWeight: FontWeight.w500,
-                           )
-                         ],
+    
+                                Future.delayed(const Duration(seconds: 0), (){
+                                  Get.dialog(
+                                      commonDialog(context: context)
+                                  );
+                                });
+                              },
+                              data: todo
+                            );
+                          }
+                      )),
+                      SizedBox(height: 10.h,),
+                      Obx(() =>  controller.isCompleted.value == false ? CustomButton(
+                       onTap: (){
+                         controller.isEdit.value = false;
+                         controller.descriptionController.clear();
+                         controller.tagController.clear();
+                         controller.dateTimeController.clear();
+                         Get.dialog(
+                           commonDialog(context: context)
+                         );
+                       },
+                       buttonText: AppStrings.addTask,
+                       child: Center(
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             SvgPicture.asset(
+                               AppImages.add,
+                               height: 15.h,
+                               width: 15.w,
+                             ),
+                             SizedBox(width: 10.w,),
+                             CustomText(
+                               text: AppStrings.addTask,
+                               fontSize: 13.sp,
+                               fontWeight: FontWeight.w500,
+                             )
+                           ],
+                         ),
                        ),
-                     ),
-                   ) : const SizedBox.shrink(),),
-                    SizedBox(height: 20.h,)
-                  ],
+                     ) : const SizedBox.shrink(),),
+                      SizedBox(height: 20.h,)
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -131,6 +131,7 @@ class ReportScreen extends StatelessWidget {
                       Row(
                         children: [
                           dateTextField(
+                              enable: false,
                               controller: controller.startDate,
                               hintText: AppStrings.startDate,
                               onTap: () {
@@ -148,6 +149,7 @@ class ReportScreen extends StatelessWidget {
                             width: 10.w,
                           ),
                           dateTextField(
+                              enable: false,
                               controller: controller.endDate,
                               hintText: AppStrings.endDate,
                               onTap: () {
@@ -282,16 +284,17 @@ class ReportScreen extends StatelessWidget {
                                     dateFormat: DateFormat("HH:mm"),
                                     maximumLabels: 23,
                                     intervalType: DateTimeIntervalType.hours,
-                                    interval: controller
-                                        .endDateController.selectedDate!
-                                        .difference(controller
-                                            .startDateController.selectedDate!)
-                                        .inDays
-                                        .toDouble(),
-                                    maximum: controller
-                                        .endDateController.selectedDate!,
-                                    minimum: controller
-                                        .startDateController.selectedDate!,
+                                    // interval: controller
+                                    //     .endDateController.selectedDate!
+                                    //     .difference(controller
+                                    //         .startDateController.selectedDate!)
+                                    //     .inDays
+                                    //     .toDouble(),
+
+                                    // maximum: controller
+                                    //     .endDateController.selectedDate!,
+                                    // minimum: controller
+                                    //     .startDateController.selectedDate!,
                                     majorGridLines: const MajorGridLines(
                                       width: 0,
                                     ),
@@ -307,25 +310,43 @@ class ReportScreen extends StatelessWidget {
                                         fontFamily: "Poppins"),
                                   ),
                                   series: [
-                                    HiloSeries<ChartSampleData, DateTime>(
+                                    AreaSeries<ChartSampleData, DateTime>(
                                       dataSource: controller.chartDataList,
-                                      name: 'AAPL',
-                                      // showIndicationForSameValues: isCardView ? true : _toggleVisibility,
+                                      opacity: 0.7,
+                                      borderColor: AppColors.red,
+                                      borderWidth: 1,
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            AppColors.red.withOpacity(0.5),
+                                            AppColors.red.withOpacity(0.5),
+                                          ]),
                                       xValueMapper:
-                                          (ChartSampleData sales, _) =>
-                                              sales.x as DateTime,
-                                      color: AppColors.red,
+                                          (ChartSampleData point, _) => point.x,
+                                      yValueMapper:
+                                          (ChartSampleData point, _) =>
+                                              point.low,
+                                    ),
+                                    // HiloSeries<ChartSampleData, DateTime>(
+                                    //   dataSource: controller.chartDataList,
+                                    //   name: 'AAPL',
+                                    //   // showIndicationForSameValues: isCardView ? true : _toggleVisibility,
+                                    //   xValueMapper:
+                                    //       (ChartSampleData sales, _) =>
+                                    //           sales.x as DateTime,
+                                    //   color: AppColors.red,
 
-                                      /// High, low, open and close values used to render the HLOC series.
-                                      lowValueMapper:
-                                          (ChartSampleData sales, _) =>
-                                              sales.low,
-                                      highValueMapper:
-                                          (ChartSampleData sales, _) =>
-                                              sales.high,
-                                      // openValueMapper: (ChartSampleData sales, _) => sales.open,
-                                      // closeValueMapper: (ChartSampleData sales, _) => sales.close
-                                    )
+                                    //   /// High, low, open and close values used to render the HLOC series.
+                                    //   lowValueMapper:
+                                    //       (ChartSampleData sales, _) =>
+                                    //           sales.low,
+                                    //   highValueMapper:
+                                    //       (ChartSampleData sales, _) =>
+                                    //           sales.high,
+                                    //   // openValueMapper: (ChartSampleData sales, _) => sales.open,
+                                    //   // closeValueMapper: (ChartSampleData sales, _) => sales.close
+                                    // )
                                   ],
                                 ),
                               ),
@@ -403,39 +424,37 @@ class ReportScreen extends StatelessWidget {
   Widget dateTextField(
       {required TextEditingController controller,
       required String hintText,
+      bool? enable,
       required VoidCallback onTap}) {
     return Expanded(
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          onTap();
-        },
-        child: SizedBox(
-          height: 40.h,
-          child: GestureDetector(
-            child: CustomTextField(
-              readOnly: true,
-              controller: controller,
-              hintText: hintText,
-              contentPadding: EdgeInsets.only(left: 10.w),
-              suffixWidget: GestureDetector(
-                onTap: () {
-                  onTap();
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(10.w),
-                  child: Image.asset(
-                    AppImages.calender,
-                    color: Get.isDarkMode
-                        ? AppColors.darkText
-                        : AppColors.lightText,
-                    height: 10.h,
-                    width: 10.w,
-                  ),
+      child: SizedBox(
+        height: 40.h,
+        child: GestureDetector(
+          onTap: () {
+            onTap();
+          },
+          child: CustomTextField(
+            enable: enable,
+            readOnly: true,
+            controller: controller,
+            hintText: hintText,
+            contentPadding: EdgeInsets.only(left: 10.w),
+            suffixWidget: GestureDetector(
+              onTap: () {
+                onTap();
+              },
+              child: Padding(
+                padding: EdgeInsets.all(10.w),
+                child: Image.asset(
+                  AppImages.calender,
+                  color:
+                      Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                  height: 10.h,
+                  width: 10.w,
                 ),
               ),
-              onchange: (value) {},
             ),
+            onchange: (value) {},
           ),
         ),
       ),

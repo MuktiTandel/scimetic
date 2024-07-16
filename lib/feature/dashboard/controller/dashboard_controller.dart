@@ -95,7 +95,7 @@ class DashboardController extends GetxController {
     if (token.isNotEmpty) {
       try {
         APIRequestInfo apiRequestInfo = APIRequestInfo(
-            url: ApiPath.baseUrl + ApiPath.growController,
+            url: ApiPath.baseUrl + ApiPath.growController + "?status=active",
             requestType: HTTPRequestType.GET,
             headers: {
               "Authorization": 'Bearer $token',

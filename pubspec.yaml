@@ -50,34 +50,34 @@ dependencies:
   get_storage: ^2.1.1
 
   # for chat view
-  syncfusion_flutter_charts: ^22.1.36
+  syncfusion_flutter_charts: ^26.1.41+1
 
   # for progress indicator
-  syncfusion_flutter_gauges: ^22.1.36
+  syncfusion_flutter_gauges: ^26.1.41
 
   # for show drop down
-  dropdown_button2: ^1.0.7
+  dropdown_button2: 
 
   # for pic emojis
-  emoji_picker_flutter: ^1.5.4
+  emoji_picker_flutter: ^2.2.0
 
   # for pic file
-  file_picker: ^5.3.0
+  file_picker: ^8.0.6
 
   # for date picker
-  syncfusion_flutter_datepicker: ^22.1.36
+  syncfusion_flutter_datepicker: ^26.1.41
 
   # for calendar
-  syncfusion_flutter_calendar: ^22.1.36
+  syncfusion_flutter_calendar: ^26.1.41
 
   # for date format
-  intl: ^0.18.0
+  intl: 
 
   # for slider
-  syncfusion_flutter_sliders: ^22.1.36
+  syncfusion_flutter_sliders: ^26.1.41
 
   # for theme
-  syncfusion_flutter_core: ^22.1.36
+  syncfusion_flutter_core: ^26.1.41
 
   # for dotted line
   dotted_line: ^3.1.0
@@ -95,7 +95,7 @@ dependencies:
   encrypt: ^5.0.0
 
   # for image pic
-  image_picker: ^0.8.8
+  image_picker: ^1.1.2
 
   # for dotted border
   dotted_border: ^2.0.0+3
@@ -104,7 +104,7 @@ dependencies:
   crypto: ^3.0.3
 
   # for take screen shot
-  screenshot: ^2.1.0
+  screenshot: ^3.0.0
 
   # for get file path
   path_provider: ^2.0.15
@@ -132,7 +132,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

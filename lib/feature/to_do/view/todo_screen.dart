@@ -1129,10 +1129,10 @@ class _TodoScreenState extends State<TodoScreen> {
                     SizedBox(height: 6.h,),
                     Obx(() => DropdownButtonFormField2<User>(
                       value: controller.isEdit.value == true ? controller.selectValue : null,
-                      itemHeight: 40.h,
-                      dropdownMaxHeight: 150.h,
-                      dropdownWidth: 290.w,
-                      buttonPadding: EdgeInsets.only(left: 10.w),
+                      // itemHeight: 40.h,
+                      // dropdownMaxHeight: 150.h,
+                      // dropdownWidth: 290.w,
+                      // buttonPadding: EdgeInsets.only(left: 10.w),
                       isExpanded: true,
                       decoration: InputDecoration(
                         isDense: true,
@@ -1156,17 +1156,17 @@ class _TodoScreenState extends State<TodoScreen> {
                         fontWeight: FontWeight.w500,
                         color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                       ),
-                      icon: Image.asset(
-                        AppImages.down,
-                        height: 20.h,
-                        width: 20.w,
-                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                      ),
-                      offset: const Offset(0, -20),
-                      dropdownDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white
-                      ),
+                      // icon: Image.asset(
+                      //   AppImages.down,
+                      //   height: 20.h,
+                      //   width: 20.w,
+                      //   color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      // ),
+                      // offset: const Offset(0, -20),
+                      // dropdownDecoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(8),
+                      //     color: Colors.white
+                      // ),
                       items: controller.userNameList.map((e) {
                         return DropdownMenuItem(
                             value: e,
@@ -1195,10 +1195,10 @@ class _TodoScreenState extends State<TodoScreen> {
                     SizedBox(height: 6.h,),
                     Obx(() => DropdownButtonFormField2<GrowController>(
                       value: controller.isEdit.value == true ? controller.selectGrowSpace : null,
-                      itemHeight: 40.h,
-                      dropdownMaxHeight: 150.h,
-                      dropdownWidth: 290.w,
-                      buttonPadding: EdgeInsets.only(left: 10.w),
+                      // itemHeight: 40.h,
+                      // dropdownMaxHeight: 150.h,
+                      // dropdownWidth: 290.w,
+                      // buttonPadding: EdgeInsets.only(left: 10.w),
                       isExpanded: true,
                       decoration: InputDecoration(
                         isDense: true,
@@ -1222,17 +1222,17 @@ class _TodoScreenState extends State<TodoScreen> {
                         fontWeight: FontWeight.w500,
                         color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
                       ),
-                      icon: Image.asset(
-                        AppImages.down,
-                        height: 20.h,
-                        width: 20.w,
-                        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-                      ),
-                      offset:  Offset(0, 30.h),
-                      dropdownDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.white
-                      ),
+                      // icon: Image.asset(
+                      //   AppImages.down,
+                      //   height: 20.h,
+                      //   width: 20.w,
+                      //   color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+                      // ),
+                      // offset:  Offset(0, 30.h),
+                      // dropdownDecoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(8),
+                      //     color: Colors.white
+                      // ),
                       items: controller.growSpaceList.map((e) {
                         return DropdownMenuItem(
                             value: e,

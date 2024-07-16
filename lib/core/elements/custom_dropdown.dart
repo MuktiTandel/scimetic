@@ -34,10 +34,10 @@ class CustomDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => DropdownButtonFormField2(
-          itemHeight: 40.h,
-          dropdownMaxHeight: 150.h,
-          dropdownWidth: width ?? 310.w,
-          buttonPadding: EdgeInsets.only(left: 10.w),
+          // itemHeight: 40.h,
+          // dropdownMaxHeight: 150.h,
+          // dropdownWidth: width ?? 310.w,
+          // buttonPadding: EdgeInsets.only(left: 10.w),
           isExpanded: true,
           value: isEdit.value == true
               ? value.isNotEmpty
@@ -74,15 +74,15 @@ class CustomDropDown extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
           ),
-          icon: Image.asset(
-            AppImages.down,
-            height: 20.h,
-            width: 20.w,
-            color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-          ),
-          offset: Offset(0, yValue ?? -20),
-          dropdownDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8), color: Colors.white),
+          // icon: Image.asset(
+          //   AppImages.down,
+          //   height: 20.h,
+          //   width: 20.w,
+          //   color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+          // ),
+          // offset: Offset(0, yValue ?? -20),
+          // dropdownDecoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(8), color: Colors.white),
           items: itemList.map((e) {
             return DropdownMenuItem(
                 value: e,

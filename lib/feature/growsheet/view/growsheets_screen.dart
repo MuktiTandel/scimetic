@@ -738,11 +738,11 @@ class _GrowSheetsScreenState extends State<GrowSheetsScreen> {
       required RxInt id,
       required bool isEnable}) {
     return DropdownButtonFormField2<IgationControl>(
-      itemHeight: 40.h,
-      // value: controller.isEdit.value == true ? selectValue : null,
-      dropdownMaxHeight: 150.h,
-      dropdownWidth: 290.w,
-      buttonPadding: EdgeInsets.only(left: 10.w),
+      // itemHeight: 40.h,
+      // // value: controller.isEdit.value == true ? selectValue : null,
+      // dropdownMaxHeight: 150.h,
+      // dropdownWidth: 290.w,
+      // buttonPadding: EdgeInsets.only(left: 10.w),
       isExpanded: true,
       decoration: InputDecoration(
         isDense: true,
@@ -772,15 +772,15 @@ class _GrowSheetsScreenState extends State<GrowSheetsScreen> {
         fontWeight: FontWeight.w500,
         color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
       ),
-      icon: Image.asset(
-        AppImages.down,
-        height: 20.h,
-        width: 20.w,
-        color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
-      ),
-      offset: const Offset(0, -20),
-      dropdownDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8), color: Colors.white),
+      // icon: Image.asset(
+      //   AppImages.down,
+      //   height: 20.h,
+      //   width: 20.w,
+      //   color: Get.isDarkMode ? AppColors.darkText : AppColors.lightText,
+      // ),
+      // offset: const Offset(0, -20),
+      // dropdownDecoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(8), color: Colors.white),
       items: itemList.map((e) {
         return DropdownMenuItem(
             value: e,

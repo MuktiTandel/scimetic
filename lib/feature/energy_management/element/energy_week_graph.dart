@@ -85,7 +85,7 @@ class EnergyWeekGraph extends StatelessWidget {
               ),
             )
         ),
-        series: <ChartSeries>[
+        series: [
           SplineAreaSeries<WeekData, String>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,

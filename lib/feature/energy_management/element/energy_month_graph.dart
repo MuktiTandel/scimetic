@@ -90,7 +90,7 @@ class EnergyMonthGraph extends StatelessWidget {
               ),
             )
         ),
-        series: <ChartSeries>[
+        series: [
           SplineAreaSeries<MonthGraphModel, double>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,

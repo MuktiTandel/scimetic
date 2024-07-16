@@ -86,27 +86,27 @@ class _HourGraphState extends State<HourGraph> {
           // )
         ),
         // series: _getDefaultAreaSeries(),
-        series: <ChartSeries>[
+        series: [
           // if (widget.dData!.length == 1)
-            AreaSeries<Map<String, dynamic>, DateTime>(
-              dataSource: widget.data ?? [],
-              opacity: 0.7,
-              borderColor: widget.colors![0],
-              borderWidth: 0.5,
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    widget.colors![0].withOpacity(0.3),
-                    widget.colors![0].withOpacity(0.3),
-                  ]),
-              xValueMapper: (Map<String, dynamic> point, _) => point['x'],
-              yValueMapper: (Map<String, dynamic> point, _) =>
-                  (widget.dData!.length == 0)
-                      ? 0
-                      : double.parse(point[widget.dData![0]] ?? 0.toString()),
-              name: (widget.dData!.length == 0) ? "" : widget.dData![0],
-            ),
+          AreaSeries<Map<String, dynamic>, DateTime>(
+            dataSource: widget.data ?? [],
+            opacity: 0.7,
+            borderColor: widget.colors![0],
+            borderWidth: 0.5,
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  widget.colors![0].withOpacity(0.3),
+                  widget.colors![0].withOpacity(0.3),
+                ]),
+            xValueMapper: (Map<String, dynamic> point, _) => point['x'],
+            yValueMapper: (Map<String, dynamic> point, _) =>
+                (widget.dData!.length == 0)
+                    ? 0
+                    : double.parse(point[widget.dData![0]] ?? 0.toString()),
+            name: (widget.dData!.length == 0) ? "" : widget.dData![0],
+          ),
           if (widget.dData!.length == 2)
             AreaSeries<Map<String, dynamic>, DateTime>(
               dataSource: widget.data ?? [],

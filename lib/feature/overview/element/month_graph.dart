@@ -82,7 +82,7 @@ class MonthGraph extends StatelessWidget {
           //    ),
           // )
         ),
-        series: <ChartSeries>[
+        series: [
           SplineAreaSeries<MonthData, DateTime>(
             borderWidth: 3.w,
               gradient: LinearGradient(

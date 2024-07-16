@@ -84,7 +84,7 @@ class WeekGraph2 extends StatelessWidget {
               ),
             )
         ),
-        series: <ChartSeries>[
+        series: [
           SplineAreaSeries<WeekGraphModel, String>(
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
